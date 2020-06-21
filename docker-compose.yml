@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  homepage:
+    build: ./homepage/
+    ports:
+      - "8000:8000"
