@@ -12,3 +12,10 @@ services:
     ports:
       - "3000:3000"
       - "22:22"
+  mariadb:
+    container_name: "khuedoan_mariadb"
+    build: ./mariadb/
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
