@@ -2,7 +2,7 @@ FROM rust:1.44.1-slim AS base
 
 ENV USER=root
 
-WORKDIR /usr/local/src/homepage/
+WORKDIR /usr/local/src/index/
 
 RUN cargo init
 COPY ./Cargo.toml ./Cargo.toml
@@ -18,8 +18,8 @@ RUN cargo build --release --offline
 
 FROM rust:1.44.1-slim
 
-COPY --from=builder /usr/local/src/homepage/target/release/homepage /usr/local/bin/homepage
+COPY --from=builder /usr/local/src/index/target/release/index /usr/local/bin/index
 
 EXPOSE 8000
 
-ENTRYPOINT [ "/usr/local/bin/homepage" ]
+ENTRYPOINT [ "/usr/local/bin/index" ]
