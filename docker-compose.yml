@@ -12,9 +12,9 @@ services:
     build: ./homepage/
     ports:
       - "8000:8000"
-  git:
-    container_name: "khuedoan_git"
-    build: ./git/
+  gitea:
+    container_name: "khuedoan_gitea"
+    build: ./gitea/
     ports:
       - "3000:3000"
       - "22:22"
