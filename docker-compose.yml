@@ -2,6 +2,13 @@ version: '3'
 
 services:
   homepage:
+    container_name: "khuedoan_homepage"
     build: ./homepage/
     ports:
       - "8000:8000"
+  git:
+    container_name: "khuedoan_git"
+    build: ./git/
+    ports:
+      - "3000:3000"
+      - "22:22"
