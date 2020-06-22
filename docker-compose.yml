@@ -7,9 +7,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
-  homepage:
-    container_name: "khuedoan_homepage"
-    build: ./homepage/
+  index:
+    container_name: "khuedoan_index"
+    build: ./index/
     ports:
       - "8000:8000"
   gitea:
