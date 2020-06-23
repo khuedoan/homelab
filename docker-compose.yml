@@ -7,17 +7,13 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "22:22"
   index:
     container_name: "khuedoan_index"
     build: ./index/
-    ports:
-      - "8000:8000"
   gitea:
     container_name: "khuedoan_gitea"
     build: ./gitea/
-    ports:
-      - "3000:3000"
-      - "22:22"
   mariadb:
     container_name: "khuedoan_mariadb"
     build: ./mariadb/
