@@ -20,6 +20,10 @@ services:
       DB_USER: "root"
       DB_PASSWD: $MYSQL_ROOT_PASSWORD
       DB_NAME: "gitea"
+      APP_NAME: "Git"
+      DOMAIN: "git.khuedoan.com"
+      ROOT_URL: "http://git.khuedoan.com/"
+      INSTALL_LOCK: "true"
   mariadb:
     container_name: "khuedoan_mariadb"
     build: ./mariadb/
