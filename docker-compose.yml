@@ -14,10 +14,15 @@ services:
   gitea:
     container_name: "khuedoan_gitea"
     build: ./gitea/
+    environment:
+      DB_TYPE: "mysql"
+      DB_HOST: "mariadb:3306"
+      DB_USER: "root"
+      DB_PASSWD: $MYSQL_ROOT_PASSWORD
+      DB_NAME: "gitea"
   mariadb:
     container_name: "khuedoan_mariadb"
     build: ./mariadb/
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: "gitea"
