@@ -24,6 +24,7 @@ services:
       DOMAIN: "git.khuedoan.com"
       ROOT_URL: "http://git.khuedoan.com/"
       INSTALL_LOCK: "true"
+    restart: always
   mariadb:
     container_name: "khuedoan_mariadb"
     build: ./mariadb/
