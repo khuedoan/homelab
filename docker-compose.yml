@@ -31,3 +31,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: "gitea"
+  pastebin:
+    container_name: "khuedoan_pastebin"
+    build: ./pastebin/
