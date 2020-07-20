@@ -1,0 +1,8 @@
+---
+- name: Install LXD
+  snap:
+    name: lxd
+    classic: yes
+
+- name: Initialize LXD
+  command: lxd init --auto
