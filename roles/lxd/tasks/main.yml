@@ -6,3 +6,9 @@
 
 - name: Initialize LXD
   command: lxd init --auto
+
+- name: Make LXD to be available over the network
+  command: lxc config set core.https_address "[::]"
+
+- name: Set password for new clients
+  command: lxc config set core.trust_password ""
