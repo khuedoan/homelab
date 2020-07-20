@@ -3,7 +3,7 @@ provider "lxd" {
   accept_remote_certificate    = true
 }
 
-resource "lxd_network" "kubernetes_subnetwork" {
+resource "lxd_network" "kubernetes_network" {
   name = "kubernetes"
 
   config = {
@@ -25,6 +25,16 @@ resource "lxd_container" "kubernetes_controllers" {
   limits = {
     cpu = 2
   }
+
+  device {
+    name = "eth0"
+    type = "nic"
+
+    properties = {
+      nictype = "bridged"
+      parent  = "${lxd_network.kubernetes_network.name}"
+    }
+  }
 }
 
 resource "lxd_container" "kubernetes_workers" {
@@ -39,5 +49,15 @@ resource "lxd_container" "kubernetes_workers" {
 
   limits = {
     cpu = 2
+  }
+
+  device {
+    name = "eth0"
+    type = "nic"
+
+    properties = {
+      nictype = "bridged"
+      parent  = "${lxd_network.kubernetes_network.name}"
+    }
   }
 }
