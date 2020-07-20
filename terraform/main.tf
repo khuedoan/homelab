@@ -12,9 +12,24 @@ resource "lxd_network" "kubernetes_subnetwork" {
   }
 }
 
-resource "lxd_container" "test1" {
+resource "lxd_container" "kubernetes_controllers" {
   count     = 3
-  name      = "test-${count.index}"
+  name      = "controller-${count.index}"
+  image     = "images:ubuntu/18.04"
+  ephemeral = false
+
+  config = {
+    "boot.autostart" = true
+  }
+
+  limits = {
+    cpu = 2
+  }
+}
+
+resource "lxd_container" "kubernetes_workers" {
+  count     = 3
+  name      = "worker-${count.index}"
   image     = "images:ubuntu/18.04"
   ephemeral = false
 
