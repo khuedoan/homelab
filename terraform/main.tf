@@ -35,6 +35,14 @@ resource "lxd_container" "kubernetes_controllers" {
       parent  = "${lxd_network.kubernetes_network.name}"
     }
   }
+
+  provisioner "local-exec" {
+  command = <<EXEC
+    lxc exec ${self.name} -- bash -xe -c '
+      touch /hello
+    '
+    EXEC
+  }
 }
 
 resource "lxd_container" "kubernetes_workers" {
@@ -59,5 +67,13 @@ resource "lxd_container" "kubernetes_workers" {
       nictype = "bridged"
       parent  = "${lxd_network.kubernetes_network.name}"
     }
+  }
+
+  provisioner "local-exec" {
+  command = <<EXEC
+    lxc exec ${self.name} -- bash -xe -c '
+      touch /hello
+    '
+    EXEC
   }
 }
