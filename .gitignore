@@ -2,3 +2,5 @@ target/
 Cargo.lock
 .vagrant/
 *.log
+.terraform/
+terraform.tfstate*
