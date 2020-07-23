@@ -1,0 +1,6 @@
+---
+opennebula_packages:
+  - opennebula
+  - opennebula-sunstone
+  - opennebula-gate
+  - opennebula-flow
