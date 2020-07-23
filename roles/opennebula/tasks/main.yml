@@ -20,7 +20,7 @@
   service:
     name: "{{ item }}"
     enabled: yes
-    state: started
+    state: restarted
   with_items:
     - opennebula
     - opennebula-sunstone
