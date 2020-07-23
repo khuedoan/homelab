@@ -14,6 +14,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 9869, host: 9869
   config.vm.network "forwarded_port", guest: 2633, host: 2633
 
+  config.disksize.size = '100GB'
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yml"
   end
