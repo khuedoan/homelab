@@ -1,5 +1,7 @@
 # Khue's Home Lab
 
+## Table of contents
+
 <!-- vim-markdown-toc GFM -->
 
 * [Features](#features)
