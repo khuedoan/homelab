@@ -1,5 +1,14 @@
 # Khue's Home Lab
 
+<!-- vim-markdown-toc GFM -->
+
+* [Features](#features)
+    * [Infrastructure](#infrastructure)
+    * [Applications](#applications)
+* [Run locally](#run-locally)
+
+<!-- vim-markdown-toc -->
+
 ## Features
 
 ### Infrastructure
