@@ -14,6 +14,8 @@ Vagrant.configure("2") do |config|
 
   config.disksize.size = '100GB'
 
+  config.vm.synced_folder "./", "/home/vagrant/data"
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yml"
   end
