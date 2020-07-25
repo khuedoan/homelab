@@ -17,10 +17,11 @@ resource "lxd_profile" "kubernetes" {
 
   config = {
     "limits.cpu"           = 2
+    "limits.memory.swap"   = false
     "linux.kernel_modules" = "ip_tables,ip6_tables,netlink_diag,nf_nat,overlay"
     "raw.lxc"              = "lxc.apparmor.profile=unconfined\nlxc.cap.drop= \nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw sys:rw"
-    "security.privileged"  = "true"
-    "security.nesting"     = "true"
+    "security.privileged"  = true
+    "security.nesting"     = true
   }
 
   device {
@@ -54,22 +55,20 @@ resource "lxd_container" "kubernetes_controllers" {
   provisioner "local-exec" {
   command = <<EXEC
     lxc exec ${self.name} -- bash -xe -c '
-      sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-      sudo apt-get update
-      sudo apt-get install docker-ce docker-ce-cli containerd.io
-      sudo systemctl enable --now docker
-      sudo apt-get update && sudo apt-get install -y apt-transport-https curl
-      curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-      cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-      deb https://apt.kubernetes.io/ kubernetes-xenial main
-      EOF
-      sudo apt-get update
-      sudo apt-get install -y kubelet kubeadm kubectl
-      sudo apt-mark hold kubelet kubeadm kubectl
-      sudo systemctl daemon-reload
-      sudo systemctl enable --now kubelet
+      apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+      add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      apt-get update
+      apt-get install -y docker-ce docker-ce-cli containerd.io
+      systemctl enable --now docker
+      apt-get update && apt-get install -y apt-transport-https curl
+      curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+      echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+      apt-get update
+      apt-get install -y kubelet kubeadm kubectl
+      apt-mark hold kubelet kubeadm kubectl
+      systemctl daemon-reload
+      systemctl enable --now kubelet
     '
     EXEC
   }
