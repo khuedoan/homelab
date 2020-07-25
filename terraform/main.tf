@@ -18,7 +18,7 @@ resource "lxd_profile" "kubernetes" {
   config = {
     "limits.cpu"           = 2
     "linux.kernel_modules" = "ip_tables,ip6_tables,netlink_diag,nf_nat,overlay"
-    "raw.lxc"              = "lxc.apparmor.profile=unconfined\nlxc.cap.drop= \nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw\nsys:rw"
+    "raw.lxc"              = "lxc.apparmor.profile=unconfined\nlxc.cap.drop= \nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw sys:rw"
     "security.privileged"  = "true"
     "security.nesting"     = "true"
   }
