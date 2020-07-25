@@ -59,28 +59,3 @@ resource "lxd_container" "kubernetes_workers" {
   ephemeral = false
   profiles  = [ lxd_profile.kubernetes.name ]
 }
-
-resource "lxd_container" "haproxy" {
-  count     = 1
-  name      = "haproxy"
-  image     = "images:ubuntu/18.04"
-  ephemeral = false
-
-  config = {
-    "boot.autostart" = true
-  }
-
-  limits = {
-    cpu = 2
-  }
-
-  device {
-    name = "eth0"
-    type = "nic"
-
-    properties = {
-      nictype = "bridged"
-      parent  = "${lxd_network.kubernetes.name}"
-    }
-  }
-}
