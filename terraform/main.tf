@@ -45,7 +45,7 @@ resource "lxd_profile" "kubernetes" {
 }
 
 resource "lxd_container" "kubernetes_controllers" {
-  count     = 3
+  count     = 1
   name      = "controller-${count.index}"
   image     = "images:ubuntu/18.04"
   ephemeral = false
@@ -53,7 +53,7 @@ resource "lxd_container" "kubernetes_controllers" {
 }
 
 resource "lxd_container" "kubernetes_workers" {
-  count     = 3
+  count     = 1
   name      = "worker-${count.index}"
   image     = "images:ubuntu/18.04"
   ephemeral = false
