@@ -20,7 +20,6 @@
 ![Helm](https://img.shields.io/static/v1?logo=Helm&logoColor=white&label=&message=Helm&color=277A9F)
 ![Kubernetes](https://img.shields.io/static/v1?logo=Kubernetes&logoColor=white&label=&message=Kubernetes&color=326CE5)
 ![LXC](https://img.shields.io/static/v1?logo=LXC&logoColor=white&label=&message=LXC&color=black)
-![OpenNebula](https://img.shields.io/static/v1?logo=OpenNebula&logoColor=white&label=&message=OpenNebula&color=black)
 ![Terraform](https://img.shields.io/static/v1?logo=Terraform&logoColor=white&label=&message=Terraform&color=623CE4)
 
 ### Applications
