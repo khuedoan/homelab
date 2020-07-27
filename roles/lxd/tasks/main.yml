@@ -12,3 +12,6 @@
 
 - name: Set password for new clients
   command: lxc config set core.trust_password ""
+
+- name: Disable swap for Kubernetes
+  command: swapoff -a
