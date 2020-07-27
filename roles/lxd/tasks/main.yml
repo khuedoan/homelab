@@ -15,3 +15,8 @@
 
 - name: Disable swap for Kubernetes
   command: swapoff -a
+
+- name: Add the br_netfilter kernel module
+  modprobe:
+    name: br_netfilter
+    state: present
