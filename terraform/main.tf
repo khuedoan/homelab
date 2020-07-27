@@ -69,6 +69,7 @@ resource "lxd_container" "kubernetes_controllers" {
       apt-mark hold kubelet kubeadm kubectl
       systemctl daemon-reload
       systemctl enable --now kubelet
+      kubeadm init
     '
     EXEC
   }
