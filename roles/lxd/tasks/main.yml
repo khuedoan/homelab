@@ -1,8 +1,8 @@
 ---
 - name: Install LXD
-  snap:
+  package:
     name: lxd
-    classic: yes
+    state: present
 
 - name: Copy LXD preseed
   template:
