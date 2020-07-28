@@ -69,6 +69,7 @@ resource "lxd_container" "kubernetes_controllers" {
       systemctl daemon-reload
       systemctl enable --now kubelet
       apt-get install -y linux-image-$(uname -r)
+      mknod /dev/kmsg c 1 11
       kubeadm init
     '
     EXEC
