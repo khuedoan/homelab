@@ -4,8 +4,13 @@
     name: lxd
     classic: yes
 
+- name: Copy LXD preseed
+  template:
+    src: lxd_preseed.yml.j2
+    dest: /tmp/lxd_preseed.yml
+
 - name: Initialize LXD
-  command: lxd init --auto
+  shell: "lxd init --preseed < /tmp/lxd_preseed.yml"
 
 - name: Make LXD to be available over the network
   command: lxc config set core.https_address "[::]"
