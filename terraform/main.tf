@@ -54,30 +54,17 @@ resource "lxd_container" "kubernetes_controllers" {
   provisioner "local-exec" {
   command = <<EXEC
     lxc exec ${self.name} -- bash -xe -c '
-      apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-      add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-      apt-get update
-      apt-get install -y docker-ce docker-ce-cli containerd.io
-      systemctl enable --now docker
-      apt-get update && apt-get install -y apt-transport-https curl
-      curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-      echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
-      apt-get update
-      apt-get install -y kubelet kubeadm kubectl
-      apt-mark hold kubelet kubeadm kubectl
-      systemctl daemon-reload
-      systemctl enable --now kubelet
+      apt-get install -y curl
+      curl -sfL https://get.k3s.io | sh -
       apt-get install -y linux-image-$(uname -r)
       mknod /dev/kmsg c 1 11
-      kubeadm init
     '
     EXEC
   }
 }
 
 resource "lxd_container" "kubernetes_workers" {
-  count     = 1
+  count     = 0
   name      = "worker-${count.index}"
   image     = "images:ubuntu/18.04"
   ephemeral = false
