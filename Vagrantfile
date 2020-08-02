@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
     vb.memory = 8192
   end
 
-  config.vm.network "public_network"
+  config.vm.network "public_network", ip: "192.168.1.50"
 
   config.disksize.size = '100GB'
 
