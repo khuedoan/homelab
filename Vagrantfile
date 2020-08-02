@@ -9,8 +9,7 @@ Vagrant.configure("2") do |config|
     vb.memory = 8192
   end
 
-  # LXD port
-  config.vm.network "forwarded_port", guest: 8443, host: 8443
+  config.vm.network "public_network"
 
   config.disksize.size = '100GB'
 
