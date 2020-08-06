@@ -63,10 +63,10 @@ resource "lxd_container" "kubernetes_controllers" {
   }
 }
 
-resource "lxd_container" "kubernetes_workers" {
-  count     = 0
-  name      = "worker-${count.index}"
-  image     = "images:ubuntu/18.04"
-  ephemeral = false
-  profiles  = [ lxd_profile.kubernetes.name ]
-}
+# resource "lxd_container" "kubernetes_workers" {
+#   count     = 0
+#   name      = "worker-${count.index}"
+#   image     = "images:ubuntu/18.04"
+#   ephemeral = false
+#   profiles  = [ lxd_profile.kubernetes.name ]
+# }
