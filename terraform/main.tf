@@ -54,10 +54,9 @@ resource "lxd_container" "kubernetes_controllers" {
   provisioner "local-exec" {
   command = <<EXEC
     lxc exec ${self.name} -- bash -xe -c '
-      apt-get install -y curl
-      curl -sfL https://get.k3s.io | sh -
-      apt-get install -y linux-image-$(uname -r)
+      apt-get install -y curl linux-image-$(uname -r)
       mknod /dev/kmsg c 1 11
+      curl -sfL https://get.k3s.io | sh -
     '
     EXEC
   }
