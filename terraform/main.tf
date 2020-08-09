@@ -28,8 +28,8 @@ resource "lxd_profile" "kubernetes" {
     type = "nic"
 
     properties = {
-      nictype = "routed"
-      parent  = "enp0s3"
+      nictype = "bridged"
+      parent  = "lxdbr0"
     }
   }
 
