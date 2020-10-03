@@ -1,9 +1,10 @@
 ---
 opennebula_packages:
-  - opennebula
-  - opennebula-common
-  - opennebula-flow
-  - opennebula-gate
-  - opennebula-node-lxd
-  - opennebula-sunstone
-  - opennebula-tools
+  - opennebula                  # Command Line Interface
+  - opennebula-flow             # OneFlow manages services and elasticity
+  - opennebula-gate             # OneGate server that enables communication between VMs and OpenNebula
+  - opennebula-node-firecracker # Dependencies and configurations for Firecracker hypervisor node
+  - opennebula-node-kvm         # Dependencies and configurations for KVM hypervisor node
+  - opennebula-rubygems         # Bundled Ruby gem dependencies
+  - opennebula-server           # OpenNebula Daemon and Scheduler
+  - opennebula-sunstone         # The GUI and the EC2 API
