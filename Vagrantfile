@@ -4,9 +4,10 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/8"
 
-  config.vm.provider "virtualbox" do |vb|
-    vb.cpus   = 4
-    vb.memory = 8192
+  config.vm.provider "libvirt" do |libvirt|
+    libvirt.cpus   = 4
+    libvirt.memory = 8192
+    libvirt.nested = true
   end
 
   config.vm.network :public_network,
