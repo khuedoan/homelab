@@ -2,5 +2,4 @@
 - hosts: all
   become: yes
   roles:
-    - { role: lxd }
     - { role: opennebula }
