@@ -8,8 +8,13 @@
     gpgcheck: yes
     repo_gpgcheck: yes
 
+- name: Enable EPEL repository
+  yum:
+    name: epel-release
+    state: present
+
 - name: Install OpenNebula
-  package:
+  yum:
     name: "{{ opennebula_packages }}"
     state: present
 
