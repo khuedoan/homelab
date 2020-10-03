@@ -1,15 +1,12 @@
 ---
-- name: Add OpenNebula key
-  apt_key:
-    url: https://downloads.opennebula.io/repo/repo.key
-    state: present
-
 - name: Add OpenNebula repository
-  apt_repository:
-    repo: deb https://downloads.opennebula.io/repo/5.12/Ubuntu/18.04 stable opennebula
-    filename: opennebula
-    update_cache: yes
-    state: present
+  yum_repository:
+    name: opennebula
+    description: OpenNebula Community Edition
+    baseurl: https://downloads.opennebula.io/repo/5.12/CentOS/8/$basearch
+    gpgkey: https://downloads.opennebula.io/repo/repo.key
+    gpgcheck: yes
+    repo_gpgcheck: yes
 
 - name: Install OpenNebula
   package:
