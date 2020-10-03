@@ -1,0 +1,9 @@
+---
+opennebula_packages:
+  - opennebula
+  - opennebula-common
+  - opennebula-flow
+  - opennebula-gate
+  - opennebula-node-lxd
+  - opennebula-sunstone
+  - opennebula-tools
