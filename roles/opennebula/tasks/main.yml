@@ -18,11 +18,12 @@
     name: "{{ opennebula_packages }}"
     state: present
 
-- name: Enable OpenNebula services
+- name: Start services
   service:
     name: "{{ item }}"
     enabled: yes
-    state: restarted
+    state: started
   with_items:
+    - libvirtd
     - opennebula
     - opennebula-sunstone
