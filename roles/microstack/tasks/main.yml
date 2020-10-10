@@ -1,0 +1,6 @@
+- name: Install microstack
+  snap:
+    name: microstack
+    state: present
+    channel: latest/edge
+    classic: yes
