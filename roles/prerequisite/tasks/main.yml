@@ -1,12 +1,12 @@
-- name: Upgrade all packages
-  yum:
-    name: '*'
-    state: latest
-
 - name: Enable EPEL repository
   yum:
     name: epel-release
     state: present
+
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
 
 - name: Install snap
   yum:
@@ -24,4 +24,3 @@
     src: /var/lib/snapd/snap
     dest: /snap
     state: link
-
