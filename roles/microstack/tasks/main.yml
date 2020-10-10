@@ -2,5 +2,5 @@
   snap:
     name: microstack
     state: present
-    channel: latest/edge
+    channel: latest/beta
     classic: yes
