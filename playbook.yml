@@ -2,4 +2,5 @@
 - hosts: all
   become: yes
   roles:
-    - { role: opennebula }
+    - { role: prerequisite }
+    - { role: microstack }
