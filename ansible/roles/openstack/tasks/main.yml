@@ -1,0 +1,3 @@
+---
+- name: Enable PowerTools repository
+  command: config-manager --enable PowerTools
