@@ -17,3 +17,6 @@
   dnf:
     name: "*"
     state: latest
+
+- name: Run PackStack to install OpenStack
+  command: packstack --allinone
