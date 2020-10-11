@@ -12,3 +12,8 @@
   dnf:
     name: openstack-packstack
     state: present
+
+- name: Upgrade all packages
+  dnf:
+    name: "*"
+    state: latest
