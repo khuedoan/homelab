@@ -2,5 +2,4 @@
 - hosts: all
   become: yes
   roles:
-    - { role: prerequisite }
-    - { role: microstack }
+    - { role: openstack }
