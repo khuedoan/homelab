@@ -18,6 +18,6 @@ Vagrant.configure("2") do |config|
   config.disksize.size = '100GB'
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "playbook.yml"
+    ansible.playbook = "ansible/playbook.yml"
   end
 end

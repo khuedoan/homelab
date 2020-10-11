@@ -1,6 +1,0 @@
-- name: Install microstack
-  snap:
-    name: microstack
-    state: present
-    channel: latest/beta
-    classic: yes
