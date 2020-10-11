@@ -1,3 +1,14 @@
 ---
+# TODO https://github.com/ansible/ansible/issues/64852
 - name: Enable PowerTools repository
   command: dnf config-manager --enable PowerTools
+
+- name: Enable OpenStack repository
+  dnf:
+    name: centos-release-openstack-ussuri
+    state: present
+
+- name: Install PackStack
+  dnf:
+    name: openstack-packstack
+    state: present
