@@ -3,3 +3,5 @@ version: '3'
 services:
   tools:
     build: ./tools
+    volumes:
+      - ./tools/kolla:/etc/kolla
