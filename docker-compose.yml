@@ -5,3 +5,4 @@ services:
     build: ./tools
     volumes:
       - ./tools/kolla:/etc/kolla
+    network_mode: host
