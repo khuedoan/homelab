@@ -2,7 +2,16 @@ FROM centos:8
 
 RUN dnf install -y epel-release
 
-RUN dnf install -y ansible python3-devel libffi-devel gcc openssl-devel python3-libselinux python3-pip which
+RUN dnf install -y \
+    ansible \
+    python3-devel \
+    libffi-devel \
+    gcc \
+    openssl-devel \
+    python3-libselinux \
+    python3-pip \
+    which \
+    wol
 
 RUN pip3 install kolla-ansible
 
