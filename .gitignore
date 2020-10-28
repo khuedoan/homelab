@@ -1,6 +1,8 @@
-target/
-Cargo.lock
 .vagrant/
+target/
+
 *.log
 .terraform*
+Cargo.lock
+passwords.yml
 terraform.tfstate*
