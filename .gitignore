@@ -4,5 +4,6 @@ target/
 *.log
 .terraform*
 Cargo.lock
+admin-openrc.sh
 passwords.yml
 terraform.tfstate*
