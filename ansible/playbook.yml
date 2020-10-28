@@ -1,5 +1,0 @@
----
-- hosts: all
-  become: yes
-  roles:
-    - { role: openstack }
