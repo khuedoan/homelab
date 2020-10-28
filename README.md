@@ -8,6 +8,7 @@
     * [Infrastructure](#infrastructure)
     * [Applications](#applications)
 * [Run locally](#run-locally)
+* [Notes](#notes)
 
 <!-- vim-markdown-toc -->
 
@@ -44,3 +45,7 @@ Add the following lines to the `/etc/hosts` file:
 Start the services
 
 `$ MYSQL_ROOT_PASSWORD='PASSWORD_HERE' docker-compose up --build`
+
+## Notes
+
+- Node hostname must be different and has proper domain (for example `node0.homelab.local`)
