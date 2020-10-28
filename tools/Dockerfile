@@ -7,13 +7,14 @@ RUN dnf install -y \
     python3-devel \
     libffi-devel \
     gcc \
+    openssh \
     openssl-devel \
     python3-libselinux \
     python3-pip \
     which \
     wol
 
-RUN pip3 install kolla-ansible
+RUN pip3 install kolla-ansible python-openstackclient
 
 RUN mkdir /etc/kolla
 
