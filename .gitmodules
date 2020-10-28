@@ -1,3 +1,0 @@
-[submodule "pxe-server"]
-	path = pxe-server
-	url = https://github.com/khuedoan/pxe-server
