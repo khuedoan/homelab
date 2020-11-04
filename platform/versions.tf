@@ -1,7 +1,8 @@
 terraform {
   required_providers {
-    openstack = {
-      source = "terraform-provider-openstack/openstack"
+    rke = {
+      source = "rancher/rke"
+      version = "1.1.3"
     }
   }
   required_version = ">= 0.13"
