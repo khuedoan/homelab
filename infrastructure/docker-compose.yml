@@ -5,3 +5,5 @@ services:
     build: ./tools
     volumes:
       - ./tools/kolla:/etc/kolla
+      - /etc/hosts:/etc/hosts
+      - ~/.ssh/:/root/.ssh
