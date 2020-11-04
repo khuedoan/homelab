@@ -4,7 +4,7 @@ provider "rke" {
 
 resource rke_cluster "cluster" {
   nodes {
-    address = "192.168.1.21"
+    address = "192.168.1.17"
     user    = "root"
     role    = [
       "controlplane",
@@ -16,7 +16,7 @@ resource rke_cluster "cluster" {
 
   dynamic "nodes" {
     for_each = [
-      "192.168.1.17",
+      "192.168.1.21",
       "192.168.1.22",
       "192.168.1.23"
     ]
