@@ -1,6 +1,38 @@
-resource "openstack_images_image_v2" "centos8" {
-  name             = "CentOS_8"
-  image_source_url = "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.2.2004-20200611.2.x86_64.qcow2"
-  container_format = "bare"
-  disk_format      = "qcow2"
+provider "rke" {
+    debug = true
+  }
+
+resource rke_cluster "cluster" {
+  nodes {
+    address = "192.168.1.21"
+    user    = "root"
+    role    = [
+      "controlplane",
+      "etcd",
+      "worker"
+    ]
+    ssh_key = file("~/.ssh/id_rsa")
+  }
+
+  dynamic "nodes" {
+    for_each = [
+      "192.168.1.17",
+      "192.168.1.22",
+      "192.168.1.23"
+    ]
+    content {
+      address = nodes.value
+      user    = "root"
+      role    = [
+        "worker",
+        "etcd"
+      ]
+      ssh_key = file("~/.ssh/id_rsa")
+    }
+  }
+}
+
+resource "local_file" "kube_cluster_yaml" {
+  filename = "${path.root}/kube_config_cluster.yml"
+  content  = rke_cluster.cluster.kube_config_yaml
 }
