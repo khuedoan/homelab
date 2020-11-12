@@ -7,6 +7,7 @@
 * [Features](#features)
     * [Infrastructure](#infrastructure)
     * [Applications](#applications)
+* [Hardware setup](#hardware-setup)
 * [Run locally](#run-locally)
 * [Notes](#notes)
 
@@ -31,6 +32,16 @@
 ![Pastebin](https://img.shields.io/static/v1?logo=Pastebin&logoColor=white&label=&message=Pastebin&color=02456C)
 ![PeerTube](https://img.shields.io/static/v1?logo=PeerTube&logoColor=white&label=&message=PeerTube&color=F1680D)
 ![Plex](https://img.shields.io/static/v1?logo=Plex&logoColor=white&label=&message=Plex&color=E5A00D)
+
+## Hardware setup
+
+![Hardware](https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG)
+
+- 4 nodes of NEC SFF PC (Japanese version of the Thinkcentre M700)
+  - CPU: Intel Core i5-6600T
+  - RAM: 16GB
+  - SSD: 128GB
+- Switch TP-Link TL-SG108
 
 ## Run locally
 
