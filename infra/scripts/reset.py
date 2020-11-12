@@ -33,7 +33,7 @@ nodes = [
 ]
 
 def is_alive(node):
-    return os.system(f"ping -c 1 {node['ip']}") == 0
+    return os.system(f"ping -q -c 1 {node['ip']}") == 0
 
 def is_ready(node):
     return os.system(f"ssh -o StrictHostKeyChecking=no {user}@{node['ip']} exit") == 0
