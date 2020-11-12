@@ -1,18 +1,5 @@
 # Khue's Home Lab
 
-## Table of contents
-
-<!-- vim-markdown-toc GFM -->
-
-* [Features](#features)
-    * [Infrastructure](#infrastructure)
-    * [Applications](#applications)
-* [Hardware setup](#hardware-setup)
-* [Run locally](#run-locally)
-* [Notes](#notes)
-
-<!-- vim-markdown-toc -->
-
 ## Features
 
 ### Infrastructure
