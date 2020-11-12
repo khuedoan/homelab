@@ -46,7 +46,6 @@ def poweroff(node):
         print(f"Node {node['name']} is already dead!")
 
 def wake(node):
-    print(f"Waking up {node['name']}")
     os.system(f"wol {node['mac']}")
 
 def forget(node):
