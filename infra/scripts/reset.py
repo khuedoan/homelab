@@ -9,25 +9,25 @@ nodes = [
     {
         'name': 'Node 0',
         'mac': '00:23:24:d1:f3:f0',
-        'ip': '192.168.1.21',
+        'ip': '192.168.1.110',
         'hostname': 'node0.homelab.local'
     },
     {
         'name': 'Node 1',
         'mac': '00:23:24:d1:f4:d6',
-        'ip': '192.168.1.22',
+        'ip': '192.168.1.111',
         'hostname': 'node1.homelab.local'
     },
     {
         'name': 'Node 2',
         'mac': '00:23:24:e7:04:60',
-        'ip': '192.168.1.17',
+        'ip': '192.168.1.112',
         'hostname': 'node2.homelab.local'
     },
     {
         'name': 'Node 3',
         'mac': '00:23:24:d1:f5:69',
-        'ip': '192.168.1.23',
+        'ip': '192.168.1.113',
         'hostname': 'node3.homelab.local'
     }
 ]
