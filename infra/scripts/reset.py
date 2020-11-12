@@ -7,21 +7,25 @@ user = "root"
 
 nodes = [
     {
+        'name': 'Node 0',
         'mac': '00:23:24:d1:f3:f0',
         'ip': '192.168.1.21',
         'hostname': 'node0.homelab.local'
     },
     {
+        'name': 'Node 1',
         'mac': '00:23:24:d1:f4:d6',
         'ip': '192.168.1.22',
         'hostname': 'node1.homelab.local'
     },
     {
+        'name': 'Node 2',
         'mac': '00:23:24:e7:04:60',
         'ip': '192.168.1.17',
         'hostname': 'node2.homelab.local'
     },
     {
+        'name': 'Node 3',
         'mac': '00:23:24:d1:f5:69',
         'ip': '192.168.1.23',
         'hostname': 'node3.homelab.local'
@@ -33,13 +37,13 @@ def is_alive(node):
 
 def poweroff(node):
     if is_alive(node):
-        print(f"Poweroff {node['hostname']}")
+        print(f"Poweroff {node['name']}")
         os.system(f"ssh {user}@{node['ip']} poweroff")
     else:
-        print(f"Node {node['hostname']} is already dead!")
+        print(f"Node {node['name']} is already dead!")
 
 def wake(nodes):
-    print(f"Waking up {node['hostname']}")
+    print(f"Waking up {node['name']}")
     os.system(f"wol {node['mac']}")
 
 if __name__ == "__main__":
