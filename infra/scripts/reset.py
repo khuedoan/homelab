@@ -35,10 +35,13 @@ nodes = [
 def is_alive(node):
     return os.system(f"ping -c 1 {node['ip']}") == 0
 
+def is_ready(node):
+    return os.system(f"ssh -o StrictHostKeyChecking=no {user}@{node['ip']} exit") == 0
+
 def poweroff(node):
     if is_alive(node):
         print(f"Poweroff {node['name']}")
-        os.system(f"ssh {user}@{node['ip']} poweroff")
+        os.system(f"ssh -o StrictHostKeyChecking=no {user}@{node['ip']} poweroff")
     else:
         print(f"Node {node['name']} is already dead!")
 
@@ -57,3 +60,9 @@ if __name__ == "__main__":
 
     for node in nodes:
         wake(node)
+
+    while not all(is_ready(node) for node in nodes):
+        print("Waiting for all servers to start up...")
+        time.sleep(10)
+
+    os.system(f"docker-compose down")
