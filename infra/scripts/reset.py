@@ -66,6 +66,7 @@ if __name__ == "__main__":
         wake(node)
 
     while not all(is_ready(node) for node in nodes):
+        os.system(f"docker-compose logs -t --tail={len(nodes)} nginx")
         print("Waiting for all servers to start up...")
         time.sleep(10)
 
