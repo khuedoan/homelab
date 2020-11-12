@@ -42,7 +42,7 @@ def poweroff(node):
     else:
         print(f"Node {node['name']} is already dead!")
 
-def wake(nodes):
+def wake(node):
     print(f"Waking up {node['name']}")
     os.system(f"wol {node['mac']}")
 
