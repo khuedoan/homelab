@@ -30,19 +30,6 @@
   - SSD: 128GB
 - Switch TP-Link TL-SG108
 
-## Run locally
-
-Add the following lines to the `/etc/hosts` file:
-
-```
-127.0.0.1 khuedoan.com
-127.0.0.1 git.khuedoan.com
-```
-
-Start the services
-
-`$ MYSQL_ROOT_PASSWORD='PASSWORD_HERE' docker-compose up --build`
-
 ## Notes
 
 - Node hostname must be different and has proper domain (for example `node0.homelab.local`)
