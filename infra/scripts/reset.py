@@ -28,20 +28,28 @@ nodes = [
     }
 ]
 
-def poweroff(nodes):
-    for node in nodes:
+def is_alive(node):
+    return os.system(f"ping -c 1 {node['ip']}") == 0
+
+def poweroff(node):
+    if is_alive(node):
         print(f"Poweroff {node['hostname']}")
         os.system(f"ssh {user}@{node['ip']} poweroff")
+    else:
+        print(f"Node {node['hostname']} is already dead!")
 
 def wake(nodes):
-    for node in nodes:
-        print(f"Waking up {node['hostname']}")
-        os.system(f"wol {node['mac']}")
+    print(f"Waking up {node['hostname']}")
+    os.system(f"wol {node['mac']}")
 
 if __name__ == "__main__":
     os.chdir(f"./infra/pxe-server")
     os.system(f"docker-compose up -d --build")
 
-    poweroff(nodes)
+    for node in nodes:
+        poweroff(node)
+
     time.sleep(10)
-    wake(nodes)
+
+    for node in nodes:
+        wake(node)
