@@ -49,12 +49,17 @@ def wake(node):
     print(f"Waking up {node['name']}")
     os.system(f"wol {node['mac']}")
 
+def forget(node):
+    os.system(f"ssh-keygen -R {node['ip']}")
+    os.system(f"ssh-keygen -R {node['hostname']}")
+
 if __name__ == "__main__":
     os.chdir(f"./infra/pxe-server")
     os.system(f"docker-compose up -d --build")
 
     for node in nodes:
         poweroff(node)
+        forget(node)
 
     time.sleep(10)
 
