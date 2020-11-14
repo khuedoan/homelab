@@ -5,9 +5,9 @@ provider "rke" {
 resource rke_cluster "cluster" {
   dynamic "nodes" {
     for_each = [
-      "192.168.1.21",
-      "192.168.1.22",
-      "192.168.1.23"
+      "192.168.1.110",
+      "192.168.1.111",
+      "192.168.1.112"
     ]
     content {
       address = nodes.value
@@ -23,7 +23,7 @@ resource rke_cluster "cluster" {
 
   dynamic "nodes" {
     for_each = [
-      "192.168.1.17"
+      "192.168.1.113"
     ]
     content {
       address = nodes.value
