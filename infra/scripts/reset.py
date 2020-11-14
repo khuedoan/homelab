@@ -2,6 +2,7 @@
 
 import os
 import time
+import string
 
 user = "root"
 
@@ -38,6 +39,22 @@ def is_alive(node):
 def is_ready(node):
     return os.system(f"ssh -q -o StrictHostKeyChecking=no {user}@{node['ip']} exit") == 0
 
+def generate_network_config(node):
+    with open('./kickstart/config/00-00-00-00-00-00.ks.template', 'r') as template_file:
+        template = string.Template(template_file.read())
+        config = template.substitute({
+            'NETWORK_DEVICE': 'eno1',
+            'IP': node['ip'],
+            'GATEWAY': '192.168.1.0',
+            'NETMASK': '255.255.255.0',
+            'HOSTNAME': node['hostname'],
+            'NAMESERVER_1': '8.8.8.8',
+            'NAMESERVER_2': '8.8.4.4'
+        })
+
+    with open(f"./kickstart/config/{node['mac']}.ks", 'w') as config_file:
+        config_file.write(config)
+
 def poweroff(node):
     if is_alive(node):
         print(f"Poweroff {node['name']}")
@@ -54,6 +71,10 @@ def forget(node):
 
 if __name__ == "__main__":
     os.chdir(f"./infra/pxe-server")
+
+    for node in nodes:
+        generate_network_config(node)
+
     os.system(f"docker-compose up -d --build")
 
     for node in nodes:
