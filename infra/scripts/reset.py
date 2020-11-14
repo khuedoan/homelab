@@ -69,6 +69,16 @@ def forget(node):
     os.system(f"ssh-keygen -R {node['ip']}")
     os.system(f"ssh-keygen -R {node['hostname']}")
 
+# TODO need cleaner way to install Docker
+def install_docker(node):
+    os.system(f"ssh -q -o StrictHostKeyChecking=no {user}@{node['ip']} '\
+                  yum install -y yum-utils && \
+                  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
+                  yum install -y docker-ce docker-ce-cli containerd.io && \
+                  systemctl enable --now docker && \
+                  systemctl disable --now firewalld \
+              '")
+
 if __name__ == "__main__":
     os.chdir(f"./infra/pxe-server")
 
@@ -87,8 +97,10 @@ if __name__ == "__main__":
         wake(node)
 
     while not all(is_ready(node) for node in nodes):
-        os.system(f"docker-compose logs -t --tail={len(nodes)} nginx")
         print("Waiting for all servers to start up...")
         time.sleep(10)
+
+    for node in nodes:
+        install_docker(node)
 
     os.system(f"docker-compose down")
