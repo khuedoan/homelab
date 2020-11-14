@@ -45,11 +45,11 @@ def generate_network_config(node):
         config = template.substitute({
             'NETWORK_DEVICE': 'eno1',
             'IP': node['ip'],
-            'GATEWAY': '192.168.1.0',
+            'GATEWAY': '192.168.1.1',
             'NETMASK': '255.255.255.0',
             'HOSTNAME': node['hostname'],
-            'NAMESERVER_1': '8.8.8.8',
-            'NAMESERVER_2': '8.8.4.4'
+            'DNS1': '8.8.8.8',
+            'DNS2': '8.8.8.8'
         })
 
     with open(f"./kickstart/config/{node['mac'].replace(':', '-')}.ks", 'w') as config_file:
