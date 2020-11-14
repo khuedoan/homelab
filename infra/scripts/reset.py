@@ -52,7 +52,7 @@ def generate_network_config(node):
             'NAMESERVER_2': '8.8.4.4'
         })
 
-    with open(f"./kickstart/config/{node['mac']}.ks", 'w') as config_file:
+    with open(f"./kickstart/config/{node['mac'].replace(':', '-')}.ks", 'w') as config_file:
         config_file.write(config)
 
 def poweroff(node):
