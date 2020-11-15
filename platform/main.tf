@@ -1,6 +1,12 @@
 provider "rke" {
-    debug = true
+  debug = true
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "${path.root}/kube_config.yaml"
   }
+}
 
 resource rke_cluster "cluster" {
   dynamic "nodes" {
@@ -12,7 +18,7 @@ resource rke_cluster "cluster" {
     content {
       address = nodes.value
       user    = "root"
-      role    = [
+      role = [
         "controlplane",
         "etcd",
         "worker"
@@ -28,7 +34,7 @@ resource rke_cluster "cluster" {
     content {
       address = nodes.value
       user    = "root"
-      role    = [
+      role = [
         "worker"
       ]
       ssh_key = file("~/.ssh/id_rsa")
@@ -39,4 +45,27 @@ resource rke_cluster "cluster" {
 resource "local_file" "kube_config_yaml" {
   filename = "${path.root}/kube_config.yaml"
   content  = rke_cluster.cluster.kube_config_yaml
+}
+
+resource "helm_release" "metallb" {
+  name       = "metallb"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "metallb"
+  version    = "1.0.1"
+
+  namespace        = "metallb-system"
+  create_namespace = true
+
+  set {
+    name = "configInline"
+    value = yamlencode({
+      address-pools = {
+        name     = "default"
+        protocol = "layer2"
+        addresses = [
+          "192.168.1.150-192.168.1.180"
+        ]
+      }
+    })
+  }
 }
