@@ -58,14 +58,12 @@ resource "helm_release" "metallb" {
 
   set {
     name = "configInline"
-    value = yamlencode({
-      address-pools = {
-        name     = "default"
-        protocol = "layer2"
-        addresses = [
-          "192.168.1.150-192.168.1.180"
-        ]
-      }
-    })
+    value = <<EOT
+      address-pools:
+      - name: default
+        protocol: layer2
+        addresses:
+        - 192.168.1.150-192.168.1.180
+    EOT
   }
 }
