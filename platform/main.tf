@@ -67,3 +67,13 @@ resource "helm_release" "metallb" {
     EOT
   }
 }
+
+resource "helm_release" "prometheus" {
+  name       = "kube-prometheus-stack"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
+  version    = "11.1.2"
+
+  namespace        = "monitoring-system"
+  create_namespace = true
+}
