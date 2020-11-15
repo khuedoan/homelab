@@ -76,6 +76,16 @@ resource "helm_release" "metallb" {
   }
 }
 
+resource "helm_release" "nginx" {
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  version    = "3.10.1"
+
+  namespace        = "ingress-nginx"
+  create_namespace = true
+}
+
 resource "helm_release" "prometheus" {
   name       = "kube-prometheus-stack"
   repository = "https://prometheus-community.github.io/helm-charts"
