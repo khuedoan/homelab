@@ -2,6 +2,10 @@ provider "rke" {
   debug = true
 }
 
+provider "kubernetes" {
+  config_path = "${path.root}/kube_config.yaml"
+}
+
 provider "helm" {
   kubernetes {
     config_path = "${path.root}/kube_config.yaml"
@@ -39,6 +43,10 @@ resource rke_cluster "cluster" {
       ]
       ssh_key = file("~/.ssh/id_rsa")
     }
+  }
+
+  ingress {
+    provider = "none"
   }
 }
 
