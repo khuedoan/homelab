@@ -57,7 +57,7 @@ resource "helm_release" "metallb" {
   create_namespace = true
 
   set {
-    name = "configInline"
+    name  = "configInline"
     value = <<EOT
       address-pools:
       - name: default
