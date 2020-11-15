@@ -95,3 +95,24 @@ resource "helm_release" "prometheus" {
   namespace        = "monitoring-system"
   create_namespace = true
 }
+
+resource "kubernetes_ingress" "grafana_ingress" {
+  metadata {
+    name = "grafana-ingress"
+    namespace = helm_release.prometheus.namespace
+  }
+
+  spec {
+    rule {
+      host = "grafana.khuedoan.com"
+      http {
+        path {
+          backend {
+            service_name = "kube-prometheus-stack-grafana"
+            service_port = 80
+          }
+         }
+       }
+     }
+   }
+ }
