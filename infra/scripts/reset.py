@@ -69,12 +69,13 @@ def forget(node):
     os.system(f"ssh-keygen -R {node['ip']}")
     os.system(f"ssh-keygen -R {node['hostname']}")
 
-# TODO need cleaner way to install Docker
-def install_docker(node):
+# TODO provision nodes with Ansible
+def provision(node):
     os.system(f"ssh -q -o StrictHostKeyChecking=no {user}@{node['ip']} '\
                   yum install -y yum-utils && \
                   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
                   yum install -y docker-ce docker-ce-cli containerd.io && \
+                  yum install -y iscsi-initiator-utils && \
                   systemctl enable --now docker && \
                   systemctl disable --now firewalld \
               '")
@@ -101,6 +102,6 @@ if __name__ == "__main__":
         time.sleep(10)
 
     for node in nodes:
-        install_docker(node)
+        provision(node)
 
     os.system(f"docker-compose down")
