@@ -77,6 +77,7 @@ def provision(node):
                   yum install -y docker-ce docker-ce-cli containerd.io && \
                   yum install -y iscsi-initiator-utils && \
                   systemctl enable --now docker && \
+                  systemctl enable --now iscsid && \
                   systemctl disable --now firewalld \
               '")
 
