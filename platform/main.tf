@@ -108,7 +108,7 @@ resource "helm_release" "longhorn" {
 
 resource "kubernetes_ingress" "grafana_ingress" {
   metadata {
-    name = "grafana-ingress"
+    name      = "grafana-ingress"
     namespace = helm_release.prometheus.namespace
   }
 
@@ -121,11 +121,11 @@ resource "kubernetes_ingress" "grafana_ingress" {
             service_name = "kube-prometheus-stack-grafana"
             service_port = 80
           }
-         }
-       }
-     }
-   }
- }
+        }
+      }
+    }
+  }
+}
 
 resource "helm_release" "vault" {
   name       = "vault"
