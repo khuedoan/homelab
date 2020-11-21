@@ -1,5 +1,0 @@
----
-kolla_base_distro: "centos"
-kolla_internal_vip_address: "192.168.1.24"
-network_interface: "eno1"
-neutron_external_interface: "veth1"
