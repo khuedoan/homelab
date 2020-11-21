@@ -96,6 +96,16 @@ resource "helm_release" "prometheus" {
   create_namespace = true
 }
 
+resource "helm_release" "longhorn" {
+  name       = "longhorn"
+  repository = "https://charts.longhorn.io"
+  chart      = "longhorn"
+  version    = "1.0.2"
+
+  namespace        = "longhorn-system"
+  create_namespace = true
+}
+
 resource "kubernetes_ingress" "grafana_ingress" {
   metadata {
     name = "grafana-ingress"
