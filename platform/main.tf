@@ -116,27 +116,6 @@ resource "helm_release" "longhorn" {
   create_namespace = true
 }
 
-resource "kubernetes_ingress" "grafana_ingress" {
-  metadata {
-    name      = "grafana-ingress"
-    namespace = helm_release.prometheus.namespace
-  }
-
-  spec {
-    rule {
-      host = "grafana.khuedoan.com"
-      http {
-        path {
-          backend {
-            service_name = "kube-prometheus-stack-grafana"
-            service_port = 80
-          }
-        }
-      }
-    }
-  }
-}
-
 resource "helm_release" "vault" {
   name       = "vault"
   repository = "https://helm.releases.hashicorp.com"
