@@ -1,7 +1,3 @@
-locals {
-  domain = "khuedoan.com"
-}
-
 resource "kubernetes_ingress" "grafana_ingress" {
   metadata {
     name      = "grafana-ingress"
