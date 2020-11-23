@@ -1,3 +1,7 @@
+locals {
+  domain = "khuedoan.com"
+}
+
 resource "kubernetes_ingress" "grafana_ingress" {
   metadata {
     name      = "grafana-ingress"
@@ -6,11 +10,32 @@ resource "kubernetes_ingress" "grafana_ingress" {
 
   spec {
     rule {
-      host = "grafana.khuedoan.com"
+      host = "grafana.${local.domain}"
       http {
         path {
           backend {
             service_name = "kube-prometheus-stack-grafana"
+            service_port = 80
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_ingress" "longhorn" {
+  metadata {
+    name      = "longhorn-ingress"
+    namespace = helm_release.longhorn.namespace
+  }
+
+  spec {
+    rule {
+      host = "longhorn.${local.domain}"
+      http {
+        path {
+          backend {
+            service_name = "longhorn-frontend"
             service_port = 80
           }
         }
@@ -27,7 +52,7 @@ resource "kubernetes_ingress" "vault_ingress" {
 
   spec {
     rule {
-      host = "vault.khuedoan.com"
+      host = "vault.${local.domain}"
       http {
         path {
           backend {
