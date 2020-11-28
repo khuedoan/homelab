@@ -1,0 +1,2 @@
+env:
+  DRONE_SERVER_HOST: "drone.khuedoan.com"
