@@ -130,3 +130,17 @@ resource "helm_release" "vault" {
   namespace        = "vault"
   create_namespace = true
 }
+
+resource "helm_release" "gitea" {
+  name       = "gitea"
+  repository = "https://dl.gitea.io/charts/"
+  chart      = "gitea"
+  version    = "2.0.7"
+
+  namespace        = "gitea"
+  create_namespace = true
+
+  values = [
+    file("gitea-values.yaml")
+  ]
+}
