@@ -1,2 +1,12 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: drone.khuedoan.com
+      paths:
+        - "/"
 env:
+  DRONE_RPC_SECRET: "xxx"
   DRONE_SERVER_HOST: "drone.khuedoan.com"
+  DRONE_GITEA_CLIENT_ID: "xxx"
+  DRONE_GITEA_CLIENT_SECRET: "xxx"
+  DRONE_GITEA_SERVER: "http://git.khuedoan.com"
