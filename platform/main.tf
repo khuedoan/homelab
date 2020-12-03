@@ -144,3 +144,17 @@ resource "helm_release" "gitea" {
     file("gitea-values.yaml")
   ]
 }
+
+resource "helm_release" "drone" {
+  name       = "drone"
+  repository = "https://charts.drone.io"
+  chart      = "drone"
+  version    = "0.1.7"
+
+  namespace        = "drone"
+  create_namespace = true
+
+  values = [
+    file("drone-values.yaml")
+  ]
+}
