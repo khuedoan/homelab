@@ -1,3 +1,0 @@
-env:
-  DRONE_RPC_SECRET: "xxx"
-  DRONE_NAMESPACE_DEFAULT: drone

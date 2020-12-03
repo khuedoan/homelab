@@ -1,4 +1,0 @@
-ingress:
-  enabled: true
-  hosts:
-  - git.khuedoan.com
