@@ -3,8 +3,5 @@ target/
 
 *.log
 .terraform*
-Cargo.lock
-admin-openrc.sh
 kube_config.yaml
-passwords.yml
 terraform.tfstate*
