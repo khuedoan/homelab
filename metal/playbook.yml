@@ -1,0 +1,15 @@
+- name: Start PXE server on the controller
+  hosts: localhost
+  roles:
+    - { role: pxe, tag: pxe }
+
+- name: Wake all nodes up
+  hosts: homelab
+  gather_facts: no
+  roles:
+    - { role: wake, tag: wake }
+
+# - name: Shutdown all nodes
+#   hosts: homelab
+#   roles:
+#     - { role: shutdown, tag: shutdown }
