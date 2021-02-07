@@ -1,6 +1,3 @@
 [submodule "infra/pxe-server"]
 	path = infra/pxe-server
 	url = https://github.com/khuedoan/pxe-server
-[submodule "metal/roles/pxe-server/files/pxe-server"]
-	path = metal/roles/pxe-server/files/pxe-server
-	url = https://github.com/khuedoan/pxe-server

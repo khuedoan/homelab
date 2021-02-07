@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  dhcp:
+    build: ./dhcp
+    network_mode: host
+  tftp:
+    build: ./tftp
+    network_mode: host
+  http:
+    build: ./http
+    network_mode: host
