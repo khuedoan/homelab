@@ -1,0 +1,3 @@
+- name: Start PXE server
+  community.general.docker_compose:
+    project_src: "{{ role_path }}/files/pxe-servers"

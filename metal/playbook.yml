@@ -1,7 +1,7 @@
 - name: Start PXE server on the controller
-  hosts: localhost
+  hosts: controller
   roles:
-    - { role: pxe, tag: pxe }
+    - { role: pxe-server, tag: pxe-server }
 
 - name: Wake all nodes up
   hosts: homelab

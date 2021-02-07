@@ -1,3 +1,0 @@
-- name: Start PXE server
-  community.general.docker_compose:
-    project_src: /home/khuedoan/Documents/lab/homelab/infra/pxe-server
