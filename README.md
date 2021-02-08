@@ -10,6 +10,15 @@
   - SSD: 128GB
 - Switch TP-Link TL-SG108
 
+## Design
+
+| Layer | Name     | Description                                 | Provisioner         |
+|-------|----------|---------------------------------------------|---------------------|
+| 0     | metal    | bare metal PXE boot, etcd, docker, lxd,     | Ansible, PXE server |
+| 1     | infra    | Cloud-like infrastructure, based on KVM/LXC | Terraform           |
+| 2     | platform | kubernetes, vault, git, ci/cd...            | Helm                |
+| 3     | apps     | Plex, PeerTube, Nextcloud...                | ArgoCD              |
+
 ## Features
 
 ### Infrastructure
@@ -29,7 +38,3 @@
 ![Pastebin](https://img.shields.io/static/v1?logo=Pastebin&logoColor=white&label=&message=Pastebin&color=02456C)
 ![PeerTube](https://img.shields.io/static/v1?logo=PeerTube&logoColor=white&label=&message=PeerTube&color=F1680D)
 ![Plex](https://img.shields.io/static/v1?logo=Plex&logoColor=white&label=&message=Plex&color=E5A00D)
-
-## Notes
-
-- Node hostname must be different and has proper domain (for example `node0.homelab.local`)

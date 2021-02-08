@@ -1,3 +1,8 @@
 - name: Unconditionally shut down the machine with all defaults
   community.general.shutdown:
     delay: 0
+
+- name: Wait for the machine to shutdown
+  wait_for:
+    timeout: 30
+  delegate_to: localhost
