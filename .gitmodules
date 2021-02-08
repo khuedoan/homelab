@@ -1,3 +1,0 @@
-[submodule "infra/pxe-server"]
-	path = infra/pxe-server
-	url = https://github.com/khuedoan/pxe-server
