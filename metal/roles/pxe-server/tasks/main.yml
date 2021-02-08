@@ -1,3 +1,29 @@
-- name: Start PXE server
-  community.general.docker_compose:
-    project_src: "{{ role_path }}/files/pxe-servers"
+# - name: Start PXE server
+#   community.general.docker_compose:
+#     project_src: "{{ role_path }}/files/pxe-servers"
+
+- name: Render DHCP config
+  template:
+    src: "dhcp/dhcpd.conf.j2"
+    dest: "{{ role_path }}/files/dhcp/dhcpd.conf"
+
+- name: Render GRUB config
+  template:
+    src: "tftp/tftpboot/grub.cfg.j2"
+    dest: "{{ role_path }}/files/tftp/tftpboot/grub.cfg"
+
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ role_path }}/build/{{ item.path }}"
+    state: directory
+    mode: '{{ item.mode }}'
+  with_community.general.filetree: "{{ role_path }}/templates"
+  when: item.state == 'directory'
+
+- name: Template files (explicitly skip directories in order to use the 'src' attribute)
+  ansible.builtin.template:
+    src: '{{ item.src }}'
+    dest: "{{ role_path }}/build/{{ item.path }}"
+    mode: '{{ item.mode }}'
+  with_community.general.filetree: "{{ role_path }}/templates"
+  when: item.state == 'file'
