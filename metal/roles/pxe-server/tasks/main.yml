@@ -2,6 +2,11 @@
 #   community.general.docker_compose:
 #     project_src: "{{ role_path }}/files/pxe-servers"
 
+- name: Download ISO
+  get_url:
+    url: "{{ iso_url }}"
+    dest: "{{ role_path }}/files/images/"
+
 - name: Render environment file
   template:
     src: "{{ role_path }}/files/.env.j2"
