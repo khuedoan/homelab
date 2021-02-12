@@ -1,8 +1,10 @@
 - name: Create etcd container
   docker_container:
     name: etcd-tfstate
-    image: quay.io/coreos/etcd
-    exposed_ports:
-      - 2379
+    image: bitnami/etcd
+    env:
+      ALLOW_NONE_AUTHENTICATION: "yes"
+    published_ports:
+      - 2379:2379
     volumes:
-      - default.etcd
+      - /bitnami/etcd/data
