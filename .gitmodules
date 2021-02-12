@@ -1,3 +1,0 @@
-[submodule "metal/roles/pxe-server/files"]
-	path = metal/roles/pxe-server/files
-	url = https://github.com/khuedoan/pxe-server
