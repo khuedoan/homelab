@@ -1,13 +1,43 @@
-# - name: Start PXE server
-#   community.general.docker_compose:
-#     project_src: "{{ role_path }}/files/pxe-servers"
+- name: Create build directory
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ role_path }}/build"
+    - "{{ role_path }}/build/images"
+    - "{{ role_path }}/build/mnt"
 
 - name: Download ISO
   get_url:
     url: "{{ iso_url }}"
-    dest: "{{ role_path }}/files/images/"
+    dest: "{{ role_path }}/build/images/"
 
-- name: Render environment file
+- name: Copy configs
+  copy:
+    src: "{{ role_path }}/templates/"
+    dest: "{{ role_path }}/build"
+
+- name: Render DHCP config
   template:
-    src: "{{ role_path }}/files/.env.j2"
-    dest: "{{ role_path }}/files/.env"
+    src: dhcp/dhcpd.conf.j2
+    dest: "{{ role_path }}/build/dhcp/dhcpd.conf"
+
+- name: Render GRUB config
+  template:
+    src: tftp/tftpboot/grub.cfg.j2
+    dest: "{{ role_path }}/build/tftp/tftpboot/grub.cfg"
+
+- name: Render shared kickstart config
+  template:
+    src: http/kickstart/centos8.ks.j2
+    dest: "{{ role_path }}/build/http/kickstart/centos8.ks"
+
+- name: Render seperate network kickstart config for each node
+  template:
+    src: http/kickstart/network/network.ks.j2
+    dest: "{{ role_path }}/build/http/kickstart/network/{{ hostvars[item]['mac'] }}.ks"
+  loop: "{{ groups['metal'] }}"
+
+- name: Start PXE server
+  community.general.docker_compose:
+    project_src: "{{ role_path }}/files/pxe-servers"

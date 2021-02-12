@@ -1,5 +1,5 @@
 .venv/
-target/
+build/
 
 *.log
 .terraform*

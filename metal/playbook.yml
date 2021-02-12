@@ -4,13 +4,13 @@
     - { role: pxe-server, tag: pxe-server }
 
 - name: Shutdown all nodes
-  hosts: homelab
+  hosts: metal
   roles:
     - { role: shutdown, tag: shutdown }
   ignore_unreachable: yes
 
 - name: Wake all nodes up
-  hosts: homelab
+  hosts: metal
   gather_facts: no
   roles:
     - { role: wake, tag: wake }

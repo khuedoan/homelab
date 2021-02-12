@@ -1,0 +1,51 @@
+%pre --interpreter=/bin/sh
+mac=$(ip --brief link show dev {{ network_device }} | tr -s ' ' | cut -d ' ' -f 3 | sed 's/:/-/g')
+curl "http://{{ pxe_server }}/kickstart/network/$mac.ks" > /tmp/network.ks
+%end
+
+#version=RHEL8
+ignoredisk --only-use={{ disk }}
+autopart --type=lvm
+# Partition clearing information
+clearpart --all --initlabel --drives={{ disk }}
+# Do not use graphical install
+text
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+%include /tmp/network.ks
+repo --name="AppStream" --baseurl=http://{{ pxe_server }}/CentOS/AppStream
+# Use network installation
+url --url="http://{{ pxe_server }}/CentOS/"
+# Disable Setup Agent on first boot
+firstboot --disable
+# Do not configure the X Window System
+skipx
+# System services
+services --enabled="chronyd"
+# System timezone
+timezone Asia/Ho_Chi_Minh --isUtc
+
+# Add SSH key
+sshkey --username=root "{{ ssh_public_key }}"
+
+%packages
+@^minimal-environment
+kexec-tools
+
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb='auto'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
+reboot
