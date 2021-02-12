@@ -14,3 +14,8 @@
   gather_facts: no
   roles:
     - { role: wake, tag: wake }
+
+- name: Install etcd for Terraform state
+  hosts: etcd
+  roles:
+    - { role: etcd, tag: etcd }

@@ -1,0 +1,8 @@
+- name: Create etcd container
+  docker_container:
+    name: etcd-tfstate
+    image: quay.io/coreos/etcd
+    exposed_ports:
+      - 2379
+    volumes:
+      - default.etcd
