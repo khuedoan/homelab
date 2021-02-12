@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  dhcp:
+    build: ./dhcp
+    network_mode: host
+    environment:
+      - SUBNET
+      - NETMASK
+      - GATEWAY
+      - RANGE_START
+      - RANGE_END
+      - PXE_SERVER
+  tftp:
+    build: ./tftp
+    network_mode: host
+    environment:
+      - PXE_SERVER
+    volumes:
+      - ./mnt:/mnt
+  http:
+    build: ./http
+    network_mode: host
+    volumes:
+      - ./mnt:/usr/share/nginx/html/CentOS
+    environment:
+      NGINX_PORT: 80
