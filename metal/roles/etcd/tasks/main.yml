@@ -7,4 +7,4 @@
     published_ports:
       - 2379:2379
     volumes:
-      - /bitnami/etcd/data
+      - tfstate:/bitnami/etcd/data
