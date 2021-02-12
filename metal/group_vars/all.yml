@@ -1,4 +1,4 @@
-iso_url: "https://releases.ubuntu.com/20.04.2/ubuntu-20.04.2-live-server-amd64.iso"
+iso_url: "https://mirrors.nhanhoa.com/centos/8.3.2011/isos/x86_64/CentOS-8.3.2011-x86_64-dvd1.iso"
 
 subnet: "192.168.1.0"
 netmask: "255.255.255.0"
