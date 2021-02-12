@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  dhcp:
+    build: ./dhcp
+    network_mode: host
+  tftp:
+    build: ./tftp
+    network_mode: host
+    volumes:
+      - ./mnt/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
+      - ./mnt/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
+      - ./mnt/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
+  http:
+    build: ./http
+    network_mode: host
+    volumes:
+      - ./mnt:/usr/share/nginx/html/CentOS
+    environment:
+      NGINX_PORT: 80
