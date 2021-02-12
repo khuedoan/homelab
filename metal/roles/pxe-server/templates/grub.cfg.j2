@@ -1,0 +1,5 @@
+set timeout=5
+menuentry 'CentOS' {
+  linuxefi vmlinuz ip=dhcp inst.repo=http://$PXE_SERVER/CentOS ks=http://$PXE_SERVER/kickstart/centos8.ks
+  initrdefi initrd.img
+}
