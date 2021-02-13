@@ -24,7 +24,7 @@ provider "lxd" {
   lxd_remote {
     name     = "local"
     scheme   = "https"
-    address  = "192.168.64.4"
+    address  = "localhost"
     password = "1"
     default  = true
   }
