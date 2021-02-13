@@ -1,10 +1,8 @@
-resource "lxd_container" "k8s" {
-  count     = 1
-  name      = "k8s${count.index}"
-  image     = "ubuntu:20.04"
-  ephemeral = false
+resource "lxd_profile" "kubenode" {
+  name = "kubenode"
 
   config = {
+    "limits.cpu" = 2
     "security.privileged"  = true
     "security.nesting"     = true
     "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
@@ -19,27 +17,39 @@ resource "lxd_container" "k8s" {
       ssh_authorized_keys:
         - ${file("~/.ssh/id_rsa.pub")}
       disable_root: false
-      packages:
-        - apt-transport-https
-        - ca-certificates
-        - curl
-        - gnupg-agent
-        - software-properties-common
       runcmd:
-        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-        - add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        - apt-get update -y
-        - apt-get install -y docker-ce docker-ce-cli containerd.io
-        - mkdir -p /etc/systemd/system/docker.service.d/
-        - printf "[Service]\nMountFlags=shared" > /etc/systemd/system/docker.service.d/mount_flags.conf
-        - systemctl start docker
-        - systemctl enable docker
+        - apt-get install -y linux-generic
+        - curl -sfL https://get.k3s.io | sh -
     EOT
   }
 
-  limits = {
-    cpu = 2
+  device {
+    name = "eth0"
+    type = "nic"
+
+    properties = {
+      network = "lxdbr0"
+    }
   }
+
+  device {
+    type = "disk"
+    name = "root"
+
+    properties = {
+      pool = "default"
+      path = "/"
+    }
+  }
+}
+
+resource "lxd_container" "k8s" {
+  count     = 1
+  name      = "k8s${count.index}"
+  image     = "ubuntu:18.04"
+  ephemeral = false
+
+  profiles = [lxd_profile.kubenode.name]
 }
 
 resource "time_sleep" "wait_cloud_init" {
