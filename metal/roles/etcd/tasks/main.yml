@@ -2,6 +2,7 @@
   docker_container:
     name: etcd-tfstate
     image: bitnami/etcd
+    restart_policy: always
     env:
       ALLOW_NONE_AUTHENTICATION: "yes"
     published_ports:
