@@ -5,11 +5,18 @@ resource "lxd_container" "k8s" {
   ephemeral = false
 
   config = {
-    "security.privileged"  = true
-    "security.nesting"     = true
-    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
-    "raw.lxc"              = "lxc.apparmor.profile=unconfined\nlxc.cap.drop= \nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw sys:rw cgroup:rw"
-    "user.user-data"       = <<-EOT
+    security.privileged  = true
+    security.nesting     = true
+    limits.memory.swap   = false
+    limits.cpus          = 1
+    linux.kernel_modules = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
+    raw.lxc       = <<-EOT
+      lxc.apparmor.profile=unconfined
+      lxc.cap.drop=
+      lxc.cgroup.devices.allow=a
+      lxc.mount.auto=proc:rw sys:rw
+    EOT
+    user.user-data       = <<-EOT
       #cloud-config
       ssh_authorized_keys:
         - ${file("~/.ssh/id_rsa.pub")}
