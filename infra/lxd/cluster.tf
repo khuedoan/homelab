@@ -18,8 +18,14 @@ resource "lxd_profile" "kubenode" {
         - ${file("~/.ssh/id_rsa.pub")}
       disable_root: false
       runcmd:
-        - apt-get install -y linux-generic
-        - curl -sfL https://get.k3s.io | sh -
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+        - add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - apt-get update -y
+        - apt-get install -y docker-ce docker-ce-cli containerd.io linux-generic
+        - mkdir -p /etc/systemd/system/docker.service.d/
+        - printf "[Service]\nMountFlags=shared" > /etc/systemd/system/docker.service.d/mount_flags.conf
+        - systemctl start docker
+        - systemctl enable docker
     EOT
   }
 
@@ -46,7 +52,7 @@ resource "lxd_profile" "kubenode" {
 resource "lxd_container" "k8s" {
   count     = 1
   name      = "k8s${count.index}"
-  image     = "ubuntu:18.04"
+  image     = "ubuntu:20.04"
   ephemeral = false
 
   profiles = [lxd_profile.kubenode.name]
@@ -55,7 +61,7 @@ resource "lxd_container" "k8s" {
 resource "time_sleep" "wait_cloud_init" {
   depends_on = [lxd_container.k8s]
 
-  create_duration = "240s"
+  create_duration = "5m"
 }
 
 resource "rke_cluster" "cluster" {
