@@ -67,7 +67,7 @@ resource "lxd_profile" "kubenode" {
     name = "root"
 
     properties = {
-      pool = "local"
+      pool = "default"
       path = "/"
     }
   }
