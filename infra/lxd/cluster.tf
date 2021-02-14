@@ -6,7 +6,7 @@ resource "lxd_profile" "kubenode" {
     "limits.memory.swap" = false
     "security.privileged"  = true
     "security.nesting"     = true
-    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
+    "linux.kernel_modules" = "ip_tables,ip6_tables,netlink_diag,nf_nat,overlay,br_netfilter"
     "raw.lxc"       = <<-EOT
       lxc.apparmor.profile=unconfined
       lxc.cap.drop=
@@ -29,6 +29,17 @@ resource "lxd_profile" "kubenode" {
         - systemctl start docker
         - systemctl enable docker
     EOT
+  }
+
+  # echo "262144" > /sys/module/nf_conntrack/parameters/hashsize
+  device {
+    type = "disk"
+    name = "hashsize"
+
+    properties = {
+      source = "/sys/module/nf_conntrack/parameters/hashsize"
+      path = "/sys/module/nf_conntrack/parameters/hashsize"
+    }
   }
 
   device {
