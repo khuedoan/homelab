@@ -58,7 +58,7 @@ resource "lxd_profile" "kubenode" {
     type = "nic"
 
     properties = {
-      network = "lxdbr0"
+      network = "lxdfan0"
     }
   }
 
@@ -67,7 +67,7 @@ resource "lxd_profile" "kubenode" {
     name = "root"
 
     properties = {
-      pool = "default"
+      pool = "local"
       path = "/"
     }
   }

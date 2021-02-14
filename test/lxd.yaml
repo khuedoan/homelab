@@ -13,8 +13,8 @@ storage_pools:
 - config:
     size: 50GB
   description: ""
-  name: default
-  driver: zfs
+  name: local
+  driver: btrfs
 profiles:
 - config: {}
   description: ""
