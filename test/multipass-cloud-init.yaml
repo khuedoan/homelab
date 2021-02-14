@@ -1,15 +1,10 @@
 #cloud-config
 
 runcmd:
-  - snap install --classic kubectl terraform
-  - snap install lxd terraform
-  - snap install kubectl --classic
-  - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  - apt-get update
+  - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
   - apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-  - apt install terraform
-  - sudo apt-get update
-  - sudo apt-get install -y apt-transport-https
-  - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-  - echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-  - sudo apt-get update
-  - sudo apt-get install -y kubectl
+  - curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+  - apt-add-repository "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+  - apt-get update
+  - apt-get install -y kubectl terraform
