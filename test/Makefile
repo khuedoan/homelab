@@ -10,3 +10,7 @@ run:
 		--name homelab \
 		release:20.10
 	multipass shell homelab
+
+clean:
+	multipass delete homelab
+	multipass purge
