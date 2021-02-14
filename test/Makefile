@@ -1,16 +1,21 @@
 .POSIX:
 
+NAME = homelab
+
 run:
-	multipass list | grep homelab \
+	multipass list | grep $(NAME) \
 	|| multipass launch \
 		--cpus 4 \
 		--mem 8G \
 		--disk 64G \
 		--cloud-init ./multipass-cloud-init.yaml \
-		--name homelab \
+		--name $(NAME) \
 		release:20.10
-	multipass shell homelab
+	multipass shell $(NAME)
+
+stop:
+	multipass stop $(NAME)
 
 clean:
-	multipass delete homelab
+	multipass delete $(NAME)
 	multipass purge
