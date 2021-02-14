@@ -1,0 +1,7 @@
+#cloud-config
+
+runcmd:
+  - snap install --classic kubectl terraform
+  - snap install lxd terraform
+  - snap install kubectl --classic
+  - snap install terraform --classic
