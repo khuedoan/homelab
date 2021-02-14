@@ -4,9 +4,10 @@ resource "lxd_profile" "kubenode" {
   config = {
     "limits.cpu" = 2
     "limits.memory.swap" = false
-    "security.privileged"  = true
+    "user.access_interface" = "eth0"
     "security.nesting"     = true
-    "linux.kernel_modules" = "ip_tables,ip6_tables,netlink_diag,nf_nat,overlay,br_netfilter"
+    "security.privileged"  = true
+    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
     "raw.lxc"       = <<-EOT
       lxc.apparmor.profile=unconfined
       lxc.cap.drop=
@@ -16,7 +17,7 @@ resource "lxd_profile" "kubenode" {
     "user.user-data"       = <<-EOT
       #cloud-config
       ssh_authorized_keys:
-        - ${file("~/.ssh/id_rsa.pub")}
+        - ${file(var.ssh_public_key)}
       disable_root: false
       runcmd:
         - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -72,9 +73,18 @@ resource "lxd_profile" "kubenode" {
   }
 }
 
-resource "lxd_container" "k8s" {
+resource "lxd_container" "masters" {
   count     = 1
-  name      = "k8s${count.index}"
+  name      = "master-${count.index}"
+  image     = "ubuntu:20.04"
+  ephemeral = false
+
+  profiles = [lxd_profile.kubenode.name]
+}
+
+resource "lxd_container" "workers" {
+  count     = 1
+  name      = "worker-${count.index}"
   image     = "ubuntu:20.04"
   ephemeral = false
 
@@ -82,24 +92,39 @@ resource "lxd_container" "k8s" {
 }
 
 resource "time_sleep" "wait_cloud_init" {
-  depends_on = [lxd_container.k8s]
+  depends_on = [
+    lxd_container.masters,
+    lxd_container.workers
+  ]
 
   create_duration = "5m"
 }
 
 resource "rke_cluster" "cluster" {
   dynamic "nodes" {
-    for_each = lxd_container.k8s
+    for_each = lxd_container.masters
 
     content {
       address = nodes.value.ip_address
       user    = "root"
       role = [
         "controlplane",
-        "etcd",
+        "etcd"
+      ]
+      ssh_key = file(var.ssh_private_key)
+    }
+  }
+
+  dynamic "nodes" {
+    for_each = lxd_container.workers
+
+    content {
+      address = nodes.value.ip_address
+      user    = "root"
+      role = [
         "worker"
       ]
-      ssh_key = file("~/.ssh/id_rsa")
+      ssh_key = file(var.ssh_private_key)
     }
   }
 
