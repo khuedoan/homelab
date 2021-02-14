@@ -13,7 +13,7 @@ storage_pools:
 - config:
     size: 50GB
   description: ""
-  name: local
+  name: default
   # TODO use btrfs in k8s 1.19.8 https://github.com/kubernetes/kubernetes/issues/94335
   driver: lvm
 profiles:
@@ -26,7 +26,7 @@ profiles:
       type: nic
     root:
       path: /
-      pool: local
+      pool: default
       type: disk
   name: default
 cluster:
