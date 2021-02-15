@@ -1,6 +1,8 @@
 # Khue's homelab
 
-<span style="color:red">**WORK IN PROGRESS**</span>
+```diff
+- WORK IN PROGRESS
+```
 
 ## Hardware
 
