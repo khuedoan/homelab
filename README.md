@@ -1,7 +1,7 @@
 # Khue's homelab
 
 ```diff
-- WORK IN PROGRESS
+! WORK IN PROGRESS
 ```
 
 ## Hardware
