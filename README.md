@@ -1,6 +1,6 @@
-# Khue's Home Lab
+# Khue's homelab
 
-Work in progress
+<span style="color:red">**WORK IN PROGRESS**</span>
 
 ## Hardware
 
@@ -14,9 +14,50 @@ Work in progress
 
 ## Architecture
 
-| Layer | Name                   | Description                                 | Provisioner         |
-|-------|------------------------|---------------------------------------------|---------------------|
-| 0     | [metal](./metal)       | Bare metal OS installation, Docker, tfstate | Ansible, PXE server |
-| 1     | [infra](./infra)       | Kubernetes cluster                          | Terraform           |
-| 2     | [platform](./platform) | Vault, Git, Argo,...                        | Helm                |
-| 3     | [apps](./apps)         |                                             | ArgoCD              |
+| Layer | Name                   | Description                                                  | Provisioner         |
+|-------|------------------------|--------------------------------------------------------------|---------------------|
+| 0     | [metal](./metal)       | Bare metal OS installation, LXD, Terraform state backend,... | Ansible, PXE server |
+| 1     | [infra](./infra)       | Kubernetes clusters                                          | Terraform           |
+| 2     | [platform](./platform) | Vault, Git, Argo,...                                         | Helm                |
+| 3     | [apps](./apps)         |                                                              | Argo                |
+
+## Usage
+
+### Prerequisite
+
+For the controller (to run Ansible, stateless PXE server, Terraform...):
+
+- SSH keys in `~/.ssh/{id_rsa,id_rsa.pub}`
+- `make`
+- `python3`
+- Docker with `host` networking driver (which means [only Docker on Linux hosts](https://docs.docker.com/network/host/))
+- `terraform` (0.14.x)
+- `multipass` (optional, to create a [test environment](./test) locally)
+
+For bare metal nodes:
+
+- PXE IPv4 enabled
+- Wake-on-LAN enabled
+- Secure boot disabled (optional, depending on the OS)
+
+### Configurations
+
+- [Bare metal nodes settings](./metal/hosts.ini) (IP, MAC...)
+- [OS settings](./metal/group_vars/all.yml) (PXE, network...)
+
+### Building
+
+Simply run:
+
+```sh
+make
+```
+
+Or we can build each layer individually:
+
+```sh
+make infra
+# or
+cd infra
+make
+```
