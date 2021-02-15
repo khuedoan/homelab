@@ -1,4 +1,4 @@
-- name: Install etcd for Terraform state
-  hosts: etcd
+- name: LXD
+  hosts: metal
   roles:
-    - { role: ../metal/roles/etcd, tag: etcd }
+    - { role: ../metal/roles/lxd, tag: lxd }

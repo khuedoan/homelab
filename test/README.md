@@ -1,8 +1,6 @@
 # Test
 
-This will create a virtual machine on your laptop to emulate layer 0 (metal), you can run anything from layer 1 and up.
-
-Requires `multipass`
+Create a test environment in a Multipass VM (requires `multipass`)
 
 ```sh
 make
