@@ -1,6 +1,6 @@
 .POSIX:
 
-all: metal infra platform apps
+all: metal infra apps
 
 .PHONY: metal
 metal:
@@ -9,10 +9,6 @@ metal:
 .PHONY: infra
 infra:
 	make -C infra
-
-.PHONY: platform
-platform:
-	make -C platform
 
 .PHONY: apps
 apps:
