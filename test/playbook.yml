@@ -1,0 +1,4 @@
+- name: Install etcd for Terraform state
+  hosts: etcd
+  roles:
+    - { role: ../metal/roles/etcd, tag: etcd }
