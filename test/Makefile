@@ -1,19 +1,21 @@
 .POSIX:
 
-NAME = homelab
+NAME = metal
 
 default: init metal infra
 
 init:
-	multipass list | grep $(NAME) \
+	for count in 0 1; do \
+		multipass list | grep $(NAME)$$count \
 		|| multipass launch \
-		--cpus 4 \
-		--mem 8G \
-		--disk 64G \
-		--cloud-init ./multipass-cloud-init.yaml \
-		--name $(NAME) \
-		release:20.10
-	multipass exec homelab -- sed -i "$$ a\$(shell cat ~/.ssh/id_rsa.pub)" /home/ubuntu/.ssh/authorized_keys
+			--cpus 2 \
+			--mem 4G \
+			--disk 64G \
+			--cloud-init ./multipass-cloud-init.yaml \
+			--name $(NAME)$$count \
+			release:20.10; \
+		multipass exec $(NAME)$$count -- sed -i "$$ a\$(shell cat ~/.ssh/id_rsa.pub)" /home/ubuntu/.ssh/authorized_keys; \
+	done
 
 shell:
 	multipass shell $(NAME)
@@ -32,5 +34,7 @@ stop:
 	multipass stop $(NAME)
 
 clean:
-	multipass delete $(NAME)
+	for count in 0 1; do \
+		multipass delete $(NAME)$$count; \
+	done
 	multipass purge
