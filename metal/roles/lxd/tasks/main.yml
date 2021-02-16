@@ -3,5 +3,6 @@
     name: lxd
 
 - name: Init LXD
-  shell:
-    cmd: echo "{{ lookup('template', 'preseed.yaml.j2') }}" | lxd init --preseed
+  command:
+    cmd: lxd init --preseed
+    stdin: "{{ lookup('template', 'preseed.yaml.j2') }}" 
