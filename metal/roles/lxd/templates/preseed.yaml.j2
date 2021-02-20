@@ -1,5 +1,5 @@
 config:
-  core.https_address: 192.168.64.5:8443
+  core.https_address: {{ ansible_default_ipv4.address }}:8443
   core.trust_password: "1"
 networks:
 - config:
