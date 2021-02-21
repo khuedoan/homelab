@@ -1,6 +1,6 @@
 # Test
 
-Create a test environment in a Multipass VM (requires `multipass`)
+Create a quick and dirty local test environment (requires `vagrant`)
 
 ```sh
 make
