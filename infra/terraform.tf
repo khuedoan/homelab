@@ -1,8 +1,9 @@
 terraform {
-  backend "etcdv3" {
-    endpoints = ["localhost:2379"]
-    lock      = true
-  }
+  # TODO remote backend (etcd or minio)
+  # backend "etcdv3" {
+  #   endpoints = ["localhost:2379"]
+  #   lock      = true
+  # }
 
   required_providers {
     lxd = {
