@@ -33,7 +33,7 @@ For the controller (to run Ansible, stateless PXE server, Terraform...):
 - `python3`
 - Docker with `host` networking driver (which means [only Docker on Linux hosts](https://docs.docker.com/network/host/))
 - `terraform` (0.14.x)
-- `multipass` (optional, to create a [test environment](./test) locally)
+- `vagrant` (optional, to create a local [test environment](./test))
 
 For bare metal nodes:
 
