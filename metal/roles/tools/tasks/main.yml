@@ -1,0 +1,4 @@
+- name: Install admin tools
+  apt:
+    name:
+      - neovim
