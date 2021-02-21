@@ -1,0 +1,5 @@
+ETCDV3_USERNAME={{ etcd_username }}
+ETCDV3_PASSWORD={{ etcd_password }}
+
+LXD_ADDR={{ hostvars[groups['metal'][0]]['ansible_host'] }}
+LXD_PASSWORD= {{ lxd_password }}
