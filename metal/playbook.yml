@@ -19,5 +19,4 @@
   hosts: metal
   roles:
     - tools
-    - snap
     - lxd
