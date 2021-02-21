@@ -20,14 +20,6 @@ terraform {
 provider "lxd" {
   generate_client_certificates = true
   accept_remote_certificate    = true
-
-  lxd_remote {
-    name     = "local"
-    scheme   = "https"
-    address  = "localhost"
-    password = "1"
-    default  = true
-  }
 }
 
 provider "rke" {

@@ -1,0 +1,18 @@
+- name: Add remote
+  command:
+    argv:
+      - lxc
+      - remote
+      - add
+      - vagrant
+      - "{{ hostvars[groups['metal'][0]]['ansible_host'] }}"
+      - --accept-certificate
+      - --password
+      - 1
+- name: Change default remote
+  command:
+    argv:
+      - lxc
+      - remote
+      - switch
+      - vagrant
