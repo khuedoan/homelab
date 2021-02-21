@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/buster64"
+  config.vm.box = "ubuntu/focal64"
 
   (0..1).each do |i|
     config.vm.define "metal#{i}" do |metal|
@@ -12,11 +12,10 @@ Vagrant.configure("2") do |config|
     vb.memory = "4096"
   end
 
-  config.vbguest.auto_update = false
-
   config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "/tmp/id_rsa.pub"
 
   config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
     mkdir /root/.ssh
     cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys
   SHELL
