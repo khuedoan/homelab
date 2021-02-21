@@ -2,7 +2,14 @@
   snap:
     name: lxd
 
-- name: Init LXD
+- name: Init LXD on leader node
   command:
-    cmd: lxd init --preseed
-    stdin: "{{ lookup('template', 'preseed.yaml.j2') }}" 
+    cmd: /snap/bin/lxd init --preseed
+    stdin: "{{ lookup('template', 'leader.yaml.j2') }}" 
+  when: inventory_hostname == groups['metal'][0]
+
+- name: Init LXD on member nodes
+  command:
+    cmd: /snap/bin/lxd init --preseed
+    stdin: "{{ lookup('template', 'member.yaml.j2') }}" 
+  when: inventory_hostname != groups['metal'][0]
