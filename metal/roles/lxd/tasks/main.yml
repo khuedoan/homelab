@@ -8,6 +8,13 @@
     stdin: "{{ lookup('template', 'leader.yaml.j2') }}" 
   when: inventory_hostname == groups['metal'][0]
 
+- name: Get LXD server certificate
+  slurp:
+    # TODO change to /var/lib/lxd/server.crt after https://wiki.debian.org/LXD
+    src: /var/snap/lxd/common/lxd/server.crt
+  register: server_cert
+  when: inventory_hostname == groups['metal'][0]
+
 - name: Init LXD on member nodes
   command:
     cmd: /snap/bin/lxd init --preseed

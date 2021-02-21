@@ -1,0 +1,8 @@
+cluster:
+  server_name: {{ inventory_hostname }}
+  enabled: true
+  cluster_address: {{ hostvars[groups['metal'][0]]['ansible_host'] }}:8443
+  cluster_certificate: |
+    {{ hostvars[groups['metal'][0]]['server_cert']['content'] | b64decode | indent(width=4) }}
+  server_address: {{ hostvars[inventory_hostname]['ansible_host'] }}:8443
+  cluster_password: "1"
