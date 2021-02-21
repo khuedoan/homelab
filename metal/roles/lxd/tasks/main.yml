@@ -6,6 +6,7 @@
   command:
     cmd: /snap/bin/lxd init --preseed
     stdin: "{{ lookup('template', 'leader.yaml.j2') }}" 
+    creates: /var/snap/lxd/common/lxd/server.crt
   when: inventory_hostname == groups['metal'][0]
 
 - name: Get LXD server certificate
@@ -19,4 +20,5 @@
   command:
     cmd: /snap/bin/lxd init --preseed
     stdin: "{{ lookup('template', 'member.yaml.j2') }}" 
+    creates: /var/snap/lxd/common/lxd/server.crt
   when: inventory_hostname != groups['metal'][0]
