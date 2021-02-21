@@ -1,7 +1,0 @@
-- name: Install snap
-  apt:
-    name: snapd
-
-- name: Get the latest snapd
-  snap:
-    name: core
