@@ -20,3 +20,5 @@ stop:
 
 clean:
 	vagrant destroy -f
+
+reset: clean default
