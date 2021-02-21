@@ -1,4 +1,5 @@
-- name: LXD
+- name: Provision
   hosts: metal
   roles:
+    - { role: ../metal/roles/snap, tag: snap }
     - { role: ../metal/roles/lxd, tag: lxd }
