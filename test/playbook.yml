@@ -4,3 +4,8 @@
     - tools
     - lxd
     - tfstate
+
+- name: Generate LXD client config
+  hosts: controller
+  roles:
+    - lxc-config
