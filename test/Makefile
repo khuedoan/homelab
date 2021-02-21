@@ -1,9 +1,12 @@
 .POSIX:
 
-default: init metal infra
+default: init snapshot metal infra
 
 init:
 	vagrant up
+
+snapshot:
+	vagrant snapshot save init
 
 metal:
 	python3 -m venv .venv \
@@ -17,6 +20,9 @@ infra:
 
 stop:
 	vagrant halt
+
+restore:
+	vagrant snapshot restore init
 
 clean:
 	vagrant destroy -f
