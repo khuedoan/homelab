@@ -15,7 +15,8 @@
   roles:
     - { role: wake, tag: wake }
 
-- name: Install etcd for Terraform state
-  hosts: etcd
+- name: Provision
+  hosts: metal
   roles:
-    - { role: etcd, tag: etcd }
+    - { role: snap, tag: snap }
+    - { role: lxd, tag: lxd }
