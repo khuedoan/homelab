@@ -1,5 +1,7 @@
 - name: Provision
   hosts: metal
   roles:
-    - { role: snap, tag: snap }
-    - { role: lxd, tag: lxd }
+    - tools
+    # - snap
+    # - lxd
+    - tfstate

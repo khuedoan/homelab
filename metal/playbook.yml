@@ -1,22 +1,23 @@
 - name: Start PXE server on the controller
   hosts: controller
   roles:
-    - { role: pxe-server, tag: pxe-server }
+    - pxe
 
 - name: Shutdown all nodes
   hosts: metal
   roles:
-    - { role: shutdown, tag: shutdown }
+    - shutdown
   ignore_unreachable: yes
 
 - name: Wake all nodes up
   hosts: metal
   gather_facts: no
   roles:
-    - { role: wake, tag: wake }
+    - wake
 
 - name: Provision
   hosts: metal
   roles:
-    - { role: snap, tag: snap }
-    - { role: lxd, tag: lxd }
+    - tools
+    - snap
+    - lxd
