@@ -62,3 +62,12 @@ make infra
 cd infra
 make
 ```
+
+## Acknowledgements
+
+- [Fix `nf_conntrack` hash size fix for Kubernetes on LXD](https://github.com/corneliusweig/kubernetes-lxd/issues/10#issuecomment-615950053)
+- [Humble project](https://github.com/locmai/humble)
+- [Kubernetes on LXD issue with BTRFS](https://medium.com/@ernstae/kubenetes-on-lxd-with-rancher-2-0-part-one-and-a-half-94e6e03f4f2e)
+- [LXD container profile for Kubernetes](https://github.com/justmeandopensource/kubernetes/blob/master/lxd-provisioning/k8s-profile-config)
+- [Minio Ansible role](https://github.com/atosatto/ansible-minio)
+- [Some device mount for Kubernetes on LXD](https://github.com/atosatto/ansible-minio)
