@@ -24,5 +24,4 @@
 - name: Provision
   hosts: metal
   roles:
-    - tools
     - lxd
