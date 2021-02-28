@@ -1,5 +1,11 @@
 - name: Start PXE server on the controller
   hosts: controller
+  vars_prompt:
+    - name: username
+      prompt: Enter username for metal nodes
+      private: no
+    - name: password
+      prompt: Enter password for metal nodes
   roles:
     - pxe-server
 
