@@ -1,7 +1,7 @@
 - name: Start PXE server on the controller
   hosts: controller
   roles:
-    - pxe
+    - pxe-server
 
 - name: Shutdown all nodes
   hosts: metal
