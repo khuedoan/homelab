@@ -1,7 +1,7 @@
 - name: Provision
   hosts: metal
   roles:
-    - tools
+    - snap
     - lxd
 
 - name: Generate LXD client config

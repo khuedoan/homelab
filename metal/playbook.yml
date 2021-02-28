@@ -24,4 +24,5 @@
 - name: Provision
   hosts: metal
   roles:
+    - snap
     - lxd
