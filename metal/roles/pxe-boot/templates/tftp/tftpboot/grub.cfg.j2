@@ -1,5 +1,5 @@
 set timeout=5
 menuentry 'CentOS' {
-linuxefi vmlinuz ip=dhcp inst.repo=http://{{ pxe_server }}/CentOS ks=http://{{ pxe_server }}/kickstart/centos8.ks
+linuxefi vmlinuz ip=dhcp inst.repo=http://{{ ansible_default_ipv4.address }}/CentOS ks=http://{{ ansible_default_ipv4.address }}/kickstart/centos8.ks
   initrdefi initrd.img
 }
