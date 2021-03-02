@@ -12,11 +12,11 @@
     - "{{ role_path }}/build/images"
     - "{{ role_path }}/build/mnt"
 
-# - name: Download ISO
-#   get_url:
-#     url: "{{ iso_url }}"
-#     dest: "{{ role_path }}/build/images/centos8.iso"
-#   delegate_to: localhost
+- name: Download ISO
+  get_url:
+    url: "{{ iso_url }}"
+    dest: "{{ role_path }}/build/images/centos8.iso"
+  delegate_to: localhost
 
 - name: Mount the ISO
   mount:
