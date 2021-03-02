@@ -1,5 +1,6 @@
-- name: Start PXE server on the controller
-  hosts: controller
+- name: Install OS on bare-metal machines
+  hosts: all
+  gather_facts: no
   vars_prompt:
     - name: username
       prompt: Enter username for metal nodes
@@ -7,22 +8,13 @@
     - name: password
       prompt: Enter password for metal nodes
   roles:
-    - pxe-server
-
-- name: Shutdown all nodes
-  hosts: metal
-  roles:
-    - shutdown
-  ignore_unreachable: yes
-
-- name: Wake all nodes up
-  hosts: metal
-  gather_facts: no
-  roles:
-    - wake
+    - pxe-boot
 
 - name: Provision
-  hosts: metal
+  hosts: all
+  vars_prompt:
+    - name: lxd_password
+      prompt: Enter password for LXD server
   roles:
     - snap
     - lxd
