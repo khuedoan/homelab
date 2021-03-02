@@ -4,7 +4,7 @@ config:
 networks:
 - config:
     bridge.mode: fan
-    fan.underlay_subnet: {{ hostvars[inventory_hostname]['lxd_subnet'] }}
+    fan.underlay_subnet: {{ (ansible_default_ipv4.network + "/" + ansible_default_ipv4.netmask) | ansible.netcommon.ipaddr('net') }}
   description: ""
   name: lxdfan0
   type: ""
