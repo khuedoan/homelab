@@ -1,6 +1,14 @@
+# TODO Optimize SELinux
 - name: Disable SELinux
   selinux:
     state: disabled
+
+# TODO Optimize firewall
+- name: Disable firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
 
 - name: Install LXD
   snap:
