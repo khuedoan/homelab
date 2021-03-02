@@ -7,10 +7,10 @@
     - "{{ role_path }}/build/images"
     - "{{ role_path }}/build/mnt"
 
-- name: Download ISO
-  get_url:
-    url: "{{ iso_url }}"
-    dest: "{{ role_path }}/build/images/centos8.iso"
+# - name: Download ISO
+#   get_url:
+#     url: "{{ iso_url }}"
+#     dest: "{{ role_path }}/build/images/centos8.iso"
 
 - name: Mount the ISO
   mount:
@@ -52,3 +52,21 @@
     project_src: "{{ role_path }}/build"
     build: yes
   delegate_to: localhost
+
+- name: Unconditionally shut down the machine with all defaults
+  community.general.shutdown:
+    delay: 0
+
+- name: Wait for the machine to shutdown
+  wait_for:
+    timeout: 30
+  delegate_to: localhost
+
+- name: Send magic Wake-on-LAN packet
+  community.general.wakeonlan:
+    mac: "{{ hostvars[inventory_hostname]['mac'] }}"
+  delegate_to: localhost
+
+- name: Wait for the servers to comes up
+  wait_for_connection:
+    timeout: 600

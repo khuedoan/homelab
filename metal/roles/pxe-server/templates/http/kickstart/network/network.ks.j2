@@ -1,2 +1,0 @@
-network --bootproto=static --device={{ network_device }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ gateway }} --nameserver={{ dns }} --netmask={{ netmask }} --ipv6=auto --activate
-network --hostname={{  hostvars[item]['inventory_hostname'] }}

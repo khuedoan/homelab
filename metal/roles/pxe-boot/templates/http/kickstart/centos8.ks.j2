@@ -1,5 +1,5 @@
 %pre --interpreter=/bin/sh
-mac=$(ip --brief link show dev {{ network_device }} | tr -s ' ' | cut -d ' ' -f 3 | sed 's/:/-/g')
+mac=$(ip --brief link show dev {{ network_interface }} | tr -s ' ' | cut -d ' ' -f 3 | sed 's/:/-/g')
 curl "http://{{ pxe_server }}/kickstart/network/$mac.ks" > /tmp/network.ks
 %end
 
