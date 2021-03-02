@@ -1,5 +1,6 @@
 - name: Install OS on empty nodes
-  hosts: controller
+  hosts: all
+  gather_facts: no
   vars_prompt:
     - name: username
       prompt: Enter username for metal nodes
