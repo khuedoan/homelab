@@ -2,10 +2,10 @@
   hosts: all
   gather_facts: no
   vars_prompt:
-    - name: username
+    - name: os_username
       prompt: Enter username for metal nodes
       private: no
-    - name: password
+    - name: os_password
       prompt: Enter password for metal nodes
   roles:
     - pxe-boot
@@ -18,3 +18,5 @@
   roles:
     - snap
     - lxd
+  tags:
+    - provision

@@ -30,7 +30,7 @@ services --enabled="chronyd"
 timezone Asia/Ho_Chi_Minh --isUtc
 
 # Create user
-user --groups=wheel --name={{ username }} --password={{ password }}
+user --groups=wheel --name={{ os_username }} --password={{ os_password }}
 # Add SSH key
 sshkey --username=root "{{ ssh_public_key }}"
 

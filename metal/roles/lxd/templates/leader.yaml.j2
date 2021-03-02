@@ -1,6 +1,6 @@
 config:
   core.https_address: {{ hostvars[inventory_hostname]['ansible_host'] }}:8443
-  core.trust_password: "1"
+  core.trust_password: {{ lxd_password }}
 networks:
 - config:
     bridge.mode: fan
