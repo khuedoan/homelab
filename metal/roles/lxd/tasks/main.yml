@@ -1,3 +1,7 @@
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
 - name: Install LXD
   snap:
     name: lxd
@@ -22,3 +26,23 @@
     stdin: "{{ lookup('template', 'member.yaml.j2') }}" 
     creates: /var/snap/lxd/common/lxd/server.crt
   when: inventory_hostname != groups['metal'][0]
+
+- name: Add remote
+  command:
+    argv:
+      - lxc
+      - remote
+      - add
+      - vagrant
+      - "{{ hostvars[groups['metal'][0]]['ansible_host'] }}"
+      - --accept-certificate
+      - --password
+      - 1
+
+- name: Change default remote
+  command:
+    argv:
+      - lxc
+      - remote
+      - switch
+      - vagrant
