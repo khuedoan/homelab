@@ -10,8 +10,8 @@ init:
 
 reset:
 	. .venv/bin/activate \
-		&& ansible-playbook --ask-become-pass --inventory hosts.ini playbook.yml
+		&& ansible-playbook --ask-become-pass --inventory hosts.ini main.yml
 
 provision:
 	. .venv/bin/activate \
-		&& ansible-playbook --inventory hosts.ini playbook.yml --tags provision
+		&& ansible-playbook --inventory hosts.ini main.yml --tags provision
