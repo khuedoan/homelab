@@ -63,7 +63,7 @@ cd infra
 make
 ```
 
-## Acknowledgements
+## Acknowledgments
 
 - [Fix `nf_conntrack` hash size fix for Kubernetes on LXD](https://github.com/corneliusweig/kubernetes-lxd/issues/10#issuecomment-615950053)
 - [Humble project](https://github.com/locmai/humble)
