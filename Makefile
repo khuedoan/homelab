@@ -1,6 +1,10 @@
 .POSIX:
 
-all: metal infra apps
+default: tools
+
+.PHONY: tools
+tools:
+	make -C tools
 
 .PHONY: metal
 metal:
