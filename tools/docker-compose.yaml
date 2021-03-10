@@ -2,7 +2,7 @@ version: '3'
 
 services:
   tools:
-    build: ./tools
+    build: .
     volumes:
       - ..:/root/src
       - /var/run/docker.sock:/var/run/docker.sock
