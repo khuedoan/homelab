@@ -6,7 +6,9 @@ init:
 	terraform init
 
 plan:
-	terraform plan
+	source ../metal/secrets/env \
+	&& terraform plan
 
 apply:
-	terraform apply
+	source ../metal/secrets/env \
+	&& terraform apply

@@ -1,6 +1,7 @@
 .vagrant/
 .venv/
 build/
+metal/secrets/
 
 *.log
 .terraform*
