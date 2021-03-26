@@ -4,5 +4,6 @@ services:
   tools:
     build: .
     volumes:
-      - ..:/root/src
+      - ..:/src
+      - $HOME:/root
       - /var/run/docker.sock:/var/run/docker.sock

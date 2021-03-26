@@ -29,10 +29,7 @@
 For the controller (to run Ansible, stateless PXE server, Terraform...):
 
 - SSH keys in `~/.ssh/{id_rsa,id_rsa.pub}`
-- `make`
-- `python3`
 - Docker with `host` networking driver (which means [only Docker on Linux hosts](https://docs.docker.com/network/host/))
-- `terraform` (0.14.x)
 - `vagrant` (optional, to create a local [test environment](./test))
 
 For bare metal nodes:
@@ -48,19 +45,18 @@ For bare metal nodes:
 
 ### Building
 
-Simply run:
+Open the tools container:
 
 ```sh
 make
 ```
 
-Or we can build each layer individually:
+Then build each layer:
 
 ```sh
+make metal
 make infra
-# or
-cd infra
-make
+make apps
 ```
 
 ## Acknowledgments

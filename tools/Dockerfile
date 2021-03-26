@@ -12,6 +12,7 @@ RUN apk add --no-cache \
 RUN apk add --no-cache --repository "http://dl-cdn.alpinelinux.org/alpine/edge/testing" \
         helm \
         kubectl \
+        lxd \
         terraform
 
-WORKDIR /root/src
+WORKDIR /src
