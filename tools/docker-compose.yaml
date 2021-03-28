@@ -1,9 +1,0 @@
-version: '3'
-
-services:
-  tools:
-    build: .
-    volumes:
-      - ..:/src
-      - $HOME:/root
-      - /var/run/docker.sock:/var/run/docker.sock
