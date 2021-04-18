@@ -2,19 +2,19 @@ resource "lxd_profile" "kubenode" {
   name = "kubenode"
 
   config = {
-    "limits.cpu" = 2
-    "limits.memory.swap" = false
+    "limits.cpu"            = 2
+    "limits.memory.swap"    = false
     "user.access_interface" = "eth0"
-    "security.nesting"     = true
-    "security.privileged"  = true
-    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
-    "raw.lxc"       = <<-EOT
+    "security.nesting"      = true
+    "security.privileged"   = true
+    "linux.kernel_modules"  = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
+    "raw.lxc"               = <<-EOT
       lxc.apparmor.profile=unconfined
       lxc.cap.drop=
       lxc.cgroup.devices.allow=a
       lxc.mount.auto=proc:rw sys:rw cgroup:rw
     EOT
-    "user.user-data"       = <<-EOT
+    "user.user-data"        = <<-EOT
       #cloud-config
       ssh_authorized_keys:
         - ${file(var.ssh_public_key)}
@@ -39,7 +39,7 @@ resource "lxd_profile" "kubenode" {
 
     properties = {
       source = "/sys/module/nf_conntrack/parameters/hashsize"
-      path = "/sys/module/nf_conntrack/parameters/hashsize"
+      path   = "/sys/module/nf_conntrack/parameters/hashsize"
     }
   }
 
@@ -49,7 +49,7 @@ resource "lxd_profile" "kubenode" {
 
     properties = {
       source = "/dev/kmsg"
-      path = "/dev/kmsg"
+      path   = "/dev/kmsg"
     }
   }
 
@@ -139,6 +139,7 @@ resource "rke_cluster" "cluster" {
 }
 
 resource "local_file" "kube_config_yaml" {
-  filename = "${path.root}/kube_config.yaml"
-  content  = rke_cluster.cluster.kube_config_yaml
+  filename          = "${path.root}/kube_config.yaml"
+  sensitive_content = rke_cluster.cluster.kube_config_yaml
+  file_permission   = "0600"
 }
