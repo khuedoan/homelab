@@ -4,7 +4,6 @@ resource "lxd_profile" "kubenode" {
   config = {
     "limits.cpu"            = 2
     "limits.memory.swap"    = false
-    "user.access_interface" = "eth0"
     "security.nesting"      = true
     "security.privileged"   = true
     "linux.kernel_modules"  = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
@@ -81,6 +80,13 @@ resource "lxd_container" "masters" {
   ephemeral = false
 
   profiles = [lxd_profile.kubenode.name]
+
+  config = {
+    # TODO check if this is a bug
+    # https://github.com/terraform-lxd/terraform-provider-lxd/blob/master/lxd/resource_lxd_container.go#L473
+    # Should be posible to put it in the profile instead lxd_profile.kubenode.config
+    "user.access_interface" = "eth0"
+  }
 }
 
 resource "lxd_container" "workers" {
@@ -90,6 +96,10 @@ resource "lxd_container" "workers" {
   ephemeral = false
 
   profiles = [lxd_profile.kubenode.name]
+
+  config = {
+    "user.access_interface" = "eth0"
+  }
 }
 
 resource "time_sleep" "wait_cloud_init" {
