@@ -58,7 +58,8 @@ resource "lxd_profile" "kubenode" {
     type = "nic"
 
     properties = {
-      network = "lxdfan0"
+      nictype = "macvlan"
+      parent  = "eno1"
     }
   }
 
