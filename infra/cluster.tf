@@ -75,7 +75,7 @@ resource "lxd_profile" "kubenode" {
 }
 
 resource "lxd_container" "masters" {
-  count     = 1
+  count     = 3
   name      = "master-${count.index}"
   image     = "ubuntu:20.04"
   ephemeral = false
@@ -84,7 +84,7 @@ resource "lxd_container" "masters" {
 }
 
 resource "lxd_container" "workers" {
-  count     = 1
+  count     = 3
   name      = "worker-${count.index}"
   image     = "ubuntu:20.04"
   ephemeral = false
