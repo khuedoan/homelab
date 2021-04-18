@@ -64,5 +64,6 @@ make apps
 - [Humble project](https://github.com/locmai/humble)
 - [Kubernetes on LXD issue with BTRFS](https://medium.com/@ernstae/kubenetes-on-lxd-with-rancher-2-0-part-one-and-a-half-94e6e03f4f2e)
 - [LXD container profile for Kubernetes](https://github.com/justmeandopensource/kubernetes/blob/master/lxd-provisioning/k8s-profile-config)
+- [Make LXD containers get IP addresses from LAN](https://blog.simos.info/how-to-make-your-lxd-container-get-ip-addresses-from-your-lan/)
 - [Minio Ansible role](https://github.com/atosatto/ansible-minio)
 - [Some device mount for Kubernetes on LXD](https://github.com/atosatto/ansible-minio)
