@@ -30,7 +30,6 @@ For the controller (to run Ansible, stateless PXE server, Terraform...):
 
 - SSH keys in `~/.ssh/{id_rsa,id_rsa.pub}`
 - Docker with `host` networking driver (which means [only Docker on Linux hosts](https://docs.docker.com/network/host/))
-- `vagrant` (optional, to create a local [test environment](./test))
 
 For bare metal nodes:
 
