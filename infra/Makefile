@@ -3,7 +3,8 @@
 default: init apply
 
 init:
-	terraform init
+	cd platform \
+	&& terraform init
 
 plan:
 	source ../metal/secrets/env \
