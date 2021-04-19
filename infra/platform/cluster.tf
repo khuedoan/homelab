@@ -102,6 +102,7 @@ resource "lxd_container" "workers" {
   }
 }
 
+# TODO use Ansible wait_for /var/run/docker.sock
 resource "time_sleep" "wait_cloud_init" {
   depends_on = [
     lxd_container.masters,
