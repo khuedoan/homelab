@@ -1,6 +1,4 @@
-# Layer 0
-
-Bare metal provisioning
+# Bare-metal
 
 - Render PXE boot configs
 - Start Docker based PXE server
@@ -8,7 +6,5 @@ Bare metal provisioning
 - Wake them up using magic packet
 - Install OS using PXE and kickstart
 - Wait for the OS installation to finish and reboot to the new OS
-- Start basic provisioning
-  - Install Docker
-  - Create simple etcd container for Terraform state
-- Generate Terraform backend config
+- Build an LXD cluster
+- Generate/render secrets
