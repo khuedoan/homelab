@@ -1,4 +1,4 @@
-# Khue's homelab
+# Homelab
 
 ```diff
 ! WORK IN PROGRESS
@@ -57,6 +57,68 @@ make metal
 make infra
 make apps
 ```
+
+## Roadmap
+
+<details>
+
+<summary>Released</summary>
+
+None
+
+</details>
+
+<details open>
+
+<summary>Next</summary>
+
+- [ ] First alpha:
+  - [x] Bare metal provisioning with PXE
+  - [x] LXD cluster
+  - [x] Terraform state backend (etcd)
+  - [ ] Container registry (just pull through cache for faster cluster build time)
+  - [x] RKE cluster
+  - [x] Core services (Vault, Gitea, DroneCI, ArgoCD,...)
+  - [ ] Access the lab from the internet via VPN
+  - [x] Public services to the internet (via port forwarding or Cloudflare Tunnel)
+- [ ] First beta:
+  - [ ] Easy initial controller setup (with only Docker or Vagrant)
+  - [ ] Fast metal image preparation
+  - [ ] Mount metal image without `sudo` (7zip?)
+  - [ ] Automated metal secrets generation and management
+  - [ ] Automated `./infra` authentication from `./metal` (Terraform backend and provider)
+  - [ ] Metal node automatic patching
+  - [ ] Seperate network
+  - [ ] VPN (Wireguard)
+  - [ ] Local DNS (PiHole?)
+  - [ ] Jump box (or HashiCorp Boundary?)
+  - [ ] Habor (private container registry for new applications)
+  - [ ] Self managed infrastucture
+  - [ ] Mirror all git repositories from GitHub automatically (with git hook for faster sync?)
+  - [ ] Monitoring and alerting
+  - [ ] Addition services (NextCloud, PeerTube, mailcow, Mattermost/Rocket Chat,...)
+  - [ ] Dashboard for services
+  - [ ] SSO
+  - [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
+  - [ ] Automatic release
+- [ ] Stable `1.0`:
+  - [ ] 100% automated (including backups and secrets management, double check with a full rebuild)
+  - [ ] Cross platform inital controller support (Linux, macOS, Windows)
+  - [ ] HA for everything
+  - [ ] Backup encrytion
+  - [ ] Secure by default
+  - [ ] DRY (or rule of three)
+  - [ ] Complete documentation and architecture diagram (automated update if possible)
+  - [ ] Walkthrough building tutorial and feature demo
+- [ ] Stable `1.1`:
+  - [ ] Addition services
+  - [ ] TBD
+- [ ] Backlog:
+  - [ ] Automated testing
+  - [ ] Security review/audit
+  - [ ] Migrate to RKE2 (new Terraform provider for RKE2 is not release yet)
+
+</details>
 
 ## Acknowledgments
 
