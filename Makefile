@@ -17,3 +17,7 @@ infra:
 .PHONY: apps
 apps:
 	make -C apps
+
+.PHONY: docs
+docs:
+	make -C docs
