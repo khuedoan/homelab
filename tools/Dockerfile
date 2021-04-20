@@ -4,14 +4,11 @@ RUN apk add --no-cache \
         ansible \
         curl \
         docker-cli \
-        hugo \
         git \
-        go \
         make \
         neovim \
         openssh \
         python3 \
-        rust \
         tree \
         zsh
 
