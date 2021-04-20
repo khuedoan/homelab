@@ -18,4 +18,4 @@ RUN apk add --no-cache --repository "http://dl-cdn.alpinelinux.org/alpine/edge/t
         lxd \
         terraform
 
-ENTRYPOINT "/bin/zsh"
+ENTRYPOINT [ "/bin/zsh", "-c" ]
