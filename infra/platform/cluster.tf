@@ -1,3 +1,8 @@
+resource "tls_private_key" "ssh" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P256"
+}
+
 resource "lxd_profile" "kubenode" {
   name = "kubenode"
 
@@ -16,7 +21,7 @@ resource "lxd_profile" "kubenode" {
     "user.user-data"        = <<-EOT
       #cloud-config
       ssh_authorized_keys:
-        - ${file(var.ssh_public_key)}
+        - ${tls_private_key.ssh.public_key_openssh}
       disable_root: false
       runcmd:
         - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -123,7 +128,7 @@ resource "rke_cluster" "cluster" {
         "controlplane",
         "etcd"
       ]
-      ssh_key = file(var.ssh_private_key)
+      ssh_key = tls_private_key.ssh.private_key_pem
     }
   }
 
@@ -136,7 +141,7 @@ resource "rke_cluster" "cluster" {
       role = [
         "worker"
       ]
-      ssh_key = file(var.ssh_private_key)
+      ssh_key = tls_private_key.ssh.private_key_pem
     }
   }
 
