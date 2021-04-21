@@ -16,6 +16,7 @@
   get_url:
     url: "{{ iso_url }}"
     dest: "{{ role_path }}/build/images/centos8.iso"
+    checksum: "{{ iso_checksum }}"
   delegate_to: localhost
 
 - name: Mount the ISO
