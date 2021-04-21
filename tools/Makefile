@@ -20,6 +20,5 @@ run:
 		--env "HOME=${HOME}" \
 		--volume "${HOME}:${HOME}" \
 		--volume "/var/run/docker.sock:/var/run/docker.sock" \
-		--user "$(shell id -u ${USER}):$(shell id -g ${USER})" \
 		--workdir "$(shell pwd)/.." \
 		${TAG}

@@ -1,21 +1,19 @@
-FROM alpine
+FROM archlinux
 
-RUN apk add --no-cache \
+# TODO investigate why --noconfirm is not working
+RUN yes | pacman --sync --refresh \
         ansible \
         curl \
-        docker-cli \
+        docker \
         git \
-        make \
-        neovim \
-        openssh \
-        python3 \
-        tree \
-        zsh
-
-RUN apk add --no-cache --repository "http://dl-cdn.alpinelinux.org/alpine/edge/testing" \
         helm \
         kubectl \
         lxd \
-        terraform
+        make \
+        neovim \
+        openssh \
+        python \
+        terragrunt \
+        zsh
 
-ENTRYPOINT [ "/bin/zsh", "-c" ]
+CMD [ "/bin/zsh" ]
