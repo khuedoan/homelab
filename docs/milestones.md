@@ -34,6 +34,7 @@
   - [ ] 100% automated (including backups and secrets management, double check with a full rebuild)
   - [ ] Cross platform inital controller support (Linux, macOS, Windows)
   - [ ] HA for everything
+  - [ ] Production ready LXD https://github.com/lxc/lxd/blob/master/doc/production-setup.md
   - [ ] Backup encrytion
   - [ ] Secure by default
   - [ ] DRY (or rule of three)
