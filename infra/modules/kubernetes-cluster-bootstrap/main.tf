@@ -30,12 +30,12 @@ resource "helm_release" "nginx" {
   create_namespace = true
 }
 
+# TODO (optimize) should cert manager be part of bootstrap?
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
-  # TODO upgrade cert-manager helm version
-  version    = "1.0.4"
+  version    = "1.3.1"
 
   namespace        = "cert-manager"
   create_namespace = true
@@ -61,13 +61,13 @@ resource "helm_release" "longhorn" {
   name       = "longhorn"
   repository = "https://charts.longhorn.io"
   chart      = "longhorn"
-  # TODO upgrade longhorn helm version
-  version    = "1.0.2"
+  version    = "1.1.0"
 
   namespace        = "longhorn-system"
   create_namespace = true
 }
 
+# TODO move Vault out of bootstrap
 resource "helm_release" "vault" {
   name       = "vault"
   repository = "https://helm.releases.hashicorp.com"
