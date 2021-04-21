@@ -3,22 +3,28 @@ resource "tls_private_key" "ssh" {
   ecdsa_curve = "P256"
 }
 
+resource "local_file" "ssh_private_key" {
+  content         = tls_private_key.ssh.private_key_pem
+  filename        = "${path.module}/private.pem"
+  file_permission = "0600"
+}
+
 resource "lxd_profile" "kubenode" {
   name = "kubenode"
 
   config = {
-    "limits.cpu"            = 2
-    "limits.memory.swap"    = false
-    "security.nesting"      = true
-    "security.privileged"   = true
-    "linux.kernel_modules"  = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
-    "raw.lxc"               = <<-EOT
+    "limits.cpu"           = 2
+    "limits.memory.swap"   = false
+    "security.nesting"     = true
+    "security.privileged"  = true
+    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
+    "raw.lxc"              = <<-EOT
       lxc.apparmor.profile=unconfined
       lxc.cap.drop=
       lxc.cgroup.devices.allow=a
       lxc.mount.auto=proc:rw sys:rw cgroup:rw
     EOT
-    "user.user-data"        = <<-EOT
+    "user.user-data"       = <<-EOT
       #cloud-config
       ssh_authorized_keys:
         - ${tls_private_key.ssh.public_key_openssh}
@@ -78,6 +84,7 @@ resource "lxd_profile" "kubenode" {
   }
 }
 
+# TODO optimize: DRY master and worker definition
 resource "lxd_container" "masters" {
   count     = 3
   name      = "master-${count.index}"
@@ -87,10 +94,16 @@ resource "lxd_container" "masters" {
   profiles = [lxd_profile.kubenode.name]
 
   config = {
-    # TODO check if this is a bug
+    # TODO bug: should be posible to put it in the profile instead lxd_profile.kubenode.config
     # https://github.com/terraform-lxd/terraform-provider-lxd/blob/master/lxd/resource_lxd_container.go#L473
-    # Should be posible to put it in the profile instead lxd_profile.kubenode.config
     "user.access_interface" = "eth0"
+  }
+
+  provisioner "local-exec" {
+    command = "ansible all -u root --private-key ${local_file.ssh_private_key.filename} -i ${self.ip_address}, -m 'wait_for_connection' -a '' && ansible all -u root -i ${self.ip_address}, -m 'wait_for' -a 'path=/var/run/docker.sock'"
+    environment = {
+      ANSIBLE_HOST_KEY_CHECKING = "False"
+    }
   }
 }
 
@@ -105,16 +118,13 @@ resource "lxd_container" "workers" {
   config = {
     "user.access_interface" = "eth0"
   }
-}
 
-# TODO use Ansible wait_for /var/run/docker.sock
-resource "time_sleep" "wait_cloud_init" {
-  depends_on = [
-    lxd_container.masters,
-    lxd_container.workers
-  ]
-
-  create_duration = "5m"
+  provisioner "local-exec" {
+    command = "ansible all -u root --private-key ${local_file.ssh_private_key.filename} -i ${self.ip_address}, -m 'wait_for_connection' -a '' && ansible all -u root -i ${self.ip_address}, -m 'wait_for' -a 'path=/var/run/docker.sock'"
+    environment = {
+      ANSIBLE_HOST_KEY_CHECKING = "False"
+    }
+  }
 }
 
 resource "rke_cluster" "cluster" {
@@ -150,8 +160,6 @@ resource "rke_cluster" "cluster" {
   }
 
   ignore_docker_version = true
-
-  depends_on = [time_sleep.wait_cloud_init]
 }
 
 resource "local_file" "kube_config_yaml" {
