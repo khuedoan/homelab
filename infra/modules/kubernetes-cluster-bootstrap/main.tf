@@ -2,8 +2,7 @@ resource "helm_release" "metallb" {
   name       = "metallb"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "metallb"
-  # TODO upgrade metallb helm version
-  version    = "1.0.1"
+  version    = "2.3.5"
 
   namespace        = "metallb-system"
   create_namespace = true
@@ -25,8 +24,7 @@ resource "helm_release" "nginx" {
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  # TODO upgrade nginx helm version
-  version    = "3.10.1"
+  version    = "3.29.0"
 
   namespace        = "ingress-nginx"
   create_namespace = true
@@ -53,8 +51,7 @@ resource "helm_release" "prometheus" {
   name       = "kube-prometheus-stack"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
-  # TODO upgrade prometheus stack helm version
-  version    = "11.1.2"
+  version    = "15.1.1"
 
   namespace        = "monitoring-system"
   create_namespace = true
