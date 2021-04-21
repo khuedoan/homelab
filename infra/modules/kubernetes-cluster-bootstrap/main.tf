@@ -67,6 +67,16 @@ resource "helm_release" "longhorn" {
   create_namespace = true
 }
 
+resource "helm_release" "argocd" {
+  name       = "argocd"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argocd"
+  version    = "3.1.2"
+
+  namespace        = "argocd"
+  create_namespace = true
+}
+
 # TODO move Vault out of bootstrap
 resource "helm_release" "vault" {
   name       = "vault"
