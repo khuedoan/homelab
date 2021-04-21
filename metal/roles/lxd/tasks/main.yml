@@ -35,18 +35,19 @@
     creates: /var/snap/lxd/common/lxd/server.crt
   when: inventory_hostname != groups['metal'][0]
 
+# TODO optimize: use template for tfvars
 - name: Add LXD server to environment variables
   lineinfile:
-    path: "{{ playbook_dir }}/secrets/env"
-    line: "LXD_ADDR={{ hostvars[groups['metal'][0]]['ansible_host'] }}"
+    path: "{{ playbook_dir }}/../infra/platform/terraform.tfvars"
+    line: "lxd_address = \"{{ hostvars[groups['metal'][0]]['ansible_host'] }}\""
     create: yes
   delegate_to: localhost
   run_once: yes
 
 - name: Add LXD password to environment variables
   lineinfile:
-    path: "{{ playbook_dir }}/secrets/env"
-    line: "LXD_PASSWORD={{ lxd_password }}"
+    path: "{{ playbook_dir }}/../infra/platform/terraform.tfvars"
+    line: "lxd_password = \"{{ lxd_password }}\""
     create: yes
   delegate_to: localhost
   run_once: yes

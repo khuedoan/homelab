@@ -4,5 +4,7 @@ metal/secrets/
 
 *.log
 .terraform*
+terraform.tfvars
 kube_config.yaml
+private.pem
 terraform.tfstate*

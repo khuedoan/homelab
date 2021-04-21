@@ -21,6 +21,14 @@ terraform {
 provider "lxd" {
   generate_client_certificates = true
   accept_remote_certificate    = true
+
+  lxd_remote {
+    name     = "homelab"
+    scheme   = "https"
+    address  = var.lxd_address
+    password = var.lxd_password
+    default  = true
+  }
 }
 
 provider "rke" {
