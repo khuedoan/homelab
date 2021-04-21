@@ -35,7 +35,7 @@
     creates: /var/snap/lxd/common/lxd/server.crt
   when: inventory_hostname != groups['metal'][0]
 
-# TODO optimize: use template for tfvars
+# TODO (optimize) use template for tfvars
 - name: Add LXD server to environment variables
   lineinfile:
     path: "{{ playbook_dir }}/../infra/platform/terraform.tfvars"
