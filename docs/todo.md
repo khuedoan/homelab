@@ -12,7 +12,7 @@
 - [Auto unseal Vault](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L85)
 - [automatic ingress and tunnel for all services](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L88)
 - [(optimize) DRY master and worker definition](../infra/platform/cluster.tf#L87)
-- [bug](../infra/platform/cluster.tf#L97)
+- [(bug) should be posible to put it in the profile instead lxd_profile.kubenode.config](../infra/platform/cluster.tf#L97)
 - [remote backend (etcd or minio)](../infra/platform/terraform.tf#L2)
 - [convert to YAML for Terraform yamldecode](../metal/hosts.ini#L1)
 - [Optimize SELinux](../metal/roles/lxd/tasks/main.yml#L1)
