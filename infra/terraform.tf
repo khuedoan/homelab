@@ -1,7 +1,7 @@
 terraform {
   # TODO Generate endpoint automatically (terragrunt for variable)
   backend "etcdv3" {
-    endpoints = ["192.168.1.29:2379"]
+    endpoints = ["192.168.1.35:2379"]
     lock      = true
   }
 

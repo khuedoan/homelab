@@ -26,3 +26,18 @@
   delegate_to: tfstate
   apt:
     name: etcd
+
+- name: Add etcd config
+  delegate_to: tfstate
+  template:
+    src: etcd.j2
+    dest: /etc/default/etcd
+
+- name: Restart etcd
+  delegate_to: tfstate
+  systemd:
+    name: etcd
+    state: restarted
+    enabled: yes
+
+# TODO enable etcd authentication and generate terraform backend config variables
