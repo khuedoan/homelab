@@ -1,9 +1,8 @@
 - name: Create a tfstate container
-  # TODO use var for lxd host
-  run_once: true
   lxd_container:
     name: tfstate
     state: started
+    url: "https://{{ hostvars[groups['metal'][0]]['ansible_host'] }}:8443"
     source:
       type: image
       mode: pull
@@ -16,14 +15,14 @@
         nictype: macvlan
         parent: eno1
 
-# TODO Use native lxd connection instead of exec
-# - name: Add tfstate container to host list
-#   delegate_to: metal0
-#   add_host:
-#     name: tfstate
-#     groups: lxd
-#     ansible_connection: lxd
+- name: Add tfstate container to host list
+  add_host:
+    name: tfstate
+    groups: lxd
+    ansible_connection: lxd
+    ansible_lxd_remote: homelab
 
 - name: Install etcd
-  run_once: true
-  command: lxc exec tfstate -- apt-get install -y etcd
+  delegate_to: tfstate
+  apt:
+    name: etcd
