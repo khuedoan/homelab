@@ -80,6 +80,7 @@ resource "lxd_profile" "kubenode" {
     properties = {
       pool = "default"
       path = "/"
+      size = "32GiB"
     }
   }
 }
