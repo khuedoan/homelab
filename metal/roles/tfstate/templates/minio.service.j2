@@ -1,9 +1,0 @@
-[Unit]
-Description=Minio
-StartLimitIntervalSec=60
-StartLimitBurst=5
-
-[Service]
-EnvironmentFile=/etc/default/minio
-ExecStart=/usr/bin/minio server server /var/lib/minio/
-Restart=always
