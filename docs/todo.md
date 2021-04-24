@@ -1,7 +1,7 @@
 # TODO
 
-- [(optimize) DRY master and worker definition](../infra/cluster.tf#L87)
-- [(bug) should be posible to put it in the profile instead lxd_profile.kubenode.config](../infra/cluster.tf#L97)
+- [(optimize) DRY master and worker definition](../infra/cluster.tf#L88)
+- [(bug) should be posible to put it in the profile instead lxd_profile.kubenode.config](../infra/cluster.tf#L98)
 - [use ./values/metallb.yaml for this](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L12)
 - [(optimize) should cert manager be part of bootstrap?](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L33)
 - [use ./values/cert-manager.yaml for this](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L43)
@@ -17,4 +17,5 @@
 - [change to /var/lib/lxd/server.crt after https](../metal/roles/lxd/tasks/main.yml#L26)
 - [(optimize) use template for tfvars](../metal/roles/lxd/tasks/main.yml#L38)
 - [use btrfs in k8s 1.19.8 https](../metal/roles/lxd/templates/leader.yaml.j2#L17)
+- [enable etcd authentication and generate terraform backend config variables](../metal/roles/tfstate/tasks/main.yml#L43)
 - [investigate why --noconfirm is not working](../tools/Dockerfile#L3)
