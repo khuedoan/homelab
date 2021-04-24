@@ -7,11 +7,9 @@ init:
 	&& terraform init
 
 plan:
-	source ../metal/secrets/env \
-	&& cd platform \
+	platform \
 	&& terraform plan
 
 apply:
-	source ../metal/secrets/env \
-	&& cd platform \
+	cd platform \
 	&& terraform apply
