@@ -1,9 +1,9 @@
 terraform {
-  # TODO remote backend (etcd or minio)
-  # backend "etcdv3" {
-  #   endpoints = ["localhost:2379"]
-  #   lock      = true
-  # }
+  # TODO Generate endpoint automatically (terragrunt for variable)
+  backend "etcdv3" {
+    endpoints = ["192.168.1.29:2379"]
+    lock      = true
+  }
 
   required_providers {
     lxd = {
