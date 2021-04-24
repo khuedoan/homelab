@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitea
+spec:
+  destination:
+    name: in-cluster
+    namespace: gitea
+    server: ''
+  source:
+    path: ''
+    repoURL: 'https://dl.gitea.io/charts/'
+    targetRevision: 2.2.5
+    chart: gitea
+    helm:
+      parameters:
+        - name: 'ingress.hosts[0]'
+          value: git.khuedoan.com
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
