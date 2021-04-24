@@ -1,5 +1,6 @@
 - name: Create a tfstate container
-  delegate_to: localhost
+  # TODO use var for lxd host
+  run_once: true
   lxd_container:
     name: tfstate
     state: started
@@ -9,14 +10,20 @@
       server: https://images.linuxcontainers.org
       alias: ubuntu/focal/amd64
       wait_for_ipv4_addresses: yes
-    url: "https://{{ hostvars[groups['metal'][0]]['ansible_host'] }}:8443"
     devices:
       eth0:
         type: nic
         nictype: macvlan
         parent: eno1
 
-# - ansible.builtin.raw: dpkg -s python
-#   delegate_to: tfstate
+# TODO Use native lxd connection instead of exec
+# - name: Add tfstate container to host list
+#   delegate_to: metal0
+#   add_host:
+#     name: tfstate
+#     groups: lxd
+#     ansible_connection: lxd
 
-# apt install -y etcd
+- name: Install etcd
+  run_once: true
+  command: lxc exec tfstate -- apt-get install -y etcd
