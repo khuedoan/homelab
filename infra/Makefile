@@ -3,13 +3,10 @@
 default: init apply
 
 init:
-	cd platform \
-	&& terraform init
+	terraform init
 
 plan:
-	platform \
-	&& terraform plan
+	terraform plan
 
 apply:
-	cd platform \
-	&& terraform apply
+	terraform apply

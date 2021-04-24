@@ -70,7 +70,7 @@ resource "helm_release" "longhorn" {
 resource "helm_release" "argocd" {
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
-  chart      = "argocd"
+  chart      = "argo-cd"
   version    = "3.1.2"
 
   namespace        = "argocd"
@@ -78,18 +78,18 @@ resource "helm_release" "argocd" {
 }
 
 # TODO move Vault out of bootstrap
-resource "helm_release" "vault" {
-  name       = "vault"
-  repository = "https://helm.releases.hashicorp.com"
-  chart      = "vault"
-  # TODO upgrade vault helm version
-  version    = "0.8.0"
+# resource "helm_release" "vault" {
+#   name       = "vault"
+#   repository = "https://helm.releases.hashicorp.com"
+#   chart      = "vault"
+#   # TODO upgrade vault helm version
+#   version    = "0.8.0"
 
-  namespace        = "vault"
-  create_namespace = true
+#   namespace        = "vault"
+#   create_namespace = true
 
-  # TODO HA Vault
-  # TODO Auto unseal Vault
-}
+#   # TODO HA Vault
+#   # TODO Auto unseal Vault
+# }
 
 # TODO automatic ingress and tunnel for all services
