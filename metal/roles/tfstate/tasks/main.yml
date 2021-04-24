@@ -1,0 +1,22 @@
+- name: Create a tfstate container
+  delegate_to: localhost
+  lxd_container:
+    name: tfstate
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://images.linuxcontainers.org
+      alias: ubuntu/focal/amd64
+      wait_for_ipv4_addresses: yes
+    url: "https://{{ hostvars[groups['metal'][0]]['ansible_host'] }}:8443"
+    devices:
+      eth0:
+        type: nic
+        nictype: macvlan
+        parent: eno1
+
+# - ansible.builtin.raw: dpkg -s python
+#   delegate_to: tfstate
+
+# apt install -y etcd
