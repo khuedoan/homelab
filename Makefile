@@ -6,16 +6,16 @@ default: tools
 tools:
 	make -C tools
 
-.PHONY: metal
-metal:
-	make -C metal
-
-.PHONY: infra
-infra:
+.PHONY: deploy
+deploy:
+	make -C metal reset
 	make -C infra
+	make -C apps
 
-.PHONY: apps
-apps:
+.PHONY: apply
+apply:
+	make -C metal
+	make -C infra
 	make -C apps
 
 .PHONY: docs
