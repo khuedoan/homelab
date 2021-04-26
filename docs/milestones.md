@@ -32,14 +32,10 @@
   - [ ] Automatic release
 - [ ] `1.0.0`:
   - [ ] 100% automated (including backups and secrets management, double check with a full rebuild)
-  - [ ] Cross platform inital controller support (Linux, macOS, Windows)
-  - [ ] HA for everything
-  - [ ] Production ready LXD https://github.com/lxc/lxd/blob/master/doc/production-setup.md
   - [ ] Backup encrytion
   - [ ] Secure by default
-  - [ ] DRY (or rule of three)
+  - [ ] DRY
   - [ ] Complete documentation and architecture diagram (automated update if possible)
-  - [ ] Walkthrough building tutorial and feature demo
 - [ ] `1.0.1`:
   - [ ] Bug fixes (TBD)
 - [ ] `1.1.0`:
@@ -48,3 +44,7 @@
   - [ ] Automated testing
   - [ ] Security review/audit
   - [ ] Migrate to RKE2 (new Terraform provider for RKE2 is not release yet)
+  - [ ] HA for everything
+  - [ ] Production ready LXD https://github.com/lxc/lxd/blob/master/doc/production-setup.md
+  - [ ] Cross platform inital controller support (Linux, macOS, Windows)
+  - [ ] Walkthrough building tutorial and feature demo

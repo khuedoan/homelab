@@ -14,16 +14,17 @@ resource "lxd_profile" "kubenode" {
 
   config = {
     "limits.cpu"           = 2
+    "limits.memory"        = "4GiB"
     "limits.memory.swap"   = false
-    "security.nesting"     = true
-    "security.privileged"  = true
-    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
-    "raw.lxc"              = <<-EOT
-      lxc.apparmor.profile=unconfined
-      lxc.cap.drop=
-      lxc.cgroup.devices.allow=a
-      lxc.mount.auto=proc:rw sys:rw cgroup:rw
-    EOT
+    # "security.nesting"     = true
+    # "security.privileged"  = true
+    # "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
+    # "raw.lxc"              = <<-EOT
+    #   lxc.apparmor.profile=unconfined
+    #   lxc.cap.drop=
+    #   lxc.cgroup.devices.allow=a
+    #   lxc.mount.auto=proc:rw sys:rw cgroup:rw
+    # EOT
     "user.user-data"       = <<-EOT
       #cloud-config
       ssh_authorized_keys:
@@ -33,35 +34,35 @@ resource "lxd_profile" "kubenode" {
         - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
         - add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
         - apt-get update -y
-        - apt-get install -y docker-ce docker-ce-cli containerd.io
+        - apt-get install -y docker-ce docker-ce-cli containerd.io open-iscsi
         - mkdir -p /etc/systemd/system/docker.service.d/
         - printf "[Service]\nMountFlags=shared" > /etc/systemd/system/docker.service.d/mount_flags.conf
         - mount --make-rshared /
-        - systemctl start docker
-        - systemctl enable docker
+        - systemctl enable --now docker
+        - systemctl enable --now open-iscsi
     EOT
   }
 
-  # echo "262144" > /sys/module/nf_conntrack/parameters/hashsize
-  device {
-    type = "disk"
-    name = "hashsize"
+  # # echo "262144" > /sys/module/nf_conntrack/parameters/hashsize
+  # device {
+  #   type = "disk"
+  #   name = "hashsize"
 
-    properties = {
-      source = "/sys/module/nf_conntrack/parameters/hashsize"
-      path   = "/sys/module/nf_conntrack/parameters/hashsize"
-    }
-  }
+  #   properties = {
+  #     source = "/sys/module/nf_conntrack/parameters/hashsize"
+  #     path   = "/sys/module/nf_conntrack/parameters/hashsize"
+  #   }
+  # }
 
-  device {
-    type = "unix-char"
-    name = "kmsg"
+  # device {
+  #   type = "unix-char"
+  #   name = "kmsg"
 
-    properties = {
-      source = "/dev/kmsg"
-      path   = "/dev/kmsg"
-    }
-  }
+  #   properties = {
+  #     source = "/dev/kmsg"
+  #     path   = "/dev/kmsg"
+  #   }
+  # }
 
   device {
     name = "eth0"
@@ -90,14 +91,15 @@ resource "lxd_container" "masters" {
   count     = 3
   name      = "master-${count.index}"
   image     = "ubuntu:20.04"
+  type      = "virtual-machine"
   ephemeral = false
 
   profiles = [lxd_profile.kubenode.name]
 
   config = {
-    # TODO (bug) should be posible to put it in the profile instead lxd_profile.kubenode.config
+    # TODO (bug) should be posible to put it in the profile instead lxd_profile.kubenode.config, and make it a variable
     # https://github.com/terraform-lxd/terraform-provider-lxd/blob/master/lxd/resource_lxd_container.go#L473
-    "user.access_interface" = "eth0"
+    "user.access_interface" = "enp5s0"
   }
 
   provisioner "local-exec" {
@@ -112,12 +114,13 @@ resource "lxd_container" "workers" {
   count     = 3
   name      = "worker-${count.index}"
   image     = "ubuntu:20.04"
+  type      = "virtual-machine"
   ephemeral = false
 
   profiles = [lxd_profile.kubenode.name]
 
   config = {
-    "user.access_interface" = "eth0"
+    "user.access_interface" = "enp5s0"
   }
 
   provisioner "local-exec" {

@@ -9,4 +9,6 @@ plan:
 	terraform plan
 
 apply:
-	terraform apply
+	# TODO Apply LXD VMs in parallel github.com/
+	# Currently have to turn it off because it will not spread evenly accross LXD nodes
+	terraform apply --parallelism 1
