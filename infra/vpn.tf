@@ -1,3 +1,3 @@
-module "rke_cluster_bootstrap" {
+module "vpn" {
   source      = "./modules/vpn"
 }
