@@ -22,7 +22,6 @@ resource "helm_release" "nginx" {
   create_namespace = true
 }
 
-# TODO (optimize) should cert manager be part of bootstrap?
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
