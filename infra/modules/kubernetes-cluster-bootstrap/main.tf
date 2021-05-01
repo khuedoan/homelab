@@ -32,11 +32,9 @@ resource "helm_release" "cert_manager" {
   namespace        = "cert-manager"
   create_namespace = true
 
-  # TODO use ./values/cert-manager.yaml for this
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
+  values = [
+    file("${path.module}/values/cert-manager.yaml")
+  ]
 }
 
 resource "helm_release" "prometheus" {
