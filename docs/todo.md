@@ -1,7 +1,8 @@
 # TODO
 
-- [(optimize) DRY master and worker definition](../infra/cluster.tf#L88)
-- [(bug) should be posible to put it in the profile instead lxd_profile.kubenode.config](../infra/cluster.tf#L98)
+- [Apply LXD VMs in parallel github.com/](../infra/Makefile#L12)
+- [(optimize) DRY master and worker definition](../infra/cluster.tf#L89)
+- [(bug) should be posible to put it in the profile instead lxd_profile.kubenode.config, and make it a variable](../infra/cluster.tf#L100)
 - [use ./values/metallb.yaml for this](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L12)
 - [(optimize) should cert manager be part of bootstrap?](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L33)
 - [use ./values/cert-manager.yaml for this](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L43)
@@ -10,6 +11,8 @@
 - [HA Vault](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L91)
 - [Auto unseal Vault](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L92)
 - [automatic ingress and tunnel for all services](../infra/modules/kubernetes-cluster-bootstrap/main.tf#L95)
+- [Upgrade hosts kernel to use Wireguard in container](../infra/modules/vpn/main.tf#L15)
+- [make parent interface a variable](../infra/modules/vpn/main.tf#L38)
 - [Generate endpoint automatically (terragrunt for variable)](../infra/terraform.tf#L2)
 - [convert to YAML for Terraform yamldecode](../metal/hosts.ini#L1)
 - [Optimize SELinux](../metal/roles/lxd/tasks/main.yml#L1)

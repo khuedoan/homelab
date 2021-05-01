@@ -1,0 +1,4 @@
+- name: Install Wireguard
+  apt:
+    name: wireguard
+    update_cache: yes

@@ -12,6 +12,7 @@ resource "local_file" "ssh_private_key" {
 resource "lxd_container" "vpn" {
   name      = "vpn"
   image     = "ubuntu:20.04"
+  type      = "virtual-machine" # TODO Upgrade hosts kernel to use Wireguard in container
   ephemeral = false
 
   config = {

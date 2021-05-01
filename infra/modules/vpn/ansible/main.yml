@@ -1,4 +1,11 @@
 - hosts: all
+  gather_facts: no
   tasks:
-    - name: Ping
-      ansible.builtin.ping:
+    - name: Wait for SSH connection
+      wait_for_connection:
+        delay: 10
+
+- hosts: all
+  become: yes
+  roles:
+    - name: wireguard
