@@ -7,17 +7,9 @@ resource "helm_release" "metallb" {
   namespace        = "metallb-system"
   create_namespace = true
 
-  set {
-    name  = "configInline"
-    # TODO use ./values/metallb.yaml for this
-    value = <<EOT
-      address-pools:
-      - name: default
-        protocol: layer2
-        addresses:
-        - 192.168.1.150-192.168.1.180
-    EOT
-  }
+  values = [
+    file("${path.module}/values/metallb.yaml")
+  ]
 }
 
 resource "helm_release" "nginx" {
