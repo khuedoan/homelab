@@ -12,7 +12,7 @@ resource "local_file" "ssh_private_key" {
 resource "lxd_container" "vpn" {
   name      = "vpn"
   image     = "ubuntu:20.04"
-  type      = "virtual-machine" # TODO Upgrade hosts kernel to use Wireguard in container
+  type      = "virtual-machine" # TODO (feature) Upgrade hosts kernel to use Wireguard in container
   ephemeral = false
 
   config = {
@@ -35,7 +35,7 @@ resource "lxd_container" "vpn" {
 
     properties = {
       nictype = "macvlan"
-      parent  = "eno1" # TODO make parent interface a variable
+      parent  = "eno1" # TODO (optimize) Make parent interface a variable
     }
   }
 }

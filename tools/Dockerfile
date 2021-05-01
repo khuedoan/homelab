@@ -1,6 +1,6 @@
 FROM archlinux
 
-# TODO investigate why --noconfirm is not working
+# TODO (bug) Investigate why --noconfirm is not working
 RUN yes | pacman --sync --refresh \
         ansible \
         curl \

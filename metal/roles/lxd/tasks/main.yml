@@ -1,9 +1,9 @@
-# TODO Optimize SELinux
+# TODO (optimize) LXD node SELinux
 - name: Disable SELinux
   selinux:
     state: disabled
 
-# TODO Optimize firewall
+# TODO (optimize) LXD node firewall
 - name: Disable firewall
   service:
     name: firewalld
@@ -23,7 +23,7 @@
 
 - name: Get LXD server certificate
   slurp:
-    # TODO change to /var/lib/lxd/server.crt after https://wiki.debian.org/LXD
+    # TODO (optimize) Change to /var/lib/lxd/server.crt after https://wiki.debian.org/LXD
     src: /var/snap/lxd/common/lxd/server.crt
   register: server_cert
   when: inventory_hostname == groups['metal'][0]
@@ -35,7 +35,7 @@
     creates: /var/snap/lxd/common/lxd/server.crt
   when: inventory_hostname != groups['metal'][0]
 
-# TODO (optimize) use template for tfvars
+# TODO (optimize) Use template for tfvars
 - name: Add LXD server to environment variables
   lineinfile:
     path: "{{ playbook_dir }}/../infra/terraform.tfvars"

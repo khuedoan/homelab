@@ -40,4 +40,4 @@
     state: restarted
     enabled: yes
 
-# TODO enable etcd authentication and generate terraform backend config variables
+# TODO (feature) Enable etcd authentication and generate terraform backend config variables

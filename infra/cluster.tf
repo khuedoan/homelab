@@ -97,7 +97,7 @@ resource "lxd_container" "masters" {
   profiles = [lxd_profile.kubenode.name]
 
   config = {
-    # TODO (bug) should be posible to put it in the profile instead lxd_profile.kubenode.config, and make it a variable
+    # TODO (bug) Should be posible to put it in the profile instead lxd_profile.kubenode.config, and make it a variable
     # https://github.com/terraform-lxd/terraform-provider-lxd/blob/master/lxd/resource_lxd_container.go#L473
     "user.access_interface" = "enp5s0"
   }

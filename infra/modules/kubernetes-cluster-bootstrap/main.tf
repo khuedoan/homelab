@@ -79,8 +79,7 @@ resource "helm_release" "vault" {
     file("${path.module}/values/vault.yaml")
   ]
 
-  # TODO HA Vault
-  # TODO Auto unseal Vault
+  # TODO (optimize) HA Vault and auto unseal Vault
 }
 
-# TODO automatic ingress and tunnel for all services
+# TODO (feature) Automatic ingress and tunnel for all services

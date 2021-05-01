@@ -14,7 +14,7 @@ storage_pools:
     size: 100GB
   description: ""
   name: default
-  # TODO use btrfs in k8s 1.19.8 https://github.com/kubernetes/kubernetes/issues/94335
+  # TODO (optimize) Use btrfs in k8s 1.19.8 https://github.com/kubernetes/kubernetes/issues/94335
   driver: lvm
 profiles:
 - config: {}
