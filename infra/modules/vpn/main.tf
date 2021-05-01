@@ -15,8 +15,6 @@ resource "lxd_container" "vpn" {
   ephemeral = false
 
   config = {
-    "limits.cpu"    = 1
-    "limits.memory" = "256MiB"
     "user.user-data" = templatefile(
       "${path.module}/cloud-init.yaml.tpl",
       {
@@ -25,13 +23,18 @@ resource "lxd_container" "vpn" {
     )
   }
 
+  limits = {
+    cpu    = "1"
+    memory = "256MiB"
+  }
+
   device {
     name = "eth0"
     type = "nic"
 
     properties = {
       nictype = "macvlan"
-      parent  = "eno1"
+      parent  = "eno1" # TODO make parent interface a variable
     }
   }
 }
