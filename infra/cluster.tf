@@ -13,9 +13,9 @@ resource "lxd_profile" "kubenode" {
   name = "kubenode"
 
   config = {
-    "limits.cpu"           = 2
-    "limits.memory"        = "4GiB"
-    "limits.memory.swap"   = false
+    "limits.cpu"         = 2
+    "limits.memory"      = "4GiB"
+    "limits.memory.swap" = false
     # "security.nesting"     = true
     # "security.privileged"  = true
     # "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
@@ -25,7 +25,7 @@ resource "lxd_profile" "kubenode" {
     #   lxc.cgroup.devices.allow=a
     #   lxc.mount.auto=proc:rw sys:rw cgroup:rw
     # EOT
-    "user.user-data"       = <<-EOT
+    "user.user-data" = <<-EOT
       #cloud-config
       ssh_authorized_keys:
         - ${tls_private_key.ssh.public_key_openssh}

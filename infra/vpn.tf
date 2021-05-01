@@ -1,3 +1,3 @@
 module "vpn" {
-  source      = "./modules/vpn"
+  source = "./modules/vpn"
 }
