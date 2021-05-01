@@ -1,4 +1,18 @@
 - name: Install Wireguard
   apt:
     name: wireguard
-    update_cache: yes
+
+- name: Generate Wireguard keypair
+  shell: wg genkey | tee /etc/wireguard/privatekey | wg pubkey | tee /etc/wireguard/publickey
+  args:
+    creates: /etc/wireguard/privatekey
+
+- name: Register private key
+  shell: cat /etc/wireguard/privatekey
+  register: wireguard_private_key
+  changed_when: false
+
+- name: Register public key
+  shell: cat /etc/wireguard/publickey
+  register: wireguard_public_key
+  changed_when: false
