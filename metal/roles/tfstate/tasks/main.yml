@@ -13,7 +13,7 @@
       eth0:
         type: nic
         nictype: macvlan
-        parent: eno1
+        parent: "{{ network_interface }}"
 
 - name: Add tfstate container to host list
   add_host:
