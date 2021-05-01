@@ -77,19 +77,21 @@ resource "helm_release" "argocd" {
   create_namespace = true
 }
 
-# TODO move Vault out of bootstrap
-# resource "helm_release" "vault" {
-#   name       = "vault"
-#   repository = "https://helm.releases.hashicorp.com"
-#   chart      = "vault"
-#   # TODO upgrade vault helm version
-#   version    = "0.8.0"
+resource "helm_release" "vault" {
+  name       = "vault"
+  repository = "https://helm.releases.hashicorp.com"
+  chart      = "vault"
+  version    = "0.11.0"
 
-#   namespace        = "vault"
-#   create_namespace = true
+  namespace        = "vault"
+  create_namespace = true
 
-#   # TODO HA Vault
-#   # TODO Auto unseal Vault
-# }
+  values = [
+    file("${path.module}/values/vault.yaml")
+  ]
+
+  # TODO HA Vault
+  # TODO Auto unseal Vault
+}
 
 # TODO automatic ingress and tunnel for all services
