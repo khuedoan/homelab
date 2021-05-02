@@ -1,6 +1,7 @@
 .venv/
 build/
 metal/secrets/
+terraform-*-tmp-*/
 
 *.log
 .terraform*
