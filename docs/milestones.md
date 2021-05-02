@@ -1,11 +1,11 @@
 # Milestones
 
-- [ ] `0.0.1-alpha`:
+- [x] `0.0.1-alpha`:
   - [x] Bare metal provisioning with PXE
   - [x] LXD cluster
   - [x] Terraform state backend (etcd)
   - [x] RKE cluster
-  - [ ] Core services (Vault, Gitea, DroneCI, ArgoCD,...)
+  - [x] Core services (Vault, Gitea, ArgoCD,...)
   - [x] Public services to the internet (via port forwarding or Cloudflare Tunnel)
 - [ ] `0.0.2-alpha`:
   - [ ] VPN (Wireguard)
