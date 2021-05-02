@@ -91,6 +91,7 @@ resource "lxd_container" "masters" {
   count     = 3
   name      = "master-${count.index}"
   image     = "ubuntu:20.04"
+  # TODO (bug) Use containers instead of virtual machines for Kubernetes nodes https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/1226855
   type      = "virtual-machine"
   ephemeral = false
 
