@@ -174,6 +174,6 @@ resource "local_file" "kube_config_yaml" {
 }
 
 module "rke_cluster_bootstrap" {
-  source      = "./modules/kubernetes-cluster-bootstrap"
+  source      = "./modules/kubernetes-bootstrap"
   kube_config = rke_cluster.cluster.kube_config_yaml
 }
