@@ -40,16 +40,11 @@ resource "lxd_container" "vpn" {
   }
 }
 
-resource "null_resource" "ansible" {
-  triggers = {
-    ansible_hash = md5(join("", [for f in fileset("${path.module}/ansible/", "**") : file("${path.module}/ansible/${f}")]))
-  }
-
-  provisioner "local-exec" {
-    command = "ansible-playbook -u ubuntu -i ${lxd_container.vpn.ip_address}, --private-key ${local_file.ssh_private_key.filename} ${path.module}/ansible/main.yml"
-
-    environment = {
-      ANSIBLE_HOST_KEY_CHECKING = "False"
-    }
-  }
+module "ansible_provisioner" {
+  source      = "../ansible-provisioner"
+  directory   = "${path.module}/ansible"
+  private_key = local_file.ssh_private_key.filename
+  inventory = [
+    lxd_container.vpn.ip_address
+  ]
 }
