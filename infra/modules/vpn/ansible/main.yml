@@ -9,3 +9,4 @@
   become: yes
   roles:
     - name: wireguard
+    - name: cloudflared
