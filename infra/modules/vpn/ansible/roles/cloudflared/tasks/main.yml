@@ -1,3 +1,25 @@
 - name: Install cloudflared
   apt:
     deb: "{{ cloudflared_package_url }}"
+
+- name: Create tunnel configuration file
+  template:
+    src: config.yml.j2
+    dest: /etc/cloudflared/config.yml
+
+# TODO (feature) Get cloudflare tunnel credentials automatically
+# - name: Create tunnel credentials file
+#   template:
+#     src: credentials.json.j2
+#     dest: /etc/cloudflared/credentials.json
+
+- name: Install cloudfared system service
+  command: cloudflared service install
+  args:
+    creates: /etc/systemd/system/cloudflared.service
+
+- name: Enable cloudflared service
+  service:
+    name: cloudflared
+    state: started
+    enabled: yes

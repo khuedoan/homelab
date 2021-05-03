@@ -1,0 +1,7 @@
+tunnel: homelab-vpn
+credentials-file: /etc/cloudflared/cert.pem
+
+ingress:
+  - hostname: "*.khuedoan.com"
+    service: http://192.168.1.150 # TODO (optimize) Use variable for ingress address
+  - service: http_status:404
