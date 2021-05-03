@@ -4,3 +4,9 @@ ListenPort = 51820
 PrivateKey = {{ wireguard_private_key['content'] | b64decode }}
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+{% for public_key in wireguard_public_keys %}
+[Peer]
+PublicKey = {{ public_key }}
+AllowedIPs = {{ internal_subnet | ansible.netcommon.ipmath(loop.index + 2) }}
+{% endfor %}

@@ -1,1 +1,4 @@
 internal_subnet: 10.13.13.0
+# TODO (optimize) Put Wireguard allowed public keys somewhere else
+wireguard_public_keys:
+  - '9ACfX+Yp8gb51vzoaYo9ePA7+sR/tzgmIpLFMWCyPxA=' # Phone
