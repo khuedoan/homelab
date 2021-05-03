@@ -1,6 +1,6 @@
 [Interface]
-Address = {{ interface }}.1
+Address = {{ internal_subnet | ansible.netcommon.ipmath(1) }}
 ListenPort = 51820
-PrivateKey = {{ wireguard_private_key }}
+PrivateKey = {{ wireguard_private_key['content'] | b64decode }}
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE

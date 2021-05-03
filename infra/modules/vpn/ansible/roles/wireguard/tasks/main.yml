@@ -1,3 +1,7 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
 - name: Install Wireguard
   apt:
     name: wireguard
@@ -8,11 +12,16 @@
     creates: /etc/wireguard/privatekey
 
 - name: Register private key
-  shell: cat /etc/wireguard/privatekey
+  slurp:
+    src: /etc/wireguard/privatekey
   register: wireguard_private_key
-  changed_when: false
 
 - name: Register public key
-  shell: cat /etc/wireguard/publickey
+  slurp:
+    src: /etc/wireguard/publickey
   register: wireguard_public_key
-  changed_when: false
+
+- name: Generate wg0 config
+  template:
+    src: wg0.conf.j2
+    dest: /etc/wireguard/wg0.conf
