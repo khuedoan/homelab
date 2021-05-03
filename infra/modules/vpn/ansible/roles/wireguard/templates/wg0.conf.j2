@@ -8,5 +8,5 @@ PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACC
 {% for public_key in wireguard_public_keys %}
 [Peer]
 PublicKey = {{ public_key }}
-AllowedIPs = {{ internal_subnet | ansible.netcommon.ipmath(loop.index + 2) }}
+AllowedIPs = {{ internal_subnet | ansible.netcommon.ipmath(loop.index + 1) }}
 {% endfor %}

@@ -16,6 +16,7 @@ resource "lxd_container" "vpn" {
   ephemeral = false
 
   config = {
+    "user.access_interface" = "enp5s0"
     "user.user-data" = templatefile(
       "${path.module}/cloud-init.yaml.tpl",
       {
