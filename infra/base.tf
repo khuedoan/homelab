@@ -1,4 +1,3 @@
-# TODO (optimize) Decide if VPN should be inside Kubernetes
-# module "vpn" {
-#   source = "./modules/vpn"
-# }
+module "vpn" {
+  source = "./modules/vpn"
+}
