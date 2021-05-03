@@ -25,3 +25,9 @@
   template:
     src: wg0.conf.j2
     dest: /etc/wireguard/wg0.conf
+
+- name: Start Wireguard service
+  service:
+    name: wg-quick@wg0
+    enabled: yes
+    state: started
