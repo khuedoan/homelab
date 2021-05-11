@@ -5,7 +5,6 @@ TAG = homelab-tools
 default: check build run
 
 check:
-	command -v docker
 	docker info --format '{{ .Plugins.Network }}' | grep 'host'
 
 build:
