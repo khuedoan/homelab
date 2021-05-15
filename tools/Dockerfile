@@ -12,7 +12,8 @@ RUN yes | pacman --sync --refresh \
         neovim \
         openssh \
         python \
-        terragrunt \
+        python-netaddr \
+        terraform \
         zsh
 
 CMD [ "/bin/zsh" ]
