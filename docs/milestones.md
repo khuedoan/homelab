@@ -31,7 +31,11 @@
   - [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
   - [ ] Automatic release
 - [ ] `1.0.0`:
-  - [ ] 100% automated (including backups and secrets management, double check with a full rebuild)
+  - [ ] 100% automated
+    - [ ] Bare-metal OS patching
+    - [ ] Kubernetes nodes OS patching
+    - [ ] Backups
+    - [ ] Secrets management
   - [ ] Backup encrytion
   - [ ] Secure by default
   - [ ] DRY
