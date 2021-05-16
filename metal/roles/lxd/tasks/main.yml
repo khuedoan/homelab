@@ -29,6 +29,14 @@
       - qemu-device-display-virtio-vga
       - qemu-device-display-virtio-gpu
 
+- name: Set subuid/subgid range for mapping container users/groups to host UIDs/GIDs
+  lineinfile:
+    path: "{{ item }}"
+    line: "root:1000000:65536"
+  loop:
+    - /etc/subuid
+    - /etc/subgid
+
 - name: Enable LXD service
   service:
     name: lxd
@@ -54,14 +62,6 @@
     stdin: "{{ lookup('template', 'member.yaml.j2') }}" 
     creates: /var/lib/lxd/cluster.crt
   when: inventory_hostname != groups['metal'][0]
-
-- name: Set subuid/subgid range for mapping container users/groups to host UIDs/GIDs
-  lineinfile:
-    path: "{{ item }}"
-    line: "root:1000000:65536"
-  loop:
-    - /etc/subuid
-    - /etc/subgid
 
 # TODO (optimize) Use template for tfvars
 - name: Add LXD server to environment variables
