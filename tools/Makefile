@@ -8,7 +8,7 @@ check:
 	docker info --format '{{ .Plugins.Network }}' | grep 'host'
 
 build:
-	docker build . --tag ${TAG}
+	docker build --quiet . --tag ${TAG}
 
 run:
 	docker run \
