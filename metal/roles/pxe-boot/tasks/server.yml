@@ -15,18 +15,14 @@
 - name: Download ISO
   get_url:
     url: "{{ iso_url }}"
-    dest: "{{ role_path }}/build/images/centos8.iso"
+    dest: "{{ role_path }}/build/images/CentOS-8.3.2011-x86_64-dvd1.iso"
     checksum: "{{ iso_checksum }}"
   delegate_to: localhost
+  register: iso
 
-- name: Mount the ISO
-  mount:
-    src: "{{ role_path }}/build/images/centos8.iso"
-    path: "{{ role_path }}/build/mnt"
-    fstype: iso9660
-    opts: loop,ro
-    state: mounted
-  become: yes
+- name: Extract the ISO
+  command: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/build/mnt"
+  creates: "{{ role_path }}/build/mnt/.treeinfo"
 
 - name: Copy configs
   copy:

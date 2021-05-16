@@ -7,9 +7,11 @@ RUN yes | pacman --sync --refresh \
         ansible \
         curl \
         docker \
+        docker-compose \
         git \
         helm \
         kubectl \
+        libisoburn \
         lxd \
         make \
         neovim \
