@@ -18,13 +18,13 @@
   command:
     cmd: /snap/bin/lxd init --preseed
     stdin: "{{ lookup('template', 'leader.yaml.j2') }}" 
-    creates: /var/snap/lxd/common/lxd/server.crt
+    creates: /var/snap/lxd/common/lxd/cluster.crt
   when: inventory_hostname == groups['metal'][0]
 
 - name: Get LXD server certificate
   slurp:
-    # TODO (optimize) Change to /var/lib/lxd/server.crt after https://wiki.debian.org/LXD
-    src: /var/snap/lxd/common/lxd/server.crt
+    # TODO (optimize) Change to /var/lib/lxd/cluster.crt after https://wiki.debian.org/LXD
+    src: /var/snap/lxd/common/lxd/cluster.crt
   register: server_cert
   when: inventory_hostname == groups['metal'][0]
 
@@ -32,7 +32,7 @@
   command:
     cmd: /snap/bin/lxd init --preseed
     stdin: "{{ lookup('template', 'member.yaml.j2') }}" 
-    creates: /var/snap/lxd/common/lxd/server.crt
+    # creates: /var/snap/lxd/common/lxd/cluster.crt
   when: inventory_hostname != groups['metal'][0]
 
 # TODO (optimize) Use template for tfvars
