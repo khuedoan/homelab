@@ -1,14 +1,6 @@
 config:
   core.https_address: {{ hostvars[inventory_hostname]['ansible_host'] }}:8443
   core.trust_password: {{ lxd_password }}
-networks:
-- config:
-    bridge.mode: fan
-    fan.underlay_subnet: {{ (ansible_default_ipv4.network + "/" + ansible_default_ipv4.netmask) | ansible.netcommon.ipaddr('net') }}
-  description: ""
-  name: lxdfan0
-  type: ""
-  project: default
 storage_pools:
 - config:
     size: 100GB
@@ -16,19 +8,6 @@ storage_pools:
   name: default
   # TODO (optimize) Use btrfs in k8s 1.19.8 https://github.com/kubernetes/kubernetes/issues/94335
   driver: lvm
-profiles:
-- config: {}
-  description: ""
-  devices:
-    eth0:
-      name: eth0
-      network: lxdfan0
-      type: nic
-    root:
-      path: /
-      pool: default
-      type: disk
-  name: default
 cluster:
   server_name: {{ inventory_hostname }}
   enabled: true

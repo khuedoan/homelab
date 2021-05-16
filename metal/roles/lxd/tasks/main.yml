@@ -10,29 +10,49 @@
     state: stopped
     enabled: no
 
-- name: Install LXD
-  snap:
+- name: Enable LXD repository
+  community.general.copr:
+    name: ganto/lxc4
+    state: enabled
+
+- name: Install LXD packages
+  dnf:
+    name:
+      - lxd
+      - lxd-agent
+      - edk2-ovmf
+      - genisoimage
+      - qemu-img
+      - qemu-system-x86-core
+      - qemu-char-spice
+      - qemu-device-usb-redirect
+      - qemu-device-display-virtio-vga
+      - qemu-device-display-virtio-gpu
+
+- name: Enable LXD service
+  service:
     name: lxd
+    state: started
+    enabled: yes
 
 - name: Init LXD on leader node
   command:
-    cmd: /snap/bin/lxd init --preseed
+    cmd: lxd init --preseed
     stdin: "{{ lookup('template', 'leader.yaml.j2') }}" 
-    creates: /var/snap/lxd/common/lxd/cluster.crt
+    creates: /var/lib/lxd/cluster.crt
   when: inventory_hostname == groups['metal'][0]
 
 - name: Get LXD server certificate
   slurp:
-    # TODO (optimize) Change to /var/lib/lxd/cluster.crt after https://wiki.debian.org/LXD
-    src: /var/snap/lxd/common/lxd/cluster.crt
+    src: /var/lib/lxd/cluster.crt
   register: server_cert
   when: inventory_hostname == groups['metal'][0]
 
 - name: Init LXD on member nodes
   command:
-    cmd: /snap/bin/lxd init --preseed
+    cmd: lxd init --preseed
     stdin: "{{ lookup('template', 'member.yaml.j2') }}" 
-    # creates: /var/snap/lxd/common/lxd/cluster.crt
+    creates: /var/lib/lxd/cluster.crt
   when: inventory_hostname != groups['metal'][0]
 
 # TODO (optimize) Use template for tfvars

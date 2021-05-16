@@ -13,7 +13,6 @@
     - name: lxd_password
       prompt: Enter password for LXD cluster
   roles:
-    - snap
     - lxd
 
 - name: Terraform state
