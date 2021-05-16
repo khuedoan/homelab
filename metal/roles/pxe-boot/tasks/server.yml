@@ -21,8 +21,9 @@
   register: iso
 
 - name: Extract the ISO
-  command: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/build/mnt"
-  creates: "{{ role_path }}/build/mnt/.treeinfo"
+  command:
+    cmd: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/build/mnt"
+    creates: "{{ role_path }}/build/mnt/.treeinfo"
 
 - name: Copy configs
   copy:
