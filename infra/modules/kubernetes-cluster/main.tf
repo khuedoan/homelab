@@ -92,6 +92,9 @@ resource "lxd_profile" "worker_profile" {
     "limits.cpu"         = 2
     "limits.memory"      = "4GiB"
     "limits.memory.swap" = false
+    # TODO (bug) Enable secure boot for VMs
+    # lstat /usr/share/edk2/ovmf/OVMF_VARS.ms.fd: no such file or directory
+    "security.secureboot"   = false
     "user.user-data" = <<-EOT
       #cloud-config
       ssh_authorized_keys:
