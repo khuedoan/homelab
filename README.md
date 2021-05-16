@@ -45,15 +45,13 @@ For bare metal nodes:
 Open the tools container:
 
 ```sh
-make
+make tools
 ```
 
-Then build each layer:
+Then build the homelab:
 
 ```sh
-make metal
-make infra
-make apps
+make
 ```
 
 ## Acknowledgments
