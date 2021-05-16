@@ -2,6 +2,13 @@
 
 ## Bare metal
 
+### PXE server logs
+
+```sh
+cd ./metal/roles/pxe-boot/build/
+docker-compose logs -f
+```
+
 ### Nodes not booting from the network
 
 - Plug a monitor and a keyboard to one of the bare metal node if possible to make the debugging process easier
