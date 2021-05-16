@@ -21,6 +21,7 @@
 - [(optimize) Put Wireguard allowed public keys somewhere else](../infra/modules/vpn/ansible/roles/wireguard/defaults/main.yml#L2)
 - [(optimize) Use btrfs in k8s 1.19.8 https](../metal/roles/lxd/templates/leader.yaml.j2#L17)
 - [(optimize) Use metal values for MetalLB values](../infra/modules/kubernetes-bootstrap/values/metallb.yaml#L6)
+- [(optimize) Use reflector to generate mirrorlist dynamically](../tools/Dockerfile#L3)
 - [(optimize) Use template for tfvars](../metal/roles/lxd/tasks/main.yml#L38)
 - [Simple script to backup everything](../scripts/backup.sh#L3)
 - [Simple script to restore everything](../scripts/restore.sh#L3)
