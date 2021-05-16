@@ -15,12 +15,8 @@
   roles:
     - snap
     - lxd
-  tags:
-    - provision
 
 - name: Terraform state
   hosts: controller
   roles:
     - tfstate
-  tags:
-    - provision

@@ -1,13 +1,3 @@
-- name: Unconditionally shut down the machine with all defaults
-  community.general.shutdown:
-    delay: 0
-  ignore_unreachable: yes
-
-- name: Wait for the machine to shutdown
-  wait_for:
-    timeout: 30
-  delegate_to: localhost
-
 - name: Send magic Wake-on-LAN packet
   community.general.wakeonlan:
     mac: "{{ hostvars[inventory_hostname]['mac'] }}"

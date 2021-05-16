@@ -13,6 +13,7 @@
 - [(optimize) Change to /var/lib/lxd/server.crt after https](../metal/roles/lxd/tasks/main.yml#L26)
 - [(optimize) Convert to YAML for Terraform yamldecode](../metal/hosts.ini#L1)
 - [(optimize) DRY master and worker definition](../infra/modules/kubernetes-cluster/main.tf#L135)
+- [(optimize) Find a way to make sure the machines are shut down](../metal/shutdown.yml#L10)
 - [(optimize) HA Vault and auto unseal Vault](../infra/modules/kubernetes-bootstrap/main.tf#L82)
 - [(optimize) LXD node firewall](../metal/roles/lxd/tasks/main.yml#L6)
 - [(optimize) LXD node SELinux](../metal/roles/lxd/tasks/main.yml#L1)

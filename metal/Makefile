@@ -1,6 +1,6 @@
 .POSIX:
 
-default: init provision
+default: init run
 
 init:
 	python3 -m venv .venv \
@@ -8,10 +8,15 @@ init:
 		&& pip3 install --upgrade pip \
 		&& pip3 install -r requirements.txt
 
-reset:
+run:
 	. .venv/bin/activate \
-		&& ansible-playbook --ask-become-pass --inventory hosts.ini main.yml
+		&& ansible-playbook \
+			--ask-become-pass \
+			--inventory hosts.ini \
+			main.yml
 
-provision:
+shutdown:
 	. .venv/bin/activate \
-		&& ansible-playbook --inventory hosts.ini main.yml --tags provision
+		&& ansible-playbook \
+			--inventory hosts.ini \
+			shutdown.yml
