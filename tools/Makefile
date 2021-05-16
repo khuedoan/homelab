@@ -15,6 +15,7 @@ run:
 		--rm \
 		--interactive \
 		--tty \
+		--network host \
 		--env "TERM=${TERM}" \
 		--env "HOME=${HOME}" \
 		--volume "${HOME}:${HOME}" \
