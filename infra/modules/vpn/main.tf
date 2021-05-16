@@ -39,6 +39,17 @@ resource "lxd_container" "vpn" {
       parent  = "eno1" # TODO (optimize) Make parent interface a variable
     }
   }
+
+  device {
+    type = "disk"
+    name = "root"
+
+    properties = {
+      pool = "default"
+      path = "/"
+      size = "8GiB"
+    }
+  }
 }
 
 module "ansible_provisioner" {
