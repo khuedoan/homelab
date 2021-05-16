@@ -12,6 +12,31 @@
   - SSD: 128GB
 - TP-Link TL-SG108 switch
 
+## Technology stack
+
+<table>
+  <tr>
+    <td align="center"><a><img src="https://simpleicons.org/icons/ansible.svg" width="100px;"/><br/>Ansible</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/centos.svg" width="100px;"/><br/>CentOS</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/cloudflare.svg" width="100px;"/><br/>Cloudflare</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/docker.svg" width="100px;"/><br/>Docker</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/gitea.svg" width="100px;"/><br/>Gitea</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/helm.svg" width="100px;"/><br/>Helm</td>
+  </tr>
+  <tr>
+    <td align="center"><a><img src="https://simpleicons.org/icons/kubernetes.svg" width="100px;"/><br/>Kubernetes</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/linuxcontainers.svg" width="100px;"/><br/>LXD</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/prometheus.svg" width="100px;"/><br/>Prometheus</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/rancher.svg" width="100px;"/><br/>Rancher</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/terraform.svg" width="100px;"/><br/>Terraform</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/ubuntu.svg" width="100px;"/><br/>Ubuntu</td>
+  </tr>
+  <tr>
+    <td align="center"><a><img src="https://simpleicons.org/icons/vault.svg" width="100px;"/><br/>Vault</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/wireguard.svg" width="100px;"/><br/>Wireguard</td>
+  </tr>
+</table>
+
 ## Architecture
 
 | Layer | Name                   | Description                                                  | Provisioner         |
