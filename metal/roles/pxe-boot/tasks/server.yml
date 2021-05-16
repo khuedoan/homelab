@@ -15,7 +15,7 @@
 - name: Download ISO
   get_url:
     url: "{{ iso_url }}"
-    dest: "{{ role_path }}/build/images/CentOS-8.3.2011-x86_64-dvd1.iso"
+    dest: "{{ role_path }}/build/images/{{ iso_file_name }}"
     checksum: "{{ iso_checksum }}"
   delegate_to: localhost
   register: iso
@@ -42,8 +42,8 @@
 
 - name: Render shared kickstart config
   template:
-    src: http/kickstart/centos8.ks.j2
-    dest: "{{ role_path }}/build/http/kickstart/centos8.ks"
+    src: http/kickstart/fedora.ks.j2
+    dest: "{{ role_path }}/build/http/kickstart/fedora.ks"
 
 - name: Render seperate network kickstart config for each node
   template:

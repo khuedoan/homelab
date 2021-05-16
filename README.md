@@ -17,9 +17,9 @@
 <table>
   <tr>
     <td align="center"><a><img src="https://simpleicons.org/icons/ansible.svg" width="100px;"/><br/>Ansible</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/centos.svg" width="100px;"/><br/>CentOS</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/cloudflare.svg" width="100px;"/><br/>Cloudflare</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/docker.svg" width="100px;"/><br/>Docker</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/fedora.svg" width="100px;"/><br/>Fedora</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/gitea.svg" width="100px;"/><br/>Gitea</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/helm.svg" width="100px;"/><br/>Helm</td>
   </tr>

@@ -1,25 +1,29 @@
+#version=DEVEL
+
 %pre --interpreter=/bin/sh
 mac=$(ip --brief link show dev {{ network_interface }} | tr -s ' ' | cut -d ' ' -f 3 | sed 's/:/-/g')
 curl "http://{{ ansible_default_ipv4.address }}/kickstart/network/$mac.ks" > /tmp/network.ks
 %end
 
-#version=RHEL8
-ignoredisk --only-use={{ disk }}
-autopart --type=lvm
-# Partition clearing information
-clearpart --all --initlabel --drives={{ disk }}
 # Do not use graphical install
 text
+
 # Keyboard layouts
-keyboard --vckeymap=us --xlayouts='us'
+keyboard --xlayouts='us'
 # System language
 lang en_US.UTF-8
 
+# Partitioning
+ignoredisk --only-use={{ disk }}
+autopart
+# Partition clearing information
+clearpart --all --drives={{ disk }}
+
 # Network information
 %include /tmp/network.ks
-repo --name="AppStream" --baseurl=http://{{ ansible_default_ipv4.address }}/CentOS/AppStream
+
 # Use network installation
-url --url="http://{{ ansible_default_ipv4.address }}/CentOS/"
+url --url="http://{{ ansible_default_ipv4.address }}/Fedora/"
 # Disable Setup Agent on first boot
 firstboot --disable
 # Do not configure the X Window System
@@ -27,7 +31,7 @@ skipx
 # System services
 services --enabled="chronyd"
 # System timezone
-timezone Asia/Ho_Chi_Minh --isUtc
+timezone Asia/Ho_Chi_Minh --utc
 
 # Create user
 user --groups=wheel --name={{ os_username }} --password={{ os_password }}
@@ -35,19 +39,8 @@ user --groups=wheel --name={{ os_username }} --password={{ os_password }}
 sshkey --username=root "{{ ssh_public_key }}"
 
 %packages
-@^minimal-environment
-kexec-tools
+@^server-product-environment
 
-%end
-
-%addon com_redhat_kdump --enable --reserve-mb='auto'
-
-%end
-
-%anaconda
-pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
-pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
-pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
 reboot

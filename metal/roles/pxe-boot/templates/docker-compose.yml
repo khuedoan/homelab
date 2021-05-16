@@ -15,6 +15,6 @@ services:
     build: ./http
     network_mode: host
     volumes:
-      - ./mnt:/usr/share/nginx/html/CentOS
+      - ./mnt:/usr/share/nginx/html/Fedora
     environment:
       NGINX_PORT: 80
