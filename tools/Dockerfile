@@ -12,7 +12,6 @@ RUN yes | pacman --sync --refresh \
         helm \
         kubectl \
         libisoburn \
-        lxd \
         make \
         neovim \
         openssh \

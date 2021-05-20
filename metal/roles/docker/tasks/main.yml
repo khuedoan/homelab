@@ -1,0 +1,16 @@
+# TODO (optimize) Node firewall
+- name: Disable firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Install Docker
+  dnf:
+    name: docker
+
+- name: Start Docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes

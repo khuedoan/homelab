@@ -1,9 +1,0 @@
-- hosts: all
-  gather_facts: no
-  tasks:
-    - name: Wait for SSH connection
-      wait_for_connection:
-        delay: 10
-    - name: Wait for Docker
-      wait_for:
-        path: /var/run/docker.sock

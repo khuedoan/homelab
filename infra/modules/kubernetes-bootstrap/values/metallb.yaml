@@ -1,6 +1,0 @@
-configInline: |
-  address-pools:
-  - name: default
-    protocol: layer2
-    addresses:
-    - 192.168.1.150-192.168.1.180 # TODO (optimize) Use metal values for MetalLB values

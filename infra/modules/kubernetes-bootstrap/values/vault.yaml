@@ -1,5 +1,0 @@
-server:
-  ingress:
-    enabled: true
-    hosts:
-      - host: vault.khuedoan.com

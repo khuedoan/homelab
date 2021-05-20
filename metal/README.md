@@ -6,5 +6,4 @@
 - Wake them up using magic packet
 - Install OS using PXE and kickstart
 - Wait for the OS installation to finish and reboot to the new OS
-- Build an LXD cluster
 - Generate/render secrets

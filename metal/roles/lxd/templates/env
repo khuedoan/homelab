@@ -1,2 +1,0 @@
-LXD_ADDR={{ hostvars[groups['metal'][0]]['ansible_host'] }}
-LXD_PASSWORD={{ lxd_password }}

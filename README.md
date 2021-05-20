@@ -25,25 +25,23 @@
   </tr>
   <tr>
     <td align="center"><a><img src="https://simpleicons.org/icons/kubernetes.svg" width="100px;"/><br/>Kubernetes</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/linuxcontainers.svg" width="100px;"/><br/>LXD</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/prometheus.svg" width="100px;"/><br/>Prometheus</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/rancher.svg" width="100px;"/><br/>Rancher</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/terraform.svg" width="100px;"/><br/>Terraform</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/ubuntu.svg" width="100px;"/><br/>Ubuntu</td>
-  </tr>
-  <tr>
     <td align="center"><a><img src="https://simpleicons.org/icons/vault.svg" width="100px;"/><br/>Vault</td>
     <td align="center"><a><img src="https://simpleicons.org/icons/wireguard.svg" width="100px;"/><br/>Wireguard</td>
+  </tr>
+  <tr>
   </tr>
 </table>
 
 ## Architecture
 
-| Layer | Name                   | Description                                                  | Provisioner         |
-|-------|------------------------|--------------------------------------------------------------|---------------------|
-| 0     | [metal](./metal)       | Bare metal OS installation, LXD, Terraform state backend,... | Ansible, PXE server |
-| 1     | [infra](./infra)       | Kubernetes clusters, shared apps (Git, Vault, Argo...)       | Terraform, Helm     |
-| 2     | [apps](./apps)         |                                                              | Argo                |
+| Layer | Name                   | Description                                             | Provisioner         |
+|-------|------------------------|---------------------------------------------------------|---------------------|
+| 0     | [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server |
+| 1     | [infra](./infra)       | Kubernetes clusters, shared apps (Git, Vault, Argo...)  | Terraform, Helm     |
+| 2     | [apps](./apps)         |                                                         | Argo                |
 
 ## Usage
 
@@ -51,7 +49,7 @@
 
 For the controller (to run Ansible, stateless PXE server, Terraform...):
 
-- SSH keys in `~/.ssh/{id_rsa,id_rsa.pub}`
+- SSH keys in `~/.ssh/{id_ed25519,id_ed25519.pub}` (you can generate it with `ssh-keygen -t ed25519`)
 - Docker with `host` networking driver (which means [only Docker on Linux hosts](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows)
 
 For bare metal nodes:
@@ -78,12 +76,3 @@ Then build the homelab:
 ```sh
 make
 ```
-
-## Acknowledgments
-
-- [Fix `nf_conntrack` hash size fix for Kubernetes on LXD](https://github.com/corneliusweig/kubernetes-lxd/issues/10#issuecomment-615950053)
-- [Humble project](https://github.com/locmai/humble)
-- [Kubernetes on LXD issue with BTRFS](https://medium.com/@ernstae/kubenetes-on-lxd-with-rancher-2-0-part-one-and-a-half-94e6e03f4f2e)
-- [LXD container profile for Kubernetes](https://github.com/justmeandopensource/kubernetes/blob/master/lxd-provisioning/k8s-profile-config)
-- [Make LXD containers get IP addresses from LAN](https://blog.simos.info/how-to-make-your-lxd-container-get-ip-addresses-from-your-lan/)
-- [Some device mount for Kubernetes on LXD](https://sleeplessbeastie.eu/2020/10/07/how-to-install-kubernetes-on-lxd/)

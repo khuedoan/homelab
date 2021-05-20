@@ -1,4 +1,4 @@
-- name: Install OS on empty nodes
+- name: Install OS on bare metal machines
   hosts: all
   gather_facts: no
   vars_prompt:
@@ -9,13 +9,5 @@
 
 - name: Provision
   hosts: metal
-  vars_prompt:
-    - name: lxd_password
-      prompt: Enter password for LXD cluster
   roles:
-    - lxd
-
-- name: Terraform state
-  hosts: controller
-  roles:
-    - tfstate
+    - docker
