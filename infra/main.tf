@@ -36,8 +36,6 @@ resource "rke_cluster" "cluster" {
   ingress {
     provider = "none"
   }
-
-  #ignore_docker_version = true
 }
 
 resource "local_file" "kube_config_yaml" {
