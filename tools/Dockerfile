@@ -7,7 +7,6 @@ RUN yes | pacman --sync --refresh \
         ansible \
         docker \
         docker-compose \
-        helm \
         kubectl \
         libisoburn \
         make \
