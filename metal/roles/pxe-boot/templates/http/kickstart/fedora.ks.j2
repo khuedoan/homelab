@@ -13,11 +13,12 @@ keyboard --xlayouts='us'
 # System language
 lang en_US.UTF-8
 
-# Partitioning
-ignoredisk --only-use={{ disk }}
-autopart
 # Partition clearing information
 clearpart --all --drives={{ disk }}
+# Partitioning
+ignoredisk --only-use={{ disk }}
+# TODO (bug) Fix only 15GiB root partition
+autopart
 
 # Network information
 %include /tmp/network.ks

@@ -1,8 +1,10 @@
 # TODO
 
+- [(bug) Fix only 15GiB root partition](../metal/roles/pxe-boot/templates/http/kickstart/fedora.ks.j2#L20)
 - [(feature) Generate endpoint automatically (terragrunt for variable)](../infra/terraform.tf#L2)
 - [(optimize) Convert to YAML for Terraform yamldecode](../metal/hosts.ini#L1)
 - [(optimize) Node firewall](../metal/roles/docker/tasks/main.yml#L1)
+- [(optimize) Use metal values for MetalLB values](../apps/metallb.yaml#L23)
 - [(optimize) Use reflector to generate mirrorlist dynamically](../tools/Dockerfile#L3)
 - [Simple script to backup everything](../scripts/backup.sh#L3)
 - [Simple script to restore everything](../scripts/restore.sh#L3)
