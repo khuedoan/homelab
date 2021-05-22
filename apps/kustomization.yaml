@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
 # Prerequisites
 - resources/namespace.yaml
-- github.com/argoproj/argo-cd//manifests/cluster-install?ref=v2.0.2
+- github.com/argoproj/argo-cd//manifests/ha/cluster-install?ref=v2.0.2
 # System
 - resources/cert-manager.yaml
 - resources/longhorn.yaml
