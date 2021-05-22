@@ -3,14 +3,10 @@
 
 KUBECONFIG = ../infra/kube_config.yaml
 
-default: init apply
-
-init:
-	kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-	kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+default: apply
 
 apply:
-	kubectl --namespace argocd apply --filename .
+	kubectl apply --kustomize .
 
 delete:
-	kubectl --namespace argocd delete --filename .
+	kubectl delete --kustomize .
