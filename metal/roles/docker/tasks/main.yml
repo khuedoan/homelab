@@ -14,3 +14,10 @@
     name: docker
     state: started
     enabled: yes
+
+# TODO (optimize) Restructure provisioning roles
+- name: Start iSCSI service
+  systemd:
+    name: iscsid
+    state: started
+    enabled: yes
