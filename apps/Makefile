@@ -8,5 +8,5 @@ default: apply
 apply:
 	kubectl apply --kustomize .
 
-delete:
+destroy:
 	kubectl delete --kustomize .

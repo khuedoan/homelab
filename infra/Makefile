@@ -3,7 +3,7 @@
 
 TF_IN_AUTOMATION = true
 
-default: init plan apply
+default: init apply
 
 init:
 	terraform init -input=false
@@ -11,7 +11,7 @@ init:
 plan:
 	terraform plan -input=false -out=/tmp/tfplan
 
-apply:
+apply: plan
 	terraform apply -input=false /tmp/tfplan
 
 destroy:
