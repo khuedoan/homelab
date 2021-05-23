@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wireguard
+spec:
+  destination:
+    name: in-cluster
+    namespace: wireguard
+    server: ''
+  source:
+    path: ''
+    repoURL: 'https://place1.github.io/wg-access-server'
+    targetRevision: v0.4.6
+    chart: wg-access-server
+    helm:
+      parameters:
+        - name: 'web.config.adminUsername'
+          value: 'admin'
+        - name: 'web.config.adminPassword'
+          value: 'admin'
+    #     - name: 'ingress.hosts'
+    #       value:
+    #         - "vpn.khuedoan.com"
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

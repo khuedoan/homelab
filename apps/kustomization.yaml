@@ -14,5 +14,6 @@ resources:
 - resources/vault.yaml
 # Applications
 - resources/gitea.yaml
+- resources/wireguard.yaml
 
 namespace: argocd
