@@ -47,7 +47,7 @@
   - The machine start the boot process:
     - BIOS boot in network mode and look for DHCP server
     - DHCP server point it to the TFTP server to get boot files and boot config
-    - The boot config contains parameter to get [automated OS installation config file](./master/metal/roles/pxe-boot/templates/http/kickstart/fedora.ks.j2)
+    - The boot config contains parameter to get [automated OS installation config file](./metal/roles/pxe-boot/templates/http/kickstart/fedora.ks.j2)
     - The OS get installed and the machine reboots to the new operating system
   - Terraform will create a Kubernetes [cluster](./infra/main.tf)
   - ArgoCD will install the [applications](./apps/resources)
