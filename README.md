@@ -37,6 +37,21 @@
 
 ## Architecture
 
+Quick explanation on how it works (currently just my quick brain dump because more people is visiting the repo):
+
+- Enter the tools container, which contains all the neccessary tools (see building instruction bellow)
+- Run `make`
+  - Ansible will render the configuration file for each bare metal machine (like IP, hostname...)
+  - The tools container will create sibling containers to build a PXE server (includes DHCP, TFTP and HTTP server)
+  - Ansible will wake the machines up using Wake on LAN
+  - The machine start the boot process:
+    - BIOS boot in network mode and look for DHCP server
+    - DHCP server point it to the TFTP server to get boot files and boot config
+    - The boot config contains parameter to get automated OS installation config file (for example kickstart on CentOS or Fedora)
+    - The OS get installed and the machine reboots to the new operating system
+  - Terraform will create a Kubernetes cluster
+  - ArgoCD will install the applications
+
 | Layer | Name                   | Description                                             | Provisioner         |
 |-------|------------------------|---------------------------------------------------------|---------------------|
 | 0     | [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server |
