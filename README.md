@@ -40,8 +40,8 @@
 | Layer | Name                   | Description                                             | Provisioner         |
 |-------|------------------------|---------------------------------------------------------|---------------------|
 | 0     | [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server |
-| 1     | [infra](./infra)       | Kubernetes clusters, shared apps (Git, Vault, Argo...)  | Terraform, Helm     |
-| 2     | [apps](./apps)         |                                                         | Argo                |
+| 1     | [infra](./infra)       | Kubernetes clusters                                     | Terraform, Helm     |
+| 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | Argo                |
 
 ## Usage
 
