@@ -18,9 +18,3 @@ docker-compose logs -f
 - Check if the operating system ISO file is mounted
 - Check the controller firewall config
 - Check PXE server Docker logs
-
-## Cloud infrastructure
-
-### RKE cannot connect to the LXC nodes
-
-- Check if you can SSH to the node(s) using the configured SSH key
