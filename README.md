@@ -6,7 +6,7 @@
 
 ![Hardware](https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG)
 
-- 4 nodes of NEC SFF PC (Japanese version of the ThinkCentre M700)
+- 4 nodes of NEC SFF PC `PC-MK26ECZDR` (Japanese version of the ThinkCentre M700)
   - CPU: Intel Core i5-6600T
   - RAM: 16GB
   - SSD: 128GB
