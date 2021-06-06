@@ -58,3 +58,5 @@
     restarted: yes
     build: yes
     recreate: always
+  notify:
+    - Stop PXE server
