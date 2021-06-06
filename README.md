@@ -37,11 +37,28 @@
 
 ## Architecture
 
+### Quick explanation
+
+- Enter the tools container, which contains all the neccessary tools (see building instruction bellow)
+- Run `make`
+  - Ansible will render the [configuration file for each bare metal machine (like IP, hostname...) and the PXE server from templates](./metal/roles/pxe-boot/templates)
+  - The tools container will create sibling containers to build a PXE server (includes DHCP, TFTP and HTTP server)
+  - Ansible will [wake the machines up](./metal/roles/pxe-boot/tasks/wake.yml) using Wake on LAN
+  - The machine start the boot process:
+    - BIOS boot in network mode and look for DHCP server
+    - DHCP server point it to the TFTP server to get boot files and boot config
+    - The boot config contains parameter to get [automated OS installation config file](./metal/roles/pxe-boot/templates/http/kickstart/fedora.ks.j2)
+    - The OS get installed and the machine reboots to the new operating system
+  - Terraform will create a Kubernetes [cluster](./infra/main.tf)
+  - ArgoCD will install the [applications](./apps/resources)
+
+### Layers
+
 | Layer | Name                   | Description                                             | Provisioner         |
 |-------|------------------------|---------------------------------------------------------|---------------------|
 | 0     | [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server |
-| 1     | [infra](./infra)       | Kubernetes clusters, shared apps (Git, Vault, Argo...)  | Terraform, Helm     |
-| 2     | [apps](./apps)         |                                                         | Argo                |
+| 1     | [infra](./infra)       | Kubernetes clusters                                     | Terraform, Helm     |
+| 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | Argo                |
 
 ## Usage
 
