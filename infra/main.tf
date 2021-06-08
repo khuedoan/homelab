@@ -1,35 +1,41 @@
+locals {
+  hosts   = yamldecode(file("../metal/hosts.yml"))
+  user    = local.hosts.metal.vars.ansible_user
+  ssh_key = file(local.hosts.metal.vars.ansible_ssh_private_key_file)
+}
+
 resource "rke_cluster" "cluster" {
   dynamic "nodes" {
     for_each = [
-      "192.168.1.110",
-      "192.168.1.111",
-      "192.168.1.112"
+      local.hosts.metal.hosts.metal0.ansible_host,
+      local.hosts.metal.hosts.metal1.ansible_host,
+      local.hosts.metal.hosts.metal2.ansible_host
     ]
 
     content {
       address = nodes.value
-      user    = "root"
+      user    = local.user
       role = [
         "controlplane",
         "etcd",
         "worker"
       ]
-      ssh_key = file("~/.ssh/id_ed25519")
+      ssh_key = local.ssh_key
     }
   }
 
   dynamic "nodes" {
     for_each = [
-      "192.168.1.113"
+      local.hosts.metal.hosts.metal3.ansible_host
     ]
 
     content {
       address = nodes.value
-      user    = "root"
+      user    = local.user
       role = [
         "worker"
       ]
-      ssh_key = file("~/.ssh/id_ed25519")
+      ssh_key = local.ssh_key
     }
   }
 

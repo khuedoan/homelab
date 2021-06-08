@@ -4,7 +4,7 @@ terraform {
     endpoints = [
       "192.168.1.110:23799"
     ]
-    lock      = true
+    lock = true
   }
 
   required_providers {
