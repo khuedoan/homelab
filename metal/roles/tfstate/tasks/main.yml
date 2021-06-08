@@ -1,3 +1,7 @@
+- name: Install Python library for the Docker
+  dnf:
+    name: python-docker
+
 - name: Create etcd container
   docker_container:
     name: etcd-tfstate
@@ -6,6 +10,6 @@
     env:
       ALLOW_NONE_AUTHENTICATION: "yes"
     published_ports:
-      - 2379:2379
+      - 23799:2379
     volumes:
       - tfstate:/bitnami/etcd/data
