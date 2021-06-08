@@ -4,10 +4,10 @@ default: run
 
 run:
 	ansible-playbook \
-		--inventory hosts.ini \
+		--inventory hosts.yml \
 		main.yml
 
 shutdown:
 	ansible-playbook \
-		--inventory hosts.ini \
+		--inventory hosts.yml \
 		shutdown.yml
