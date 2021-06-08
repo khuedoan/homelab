@@ -80,7 +80,7 @@ For bare metal nodes:
 
 Change these configuration files to match your hardware and network setup:
 
-- [Bare metal nodes settings](./metal/hosts.yaml) (IP, MAC...)
+- [Bare metal nodes settings](./metal/hosts.yml) (IP, MAC...)
 - [OS settings](./metal/group_vars/all.yml) (PXE, network...)
 
 ### Build
