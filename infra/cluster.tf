@@ -1,3 +1,7 @@
+provider "rke" {
+  debug = true
+}
+
 locals {
   hosts   = yamldecode(file("../metal/hosts.yml"))
   user    = local.hosts.metal.vars.ansible_user

@@ -14,7 +14,3 @@ terraform {
     }
   }
 }
-
-provider "rke" {
-  debug = true
-}

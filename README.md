@@ -49,7 +49,7 @@
     - DHCP server point it to the TFTP server to get boot files and boot config
     - The boot config contains parameter to get [automated OS installation config file](./metal/roles/pxe-boot/templates/http/kickstart/fedora.ks.j2)
     - The OS get installed and the machine reboots to the new operating system
-  - Terraform will create a Kubernetes [cluster](./infra/main.tf)
+  - Terraform will create a Kubernetes [cluster](./infra/cluster.tf) and some install some [Helm chart for bootstrap](./infra/bootstrap.tf)
   - ArgoCD will install the [applications](./apps/resources)
 
 ### Layers
@@ -58,7 +58,7 @@
 |-------|------------------------|---------------------------------------------------------|---------------------|
 | 0     | [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server |
 | 1     | [infra](./infra)       | Kubernetes clusters                                     | Terraform, Helm     |
-| 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | Argo                |
+| 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | ArgoCD              |
 
 ## Get Started
 
