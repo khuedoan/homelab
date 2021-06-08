@@ -1,12 +1,5 @@
 # Roadmap
 
-- [ ] `0.0.2-alpha`:
-  - [x] Ensure idempotency for bare metal provisioning
-  - [x] Extract instead of mounting the OS ISO file
-  - [x] Easy initial controller setup (with only Docker)
-  - [x] Switch to Fedora
-  - [x] Remove LXD
-  - [ ] Move etcd (Terraform state backend) back to Docker
 - [ ] `0.0.3-alpha`:
   - [ ] Better PXE boot tooling
   - [ ] Switch to CoreOS
