@@ -77,7 +77,7 @@ For bare metal nodes:
 
 ### Configurations
 
-- [Bare metal nodes settings](./metal/hosts.ini) (IP, MAC...)
+- [Bare metal nodes settings](./metal/hosts.yaml) (IP, MAC...)
 - [OS settings](./metal/group_vars/all.yml) (PXE, network...)
 
 ### Building
