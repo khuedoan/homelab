@@ -11,3 +11,7 @@
   hosts: metal
   roles:
     - docker
+
+- name: Create Terraform state storage
+  hosts: metal[0]
+    - tfstate
