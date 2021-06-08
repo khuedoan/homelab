@@ -1,8 +1,8 @@
-- name: Install OS on empty nodes
+- name: Shutdown the homelab
   hosts: metal
   gather_facts: no
   tasks:
-    - name: Unconditionally shut down the machine with all defaults
+    - name: Unconditionally shut down the machine
       community.general.shutdown:
         delay: 0
       ignore_unreachable: yes
