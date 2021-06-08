@@ -1,51 +1,10 @@
 # Changelog
 
-- [x] `0.0.1-alpha`:
-  - [x] Bare metal provisioning with PXE
-  - [x] LXD cluster
-  - [x] Terraform state backend (etcd)
-  - [x] RKE cluster
-  - [x] Core services (Vault, Gitea, ArgoCD,...)
-  - [x] Public services to the internet (via port forwarding or Cloudflare Tunnel)
-- [ ] `0.0.2-alpha`:
-  - [x] Ensure idempotency for bare metal provisioning
-  - [x] Extract instead of mounting the OS ISO file
-  - [x] Easy initial controller setup (with only Docker)
-  - [x] Switch to Fedora
-  - [x] Remove LXD
-  - [ ] VPN (Wireguard)
-  - [ ] Access the lab from the internet via VPN
-  - [ ] Container registry
-- [ ] `0.1.0-beta`:
-  - [ ] Automated metal secrets generation and management
-  - [ ] Automated `./infra` authentication from `./metal` (Terraform backend and provider)
-  - [ ] Metal node automatic patching
-  - [ ] Local DNS (PiHole?)
-  - [ ] Self managed infrastucture
-  - [ ] Mirror all git repositories from GitHub automatically (with git hook for faster sync?)
-  - [ ] Monitoring and alerting
-  - [ ] Addition services (NextCloud, PeerTube, mailcow, Mattermost/Rocket Chat,...)
-  - [ ] Dashboard for services
-  - [ ] SSO
-  - [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
-  - [ ] Automatic release
-- [ ] `1.0.0`:
-  - [ ] 100% automated
-    - [ ] Bare-metal OS patching
-    - [ ] Kubernetes nodes OS patching
-    - [ ] Backups
-    - [ ] Secrets management
-  - [ ] Backup encrytion
-  - [ ] Secure by default
-  - [ ] DRY
-  - [ ] Complete documentation and architecture diagram (automated update if possible)
-- [ ] `1.0.1`:
-  - [ ] Bug fixes (TBD)
-- [ ] `1.1.0`:
-  - [ ] Addition services (TBD)
-- [ ] Backlog:
-  - [ ] Automated testing
-  - [ ] Security review/audit
-  - [ ] Migrate to RKE2 (new Terraform provider for RKE2 is not release yet)
-  - [ ] HA for everything
-  - [ ] Walkthrough building tutorial and feature demo
+## 0.0.1-alpha
+
+- Bare metal provisioning with PXE
+- LXD cluster
+- Terraform state backend (etcd)
+- RKE cluster
+- Core services (Vault, Gitea, ArgoCD,...)
+- Public services to the internet (via port forwarding or Cloudflare Tunnel)

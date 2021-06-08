@@ -60,7 +60,7 @@
 | 1     | [infra](./infra)       | Kubernetes clusters                                     | Terraform, Helm     |
 | 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | Argo                |
 
-## Usage
+## Get Started
 
 ### Prerequisite
 
@@ -72,15 +72,18 @@ For the controller (to run Ansible, stateless PXE server, Terraform...):
 For bare metal nodes:
 
 - PXE IPv4 enabled
-- Wake-on-LAN enabled
+- Wake-on-LAN enabled and boot to network mode by default if turned on via Wake-on-LAN
 - Secure boot disabled (optional, depending on the OS)
+- Note their MAC addresses
 
 ### Configurations
+
+Change these configuration files to match your hardware and network setup:
 
 - [Bare metal nodes settings](./metal/hosts.yaml) (IP, MAC...)
 - [OS settings](./metal/group_vars/all.yml) (PXE, network...)
 
-### Building
+### Build
 
 Open the tools container:
 
@@ -93,3 +96,20 @@ Then build the homelab:
 ```sh
 make
 ```
+
+## Roadmap
+
+See [roadmap](./docs/roadmap.md) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
+
+## Contributing
+
+Any contributions you make are greatly appreciated (feature, bug fixes, documentation, grammar or typo fix...).
+
+## License
+
+Distributed under the GPLv3 License. See `LICENSE` for more information.
+
+## Acknowledgements
+
+- ArgoCD usage in [my coworker's homelab](https://github.com/locmai/humble)
+- [README template](https://github.com/othneildrew/Best-README-Template)
