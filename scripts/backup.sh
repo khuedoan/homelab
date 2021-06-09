@@ -1,3 +1,3 @@
 #!/bin/sh
 
-# TODO Simple script to backup everything
+# TODO (feature) Simple script to backup everything

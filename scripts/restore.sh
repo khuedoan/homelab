@@ -1,3 +1,3 @@
 #!/bin/sh
 
-# TODO Simple script to restore everything
+# TODO (feature) Simple script to restore everything
