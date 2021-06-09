@@ -1,11 +1,9 @@
-.venv/
 build/
-metal/secrets/
 terraform-*-tmp-*/
 
 *.log
 .terraform*
-terraform.tfvars
+backend.tfvars
 kube_config.yaml
-private.pem
 terraform.tfstate*
+terraform.tfvars

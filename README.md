@@ -39,18 +39,23 @@
 
 ### Quick explanation
 
-- Enter the tools container, which contains all the neccessary tools (see building instruction bellow)
-- Run `make`
-  - Ansible will render the [configuration file for each bare metal machine (like IP, hostname...) and the PXE server from templates](./metal/roles/pxe-boot/templates)
-  - The tools container will create sibling containers to build a PXE server (includes DHCP, TFTP and HTTP server)
-  - Ansible will [wake the machines up](./metal/roles/pxe-boot/tasks/wake.yml) using Wake on LAN
-  - The machine start the boot process:
-    - BIOS boot in network mode and look for DHCP server
-    - DHCP server point it to the TFTP server to get boot files and boot config
-    - The boot config contains parameter to get [automated OS installation config file](./metal/roles/pxe-boot/templates/http/kickstart/fedora.ks.j2)
-    - The OS get installed and the machine reboots to the new operating system
-  - Terraform will create a Kubernetes [cluster](./infra/cluster.tf) and some install some [Helm chart for bootstrap](./infra/bootstrap.tf)
-  - ArgoCD will install the [applications](./apps/resources)
+A single `make` command will build the following directories (layers):
+
+- Build `./metal` layer:
+  - Ansible renders the configuration file for each bare metal machine (like IP, hostname...) and the PXE server from [templates](./metal/roles/pxe-boot/templates)
+  - The tools container creates sibling containers to build a PXE server (includes DHCP, TFTP and HTTP server)
+  - Ansible [wake the machines up](./metal/roles/pxe-boot/tasks/wake.yml) using Wake on LAN
+  - The machine start the boot process, the OS get installed (through PXE server) and the machine reboots to the new operating system
+  - Ansible performs some basic configuration on the machine (like install Docker)
+  - Ansible creates a Terraform state backend and generates the configuration file for it
+- Build `./infra` layer:
+  - Terraform initialize using the backend configuration generated in the `./metal` layer
+  - Terraform creates a Kubernetes [cluster](./infra/cluster.tf) using RKE
+  - Terraform install some [Helm chart for bootstrap](./infra/bootstrap.tf)
+  - Terraform generate the Kubernetes config file
+- Build `./apps` layer:
+  - Kustomize creates Argo [applications](./apps/resources) using the Kubernetes config file generated in the `./infra` layer
+  - ArgoCD install those applications
 
 ### Layers
 
@@ -58,7 +63,7 @@
 |-------|------------------------|---------------------------------------------------------|---------------------|
 | 0     | [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server |
 | 1     | [infra](./infra)       | Kubernetes clusters                                     | Terraform, Helm     |
-| 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | ArgoCD              |
+| 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | Kustomize, ArgoCD   |
 
 ## Get Started
 

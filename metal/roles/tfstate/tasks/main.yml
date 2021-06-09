@@ -10,6 +10,12 @@
     env:
       ALLOW_NONE_AUTHENTICATION: "yes"
     published_ports:
-      - 23799:2379
+      - "{{ etcd_port }}:2379"
     volumes:
       - tfstate:/bitnami/etcd/data
+
+- name: Generate Terraform backend config
+  delegate_to: localhost
+  template:
+    src: backend.tfvars.j2
+    dest: "{{ playbook_dir }}/../infra/backend.tfvars"

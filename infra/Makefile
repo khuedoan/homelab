@@ -6,7 +6,7 @@ TF_IN_AUTOMATION = true
 default: init apply
 
 init:
-	terraform init -input=false
+	terraform init -input=false -backend-config=backend.tfvars
 
 plan:
 	terraform plan -input=false -out=/tmp/tfplan
