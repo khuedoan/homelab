@@ -1,6 +1,7 @@
 # Roadmap
 
 - [ ] `0.0.3-alpha`:
+  - [x] Generate Terraform backend config automatically
   - [ ] Better PXE boot tooling
   - [ ] Switch to CoreOS
   - [ ] VPN (Wireguard)
