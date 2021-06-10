@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 # System
 - resources/cert-manager.yaml
+- resources/kured.yaml
 - resources/longhorn.yaml
 - resources/metallb.yaml
 - resources/nginx.yaml

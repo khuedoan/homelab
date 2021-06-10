@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kured
+spec:
+  destination:
+    name: in-cluster
+    namespace: kube-system
+    server: ''
+  source:
+    path: ''
+    repoURL: 'https://weaveworks.github.io/kured'
+    targetRevision: 2.6.0
+    chart: kured
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
