@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-problem-detector
+spec:
+  destination:
+    name: in-cluster
+    namespace: kube-system
+    server: ''
+  source:
+    path: ''
+    repoURL: 'https://charts.deliveryhero.io/'
+    targetRevision: 2.0.2
+    chart: node-problem-detector
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
