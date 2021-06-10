@@ -26,5 +26,5 @@ docs:
 apply: metal infra apps
 
 lint:
-	-make -C metal lint
-	-make -C infra lint
+	make -C metal lint
+	make -C infra lint
