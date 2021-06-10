@@ -77,7 +77,7 @@ make
 
 ## Roadmap
 
-See [roadmap](./docs/roadmap.md) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
+See [to-do list](./docs/todo.md), [roadmap](./docs/roadmap.md) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
 
 ## Contributing
 

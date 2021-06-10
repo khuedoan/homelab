@@ -26,5 +26,6 @@ docs:
 apply: metal infra apps
 
 lint:
+	# TODO (feature) Add lint checks for everything
 	make -C metal lint
 	make -C infra lint
