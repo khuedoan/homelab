@@ -1,9 +1,8 @@
 # Bare-metal
 
-- Render PXE boot configs
-- Start Docker based PXE server
-- Turn off all nodes
-- Wake them up using magic packet
-- Install OS using PXE and kickstart
-- Wait for the OS installation to finish and reboot to the new OS
-- Generate/render secrets
+- Ansible renders the configuration file for each bare metal machine (like IP, hostname...) and the PXE server from [templates](./roles/pxe-boot/templates)
+- The tools container creates sibling containers to build a PXE server (includes DHCP, TFTP and HTTP server)
+- Ansible [wake the machines up](./roles/pxe-boot/tasks/wake.yml) using Wake on LAN
+- The machine start the boot process, the OS get installed (through PXE server) and the machine reboots to the new operating system
+- Ansible performs some basic configuration on the machine (like install Docker)
+- Ansible creates a Terraform state backend and generates the configuration file for it

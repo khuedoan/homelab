@@ -6,64 +6,35 @@
 
 ![Hardware](https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG)
 
-- 4 nodes of NEC SFF PC `PC-MK26ECZDR` (Japanese version of the ThinkCentre M700)
-  - CPU: Intel Core i5-6600T
-  - RAM: 16GB
-  - SSD: 128GB
-- TP-Link TL-SG108 switch
-
-## Technology stack
-
-<table>
-  <tr>
-    <td align="center"><a><img src="https://simpleicons.org/icons/ansible.svg" width="100px;"/><br/>Ansible</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/cloudflare.svg" width="100px;"/><br/>Cloudflare</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/docker.svg" width="100px;"/><br/>Docker</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/fedora.svg" width="100px;"/><br/>Fedora</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/gitea.svg" width="100px;"/><br/>Gitea</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/helm.svg" width="100px;"/><br/>Helm</td>
-  </tr>
-  <tr>
-    <td align="center"><a><img src="https://simpleicons.org/icons/kubernetes.svg" width="100px;"/><br/>Kubernetes</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/prometheus.svg" width="100px;"/><br/>Prometheus</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/rancher.svg" width="100px;"/><br/>Rancher</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/terraform.svg" width="100px;"/><br/>Terraform</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/vault.svg" width="100px;"/><br/>Vault</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/wireguard.svg" width="100px;"/><br/>Wireguard</td>
-  </tr>
-  <tr>
-  </tr>
-</table>
+- 4 nodes of NEC SFF `PC-MK26ECZDR` (Japanese version of the ThinkCentre M700):
+  - CPU: `Intel Core i5-6600T @ 2.70GHz`
+  - RAM: `16GB`
+  - SSD: `128GB`
+- TP-Link `TL-SG108` switch:
+  - Ports: `8`
+  - Speed: `1000Mbps`
 
 ## Architecture
 
-### Quick explanation
+A single `make` command will automatically:
 
-A single `make` command will build the following directories (layers):
-
-- Build `./metal` layer:
-  - Ansible renders the configuration file for each bare metal machine (like IP, hostname...) and the PXE server from [templates](./metal/roles/pxe-boot/templates)
-  - The tools container creates sibling containers to build a PXE server (includes DHCP, TFTP and HTTP server)
-  - Ansible [wake the machines up](./metal/roles/pxe-boot/tasks/wake.yml) using Wake on LAN
-  - The machine start the boot process, the OS get installed (through PXE server) and the machine reboots to the new operating system
-  - Ansible performs some basic configuration on the machine (like install Docker)
-  - Ansible creates a Terraform state backend and generates the configuration file for it
-- Build `./infra` layer:
-  - Terraform initialize using the backend configuration generated in the `./metal` layer
-  - Terraform creates a Kubernetes [cluster](./infra/cluster.tf) using RKE
-  - Terraform install some [Helm chart for bootstrap](./infra/bootstrap.tf)
-  - Terraform generate the Kubernetes config file
-- Build `./apps` layer:
-  - Kustomize creates Argo [applications](./apps/resources) using the Kubernetes config file generated in the `./infra` layer
+- Build the `./metal` layer:
+  - Create an ephemeral, stateless PXE server
+  - Install Linux on all servers in parallel
+- Build the `./infra` layer:
+  - Create a Kubernetes [cluster](./infra/cluster.tf) using RKE
+  - Install some [Helm chart for bootstrap](./infra/bootstrap.tf)
+- Build the `./apps` layer:
+  - Kustomize creates Argo [applications](./apps/resources)
   - ArgoCD install those applications
 
-### Layers
+Visit the README file for each layer to learn more.
 
-| Layer | Name                   | Description                                             | Provisioner         |
-|-------|------------------------|---------------------------------------------------------|---------------------|
-| 0     | [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server |
-| 1     | [infra](./infra)       | Kubernetes clusters                                     | Terraform, Helm     |
-| 2     | [apps](./apps)         | Gitea, Vault and more in the future                     | Kustomize, ArgoCD   |
+| Layer                  | Description                                             | Provisioner             |
+|------------------------|---------------------------------------------------------|-------------------------|
+| [metal](./metal)       | Bare metal OS installation, Terraform state backend,... | Ansible, PXE server     |
+| [infra](./infra)       | Kubernetes cluster                                      | Terraform, Helm         |
+| [apps](./apps)         | Gitea, Vault and more in the future                     | Kustomize, ArgoCD, Helm |
 
 ## Get Started
 
@@ -113,6 +84,29 @@ Any contributions you make are greatly appreciated (feature, bug fixes, document
 ## License
 
 Distributed under the GPLv3 License. See `LICENSE` for more information.
+
+## Technology stack
+
+<table>
+  <tr>
+    <td align="center"><a><img src="https://simpleicons.org/icons/ansible.svg" width="50px;"/><br/>Ansible</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/cloudflare.svg" width="50px;"/><br/>Cloudflare</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/docker.svg" width="50px;"/><br/>Docker</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/fedora.svg" width="50px;"/><br/>Fedora</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/gitea.svg" width="50px;"/><br/>Gitea</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/helm.svg" width="50px;"/><br/>Helm</td>
+  </tr>
+  <tr>
+    <td align="center"><a><img src="https://simpleicons.org/icons/kubernetes.svg" width="50px;"/><br/>Kubernetes</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/prometheus.svg" width="50px;"/><br/>Prometheus</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/rancher.svg" width="50px;"/><br/>Rancher</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/terraform.svg" width="50px;"/><br/>Terraform</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/vault.svg" width="50px;"/><br/>Vault</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/wireguard.svg" width="50px;"/><br/>Wireguard</td>
+  </tr>
+  <tr>
+  </tr>
+</table>
 
 ## Acknowledgements
 
