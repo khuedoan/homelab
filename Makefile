@@ -24,3 +24,7 @@ docs:
 
 .PHONY: apply
 apply: metal infra apps
+
+lint:
+	make -C metal lint
+	make -C infra lint

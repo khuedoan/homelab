@@ -5,6 +5,8 @@ COPY ./mirrorlist /etc/pacman.d/mirrorlist
 
 RUN yes | pacman --sync --refresh \
         ansible \
+        ansible-lint \
+        diffutils \
         docker \
         docker-compose \
         git \

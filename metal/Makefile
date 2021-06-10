@@ -11,3 +11,6 @@ shutdown:
 	ansible-playbook \
 		--inventory hosts.yml \
 		shutdown.yml
+
+lint:
+	ansible-lint --project-dir .

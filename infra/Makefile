@@ -16,3 +16,6 @@ apply: plan
 
 destroy:
 	terraform destroy
+
+lint:
+	terraform fmt -recursive -diff -check
