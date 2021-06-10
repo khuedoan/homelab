@@ -16,5 +16,5 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
 
-  wait   = true
+  wait = true
 }

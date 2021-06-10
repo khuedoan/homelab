@@ -1,6 +1,8 @@
 # Homelab
 
-> ⚠️ WORK IN PROGRESS
+```diff
+! ⚠️ WORK IN PROGRESS
+```
 
 ## Hardware
 
