@@ -1,9 +1,6 @@
 - name: Install OS on bare metal machines
   hosts: all
   gather_facts: no
-  vars_prompt:
-    - name: os_password
-      prompt: Enter password for metal nodes
   roles:
     - pxe-boot
 

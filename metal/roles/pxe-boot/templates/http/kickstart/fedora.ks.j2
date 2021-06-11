@@ -34,14 +34,22 @@ services --enabled="chronyd"
 # System timezone
 timezone Asia/Ho_Chi_Minh --utc
 
-# Create user
-user --groups=wheel --name={{ os_username }} --password={{ os_password }}
+# Create user (locked by default)
+user --groups=wheel --name={{ os_username }}
 # Add SSH key
 sshkey --username=root "{{ ssh_public_key }}"
 
+# SELinux
+selinux --disabled
+
+# Firewall
+firewall --disabled
+
 %packages
 @^server-product-environment
-
 %end
+
+# Enable some services for Kubernetes
+services --enable=iscsid
 
 reboot

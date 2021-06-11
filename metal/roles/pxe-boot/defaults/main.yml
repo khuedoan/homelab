@@ -2,4 +2,4 @@ iso_url: "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Server
 iso_checksum: "sha256:0b9dc87d060c7c4ef89f63db6d4d1597dd3feaf4d635ca051d87f5e8c89e8675"
 iso_file_name: "Fedora-Server-dvd-x86_64-34-1.2.iso"
 
-os_username: fedora
+os_username: admin
