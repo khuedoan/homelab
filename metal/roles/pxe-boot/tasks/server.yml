@@ -11,6 +11,7 @@
     - "{{ role_path }}/build"
     - "{{ role_path }}/files/images"
     - "{{ role_path }}/build/mnt"
+    - "{{ role_path }}/build/mnt/EFI/BOOT"
 
 - name: Download ISO
   get_url:
@@ -24,6 +25,13 @@
   command:
     cmd: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/build/mnt"
     creates: "{{ role_path }}/build/mnt/.treeinfo"
+
+- name: Extract bootloader
+  iso_extract:
+    image: "{{ role_path }}/build/mnt/images/efiboot.img"
+    dest: "{{ role_path }}/build/mnt/EFI/BOOT"
+    files:
+      - EFI/fedora/grubx64.efi
 
 - name: Copy configs
   copy:
