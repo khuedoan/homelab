@@ -1,6 +1,6 @@
 set timeout=1
 
 menuentry 'CoreOS (Live)' {
-    linux vmlinuz ip=dhcp mitigations=auto,nosmt coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}/Fedora/images/pxeboot/rootfs.img ignition.firstboot ignition.platform.id=metal coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}/kickstart/init.json coreos.inst.install_dev=/dev/{{ disk }}
+    linux vmlinuz ip=dhcp coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}/Fedora/images/pxeboot/rootfs.img ignition.firstboot ignition.platform.id=metal coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}/kickstart/init.json coreos.inst.install_dev=/dev/{{ disk }}
     initrd initrd.img ignition.img
 }
