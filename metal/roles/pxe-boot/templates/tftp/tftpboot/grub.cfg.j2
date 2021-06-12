@@ -1,11 +1,11 @@
 set timeout=1
 
-menuentry 'CoreOS (Live)' {
+menuentry '{{ os_name }} (Live)' {
     linux vmlinuz \
         ip=dhcp \
         ignition.platform.id=metal \
-        coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}/Fedora/images/pxeboot/rootfs.img \
+        coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}/{{ os_name }}/images/pxeboot/rootfs.img \
         coreos.inst.install_dev=/dev/{{ disk }} \
-        coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}/kickstart/init.json
+        coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}/ignition/ignition.json
     initrd initrd.img ignition.img
 }

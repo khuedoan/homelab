@@ -9,12 +9,20 @@ services:
     network_mode: host
     volumes:
       - ./mnt/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
+      - ./mnt/images/ignition.img:/var/lib/tftpboot/ignition.img
       - ./mnt/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
       - ./mnt/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
   http:
     build: ./http
     network_mode: host
     volumes:
-      - ./mnt:/usr/share/nginx/html/Fedora
+      - ./mnt:/usr/share/nginx/html/CoreOS
+      - ./http/ignition/:/usr/share/nginx/html/ignition
     environment:
       NGINX_PORT: 80
+  butane:
+    image: quay.io/coreos/butane:release
+    volumes:
+      - ./http/ignition/:/local/src
+    working_dir: /local/src
+    command: --pretty --strict ignition.yaml --output ignition.json
