@@ -9,13 +9,13 @@
     state: directory
   loop:
     - "{{ role_path }}/build"
-    - "{{ role_path }}/build/images"
+    - "{{ role_path }}/files/images"
     - "{{ role_path }}/build/mnt"
 
 - name: Download ISO
   get_url:
     url: "{{ iso_url }}"
-    dest: "{{ role_path }}/build/images/{{ iso_file_name }}"
+    dest: "{{ role_path }}/files/images/{{ iso_file_name }}"
     checksum: "{{ iso_checksum }}"
   delegate_to: localhost
   register: iso
