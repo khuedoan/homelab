@@ -11,7 +11,6 @@
     - "{{ role_path }}/build"
     - "{{ role_path }}/files/images"
     - "{{ role_path }}/build/mnt"
-    - "{{ role_path }}/build/mnt/EFI/BOOT"
 
 - name: Download ISO
   get_url:
@@ -29,7 +28,7 @@
 - name: Extract bootloader
   iso_extract:
     image: "{{ role_path }}/build/mnt/images/efiboot.img"
-    dest: "{{ role_path }}/build/mnt/EFI/BOOT"
+    dest: "{{ role_path }}/build/mnt/EFI/fedora"
     files:
       - EFI/fedora/grubx64.efi
 
