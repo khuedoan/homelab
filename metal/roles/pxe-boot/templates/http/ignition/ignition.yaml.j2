@@ -14,6 +14,20 @@ storage:
       mode: 0644
       contents:
         inline: {{ hostvars[item]['inventory_hostname'] }}
+    - path: /etc/NetworkManager/system-connections/{{ network_interface }}.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id={{ network_interface }}
+          type=ethernet
+          interface-name={{ network_interface }}
+          permissions=
+          [ipv4]
+          address1={{ hostvars[item]['ansible_host'] }}/24,{{ ansible_default_ipv4.gateway }}
+          dns={{ dns_server }};
+          dns-search=
+          method=manual
   # Set timezone
   links:
     - path: /etc/localtime
