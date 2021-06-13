@@ -20,9 +20,3 @@ services:
       - ./http/ignition/:/usr/share/nginx/html/ignition
     environment:
       NGINX_PORT: 80
-  butane:
-    image: quay.io/coreos/butane:release
-    volumes:
-      - ./http/ignition/:/local/src
-    working_dir: /local/src
-    command: --pretty --strict ignition.yaml --output ignition.json
