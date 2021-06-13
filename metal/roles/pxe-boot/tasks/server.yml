@@ -53,6 +53,22 @@
     dest: "{{ role_path }}/build/http/ignition/{{ hostvars[item]['mac'] }}.yaml"
   loop: "{{ groups['metal'] }}"
 
+- name: Render Ignition config from Butane config
+  docker_container:
+    name: butane
+    image: quay.io/coreos/butane:release
+    auto_remove: yes
+    volumes:
+      - "{{ role_path }}/build/http/ignition:/local/src"
+    working_dir: /local/src
+    command:
+      - --pretty
+      - --strict
+      - "{{ hostvars[item]['mac'] }}.yaml"
+      - --output
+      - "{{ hostvars[item]['mac'] }}.json"
+  loop: "{{ groups['metal'] }}"
+
 - name: Start ephemeral PXE server
   docker_compose:
     project_src: "{{ role_path }}/build"
@@ -61,4 +77,4 @@
     build: yes
     recreate: always
   notify:
-    - Stop PXE server
+    - Stop ephemeral PXE server
