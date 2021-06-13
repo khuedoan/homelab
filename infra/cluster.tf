@@ -53,6 +53,9 @@ resource "rke_cluster" "cluster" {
     options = {
       canal_flex_volume_plugin_dir = "/opt/kubernetes/kubelet-plugins/volume/exec/nodeagent~uds"
       flannel_backend_type         = "vxlan"
+      canal_flannel_backend_port   = "8472"
+      canal_flannel_backend_type   = "vxlan"
+      canal_flannel_backend_vni    = "1"
     }
   }
 
