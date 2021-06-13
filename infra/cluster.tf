@@ -46,6 +46,23 @@ resource "rke_cluster" "cluster" {
   ingress {
     provider = "none"
   }
+
+  # For CoreOS
+  network {
+    plugin = "canal"
+    options = {
+      canal_flex_volume_plugin_dir = "/opt/kubernetes/kubelet-plugins/volume/exec/nodeagent~uds"
+      flannel_backend_type = "vxlan"
+    }
+  }
+
+  services {
+    kube_controller {
+      extra_args = {
+        flex-volume-plugin-dir = "/opt/kubernetes/kubelet-plugins/volume/exec/"
+      }
+    }
+  }
 }
 
 resource "local_file" "kube_config_yaml" {
