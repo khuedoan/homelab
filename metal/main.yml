@@ -4,11 +4,6 @@
   roles:
     - pxe-boot
 
-- name: Provision
-  hosts: metal
-  roles:
-    - docker
-
 - name: Create Terraform state storage
   hosts: metal[0]
   roles:

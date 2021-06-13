@@ -1,9 +1,0 @@
-- name: Install Docker
-  dnf:
-    name: docker
-
-- name: Start Docker service
-  systemd:
-    name: docker
-    state: started
-    enabled: yes
