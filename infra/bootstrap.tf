@@ -8,15 +8,13 @@ provider "helm" {
 }
 
 resource "helm_release" "argocd" {
-  name       = "argocd"
-  repository = "https://argoproj.github.io/argo-helm"
-  chart      = "argo-cd"
-  version    = "3.1.2"
-
+  name             = "argocd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  version          = "3.6.8"
   namespace        = "argocd"
   create_namespace = true
-
-  wait = true
+  wait             = true
 }
 
 resource "helm_release" "longhorn" {
