@@ -49,7 +49,7 @@
 
 - name: Render machine specific Butane config
   template:
-    src: http/ignition/ignition.yaml
+    src: http/ignition/ignition.yaml.j2
     dest: "{{ role_path }}/build/http/ignition/{{ hostvars[item]['mac'] }}.yaml"
   loop: "{{ groups['metal'] }}"
 
