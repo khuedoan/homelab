@@ -47,15 +47,10 @@
     src: tftp/tftpboot/grub.cfg.j2
     dest: "{{ role_path }}/build/tftp/tftpboot/grub.cfg"
 
-- name: Render shared kickstart config
+- name: Render machine specific Butane config
   template:
-    src: http/kickstart/fedora.ks.j2
-    dest: "{{ role_path }}/build/http/kickstart/fedora.ks"
-
-- name: Render seperate network kickstart config for each node
-  template:
-    src: http/kickstart/network/network.ks.j2
-    dest: "{{ role_path }}/build/http/kickstart/network/{{ hostvars[item]['mac'] }}.ks"
+    src: http/ignition/ignition.yaml
+    dest: "{{ role_path }}/build/http/ignition/{{ hostvars[item]['mac'] }}.yaml"
   loop: "{{ groups['metal'] }}"
 
 - name: Start ephemeral PXE server

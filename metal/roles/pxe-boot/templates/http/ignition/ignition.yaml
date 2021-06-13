@@ -4,7 +4,7 @@ passwd:
   users:
     - name: core
       ssh_authorized_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbqNJWKwLmwkeHQVUVT/pEis/wvRqRSKG9Dpl166NGp # TODO template
+        - {{ ssh_public_key }}
 
 storage:
   # Set hostname
@@ -12,7 +12,7 @@ storage:
     - path: /etc/hostname
       mode: 0644
       contents:
-        inline: metal3 # TODO template
+        inline: {{ hostvars[item]['inventory_hostname'] }}
   # Set timezone
   links:
     - path: /etc/localtime
