@@ -6,7 +6,6 @@ resources:
 - resources/cert-manager.yaml
 - resources/descheduler.yaml
 - resources/kured.yaml
-- resources/longhorn.yaml
 - resources/metallb.yaml
 - resources/nginx.yaml
 - resources/node-problem-detector.yaml

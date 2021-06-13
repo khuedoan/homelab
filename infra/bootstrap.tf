@@ -16,3 +16,13 @@ resource "helm_release" "argocd" {
   create_namespace = true
   wait             = true
 }
+
+resource "helm_release" "longhorn" {
+  name             = "longhorn"
+  repository       = "https://charts.longhorn.io"
+  chart            = "longhorn"
+  version          = "1.1.1"
+  namespace        = "longhorn"
+  create_namespace = true
+  wait             = true
+}
