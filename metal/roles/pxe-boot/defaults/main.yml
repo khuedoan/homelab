@@ -1,5 +1,8 @@
-iso_url: "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Server/x86_64/iso/Fedora-Server-dvd-x86_64-34-1.2.iso"
-iso_checksum: "sha256:0b9dc87d060c7c4ef89f63db6d4d1597dd3feaf4d635ca051d87f5e8c89e8675"
-iso_file_name: "Fedora-Server-dvd-x86_64-34-1.2.iso"
+iso_url: "https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/34.20210518.3.0/x86_64/fedora-coreos-34.20210518.3.0-live.x86_64.iso"
+iso_checksum: "sha256:acbf3cd5b25da7a1fb6862485a6a38064dd8f14dc0398137d371abb9b148eaed"
+iso_file_name: "fedora-coreos-34.20210518.3.0-live.x86_64.iso"
 
 os_username: admin
+os_name: CoreOS
+# TODO (optimize) Get timezone automatically from the controller
+timezone: Asia/Ho_Chi_Minh

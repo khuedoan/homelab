@@ -13,6 +13,7 @@ RUN yes | pacman --sync --refresh \
         kubectl \
         libisoburn \
         make \
+        p7zip \
         python \
         python-netaddr \
         terraform \

@@ -1,0 +1,64 @@
+variant: fcos
+version: 1.3.0
+
+passwd:
+  users:
+    - name: root
+      ssh_authorized_keys:
+        - {{ ssh_public_key }}
+
+storage:
+  # Set hostname
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: {{ hostvars[item]['inventory_hostname'] }}
+    - path: /etc/NetworkManager/system-connections/{{ network_interface }}.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id={{ network_interface }}
+          type=ethernet
+          interface-name={{ network_interface }}
+          permissions=
+          [ipv4]
+          # TODO
+          address1={{ hostvars[item]['ansible_host'] }}/24,{{ ansible_default_ipv4.gateway }}
+          dns={{ dns_server }};
+          dns-search=
+          method=manual
+  # Set timezone
+  links:
+    - path: /etc/localtime
+      target: /usr/share/zoneinfo/{{ timezone }}
+
+systemd:
+  units:
+    - name: iscsid.service
+      enabled: true
+{% if item == "metal0" %}
+    - name: tfstate.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Run etcd for Terraform state backend
+        After=network-online.target
+        Wants=network-online.target
+
+        [Service]
+        ExecStartPre=-/usr/bin/docker kill tfstate
+        ExecStartPre=-/usr/bin/docker rm tfstate
+        ExecStart=/usr/bin/docker run --name tfstate \
+                    --volume tfstate:/bitnami/etcd/data \
+                    --env ALLOW_NONE_AUTHENTICATION=yes \
+                    --publish 23799:2379 \
+                    --restart always \
+                    bitnami/etcd
+        ExecStop=/usr/bin/docker stop tfstate
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
+{% endif %}

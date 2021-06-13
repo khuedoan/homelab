@@ -1,6 +1,11 @@
-set timeout=5
+set timeout=1
 
-menuentry 'Fedora' {
-  linuxefi vmlinuz ip=dhcp inst.repo=http://{{ ansible_default_ipv4.address }}/Fedora inst.ks=http://{{ ansible_default_ipv4.address }}/kickstart/fedora.ks
-  initrdefi initrd.img
+menuentry '{{ os_name }} (Live)' {
+    linux vmlinuz \
+        ip=dhcp \
+        ignition.platform.id=metal \
+        coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}/{{ os_name }}/images/pxeboot/rootfs.img \
+        coreos.inst.install_dev=/dev/{{ disk }} \
+        coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}/ignition/${net_default_mac}.json
+    initrd initrd.img ignition.img
 }

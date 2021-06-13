@@ -25,6 +25,13 @@
     cmd: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/build/mnt"
     creates: "{{ role_path }}/build/mnt/.treeinfo"
 
+- name: Extract bootloader
+  iso_extract:
+    image: "{{ role_path }}/build/mnt/images/efiboot.img"
+    dest: "{{ role_path }}/build/mnt/EFI/fedora"
+    files:
+      - EFI/fedora/grubx64.efi
+
 - name: Copy configs
   copy:
     src: "{{ role_path }}/templates/"
@@ -40,18 +47,29 @@
     src: tftp/tftpboot/grub.cfg.j2
     dest: "{{ role_path }}/build/tftp/tftpboot/grub.cfg"
 
-- name: Render shared kickstart config
+- name: Render machine specific Butane config
   template:
-    src: http/kickstart/fedora.ks.j2
-    dest: "{{ role_path }}/build/http/kickstart/fedora.ks"
-
-- name: Render seperate network kickstart config for each node
-  template:
-    src: http/kickstart/network/network.ks.j2
-    dest: "{{ role_path }}/build/http/kickstart/network/{{ hostvars[item]['mac'] }}.ks"
+    src: http/ignition/ignition.yaml.j2
+    dest: "{{ role_path }}/build/http/ignition/{{ hostvars[item]['mac'] }}.yaml"
   loop: "{{ groups['metal'] }}"
 
-- name: Start PXE server
+- name: Render Ignition config from Butane config
+  docker_container:
+    name: butane
+    image: quay.io/coreos/butane:release
+    auto_remove: yes
+    volumes:
+      - "{{ role_path }}/build/http/ignition:/local/src"
+    working_dir: /local/src
+    command:
+      - --pretty
+      - --strict
+      - "{{ hostvars[item]['mac'] }}.yaml"
+      - --output
+      - "{{ hostvars[item]['mac'] }}.json"
+  loop: "{{ groups['metal'] }}"
+
+- name: Start ephemeral PXE server
   docker_compose:
     project_src: "{{ role_path }}/build"
     state: present
@@ -59,4 +77,4 @@
     build: yes
     recreate: always
   notify:
-    - Stop PXE server
+    - Stop ephemeral PXE server
