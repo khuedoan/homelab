@@ -12,4 +12,8 @@ storage:
     - path: /etc/hostname
       mode: 0644
       contents:
-        inline: metal3
+        inline: metal3 # TODO template
+  # Set timezone
+  links:
+    - path: /etc/localtime
+      target: ../usr/share/zoneinfo/Asia/Ho_Chi_Minh # TODO template
