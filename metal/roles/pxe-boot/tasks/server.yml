@@ -58,7 +58,7 @@
     dest: "{{ role_path }}/build/http/kickstart/network/{{ hostvars[item]['mac'] }}.ks"
   loop: "{{ groups['metal'] }}"
 
-- name: Start PXE server
+- name: Start ephemeral PXE server
   docker_compose:
     project_src: "{{ role_path }}/build"
     state: present
