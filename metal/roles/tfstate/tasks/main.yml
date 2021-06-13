@@ -1,18 +1,9 @@
-- name: Install Python library for the Docker
-  dnf:
-    name: python-docker
-
-- name: Create etcd container
-  docker_container:
-    name: etcd-tfstate
-    image: bitnami/etcd
-    restart_policy: always
-    env:
-      ALLOW_NONE_AUTHENTICATION: "yes"
-    published_ports:
-      - "{{ etcd_port }}:2379"
-    volumes:
-      - tfstate:/bitnami/etcd/data
+- name: Wait for etcd
+  wait_for:
+    port: 23799
+    host: '{{ ansible_ssh_host }}'
+    # search_regex: OpenSSH
+  connection: local
 
 - name: Generate Terraform backend config
   delegate_to: localhost

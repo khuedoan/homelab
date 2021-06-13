@@ -38,3 +38,27 @@ systemd:
   units:
     - name: iscsid.service
       enabled: true
+{% if item == "metal0" %}
+    - name: tfstate.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Run etcd for Terraform state backend
+        After=network-online.target
+        Wants=network-online.target
+
+        [Service]
+        ExecStartPre=-/usr/bin/docker kill tfstate
+        ExecStartPre=-/usr/bin/docker rm tfstate
+        ExecStart=/usr/bin/docker run --name tfstate \
+                    --volume tfstate:/bitnami/etcd/data \
+                    --env ALLOW_NONE_AUTHENTICATION=yes \
+                    --publish 23799:2379 \
+                    --restart always \
+                    bitnami/etcd
+        ExecStop=/usr/bin/docker stop tfstate
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
+{% endif %}

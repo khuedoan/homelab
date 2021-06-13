@@ -6,5 +6,6 @@
 
 - name: Create Terraform state storage
   hosts: metal[0]
+  gather_facts: no
   roles:
     - tfstate
