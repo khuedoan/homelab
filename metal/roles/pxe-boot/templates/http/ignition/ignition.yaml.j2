@@ -24,6 +24,7 @@ storage:
           interface-name={{ network_interface }}
           permissions=
           [ipv4]
+          # TODO
           address1={{ hostvars[item]['ansible_host'] }}/24,{{ ansible_default_ipv4.gateway }}
           dns={{ dns_server }};
           dns-search=
@@ -32,3 +33,8 @@ storage:
   links:
     - path: /etc/localtime
       target: /usr/share/zoneinfo/{{ timezone }}
+
+systemd:
+  units:
+    - name: iscsid.service
+      enabled: true
