@@ -4,3 +4,5 @@ iso_file_name: "fedora-coreos-34.20210518.3.0-live.x86_64.iso"
 
 os_username: admin
 os_name: CoreOS
+# TODO (optimize) Get timezone automatically from the controller
+timezone: Asia/Ho_Chi_Minh

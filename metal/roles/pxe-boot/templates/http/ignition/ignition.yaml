@@ -17,4 +17,4 @@ storage:
   # Set timezone
   links:
     - path: /etc/localtime
-      target: ../usr/share/zoneinfo/Asia/Ho_Chi_Minh # TODO template
+      target: ../usr/share/zoneinfo/{{ timezone }}
