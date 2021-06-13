@@ -2,8 +2,9 @@
 
 - [ ] `0.0.3-alpha`:
   - [x] Generate Terraform backend config automatically
-  - [ ] Better PXE boot tooling
-  - [ ] Switch to CoreOS
+  - [x] Switch to CoreOS
+  - [ ] Better PXE boot setup
+- [ ] `0.0.4-alpha`:
   - [ ] VPN (Wireguard)
   - [ ] Access the lab from the internet via VPN
   - [ ] Container registry
