@@ -4,4 +4,12 @@ passwd:
   users:
     - name: core
       ssh_authorized_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbqNJWKwLmwkeHQVUVT/pEis/wvRqRSKG9Dpl166NGp
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbqNJWKwLmwkeHQVUVT/pEis/wvRqRSKG9Dpl166NGp # TODO template
+
+storage:
+  # Set hostname
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: metal3
