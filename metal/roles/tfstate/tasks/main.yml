@@ -2,7 +2,6 @@
   wait_for:
     port: 23799
     host: '{{ ansible_ssh_host }}'
-    # search_regex: OpenSSH
   connection: local
 
 - name: Generate Terraform backend config
