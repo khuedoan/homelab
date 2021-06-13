@@ -10,7 +10,7 @@ spec:
   source:
     path: ''
     repoURL: 'https://kubernetes-sigs.github.io/descheduler/'
-    targetRevision: 0.21.0
+    targetRevision: 0.20.0
     chart: descheduler
   project: default
   syncPolicy:
