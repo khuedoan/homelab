@@ -25,8 +25,7 @@ storage:
           interface-name={{ network_interface }}
           permissions=
           [ipv4]
-          # TODO
-          address1={{ hostvars[item]['ansible_host'] }}/24,{{ ansible_default_ipv4.gateway }}
+          address1={{ (hostvars[item]['ansible_host'] + '/' + ansible_default_ipv4.netmask) | ansible.netcommon.ipaddr('host/prefix') }},{{ ansible_default_ipv4.gateway }}
           dns={{ dns_server }};
           dns-search=
           method=manual
