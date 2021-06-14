@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: TODO
+spec:
+  destination:
+    name: in-cluster
+    namespace: TODO
+    server: ''
+  source:
+    path: ''
+    repoURL: 'TODO'
+    targetRevision: TODO
+    chart: TODO
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
