@@ -1,0 +1,4 @@
+#!/bin/sh
+
+make docs
+git add docs
