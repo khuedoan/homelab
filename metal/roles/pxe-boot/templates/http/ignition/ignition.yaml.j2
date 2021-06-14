@@ -8,17 +8,12 @@ passwd:
         - {{ ssh_public_key }}
 
 storage:
-  disks:
-    wipeTable: true
-  filesystems:
-    wipeFilesystem: true
+  # Set hostname
   files:
-    # Set hostname
     - path: /etc/hostname
       mode: 0644
       contents:
         inline: {{ hostvars[item]['inventory_hostname'] }}
-    # Set static IP
     - path: /etc/NetworkManager/system-connections/{{ network_interface }}.nmconnection
       mode: 0600
       contents:
@@ -34,8 +29,8 @@ storage:
           dns={{ dns_server }};
           dns-search=
           method=manual
+  # Set timezone
   links:
-    # Set timezone
     - path: /etc/localtime
       target: /usr/share/zoneinfo/{{ timezone }}
 
