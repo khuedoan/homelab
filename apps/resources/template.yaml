@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: TODO
+  name: CHARTNAME
 spec:
   destination:
     name: in-cluster
-    namespace: TODO
+    namespace: NAMESPACE
     server: ''
   source:
     path: ''
-    repoURL: 'TODO'
-    targetRevision: TODO
-    chart: TODO
+    repoURL: 'CHARTREPO'
+    targetRevision: CHARTVERSION
+    chart: CHARTNAME
   project: default
   syncPolicy:
     automated:
