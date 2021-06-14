@@ -42,7 +42,7 @@ Visit the README file for each layer to learn more.
 
 ### Prerequisite
 
-For the controller (to run Ansible, stateless PXE server, Terraform...):
+For the controller (your laptop or desktop):
 
 - SSH keys in `~/.ssh/{id_ed25519,id_ed25519.pub}` (you can generate it with `ssh-keygen -t ed25519`)
 - Docker with `host` networking driver (which means [only Docker on Linux hosts](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows)

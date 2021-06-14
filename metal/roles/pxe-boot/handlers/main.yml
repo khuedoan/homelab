@@ -1,4 +1,0 @@
-- name: Stop ephemeral PXE server
-  docker_compose:
-    project_src: "{{ role_path }}/build"
-    state: absent

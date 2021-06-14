@@ -37,9 +37,11 @@ storage:
 
 systemd:
   units:
+    # iSCSI for Longhorn distributed block storage
     - name: iscsid.service
       enabled: true
 {% if item == "metal0" %}
+    # Terraform state backend
     - name: tfstate.service
       enabled: true
       contents: |

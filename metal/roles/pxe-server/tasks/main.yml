@@ -17,7 +17,6 @@
     url: "{{ iso_url }}"
     dest: "{{ role_path }}/files/images/{{ iso_file_name }}"
     checksum: "{{ iso_checksum }}"
-  delegate_to: localhost
   register: iso
 
 - name: Extract the ISO
@@ -76,5 +75,3 @@
     restarted: yes
     build: yes
     recreate: always
-  notify:
-    - Stop ephemeral PXE server

@@ -8,4 +8,4 @@
     host: '{{ ansible_host }}'
     port: 22
     search_regex: OpenSSH
-  connection: local
+  delegate_to: localhost
