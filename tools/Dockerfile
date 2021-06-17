@@ -16,7 +16,4 @@ RUN yes | pacman --sync --refresh \
         p7zip \
         python \
         python-netaddr \
-        terraform \
-        zsh
-
-CMD [ "/bin/zsh" ]
+        terraform
