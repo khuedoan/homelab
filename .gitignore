@@ -2,6 +2,7 @@ build/
 terraform-*-tmp-*/
 
 *.iso
+*.jpg
 *.log
 .terraform*
 backend.tfvars
