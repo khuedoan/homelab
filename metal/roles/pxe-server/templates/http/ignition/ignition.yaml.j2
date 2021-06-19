@@ -29,6 +29,11 @@ storage:
           dns={{ dns_server }};
           dns-search=
           method=manual
+    # Make audit logs less verbose
+    - path: /etc/sysctl.d/20-silence-audit.conf
+      contents:
+        inline: |
+          kernel.printk=4
   links:
     # Set timezone
     - path: /etc/localtime
