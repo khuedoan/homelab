@@ -8,9 +8,13 @@ from diagrams.onprem.container import Docker
 from diagrams.onprem.gitops import ArgoCD
 from diagrams.onprem.iac import Ansible, Terraform
 
-with Diagram("Provision (sperated by logical layers)", outformat="jpg", show=False):
-    controller = Client("Controller (PC or laptop)")
-    bare_metal_machines = Server(f"Bare metal machine(s)")
+graph_attr = {
+    "pad": "0"
+}
+
+with Diagram("Provision (sperated by logical layers)", graph_attr=graph_attr, outformat="jpg", show=False):
+    controller = Client("Initial controller")
+    bare_metal_machines = Server(f"Server(s)")
 
     with Cluster("./metal"):
         ansible = Ansible("Ansible")
