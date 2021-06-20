@@ -34,6 +34,14 @@ storage:
       contents:
         inline: |
           kernel.printk=4
+    # Fix flannel support
+    - path: /etc/systemd/network/50-flannel.link
+      contents:
+        inline: |
+          [Match]
+          OriginalName=flannel*
+          [Link]
+          MACAddressPolicy=none
   links:
     # Set timezone
     - path: /etc/localtime
