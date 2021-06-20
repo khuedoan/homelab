@@ -18,7 +18,7 @@
 
 ## Architecture
 
-![Provision](https://user-images.githubusercontent.com/27996771/122675504-ed208b80-d203-11eb-8bfb-6d3d052fd2a9.jpg)
+![Provision](https://user-images.githubusercontent.com/27996771/122676008-2eb23600-d206-11eb-8275-fb5d99bc8515.jpg)
 
 A single `make` command will automatically:
 
