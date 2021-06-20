@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.3-alpha
+
+- Generate Terraform backend config automatically
+- Switch to CoreOS
+- Better PXE boot setup
+- Diagrams as code
+
 ## 0.0.2-alpha
 
 - Ensure idempotency for bare metal provisioning

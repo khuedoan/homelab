@@ -1,10 +1,5 @@
 # Roadmap
 
-- [ ] `0.0.3-alpha`:
-  - [x] Generate Terraform backend config automatically
-  - [x] Switch to CoreOS
-  - [x] Better PXE boot setup
-  - [x] Diagrams as code
 - [ ] `0.0.4-alpha`:
   - [ ] VPN (Wireguard)
   - [ ] Access the lab from the internet via VPN
