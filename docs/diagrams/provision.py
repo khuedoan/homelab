@@ -8,7 +8,7 @@ from diagrams.onprem.container import Docker
 from diagrams.onprem.gitops import ArgoCD
 from diagrams.onprem.iac import Ansible, Terraform
 
-with Diagram("Provision (sperated by logical layers)", outformat="jpg"):
+with Diagram("Provision (sperated by logical layers)", outformat="jpg", show=False):
     controller = Client("Controller (PC or laptop)")
     bare_metal_machines = Server(f"Bare metal machine(s)")
 
