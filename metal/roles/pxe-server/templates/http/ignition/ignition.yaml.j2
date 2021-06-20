@@ -44,6 +44,36 @@ systemd:
     # iSCSI for Longhorn distributed block storage
     - name: iscsid.service
       enabled: true
+    # TODO (bug) ostree-remount bug workaround
+    - name: ostree-remount.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=OSTree Remount OS/ Bind Mounts
+        Documentation=man:ostree(1)
+        DefaultDependencies=no
+        ConditionKernelCommandLine=ostree
+        OnFailure=emergency.target
+        Conflicts=umount.target
+        # Run after core mounts
+        After=-.mount var.mount
+        After=systemd-remount-fs.service
+        # But we run *before* most other core bootup services that need write access to /etc and /var
+        Before=local-fs.target umount.target
+        Before=systemd-random-seed.service plymouth-read-write.service systemd-journal-flush.service
+        Before=systemd-tmpfiles-setup.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStartPre=/usr/bin/sleep 10
+        ExecStart=/usr/lib/ostree/ostree-remount
+        StandardInput=null
+        StandardOutput=journal
+        StandardError=journal+console
+
+        [Install]
+        WantedBy=local-fs.target
 {% if item == "metal0" %}
     # Terraform state backend
     - name: tfstate.service
