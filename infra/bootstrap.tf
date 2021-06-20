@@ -15,6 +15,7 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   wait             = true
+  timeout          = 600
 }
 
 resource "helm_release" "longhorn" {
@@ -25,4 +26,5 @@ resource "helm_release" "longhorn" {
   namespace        = "longhorn"
   create_namespace = true
   wait             = true
+  timeout          = 600
 }
