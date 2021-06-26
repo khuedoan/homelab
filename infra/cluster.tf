@@ -3,9 +3,9 @@ provider "rke" {
 }
 
 locals {
-  hosts   = yamldecode(file("../metal/hosts.yml"))
-  user    = local.hosts.metal.vars.ansible_user
-  ssh_key = file(local.hosts.metal.vars.ansible_ssh_private_key_file)
+  hosts        = yamldecode(file("../metal/hosts.yml"))
+  user         = local.hosts.metal.vars.ansible_user
+  ssh_key_path = local.hosts.metal.vars.ansible_ssh_private_key_file
 }
 
 resource "rke_cluster" "cluster" {
@@ -24,7 +24,7 @@ resource "rke_cluster" "cluster" {
         "etcd",
         "worker"
       ]
-      ssh_key = local.ssh_key
+      ssh_key_path = local.ssh_key_path
     }
   }
 
@@ -39,7 +39,7 @@ resource "rke_cluster" "cluster" {
       role = [
         "worker"
       ]
-      ssh_key = local.ssh_key
+      ssh_key_path = local.ssh_key_path
     }
   }
 
