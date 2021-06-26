@@ -1,0 +1,9 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: infra
+  image: hashicorp/terraform:1.0.0
+  commands:
+  - plan
