@@ -21,7 +21,7 @@
 
 - name: Extract the ISO
   command:
-    cmd: "7z x {{ iso.dest }} -o{{ role_path }}/build/mnt -y"
+    cmd: "7z x {{ iso.dest }} -o{{ role_path }}/build/mnt"
     creates: "{{ role_path }}/build/mnt/.treeinfo"
 
 - name: Extract bootloader
