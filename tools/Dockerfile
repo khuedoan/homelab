@@ -11,7 +11,6 @@ RUN yes | pacman --sync --refresh \
         docker-compose \
         git \
         kubectl \
-        libisoburn \
         make \
         p7zip \
         python \
