@@ -10,7 +10,10 @@ resources:
 - resources/nginx.yaml
 - resources/node-problem-detector.yaml
 - resources/prometheus.yaml
+# Operation
 - resources/vault.yaml
+- resources/drone.yaml
+- resources/drone-kube-runner.yaml
 # Applications
 - resources/gitea.yaml
 - resources/wireguard.yaml
