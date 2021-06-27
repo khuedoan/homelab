@@ -16,6 +16,10 @@ resource "helm_release" "argocd" {
   create_namespace = true
   wait             = true
   timeout          = 600
+
+  values = [
+    file("${path.module}/values/argocd.yaml")
+  ]
 }
 
 resource "helm_release" "longhorn" {
