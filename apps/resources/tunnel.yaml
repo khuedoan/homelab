@@ -31,10 +31,16 @@ spec:
         - name: config
           mountPath: /etc/cloudflared/config
           readOnly: true
+        - name: certs
+          mountPath: /etc/cloudflared
+          readOnly: true
         - name: creds
           mountPath: /etc/cloudflared/creds
           readOnly: true
       volumes:
+      - name: certs
+        secret:
+          secretName: tunnel-certificates
       - name: creds
         secret:
           secretName: tunnel-credentials
@@ -51,11 +57,13 @@ metadata:
   name: cloudflared
 data:
   config.yaml: |
-    tunnel: test-tunnel
+    tunnel: homelab
     credentials-file: /etc/cloudflared/creds/credentials.json
     metrics: 0.0.0.0:2000
     no-autoupdate: true
     ingress:
     - hostname: git.khuedoan.com
-      service: http://git:80
+      service: http://192.168.1.150
+    - hostname: drone.khuedoan.com
+      service: http://192.168.1.150
     - service: http_status:404
