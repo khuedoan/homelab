@@ -15,7 +15,7 @@ spec:
     helm:
       parameters:
         - name: replicaCount
-          value: 3
+          value: '3'
   project: default
   syncPolicy:
     automated:
