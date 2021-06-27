@@ -10,6 +10,7 @@ resources:
 - resources/nginx.yaml
 - resources/node-problem-detector.yaml
 - resources/prometheus.yaml
+- resources/cloudflared.yaml
 # Operation
 - resources/vault.yaml
 - resources/drone.yaml
