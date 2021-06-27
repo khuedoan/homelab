@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: drone-kube-runner
+  name: drone-runner-kube
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -10,8 +10,14 @@ spec:
     namespace: drone
   source:
     repoURL: https://charts.drone.io
-    chart: drone-kube-runner
+    chart: drone-runner-kube
     targetRevision: 0.1.5
+    helm:
+      parameters:
+        - name: 'rbac.buildNamespaces[0]'
+          value: drone
+        - name: env.DRONE_NAMESPACE_DEFAULT
+          value: drone
   project: default
   syncPolicy:
     automated:

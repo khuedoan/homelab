@@ -13,7 +13,7 @@ resources:
 # Operation
 - resources/vault.yaml
 - resources/drone.yaml
-- resources/drone-kube-runner.yaml
+- resources/drone-runner-kube.yaml
 # Applications
 - resources/gitea.yaml
 - resources/wireguard.yaml
