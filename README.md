@@ -77,6 +77,8 @@ Then build the homelab:
 make
 ```
 
+Optionally [create a Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/tutorials/many-cfd-one-tunnel) to expose your services to the internet if you don't have port forwarding.
+
 ## Roadmap
 
 See [to-do list](./docs/todo.md), [roadmap](./docs/roadmap.md) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
