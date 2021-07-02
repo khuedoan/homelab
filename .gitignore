@@ -1,3 +1,4 @@
+book/
 build/
 terraform-*-tmp-*/
 

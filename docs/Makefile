@@ -1,5 +1,7 @@
 .POSIX:
 
+default: book
+
 .PHONY: todo
 todo:
 	printf "# TODO\n\n" > todo.md
@@ -12,3 +14,7 @@ todo:
 diagrams:
 	cd diagrams \
 		&& python *
+
+.PHONY: book
+book: todo
+	mdbook build .

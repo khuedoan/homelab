@@ -1,0 +1,10 @@
+[book]
+authors = ["Khue Doan"]
+language = "en"
+multilingual = false
+src = "."
+title = "Khue's Homelab"
+
+[output.html]
+git-repository-url = "https://github.com/khuedoan/homelab"
+edit-url-template = "https://github.com/khuedoan/homelab/edit/master/docs/{path}"
