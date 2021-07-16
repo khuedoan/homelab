@@ -32,7 +32,7 @@ A single `make` command will automatically:
   - Kustomize creates Argo [applications](./apps/resources)
   - ArgoCD install those applications
 
-Please visit the [Provisioning flow document](./deployment/provisioning_flow.md) to learn more.
+Please visit the [Provisioning flow document](https://khuedoan.github.io/homelab/deployment/provisioning_flow.html) to learn more.
 
 ## Get Started
 
@@ -41,7 +41,7 @@ Please visit the [Provisioning flow document](./deployment/provisioning_flow.md)
 Any modern `x86_64` computer(s) should work, you can use old PCs, laptops or servers.
 A total of 3 or more nodes is recommended for high availability.
 
-To view the detailed requirements, please visit the [Hareware requirements document](./deployment/hardware_requirements.md).
+To view the detailed requirements, please visit the [Hareware requirements document](https://khuedoan.github.io/homelab/deployment/hardware_requirements.html).
 
 ### Prerequisite
 
@@ -80,7 +80,7 @@ make
 
 ## Roadmap
 
-See [roadmap](./docs/roadmap.md) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
+See [roadmap](https://khuedoan.github.io/homelab/roadmap.html) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
 
 ## Contributing
 
