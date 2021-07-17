@@ -1,39 +1,67 @@
 # Roadmap
 
-- [ ] `0.0.4-alpha`:
-  - [ ] VPN (Wireguard)
-  - [ ] Access the lab from the internet via VPN
-  - [ ] Container registry
-- [ ] `0.1.0-beta`:
-  - [ ] Automated metal secrets generation and management
-  - [ ] Automated `./infra` authentication from `./metal` (Terraform backend and provider)
-  - [ ] Metal node automatic patching
-  - [ ] Local DNS (PiHole?)
-  - [ ] Self managed infrastucture
-  - [ ] Mirror all git repositories from GitHub automatically (with git hook for faster sync?)
-  - [ ] Monitoring and alerting
-  - [ ] Addition services (NextCloud, PeerTube, mailcow, Mattermost/Rocket Chat,...)
-  - [ ] Dashboard for services
-  - [ ] SSO
-  - [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
-  - [ ] Automatic release
-- [ ] `1.0.0`:
-  - [ ] 100% automated
-    - [ ] Bare-metal OS patching
-    - [ ] Kubernetes nodes OS patching
-    - [ ] Backups
-    - [ ] Secrets management
-  - [ ] Backup encrytion
-  - [ ] Secure by default
-  - [ ] DRY
-  - [ ] Complete documentation and architecture diagram (automated update if possible)
-- [ ] `1.0.1`:
-  - [ ] Bug fixes (TBD)
-- [ ] `1.1.0`:
-  - [ ] Addition services (TBD)
-- [ ] Backlog:
-  - [ ] Automated testing
-  - [ ] Security review/audit
-  - [ ] Migrate to RKE2 (new Terraform provider for RKE2 is not release yet)
-  - [ ] HA for everything
-  - [ ] Walkthrough building tutorial and feature demo
+Current status: **Alpha**
+
+## Beta requirements
+
+Good enough for playaround with and personal use
+
+- [x] Automated bare metal provisioning
+  - [x] Controller set up (Docker)
+  - [x] OS installation (PXE boot)
+- [x] Automated cluster creation (Terraform)
+- [x] Automated application deployment (ArgoCD)
+- [x] Everything is defined as code
+- [ ] Basic services
+  - [x] Gitea
+  - [x] DoneCI
+  - [ ] NextCloud
+  - [ ] PeerTube,
+  - [ ] Mail server
+  - [ ] Mattermost
+  - [ ] Matrix with bridges
+  - [ ] Vault
+  - [ ] VPN
+  - [ ] Dashboard
+  - [x] Cloudflare tunnel (optional)
+- [ ] Local DNS
+- [ ] Mirror all git repositories from GitHub automatically
+- [ ] Monitoring and alerting
+- [ ] Local container registry
+- [ ] SSO
+- [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
+- [ ] 70% availability (might break in the weekend due to new experimentation)
+
+## Stable requirements
+
+Can be used in "production" (for family or even small scale bussinesses)
+
+- [x] A single command to deploy everything
+- [x] Fast deployment time (from empty hard drive to running services under 1 hour)
+- [ ] Fully _automatic_, not just _automated_
+  - [ ] Bare-metal OS patching
+  - [ ] Backups
+  - [ ] Secrets management and rotation
+  - [ ] Self healing
+  - [ ] Autoscale to save electricity (optional)
+- [ ] 99,9% availability (less than 9 hours of downtime per year)
+- [ ] Backup encrytion
+- [ ] Split DNS
+- [ ] Secure by default
+- [ ] Static code analysis
+- [ ] Minimal dependency on external services
+- [x] Only use open-source technologies
+- [ ] Complete documentation and architecture diagram (automated update if possible)
+  - [ ] Book (this book)
+  - [ ] Walkthrough building tutorial and feature demo (video)
+
+## Unplanned
+
+Nice to have
+
+- [ ] Addition services (TBD)
+- [ ] Air-gap install
+- [ ] Automated testing
+- [ ] Security audit
+- [ ] Migrate to RKE2 (new Terraform provider for RKE2 is not release yet)
+- [ ] Serverless (OpenFaaS/Kubeless/Fission/Supabase...)
