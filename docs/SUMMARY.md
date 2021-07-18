@@ -1,6 +1,6 @@
 # Summary
 
-[README](./README.md)
+[Table of contents](./SUMMARY.md)
 
 ---
 
