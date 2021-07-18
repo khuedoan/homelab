@@ -1,0 +1,26 @@
+apiVersion: metal.sidero.dev/v1alpha1
+kind: ServerClass
+metadata:
+  name: nec
+spec:
+  selector:
+    matchLabels:
+      common-label: "true"
+    matchExpressions:
+      - key: zone
+        operator: In
+        values:
+          - central
+          - east
+      - key: environment
+        operator: NotIn
+        values:
+          - prod
+  qualifiers:
+    cpu:
+      - manufacturer: "Intel(R) Corporation"
+        version: "Intel(R) Atom(TM) CPU C3558 @ 2.20GHz"
+      - manufacturer: Advanced Micro Devices, Inc.
+        version: AMD Ryzen 7 2700X Eight-Core Processor
+    system:
+      manufacturer: Dell Inc.
