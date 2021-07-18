@@ -33,5 +33,6 @@ export CONTROL_PLANE_SERVERCLASS=any
 export WORKER_SERVERCLASS=any
 export KUBERNETES_VERSION=v1.20.1
 export CONTROL_PLANE_PORT=6443
-export CONTROL_PLANE_ENDPOINT=1.2.3.4
+export CONTROL_PLANE_ENDPOINT=192.168.1.24
 clusterctl config cluster management-plane -i sidero > management-plane.yaml
+kubectl delete -f management-plane.yaml

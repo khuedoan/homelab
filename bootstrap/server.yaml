@@ -4,8 +4,6 @@ metadata:
   finalizers:
   - storage.finalizers.server.k8s.io
   name: d7a60000-720c-7a4c-81d5-1db10300eae2
-  resourceVersion: "2263"
-  uid: 9dd66e1f-c1c4-4c99-98a7-2b50d675d362
 spec:
   accepted: true
   configPatches:
@@ -15,7 +13,7 @@ spec:
   cpu:
     manufacturer: Intel(R) Corporation
     version: Intel(R) Core(TM) i5-6600T CPU @ 2.70GHz
-  hostname: 192.168.1.4
+  hostname: 192.168.1.24
   system:
     family: MATE
     manufacturer: NEC
