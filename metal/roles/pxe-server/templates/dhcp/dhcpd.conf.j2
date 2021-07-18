@@ -14,7 +14,7 @@ subnet {{ ansible_default_ipv4.network }} netmask {{ ansible_default_ipv4.netmas
         next-server {{ ansible_default_ipv4.address }};
 
         if option architecture-type = 00:07 {
-            filename "grubx64.efi";
+            filename "ipxe.efi";
         }
     }
 }
