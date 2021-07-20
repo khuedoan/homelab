@@ -81,7 +81,7 @@ metadata:
   namespace: default
 spec:
   clusterName: homelab
-  replicas: 0
+  replicas: 3
   selector:
     matchLabels: null
   template:
