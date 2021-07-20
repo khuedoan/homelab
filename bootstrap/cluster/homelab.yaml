@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1alpha3
 kind: Cluster
 metadata:
-  name: management-plane
+  name: homelab
   namespace: default
 spec:
   clusterNetwork:
@@ -14,16 +14,16 @@ spec:
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
     kind: TalosControlPlane
-    name: management-plane-cp
+    name: homelab-cp
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalCluster
-    name: management-plane
+    name: homelab
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalCluster
 metadata:
-  name: management-plane
+  name: homelab
   namespace: default
 spec:
   controlPlaneEndpoint:
@@ -33,7 +33,7 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalMachineTemplate
 metadata:
-  name: management-plane-cp
+  name: homelab-cp
   namespace: default
 spec:
   template:
@@ -46,7 +46,7 @@ spec:
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
 kind: TalosControlPlane
 metadata:
-  name: management-plane-cp
+  name: homelab-cp
   namespace: default
 spec:
   controlPlaneConfig:
@@ -59,14 +59,14 @@ spec:
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalMachineTemplate
-    name: management-plane-cp
+    name: homelab-cp
   replicas: 1
-  version: v1.20.1
+  version: v1.21.1
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
 kind: TalosConfigTemplate
 metadata:
-  name: management-plane-workers
+  name: homelab-workers
   namespace: default
 spec:
   template:
@@ -77,10 +77,10 @@ spec:
 apiVersion: cluster.x-k8s.io/v1alpha3
 kind: MachineDeployment
 metadata:
-  name: management-plane-workers
+  name: homelab-workers
   namespace: default
 spec:
-  clusterName: management-plane
+  clusterName: homelab
   replicas: 0
   selector:
     matchLabels: null
@@ -90,18 +90,18 @@ spec:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
           kind: TalosConfigTemplate
-          name: management-plane-workers
-      clusterName: management-plane
+          name: homelab-workers
+      clusterName: homelab
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
         kind: MetalMachineTemplate
-        name: management-plane-workers
-      version: v1.20.1
+        name: homelab-workers
+      version: v1.21.1
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalMachineTemplate
 metadata:
-  name: management-plane-workers
+  name: homelab-workers
   namespace: default
 spec:
   template:
