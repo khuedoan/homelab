@@ -27,7 +27,7 @@ metadata:
   namespace: default
 spec:
   controlPlaneEndpoint:
-    host: 192.168.1.110
+    host: 192.168.1.12
     port: 6443
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
