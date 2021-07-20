@@ -17,11 +17,3 @@ spec:
     serialNumber: 6Y001301A
     skuNumber: PC-MK26ECZDP42RN11UZ
     version: NEC Product
-  configPatches:
-  - op: merge
-    path: /machine/install/network/
-    value:
-      hostname: metal2
-      interfaces:
-      - interface: eth0
-        cidr: 192.168.1.112/32
