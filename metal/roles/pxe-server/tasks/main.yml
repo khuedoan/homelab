@@ -9,8 +9,6 @@
     state: directory
   loop:
     - "{{ role_path }}/build"
-    - "{{ role_path }}/files/images"
-    - "{{ role_path }}/build/mnt"
 
 - name: Copy configs
   copy:
@@ -22,7 +20,7 @@
     src: dhcp/dhcpd.conf.j2
     dest: "{{ role_path }}/build/dhcp/dhcpd.conf"
 
-- name: Start ephemeral PXE server
+- name: Start ephemeral DHCP server
   docker_compose:
     project_src: "{{ role_path }}/build"
     state: present
