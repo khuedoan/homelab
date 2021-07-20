@@ -1,7 +1,7 @@
 apiVersion: metal.sidero.dev/v1alpha1
 kind: ServerClass
 metadata:
-  name: m5.xlarge
+  name: m5.xlarge # The names are free-form and only need to make sense to you
 spec:
   qualifiers:
     cpu:
