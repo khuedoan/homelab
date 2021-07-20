@@ -27,7 +27,7 @@ metadata:
   namespace: default
 spec:
   controlPlaneEndpoint:
-    host: 192.168.1.24
+    host: 192.168.1.110
     port: 6443
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
@@ -41,7 +41,7 @@ spec:
       serverClassRef:
         apiVersion: metal.sidero.dev/v1alpha1
         kind: ServerClass
-        name: any
+        name: m5.xlarge
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
 kind: TalosControlPlane
@@ -81,7 +81,7 @@ metadata:
   namespace: default
 spec:
   clusterName: management-plane
-  replicas: 0
+  replicas: 3
   selector:
     matchLabels: null
   template:
@@ -109,4 +109,4 @@ spec:
       serverClassRef:
         apiVersion: metal.sidero.dev/v1alpha1
         kind: ServerClass
-        name: any
+        name: m5.xlarge

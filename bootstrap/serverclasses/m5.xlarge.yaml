@@ -1,0 +1,13 @@
+apiVersion: metal.sidero.dev/v1alpha1
+kind: ServerClass
+metadata:
+  name: m5.xlarge
+spec:
+  qualifiers:
+    cpu:
+    - manufacturer: Intel(R) Corporation
+      version: Intel(R) Core(TM) i5-6600T CPU @ 2.70GHz
+  configPatches:
+  - op: replace
+    path: /machine/install/disk
+    value: /dev/sda
