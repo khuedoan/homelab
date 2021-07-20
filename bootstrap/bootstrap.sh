@@ -18,25 +18,16 @@ SIDERO_CONTROLLER_MANAGER_API_ENDPOINT=$PUBLIC_IP \
 SIDERO_CONTROLLER_MANAGER_AUTO_ACCEPT_SERVERS=true \
 clusterctl init -b talos -c talos -i sidero
 
-kubectl get servers -o wide
+sleep 30
+
+kubectl apply -f serverclasses
+kubectl apply -f servers
+kubectl apply -f clusters
 
 wol '00:23:24:d1:f3:f0'
-
-kubectl edit server.metal.sidero.dev/d7a60000-720c-7a4c-81d5-1db10300eae2
-# spec:
-#   configPatches:
-#   - op: replace
-#     path: /machine/install/disk
-#     value: /dev/sda
-
-export CONTROL_PLANE_SERVERCLASS=any
-export WORKER_SERVERCLASS=any
-export KUBERNETES_VERSION=v1.20.1
-export CONTROL_PLANE_PORT=6443
-export CONTROL_PLANE_ENDPOINT=192.168.1.24
-clusterctl config cluster management-plane -i sidero > management-plane.yaml
-
-kubectl apply -f management-plane.yaml
+wol '00:23:24:d1:f4:d6'
+wol '00:23:24:d1:f5:69'
+wol '00:23:24:e7:04:60'
 
 kubectl get talosconfig \
   -l cluster.x-k8s.io/cluster-name=management-plane \
