@@ -1,6 +1,14 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-name: sidero-bootstrap-cluster
+name: bootstrap-cluster
 nodes:
 - role: control-plane
-- role: worker
+  extraPortMappings:
+  # TFTP
+  - containerPort: 69
+    hostPort: 69
+    protocol: UDP
+  # HTTP
+  - containerPort: 8081
+    hostPort: 8081
+    protocol: TCP
