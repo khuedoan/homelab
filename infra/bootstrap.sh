@@ -41,7 +41,6 @@ clusterctl config cluster \
     --infrastructure sidero \
     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
     --config clusterctl.yaml \
-    --worker-machine-count 3 \
     homelab > cluster/homelab.yaml
 kubectl apply \
     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
