@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dhcp-server
+  name: dhcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dhcp-server
+  template:
+    metadata:
+      labels:
+        app: dhcp-server
+    spec:
+      containers:
+      - image: networkboot/dhcpd:1.1.0
+        name: dhcpd
+        volumeMounts:
+        - name: config
+          mountPath: /data/dhcpd.conf
+          subPath: dhcpd.conf
+      hostNetwork: true
+      volumes:
+      - name: config
+        configMap:
+          name: dhcp-server
+          items:
+          - key: dhcpd.conf
+            path: dhcpd.conf
