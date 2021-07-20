@@ -81,7 +81,7 @@ metadata:
   namespace: default
 spec:
   clusterName: management-plane
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels: null
   template:
