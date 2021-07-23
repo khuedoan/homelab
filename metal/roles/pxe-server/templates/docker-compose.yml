@@ -3,11 +3,14 @@ version: "3"
 services:
   dhcp:
     build: ./dhcp
+    volumes:
+      - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
     network_mode: host
   tftp:
     build: ./tftp
     network_mode: host
     volumes:
+      - ./tftp/tftpboot/grub.cfg:/var/lib/tftpboot/grub.cfg
       - ./mnt/EFI/fedora/grubx64.efi:/var/lib/tftpboot/grubx64.efi
       - ./mnt/images/ignition.img:/var/lib/tftpboot/ignition.img
       - ./mnt/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
