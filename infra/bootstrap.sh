@@ -8,20 +8,19 @@ kind create cluster \
     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
     --config ephemeral-cluster/kind.yaml
 
+export KUBECONFIG="$PWD/ephemeral-cluster/kind-kubeconfig.yaml"
+
 # Install Sidero
 clusterctl init \
     --bootstrap talos \
     --control-plane talos \
     --infrastructure sidero \
-    --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
     --config clusterctl.yaml
 
 # Create DHCP server
 # kubectl create configmap dhcp-server \
-#     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
 #     --from-file dhcp-server/dhcpd.conf
 # kubectl apply \
-#     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
 #     --filename dhcp-server/deployment.yaml
 docker run --detach \
     --name bootstrap-dhcp-server \
@@ -31,7 +30,6 @@ docker run --detach \
 
 # Wait for all pods to be ready
 kubectl wait pods \
-    --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
     --all \
     --all-namespaces \
     --timeout 300s \
@@ -39,32 +37,58 @@ kubectl wait pods \
 
 # Apply server classes
 kubectl apply \
-    --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
     --filename serverclasses/
 
 # Waker servers up
 wol '00:23:24:d1:f3:f0'
+
+# Create cluster
+while true; do
+  kubectl get server --output jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' && break
+done
+
+export CONTROL_PLANE_ENDPOINT=$(kubectl get server \
+    --output jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}') && break
+
+clusterctl config cluster \
+    --infrastructure sidero \
+    --config clusterctl.yaml \
+    homelab | kubectl apply --filename -
+
+# Get kube config
+while true; do
+  clusterctl get kubeconfig homelab > cluster/homelab-kubeconfig.yaml && break
+done
+
+export KUBECONFIG="$PWD/cluster/homelab-kubeconfig.yaml"
+
+while true; do
+  kubectl cluster-info && break
+done
+
+# Pivot Sidero to new cluster
+clusterctl init \
+    --bootstrap talos \
+    --control-plane talos \
+    --infrastructure sidero \
+    --kubeconfig cluster/homelab-kubeconfig.yaml \
+    --config clusterctl.yaml
+
+clusterctl move \
+  --kubeconfig=ephemeral-cluster/kind-kubeconfig.yaml \
+  --to-kubeconfig=cluster/homelab-kubeconfig.yaml
+
+# clusterctl config cluster \
+#     --infrastructure sidero \
+#     --config clusterctl.yaml \
+#     --config clusterctl.yaml \
+#     --worker-machine-count 3 \
+#     homelab > cluster/homelab.yaml
+# kubectl apply --filename cluster/homelab.yaml
+
 # wol '00:23:24:d1:f4:d6'
 # wol '00:23:24:d1:f5:69'
 # wol '00:23:24:e7:04:60'
-
-# Create cluster
-export CONTROL_PLANE_ENDPOINT=$(kubectl get server \
-    --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
-    --output jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
-clusterctl config cluster \
-    --infrastructure sidero \
-    --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
-    --config clusterctl.yaml \
-    homelab > cluster/homelab.yaml
-kubectl apply \
-    --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
-    --filename cluster/homelab.yaml
-
-# Get kube config
-clusterctl get kubeconfig \
-    --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
-    homelab > kubeconfig.yaml
 
 # Cleanup ephemeral cluster
 kind delete cluster --name bootstrap-cluster
