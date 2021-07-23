@@ -15,6 +15,21 @@ clusterctl init \
     --infrastructure sidero \
     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
     --config clusterctl.yaml
+
+# Create DHCP server
+# kubectl create configmap dhcp-server \
+#     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
+#     --from-file dhcp-server/dhcpd.conf
+# kubectl apply \
+#     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
+#     --filename dhcp-server/deployment.yaml
+docker run --detach \
+    --name bootstrap-dhcp-server \
+    --network=host \
+    --volume $PWD/dhcp-server/dhcpd.conf:/data/dhcpd.conf \
+    networkboot/dhcpd:1.1.0
+
+# Wait for all pods to be ready
 kubectl wait pods \
     --kubeconfig ephemeral-cluster/kind-kubeconfig.yaml \
     --all \
@@ -52,5 +67,6 @@ clusterctl get kubeconfig \
     homelab > kubeconfig.yaml
 
 # Cleanup ephemeral cluster
-# kind delete cluster --name bootstrap-cluster
-# rm ephemeral-cluster/kind-kubeconfig.yaml
+kind delete cluster --name bootstrap-cluster
+rm ephemeral-cluster/kind-kubeconfig.yaml
+docker rm --force bootstrap-dhcp-server
