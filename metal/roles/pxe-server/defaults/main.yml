@@ -1,8 +1,7 @@
-iso_url: "https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/34.20210529.3.0/x86_64/fedora-coreos-34.20210529.3.0-live.x86_64.iso"
-iso_checksum: "sha256:6bec8c1e67747c4d2fd8dca8bb833b74879d9c60c99d9edd4c4f17e2830ed6f0"
-iso_file_name: "fedora-coreos-34.20210529.3.0-live.x86_64.iso"
+iso_url: "https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/34.20210711.2.1/x86_64/fedora-coreos-34.20210711.2.1-live.x86_64.iso"
+iso_checksum: "sha256:8b02f80125b76889a10b88b6471645b2017a752e3b5e6c44d122c6b11fd51d0d"
+iso_file_name: "fedora-coreos-34.20210711.2.1-live.x86_64.iso"
 
-os_username: admin
 os_name: CoreOS
 # TODO (optimize) Get timezone automatically from the controller
 timezone: Asia/Ho_Chi_Minh
