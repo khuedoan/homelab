@@ -66,6 +66,9 @@ while true; do
   kubectl cluster-info && break
 done
 
+# TODO Untaint master node
+# kubectl taint node node-role.kubernetes.io/master:NoSchedule-
+
 # Pivot Sidero to new cluster
 clusterctl init \
     --bootstrap talos \
@@ -78,6 +81,16 @@ clusterctl move \
   --kubeconfig=ephemeral-cluster/kind-kubeconfig.yaml \
   --to-kubeconfig=cluster/homelab-kubeconfig.yaml
 
+# Cleanup ephemeral cluster
+kind delete cluster --name bootstrap-cluster
+rm ephemeral-cluster/kind-kubeconfig.yaml
+docker rm --force bootstrap-dhcp-server
+
+# TODO Scale the cluster up
+# wol '00:23:24:d1:f4:d6'
+# wol '00:23:24:d1:f5:69'
+# wol '00:23:24:e7:04:60'
+
 # clusterctl config cluster \
 #     --infrastructure sidero \
 #     --config clusterctl.yaml \
@@ -85,12 +98,3 @@ clusterctl move \
 #     --worker-machine-count 3 \
 #     homelab > cluster/homelab.yaml
 # kubectl apply --filename cluster/homelab.yaml
-
-# wol '00:23:24:d1:f4:d6'
-# wol '00:23:24:d1:f5:69'
-# wol '00:23:24:e7:04:60'
-
-# Cleanup ephemeral cluster
-kind delete cluster --name bootstrap-cluster
-rm ephemeral-cluster/kind-kubeconfig.yaml
-docker rm --force bootstrap-dhcp-server
