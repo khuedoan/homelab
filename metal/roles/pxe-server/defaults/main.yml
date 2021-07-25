@@ -1,6 +1,6 @@
-iso_url: "https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/34.20210711.2.1/x86_64/fedora-coreos-34.20210711.2.1-live.x86_64.iso"
-iso_checksum: "sha256:8b02f80125b76889a10b88b6471645b2017a752e3b5e6c44d122c6b11fd51d0d"
-iso_file_name: "fedora-coreos-34.20210711.2.1-live.x86_64.iso"
+iso_url: "https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/34.20210626.3.2/x86_64/fedora-coreos-34.20210626.3.2-live.x86_64.iso"
+iso_checksum: "sha256:da01be330488653d319995f2d9a065c9f45443f806b50e4b11fd5622d88c3642"
+iso_file_name: "fedora-coreos-34.20210626.3.2-live.x86_64.iso"
 
 os_name: CoreOS
 # TODO (optimize) Get timezone automatically from the controller
