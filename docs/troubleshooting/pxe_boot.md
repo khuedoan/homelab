@@ -5,8 +5,7 @@
 To view PXE server (includes DHCP, TFTP and HTTP server) logs:
 
 ```sh
-cd ./metal/roles/pxe-boot/build/
-docker-compose logs -f
+docker-compose --project-directory ./metal/roles/pxe-server/build/ logs --follow
 ```
 
 ## Nodes not booting from the network
