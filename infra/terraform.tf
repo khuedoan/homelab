@@ -6,7 +6,7 @@ terraform {
   required_providers {
     rke = {
       source  = "rancher/rke"
-      version = "1.2.2"
+      version = "1.2.3"
     }
     helm = {
       source  = "hashicorp/helm"
