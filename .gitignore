@@ -1,3 +1,4 @@
+.vagrant/
 book/
 build/
 terraform-*-tmp-*/
