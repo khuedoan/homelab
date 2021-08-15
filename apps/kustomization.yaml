@@ -15,6 +15,7 @@ resources:
 - resources/vault.yaml
 - resources/drone.yaml
 - resources/drone-runner-kube.yaml
+- resources/keycloak.yaml
 # Applications
 - resources/gitea.yaml
 - resources/wireguard.yaml

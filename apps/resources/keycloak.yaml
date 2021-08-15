@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: in-cluster
+    namespace: keycloak
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: keycloak
+    targetRevision: 4.1.3
+    helm:
+      values: |
+        ingress:
+          enabled: true
+          hostname: keycloak.khuedoan.com
+        proxyAddressForwarding: false # TODO Fix ingress proxy
+        auth:
+          adminUser: admin
+          adminPassword: "thisisfortesting" # TODO Fix Keycloak password
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
