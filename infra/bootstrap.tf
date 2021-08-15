@@ -11,7 +11,7 @@ resource "helm_release" "argocd" {
   name             = "argocd"
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
-  version          = "3.6.8"
+  version          = "3.12.1"
   namespace        = "argocd"
   create_namespace = true
   wait             = true
@@ -26,7 +26,7 @@ resource "helm_release" "longhorn" {
   name             = "longhorn"
   repository       = "https://charts.longhorn.io"
   chart            = "longhorn"
-  version          = "1.1.1"
+  version          = "1.1.2"
   namespace        = "longhorn"
   create_namespace = true
   wait             = true
