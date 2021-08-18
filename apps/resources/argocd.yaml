@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apps
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    name: in-cluster
+  source:
+    repoURL: https://github.com/khuedoan/homelab
+    path: apps
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
