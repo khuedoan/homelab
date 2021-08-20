@@ -5,9 +5,9 @@ terraform-*-tmp-*/
 *.iso
 *.jpg
 *.log
+*kubeconfig.yaml
 .terraform*
 backend.tfvars
 ignition.json
-kube_config.yaml
 terraform.tfstate*
 terraform.tfvars

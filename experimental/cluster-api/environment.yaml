@@ -1,0 +1,26 @@
+apiVersion: metal.sidero.dev/v1alpha1
+kind: Environment
+metadata:
+  name: default
+spec:
+  initrd:
+    url: https://github.com/talos-systems/talos/releases/download/v0.10.3/initramfs-amd64.xz
+  kernel:
+    args:
+    - console=tty0
+    - console=ttyS0
+    - consoleblank=0
+    - earlyprintk=ttyS0
+    - ima_appraise=fix
+    - ima_hash=sha512
+    - ima_template=ima-ng
+    - init_on_alloc=1
+    - initrd=initramfs.xz
+    - nvme_core.io_timeout=4294967295
+    - printk.devkmsg=on
+    - pti=on
+    - random.trust_cpu=on
+    - slab_nomerge=
+    - talos.config=http://192.168.1.19:8081/configdata?uuid=
+    - talos.platform=metal
+    url: https://github.com/talos-systems/talos/releases/download/v0.10.3/vmlinuz-amd64

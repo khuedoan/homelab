@@ -69,7 +69,7 @@ resource "rke_cluster" "cluster" {
 }
 
 resource "local_file" "kube_config_yaml" {
-  filename          = "${path.root}/kube_config.yaml"
+  filename          = "${path.root}/kubeconfig.yaml"
   sensitive_content = rke_cluster.cluster.kube_config_yaml
   file_permission   = "0600"
 }
