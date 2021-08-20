@@ -1,0 +1,4 @@
+disk: "sda"
+dns_server: "8.8.8.8"
+network_interface: "eno1"
+ssh_public_key: "{{lookup('file', '~/.ssh/id_ed25519.pub') }}"

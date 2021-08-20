@@ -1,0 +1,14 @@
+{
+    "language": "go",
+    "app": "go run main.go",
+    "codeMakerOutput": "generated",
+    "terraformProviders": [
+        "rancher/rke@~> 1.2.0",
+        "hashicorp/helm@~> 2.2.0"
+    ],
+    "terraformModules": [],
+    "context": {
+        "excludeStackIdFromLogicalIds": "true",
+"allowSepCharsInLogicalIds": "true"
+    }
+}

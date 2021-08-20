@@ -1,14 +1,9 @@
-# Infrastructure
+# Private cloud infrastructure
 
-Bare metal servers life cycle management:
+## Kubernetes cluster `./cluster.tf`
 
-- Automatically discover bare metal servers
-- Automatically wipe the disk
-- Install Linux on empty machines via the network (using iPXE)
+Using Rancher Kubernetes Engine, with some config specific to CoreOS
 
-Kubernetes cluster creation:
+## Bootstrap `./bootstrap.tf`
 
-- Create ephemeral management cluster (using Kubernetes in Docker)
-- Create target cluster
-- Pivot the management plane over to the new cluster
-- Remove the ephemeral management cluster
+Install some essential Helm charts (network, storage,...)

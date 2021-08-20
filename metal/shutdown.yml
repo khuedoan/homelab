@@ -1,0 +1,11 @@
+- name: Shutdown the homelab
+  hosts: metal
+  gather_facts: no
+  tasks:
+    - name: Unconditionally shut down the machine
+      raw: poweroff
+      ignore_errors: yes
+      ignore_unreachable: yes
+    - name: Wait for the machine to shutdown
+      shell: "until ! ping -c 1 {{ ansible_host }}; do sleep 1; done"
+      delegate_to: localhost

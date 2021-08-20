@@ -1,0 +1,16 @@
+- name: Start PXE server
+  hosts: localhost
+  roles:
+    - pxe-server
+
+- name: Provision bare metal machines
+  hosts: metal
+  gather_facts: no
+  roles:
+    - wake
+
+- name: Create Terraform state storage
+  hosts: metal[0]
+  gather_facts: no
+  roles:
+    - tfstate
