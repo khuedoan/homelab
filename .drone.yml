@@ -3,7 +3,7 @@ type: kubernetes
 name: default
 
 steps:
-- name: infra
+- name: cluster
   image: hashicorp/terraform:1.0.0
   commands:
   - plan

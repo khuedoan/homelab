@@ -26,7 +26,7 @@ with Diagram("Provision (separated by logical layers)", graph_attr=graph_attr, o
         pxe >> os
         os >> bare_metal_machines
 
-        with Cluster("./infra"):
+        with Cluster("./cluster"):
             terraform = Terraform("RKE")
             kubernetes_nodes = Node("Kuberentes node(s)")
             argocd = ArgoCD("ArgoCD")

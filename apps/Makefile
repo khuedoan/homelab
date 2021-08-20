@@ -1,7 +1,7 @@
 .POSIX:
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG = ../infra/kubeconfig.yaml
+KUBECONFIG = ../cluster/kubeconfig.yaml
 
 default: apply
 

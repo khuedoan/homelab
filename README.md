@@ -25,9 +25,9 @@ A single `make` command will automatically:
 - Build the `./metal` layer:
   - Create an ephemeral, stateless PXE server
   - Install Linux on all servers in parallel
-- Build the `./infra` layer:
-  - Create a Kubernetes [cluster](./infra/cluster.tf) using RKE
-  - Install some [Helm chart for bootstrap](./infra/bootstrap.tf)
+- Build the `./cluster` layer:
+  - Create a Kubernetes [cluster](./cluster/cluster.tf) using RKE
+  - Install some [Helm chart for bootstrap](./cluster/bootstrap.tf)
 - Build the `./apps` layer:
   - Kustomize creates Argo [applications](./apps/resources)
   - ArgoCD install those applications

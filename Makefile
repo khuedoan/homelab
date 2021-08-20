@@ -6,9 +6,9 @@ default: apply
 metal:
 	make -C metal
 
-.PHONY: infra
-infra:
-	make -C infra
+.PHONY: cluster
+cluster:
+	make -C cluster
 
 .PHONY: apps
 apps:
@@ -23,12 +23,12 @@ docs:
 	make -C docs
 
 .PHONY: apply
-apply: metal infra apps
+apply: metal cluster apps
 
 lint:
 	# TODO (feature) Add lint checks for everything
 	make -C metal lint
-	make -C infra lint
+	make -C cluster lint
 
 hooks:
 	cp ./scripts/hooks/* .git/hooks/

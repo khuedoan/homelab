@@ -8,4 +8,4 @@
   delegate_to: localhost
   template:
     src: backend.tfvars.j2
-    dest: "{{ playbook_dir }}/../infra/backend.tfvars"
+    dest: "{{ playbook_dir }}/../cluster/backend.tfvars"
