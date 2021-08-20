@@ -57,6 +57,8 @@ For bare metal nodes:
 - Secure boot disabled (optional, depending on the OS)
 - Note their MAC addresses
 
+To view the detailed instruction, please visit the [Prerequisite document](https://khuedoan.github.io/homelab/deployment/prerequisite.html).
+
 ### Configurations
 
 Change these configuration files to match your hardware and network setup:
@@ -64,9 +66,11 @@ Change these configuration files to match your hardware and network setup:
 - [Bare metal nodes settings](./metal/hosts.yml) (IP, MAC...)
 - [OS settings](./metal/group_vars/all.yml) (PXE, network...)
 
+To view the detailed instruction, please visit the [Configuration document](https://khuedoan.github.io/homelab/deployment/configuration.html).
+
 ### Build
 
-Open the tools container:
+You can install all the tools manually, or you can use the convenience tools container:
 
 ```sh
 make tools
@@ -77,6 +81,8 @@ Then build the homelab:
 ```sh
 make
 ```
+
+If you encounter any issue, please visit [Trouble shooting guide](https://khuedoan.github.io/homelab/troubleshooting/README.html)
 
 ## Roadmap
 

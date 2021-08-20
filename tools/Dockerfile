@@ -1,7 +1,13 @@
 FROM archlinux
 
-# TODO (optimize) Use reflector to generate mirrorlist dynamically
-COPY ./mirrorlist /etc/pacman.d/mirrorlist
+# Sort mirrors by speed
+RUN pacman --sync --refresh --noconfirm \
+        reflector \
+    && reflector \
+        --save /etc/pacman.d/mirrorlist \
+        --protocol https \
+        --latest 20 \
+        --sort rate
 
 RUN yes | pacman --sync --refresh \
         ansible \

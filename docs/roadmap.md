@@ -65,3 +65,4 @@ Nice to have
 - [ ] Security audit
 - [ ] Migrate to RKE2 (new Terraform provider for RKE2 is not release yet)
 - [ ] Serverless (OpenFaaS/Kubeless/Fission/Supabase...)
+- [ ] Cluster API (https://github.com/khuedoan/homelab/pull/2)

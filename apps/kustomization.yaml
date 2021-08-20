@@ -2,6 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+# Root app
+- resources/argocd.yaml
 # System
 - resources/cert-manager.yaml
 - resources/descheduler.yaml
@@ -12,11 +14,12 @@ resources:
 - resources/prometheus.yaml
 - resources/cloudflared.yaml
 # Operation
-- resources/vault.yaml
+# - resources/vault.yaml
 - resources/drone.yaml
 - resources/drone-runner-kube.yaml
+- resources/keycloak.yaml
 # Applications
 - resources/gitea.yaml
-- resources/wireguard.yaml
+# - resources/wireguard.yaml
 
 namespace: argocd
