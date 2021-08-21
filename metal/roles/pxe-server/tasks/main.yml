@@ -15,7 +15,7 @@
 - name: Download ISO
   get_url:
     url: "{{ iso_url }}"
-    dest: "{{ role_path }}/files/images/{{ iso_file_name }}"
+    dest: "{{ role_path }}/files/images/{{ iso_url | basename }}"
     checksum: "{{ iso_checksum }}"
   register: iso
 
