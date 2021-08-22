@@ -14,9 +14,9 @@ spec:
       name: '{{path.basename}}'
     spec:
       destination:
-        server: in-cluster
+        name: in-cluster
         namespace: '{{path.basename}}'
-      project: system
+      project: default
       source:
         repoURL: https://github.com/khuedoan/homelab.git
         path: '{{path}}'

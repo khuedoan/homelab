@@ -6,7 +6,7 @@ resources:
 - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 - https://raw.githubusercontent.com/argoproj-labs/applicationset/stable/manifests/install.yaml
 - ingress.yaml
-- projects/system.yaml
+# - projects/system.yaml
 - applicationsets/system.yaml
 
 namespace: argocd
