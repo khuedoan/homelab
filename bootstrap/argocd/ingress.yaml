@@ -5,6 +5,7 @@ metadata:
   labels:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    cert-manager.io/issuer: "letsencrypt-staging"
 spec:
   rules:
   - host: argocd.khuedoan.com
@@ -16,4 +17,8 @@ spec:
           service:
             name: argocd-server
             port:
-              number: 80
+              number: 443
+  tls:
+  - secretName: argocd-tls-certificate
+    hosts:
+    - argocd.khuedoan.com
