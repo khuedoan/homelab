@@ -1,8 +1,14 @@
 gitea:
   ingress:
     enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-staging"
     hosts:
       - host: git.khuedoan.com
         paths:
           - path: /
             pathType: Prefix
+    tls:
+    - secretName: gitea-tls-certificate
+      hosts:
+        - git.khuedoan.com
