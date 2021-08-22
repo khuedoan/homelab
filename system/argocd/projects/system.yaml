@@ -1,0 +1,8 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: system
+spec:
+  description: System Project
+  sourceRepos:
+  - '*'
