@@ -18,4 +18,5 @@ spec:
         namespace: '{{path.basename}}'
       project: system
       source:
+        repoURL: https://github.com/khuedoan/homelab.git
         path: '{{path}}'
