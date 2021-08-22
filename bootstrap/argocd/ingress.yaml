@@ -3,9 +3,10 @@ kind: Ingress
 metadata:
   name: argocd-server
   labels:
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     cert-manager.io/issuer: "letsencrypt-staging"
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
   rules:
   - host: argocd.khuedoan.com
