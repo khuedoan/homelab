@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gitea
+version: 4.0.3
+dependencies:
+- name: gitea
+  version: 4.0.3
+  repository: https://dl.gitea.io/charts/

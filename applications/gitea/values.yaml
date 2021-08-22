@@ -1,0 +1,5 @@
+gitea:
+  ingress:
+    enabled: true
+    hosts:
+      - host: git.khuedoan.com
