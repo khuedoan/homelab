@@ -1,0 +1,7 @@
+apiVersion: v2
+name: descheduler
+version: 0.20.0
+dependencies:
+- name: descheduler
+  version: 0.20.0
+  repository: https://kubernetes-sigs.github.io/descheduler/
