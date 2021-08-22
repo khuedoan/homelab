@@ -16,6 +16,7 @@ RUN yes | pacman --sync --refresh \
         docker \
         docker-compose \
         git \
+        graphviz \
         helm \
         kubectl \
         libisoburn \
