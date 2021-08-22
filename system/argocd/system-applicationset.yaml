@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: system
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/khuedoan/homelab.git
+      revision: master
+      directories:
+      - path: system/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      destination:
+        server: in-cluster
+        namespace: '{{path.basename}}'
+      project: system
+      source:
+        path: '{{path}}'
