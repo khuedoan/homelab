@@ -22,4 +22,4 @@ spec:
   tls:
   - hosts:
     - argocd.khuedoan.com
-    secretName: argocd-secret
+    secretName: argocd-tls-certificate
