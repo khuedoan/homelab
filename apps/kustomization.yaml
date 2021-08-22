@@ -2,13 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-# Root app
-- resources/argocd.yaml
 # System
 - resources/descheduler.yaml
 - resources/kured.yaml
-- resources/metallb.yaml
-- resources/nginx.yaml
 - resources/node-problem-detector.yaml
 - resources/prometheus.yaml
 - resources/cloudflared.yaml
