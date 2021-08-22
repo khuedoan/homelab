@@ -1,0 +1,8 @@
+gitea:
+  ingress:
+    enabled: true
+    hosts:
+      - host: git.khuedoan.com
+        paths:
+          - path: /
+            pathType: Prefix
