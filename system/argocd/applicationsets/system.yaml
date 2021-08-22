@@ -20,7 +20,7 @@ spec:
       source:
         repoURL: https://github.com/khuedoan/homelab.git
         path: '{{path}}'
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
