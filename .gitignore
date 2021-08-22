@@ -5,8 +5,10 @@ terraform-*-tmp-*/
 *.iso
 *.jpg
 *.log
+*.tgz
 *kubeconfig.yaml
 .terraform*
+Chart.lock
 backend.tfvars
 ignition.json
 terraform.tfstate*
