@@ -1,7 +1,7 @@
 apiVersion: v2
 name: authelia
 version: 0.5.6
-dependencies:
-- name: authelia
-  version: 0.5.6
-  repository: https://charts.authelia.com
+# dependencies:
+# - name: authelia
+#   version: 0.5.6
+#   repository: https://charts.authelia.com
