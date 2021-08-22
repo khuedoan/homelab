@@ -1,8 +1,0 @@
-server:
-  ingress:
-    enabled: true
-    hosts:
-      - argocd.khuedoan.com
-  # TODO Use HTTPS
-  extraArgs:
-    - --insecure

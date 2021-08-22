@@ -8,9 +8,5 @@ terraform {
       source  = "rancher/rke"
       version = "1.2.3"
     }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "2.2.0"
-    }
   }
 }
