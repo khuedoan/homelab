@@ -7,8 +7,7 @@ default: argocd root-app
 
 .PHONY: argocd
 argocd:
-	helm dependencies update ./argocd
-	helm template ./argocd | kubectl apply -f -
+	kustomize build ./argocd | kubectl apply -f -
 	# TODO wait for argocd
 
 .PHONY: root-app
