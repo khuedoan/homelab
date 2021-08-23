@@ -2,7 +2,7 @@ gitea:
   ingress:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-staging"
+      cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
     hosts:
       - host: git.khuedoan.com
         paths:
