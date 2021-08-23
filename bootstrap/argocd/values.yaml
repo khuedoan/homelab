@@ -1,0 +1,14 @@
+argo-cd:
+  server:
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+      hosts:
+        - argocd.khuedoan.com
+      tls:
+        - secretName: argocd-tls-certificate
+          hosts:
+            - argocd.khuedoan.com
+    extraArgs:
+      - --insecure
