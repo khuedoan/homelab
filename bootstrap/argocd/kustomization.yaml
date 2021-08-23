@@ -7,4 +7,7 @@ resources:
 - https://raw.githubusercontent.com/argoproj-labs/applicationset/stable/manifests/install.yaml
 - ingress.yaml
 
+patches:
+- path: argocd-server-deployment-patch.yaml
+
 namespace: argocd
