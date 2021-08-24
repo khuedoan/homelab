@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: tekton-dashboard
   namespace: tekton-pipelines
+  labels:
+    cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
 spec:
   rules:
   - host: tekton.khuedoan.com
@@ -13,4 +15,8 @@ spec:
           service:
             name: tekton-dashboard
             port:
-              number: 9097
+              name: http
+  tls:
+  - hosts:
+    - tekton.khuedoan.com
+    secretName: tekton-tls-certificate
