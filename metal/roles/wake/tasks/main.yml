@@ -4,9 +4,5 @@
   delegate_to: localhost
 
 - name: Wait for the servers to comes up
-  wait_for:
-    host: '{{ ansible_host }}'
-    port: 22
-    search_regex: OpenSSH
+  wait_for_connection:
     timeout: 600
-  delegate_to: localhost
