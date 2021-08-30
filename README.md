@@ -18,7 +18,7 @@
 
 ## Overview
 
-![Provision](https://user-images.githubusercontent.com/27996771/122676008-2eb23600-d206-11eb-8275-fb5d99bc8515.jpg)
+![Provisioning flow](https://khuedoan.github.io/homelab/diagrams/provisioning_flow.jpg)
 
 A single `make` command will automatically:
 
