@@ -15,11 +15,11 @@ ignoredisk --only-use={{ disk }}
 autopart
 
 # Network information
-network --bootproto=static --device={{ network_interface }} --ip={{ ansible_host }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
+network --bootproto=static --device={{ network_interface }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
 
 # Use network installation
 repo --name="Minimal" --baseurl=http://{{ ansible_default_ipv4.address }}/os/Minimal
-url --url="http://{{ ansible_default_ipv4.address }}/iso/"
+url --url="http://{{ ansible_default_ipv4.address }}/os"
 # Disable Setup Agent on first boot
 firstboot --disable
 # Do not configure the X Window System
