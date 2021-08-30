@@ -1,6 +1,6 @@
 set timeout=1
 
-menuentry '{{ os_name }} (Live)' {
+menuentry '{{ iso_url | basename | splitext | first }} (PXE)' {
     linux vmlinuz \
         ip=dhcp \
         ignition.platform.id=metal \

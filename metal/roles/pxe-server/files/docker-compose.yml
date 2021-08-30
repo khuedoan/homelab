@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  dhcp:
+    build: ./dhcp
+    volumes:
+      - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+    network_mode: host
+  tftp:
+    build: ./tftp
+    network_mode: host
+    volumes:
+      - ./tftp/grub.cfg:/var/lib/tftpboot/grub.cfg
+  http:
+    build: ./http
+    network_mode: host
+    volumes:
+      - ./data/iso:/usr/share/nginx/html/iso
+      - ./data/init-config/:/usr/share/nginx/html/init-config
+    environment:
+      NGINX_PORT: 80
