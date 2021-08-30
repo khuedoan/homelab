@@ -3,9 +3,7 @@ set timeout=1
 menuentry '{{ iso_url | basename | splitext | first }} (PXE)' {
     linux vmlinuz \
         ip=dhcp \
-        ignition.platform.id=metal \
-        coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}/{{ os_name }}/images/pxeboot/rootfs.img \
-        coreos.inst.install_dev=/dev/{{ disk }} \
-        coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}/ignition/${net_default_mac}.json
-    initrd initrd.img ignition.img
+        inst.repo=http://{{ ansible_default_ipv4.address }}/os \
+        ks=http://{{ ansible_default_ipv4.address }}/init-config/${net_default_mac}.ks
+    initrd initrd.img
 }

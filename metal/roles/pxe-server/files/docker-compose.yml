@@ -11,6 +11,9 @@ services:
     network_mode: host
     volumes:
       - ./tftp/grub.cfg:/var/lib/tftpboot/grub.cfg
+      - ./data/os/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
+      - ./data/os/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
+      - ./data/os/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
   http:
     build: ./http
     network_mode: host

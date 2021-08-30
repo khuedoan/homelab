@@ -1,4 +1,4 @@
-#version=DEVEL
+#version=RHEL8
 
 # Do not use graphical install
 text
@@ -15,35 +15,36 @@ ignoredisk --only-use={{ disk }}
 autopart
 
 # Network information
-network --bootproto=static --device={{ network_interface }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
+network --bootproto=static --device={{ network_interface }} --ip={{ ansible_host }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
 
 # Use network installation
+repo --name="Minimal" --baseurl=http://{{ ansible_default_ipv4.address }}/os/Minimal
 url --url="http://{{ ansible_default_ipv4.address }}/iso/"
 # Disable Setup Agent on first boot
 firstboot --disable
 # Do not configure the X Window System
 skipx
-# System services
+# Enable NTP
 services --enabled="chronyd"
 # System timezone
-timezone {{ timezone }} --utc
+timezone {{ timezone }} --isUtc
 
 # Create user (locked by default)
-user --groups=wheel --name={{ os_username }}
+user --groups=wheel --name=admin
 # Add SSH key
 sshkey --username=root "{{ ssh_public_key }}"
 
-# SELinux
+# Disable SELinux
 selinux --disabled
 
-# Firewall
+# Disable firewall
 firewall --disabled
 
 %packages
-@^server-product-environment
+@^minimal-environment
 %end
 
-# Enable some services for Kubernetes
+# Enable iSCSI for Kubernetes storage
 services --enable=iscsid
 
 reboot

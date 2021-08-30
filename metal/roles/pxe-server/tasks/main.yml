@@ -1,55 +1,34 @@
-- name: Gather network facts
-  ansible.builtin.setup:
-    gather_subset:
-      - network
-
-- name: Create build directory
-  file:
-    path: "{{ item }}"
-    state: directory
-  loop:
-    - "{{ role_path }}/build"
-    - "{{ role_path }}/files/images"
-    - "{{ role_path }}/build/mnt"
-
 - name: Download ISO
   get_url:
     url: "{{ iso_url }}"
-    dest: "{{ role_path }}/files/images/{{ iso_url | basename }}"
+    dest: "{{ role_path }}/files/data/iso/{{ iso_url | basename }}"
     checksum: "{{ iso_checksum }}"
   register: iso
 
 - name: Extract the ISO
   command:
-    cmd: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/build/mnt"
-    creates: "{{ role_path }}/build/mnt/.treeinfo"
-
-- name: Extract bootloader
-  iso_extract:
-    image: "{{ role_path }}/build/mnt/images/efiboot.img"
-    dest: "{{ role_path }}/build/mnt/EFI/fedora"
-    files:
-      - EFI/fedora/grubx64.efi
-
-- name: Copy configs
-  copy:
-    src: "{{ role_path }}/templates/"
-    dest: "{{ role_path }}/build"
+    cmd: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/files/data/os"
+    creates: "{{ role_path }}/files/data/os/.treeinfo"
 
 - name: Render DHCP config
   template:
-    src: dhcp/dhcpd.conf.j2
-    dest: "{{ role_path }}/build/dhcp/dhcpd.conf"
+    src: dhcpd.conf.j2
+    dest: "{{ role_path }}/files/dhcp/dhcpd.conf"
 
 - name: Render GRUB config
   template:
-    src: tftp/tftpboot/grub.cfg.j2
-    dest: "{{ role_path }}/build/tftp/tftpboot/grub.cfg"
+    src: grub.cfg.j2
+    dest: "{{ role_path }}/files/tftp/grub.cfg"
+
+- name: Render machine specific init config
+  template:
+    src: kickstart.ks.j2
+    dest: "{{ role_path }}/files/data/init-config/{{ hostvars[item]['mac'] }}.ks"
+  loop: "{{ groups['metal'] }}"
 
 - name: Start ephemeral PXE server
   docker_compose:
-    project_src: "{{ role_path }}/build"
+    project_src: "{{ role_path }}/files"
     state: present
     restarted: yes
     build: yes
-    recreate: always

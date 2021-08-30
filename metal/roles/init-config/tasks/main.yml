@@ -1,4 +1,0 @@
-- name: Render machine specific init config
-  template:
-    src: kickstart.ks.j2
-    dest: "{{ playbook_dir }}/build/data/init-config/{{ hostvars[item]['mac'] }}.ks"
