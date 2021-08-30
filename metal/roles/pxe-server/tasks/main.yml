@@ -13,12 +13,12 @@
 - name: Render DHCP config
   template:
     src: dhcpd.conf.j2
-    dest: "{{ role_path }}/files/dhcp/dhcpd.conf"
+    dest: "{{ role_path }}/files/data/pxe-config/dhcpd.conf"
 
 - name: Render GRUB config
   template:
     src: grub.cfg.j2
-    dest: "{{ role_path }}/files/tftp/grub.cfg"
+    dest: "{{ role_path }}/files/data/pxe-config/grub.cfg"
 
 - name: Render machine specific init config
   template:

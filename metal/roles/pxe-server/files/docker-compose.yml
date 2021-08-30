@@ -4,13 +4,13 @@ services:
   dhcp:
     build: ./dhcp
     volumes:
-      - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+      - ./data/pxe-config/dhcpd.conf:/etc/dhcp/dhcpd.conf
     network_mode: host
   tftp:
     build: ./tftp
     network_mode: host
     volumes:
-      - ./tftp/grub.cfg:/var/lib/tftpboot/grub.cfg
+      - ./data/pxe-config/grub.cfg:/var/lib/tftpboot/grub.cfg
       - ./data/os/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
       - ./data/os/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
       - ./data/os/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
