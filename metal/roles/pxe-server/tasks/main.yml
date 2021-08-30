@@ -46,28 +46,6 @@
     src: tftp/tftpboot/grub.cfg.j2
     dest: "{{ role_path }}/build/tftp/tftpboot/grub.cfg"
 
-- name: Render machine specific Butane config
-  template:
-    src: http/ignition/ignition.yaml.j2
-    dest: "{{ role_path }}/build/http/ignition/{{ hostvars[item]['mac'] }}.yaml"
-  loop: "{{ groups['metal'] }}"
-
-- name: Render Ignition config from Butane config
-  docker_container:
-    name: butane
-    image: quay.io/coreos/butane:release
-    auto_remove: yes
-    volumes:
-      - "{{ role_path }}/build/http/ignition:/local/src"
-    working_dir: /local/src
-    command:
-      - --pretty
-      - --strict
-      - "{{ hostvars[item]['mac'] }}.yaml"
-      - --output
-      - "{{ hostvars[item]['mac'] }}.json"
-  loop: "{{ groups['metal'] }}"
-
 - name: Start ephemeral PXE server
   docker_compose:
     project_src: "{{ role_path }}/build"
