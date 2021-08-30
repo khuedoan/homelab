@@ -12,3 +12,13 @@ diagrams:
 .PHONY: book
 book:
 	mdbook build .
+
+.PHONY: deploy
+deploy:
+	@echo "Deploying to GitHub Pages"
+	git worktree add /tmp/book gh-pages
+	cp -rp book/* /tmp/book/
+	cd /tmp/book \
+		&& git commit --all --message "Updates" || echo "No changes to commit" \
+		&& git push
+	git worktree remove /tmp/book
