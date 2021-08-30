@@ -25,7 +25,11 @@ RUN yes | pacman --sync --refresh \
         p7zip \
         python \
         python-netaddr \
+        python-pip \
         terraform \
         zsh
+
+RUN pip install \
+        diagrams
 
 CMD [ "/bin/zsh" ]
