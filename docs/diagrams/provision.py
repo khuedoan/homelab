@@ -12,7 +12,7 @@ graph_attr = {
     "pad": "0"
 }
 
-with Diagram("Provision (separated by logical layers)", graph_attr=graph_attr, outformat="jpg", show=False):
+with Diagram("Provisioning flow", graph_attr=graph_attr, outformat="jpg", show=False):
     controller = Client("Initial controller")
     bare_metal_machines = Server(f"Server(s)")
 

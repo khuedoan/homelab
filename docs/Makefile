@@ -10,7 +10,7 @@ diagrams:
 		&& python3 *
 
 .PHONY: book
-book:
+book: diagrams
 	mdbook build .
 
 .PHONY: deploy
