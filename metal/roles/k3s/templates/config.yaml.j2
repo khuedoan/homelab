@@ -1,1 +1,6 @@
-{{ 'server' if 'masters' in group_names else 'agent' }}
+{% if inventory_hostname == groups['masters'][0] %}
+cluster-init: true
+{% else %}
+server: https://{{ hostvars[groups['masters'][0]].ansible_host }}:6443
+{% endif %}
+token-file: {{ k3s_token_file }}

@@ -40,7 +40,6 @@
     dest: "{{ k3s_token_file }}"
 
 - name: Copy k3s config files
-  when: "'masters' in group_names"
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -49,5 +48,6 @@
       dest: "{{ k3s_config_file }}"
     - src: k3s.service.j2
       dest: "{{ k3s_service_file }}"
+  notify: Restart k3s service
 
 # Get kubeconfig /etc/rancher/k3s/k3s.yaml
