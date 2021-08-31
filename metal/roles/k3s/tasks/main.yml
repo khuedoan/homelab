@@ -55,3 +55,4 @@
   fetch:
     src: /etc/rancher/k3s/k3s.yaml
     dest: "{{ playbook_dir }}/kubeconfig.yaml"
+    flat: yes
