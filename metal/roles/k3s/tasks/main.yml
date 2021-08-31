@@ -39,26 +39,11 @@
     content: "{{ k3s_token_base64.content | b64decode }}"
     dest: "{{ k3s_token_file }}"
 
-- name: Copy k3s config files to master nodes
+- name: Copy k3s config files
   when: "'masters' in group_names"
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  vars:
-    node_role: server
-  loop:
-    - src: config.yaml.j2
-      dest: "{{ k3s_config_file }}"
-    - src: k3s.service.j2
-      dest: "{{ k3s_service_file }}"
-
-- name: Copy k3s config files to worker nodes
-  when: "'workers' in group_names"
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  vars:
-    node_role: agent
   loop:
     - src: config.yaml.j2
       dest: "{{ k3s_config_file }}"

@@ -1,1 +1,1 @@
-{{ node_role }}
+{{ 'server' if 'masters' in group_names else 'agent' }}
