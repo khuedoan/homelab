@@ -50,4 +50,8 @@
       dest: "{{ k3s_service_file }}"
   notify: Restart k3s service
 
-# Get kubeconfig /etc/rancher/k3s/k3s.yaml
+- name: Get Kubernetes config file
+  run_once: yes
+  fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "{{ playbook_dir }}/kubeconfig.yaml"
