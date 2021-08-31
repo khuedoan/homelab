@@ -1,5 +1,0 @@
-endpoints = [
-{% for host in ansible_play_hosts %}
-  "{{ hostvars[host].ansible_host }}:{{ etcd_port }}",
-{% endfor %}
-]
