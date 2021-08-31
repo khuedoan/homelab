@@ -1,0 +1,68 @@
+- name: Download k3s binary
+  get_url:
+    url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
+    checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-amd64.txt
+    dest: /usr/local/bin/k3s
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Ensure config directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /etc/rancher/k3s
+    - /etc/rancher/node
+
+- name: Check if k3s token file exists on the first node
+  run_once: yes
+  stat:
+    path: "{{ k3s_token_file }}"
+  register: k3s_token_file_stat
+
+- name: Generate k3s token file on the first node if not exist yet
+  run_once: yes
+  when: not k3s_token_file_stat.stat.exists
+  copy:
+    content: lookup('community.general.random_string', length=32)
+    dest: "{{ k3s_token_file }}"
+
+- name: Get k3s token from the first node
+  run_once: yes
+  slurp:
+    src: "{{ k3s_token_file }}"
+  register: k3s_token_base64
+
+- name: Ensure all nodes has the same token
+  copy:
+    content: "{{ k3s_token_base64.content | b64decode }}"
+    dest: "{{ k3s_token_file }}"
+
+- name: Copy k3s config files to master nodes
+  when: "'masters' in group_names"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  vars:
+    node_role: server
+  loop:
+    - src: config.yaml.j2
+      dest: "{{ k3s_config_file }}"
+    - src: k3s.service.j2
+      dest: "{{ k3s_service_file }}"
+
+- name: Copy k3s config files to worker nodes
+  when: "'workers' in group_names"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  vars:
+    node_role: agent
+  loop:
+    - src: config.yaml.j2
+      dest: "{{ k3s_config_file }}"
+    - src: k3s.service.j2
+      dest: "{{ k3s_service_file }}"
+
+# Get kubeconfig /etc/rancher/k3s/k3s.yaml
