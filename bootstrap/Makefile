@@ -1,7 +1,7 @@
 .POSIX:
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG = ../cluster/kubeconfig.yaml
+KUBECONFIG = ../metal/kubeconfig.yaml
 
 default: argocd root-app
 

@@ -25,12 +25,12 @@ A single `make` command will automatically:
 - Build the `./metal` layer:
   - Create an ephemeral, stateless PXE server
   - Install Linux on all servers in parallel
-- Build the `./cluster` layer:
-  - Create a Kubernetes [cluster](./cluster/cluster.tf) using RKE
-  - Install some [Helm chart for bootstrap](./cluster/bootstrap.tf)
-- Build the `./apps` layer:
-  - Kustomize creates Argo [applications](./apps/resources)
-  - ArgoCD install those applications
+  - Build a Kubernetes cluster (based on k3s)
+- Build the `./bootstrap` layer:
+  - Install ArgoCD
+  - Kustomize creates the [root Argo application](./bootstrap/root-app) that will install other Argo applications
+
+From now on, the root app will install the remaining layers (`./system`, `./applications`) and the `./bootstrap` layer will manage itself.
 
 Please visit the [Provisioning flow document](https://khuedoan.github.io/homelab/deployment/provisioning_flow.html) to learn more.
 

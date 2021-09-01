@@ -1,16 +1,12 @@
 .POSIX:
 
-default: apply
+default: metal bootstrap
 
 .PHONY: metal
 metal:
 	make -C metal
 
-.PHONY: cluster
-cluster:
-	make -C cluster
-
-.PHONY: apps
+.PHONY: bootstrap
 apps:
 	make -C apps
 
@@ -22,10 +18,6 @@ tools:
 docs:
 	make -C docs
 
-.PHONY: apply
-apply: metal cluster apps
-
 lint:
 	# TODO (feature) Add lint checks for everything
 	make -C metal lint
-	make -C cluster lint
