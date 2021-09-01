@@ -1,9 +1,0 @@
-kind: pipeline
-type: kubernetes
-name: default
-
-steps:
-- name: cluster
-  image: hashicorp/terraform:1.0.0
-  commands:
-  - plan
