@@ -19,6 +19,7 @@ RUN yes | pacman --sync --refresh \
         graphviz \
         helm \
         kubectl \
+        kustomize \
         libisoburn \
         make \
         mdbook \
