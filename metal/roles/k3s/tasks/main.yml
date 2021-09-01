@@ -48,7 +48,15 @@
       dest: "{{ k3s_config_file }}"
     - src: k3s.service.j2
       dest: "{{ k3s_service_file }}"
-  notify: Restart k3s service
+
+- name: Enable k3s service
+  systemd:
+    name: k3s
+    enabled: yes
+    state: started
+  register: k3s_service
+  until: k3s_service is succeeded
+  retries: 5
 
 - name: Get Kubernetes config file
   run_once: yes
