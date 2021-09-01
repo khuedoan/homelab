@@ -7,8 +7,8 @@ metal:
 	make -C metal
 
 .PHONY: bootstrap
-apps:
-	make -C apps
+bootstrap:
+	make -C bootstrap
 
 .PHONY: tools
 tools:
