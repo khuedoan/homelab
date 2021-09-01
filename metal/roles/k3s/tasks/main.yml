@@ -60,7 +60,12 @@
 
 - name: Get Kubernetes config file
   run_once: yes
-  fetch:
+  slurp:
     src: /etc/rancher/k3s/k3s.yaml
+  register: kubeconfig_base64
+
+- name: Write Kubernetes config file with the correct cluster address
+  copy:
+    content: "{{ kubeconfig_base64.content | b64decode | replace('127.0.0.1', hostvars[groups['masters'][0]].ansible_host) }}"
     dest: "{{ playbook_dir }}/kubeconfig.yaml"
-    flat: yes
+  delegate_to: localhost
