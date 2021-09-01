@@ -125,3 +125,4 @@ Distributed under the GPLv3 License. See `LICENSE` for more information.
 - [README template](https://github.com/othneildrew/Best-README-Template)
 - [Run the same Cloudflare Tunnel across many `cloudflared` processes](https://developers.cloudflare.com/cloudflare-one/tutorials/many-cfd-one-tunnel)
 - [MAC address environment variable in GRUB config](https://askubuntu.com/questions/1272400/how-do-i-automate-network-installation-of-many-ubuntu-18-04-systems-with-efi-and)
+- [Official k3s systemd service file](https://github.com/k3s-io/k3s/blob/master/k3s.service)
