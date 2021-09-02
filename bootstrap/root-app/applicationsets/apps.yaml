@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: applications
+  name: apps
 spec:
   generators:
   - git:
       repoURL: https://github.com/khuedoan/homelab.git
       revision: master
       directories:
-      - path: applications/*
+      - path: apps/*
   template:
     metadata:
       name: '{{path.basename}}'
