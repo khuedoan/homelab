@@ -4,3 +4,6 @@ cluster-init: true
 server: https://{{ hostvars[groups['masters'][0]].ansible_host }}:6443
 {% endif %}
 token-file: {{ k3s_token_file }}
+disable:
+- local-storage
+- traefik
