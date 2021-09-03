@@ -12,3 +12,7 @@ gitea:
     - secretName: gitea-tls-certificate
       hosts:
         - git.khuedoan.com
+  gitea:
+    config:
+      server:
+        LANDING_PAGE: explore
