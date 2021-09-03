@@ -1,0 +1,7 @@
+apiVersion: v2
+name: paperless
+version: 7.0.0
+dependencies:
+- name: paperless
+  version: 7.0.0
+  repository: https://k8s-at-home.com/charts/
