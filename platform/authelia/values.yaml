@@ -3,7 +3,7 @@ authelia:
   pod:
     kind: StatefulSet
   configMap:
-    server:
+    authentication_backend:
       ldap:
         enabled: false
       file:
@@ -11,12 +11,15 @@ authelia:
         password:
           algorithm: sha512
           iterations: 100000
+    session:
       redis:
         enabled: false
+    storage:
       local:
         enabled: true
       postgres:
         enabled: false
+    notifier:
       filesystem:
         enabled: true
       smtp:
