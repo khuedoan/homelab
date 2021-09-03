@@ -2,21 +2,22 @@
 authelia:
   pod:
     kind: StatefulSet
-  server:
-    ldap:
-      enabled: false
-    file:
-      enabled: true
-      password:
-        algorithm: sha512
-        iterations: 100000
-    redis:
-      enabled: false
-    local:
-      enabled: true
-    postgres:
-      enabled: false
-    filesystem:
-      enabled: true
-    smtp:
-      enabled: false
+  configMap:
+    server:
+      ldap:
+        enabled: false
+      file:
+        enabled: true
+        password:
+          algorithm: sha512
+          iterations: 100000
+      redis:
+        enabled: false
+      local:
+        enabled: true
+      postgres:
+        enabled: false
+      filesystem:
+        enabled: true
+      smtp:
+        enabled: false
