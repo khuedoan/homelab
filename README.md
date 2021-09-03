@@ -30,7 +30,7 @@ A single `make` command will automatically:
   - Install ArgoCD
   - Kustomize creates the [root Argo application](./bootstrap/root-app) that will install other Argo applications
 
-From now on, the root app will install the remaining layers (`./system`, `./apps`) and the `./bootstrap` layer will manage itself.
+From now on, the root app will install the remaining layers (`./system`, `./platform`, `./apps`) and the `./bootstrap` layer will manage itself.
 
 Please visit the [Provisioning flow document](https://khuedoan.github.io/homelab/deployment/provisioning_flow.html) to learn more.
 

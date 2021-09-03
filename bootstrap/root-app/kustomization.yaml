@@ -5,6 +5,7 @@ resources:
 # - projects/system.yaml
 - applicationsets/bootstrap.yaml
 - applicationsets/system.yaml
+- applicationsets/platform.yaml
 - applicationsets/apps.yaml
 
 namespace: argocd
