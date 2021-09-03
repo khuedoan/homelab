@@ -1,7 +1,14 @@
 apiVersion: v2
 name: authelia
 version: 0.5.6
-# dependencies:
-# - name: authelia
-#   version: 0.5.6
-#   repository: https://charts.authelia.com
+dependencies:
+- name: authelia
+  version: 0.5.6
+  repository: https://charts.authelia.com
+# TODO use bundled redis and postgresql when available
+- name: redis
+  version: 15.3.0
+  repository: https://charts.bitnami.com/bitnami
+- name: postgresql
+  version: 10.9.4
+  repository: https://charts.bitnami.com/bitnami
