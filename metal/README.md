@@ -4,5 +4,4 @@
 - The tools container creates sibling containers to build a PXE server (includes DHCP, TFTP and HTTP server)
 - Ansible [wake the machines up](./roles/pxe-boot/tasks/wake.yml) using Wake on LAN
 - The machine start the boot process, the OS get installed (through PXE server) and the machine reboots to the new operating system
-- Ansible performs some basic configuration on the machine (like install Docker)
-- Ansible creates a Terraform state backend and generates the configuration file for it
+- Ansible build a Kubernetes cluster based on k3s
