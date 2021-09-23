@@ -12,6 +12,7 @@ spec:
   template:
     metadata:
       name: '{{path.basename}}'
+      argocd.argoproj.io/sync-wave: 2
     spec:
       destination:
         name: in-cluster
