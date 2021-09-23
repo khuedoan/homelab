@@ -1,0 +1,10 @@
+kube-prometheus-stack:
+  grafana:
+    ingress:
+      enabled: true
+      hosts:
+      - grafana.khuedoan.com
+      tls:
+      - secretName: grafana-general-tls
+        hosts:
+        - grafana.khuedoan.com
