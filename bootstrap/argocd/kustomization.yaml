@@ -9,5 +9,6 @@ resources:
 
 patches:
 - path: argocd-server-deployment-patch.yaml
+- path: argocd-cm-patch.yaml
 
 namespace: argocd
