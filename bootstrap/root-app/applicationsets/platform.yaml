@@ -13,7 +13,7 @@ spec:
     metadata:
       name: '{{path.basename}}'
       annotations:
-        argocd.argoproj.io/sync-wave: 3
+        argocd.argoproj.io/sync-wave: "3"
     spec:
       destination:
         name: in-cluster
