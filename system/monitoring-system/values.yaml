@@ -8,3 +8,7 @@ kube-prometheus-stack:
       - secretName: grafana-general-tls
         hosts:
         - grafana.khuedoan.com
+    additionalDataSources:
+    - name: Loki
+      type: loki
+      url: http://monitoring-system-loki:3100
