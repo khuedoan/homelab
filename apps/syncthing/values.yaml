@@ -10,3 +10,8 @@ syncthing:
       - secretName: syncthing-tls-certificate
         hosts:
         - syncthing.khuedoan.com
+  persistence:
+    config:
+      enabled: false
+      size: 10Gi
+      retain: true
