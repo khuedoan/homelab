@@ -4,7 +4,9 @@
 ! ⚠️ WORK IN PROGRESS
 ```
 
-## Hardware
+## Overview
+
+### Hardware
 
 ![Hardware](https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG)
 
@@ -16,11 +18,37 @@
   - Ports: `8`
   - Speed: `1000Mbps`
 
-## Overview
+### Technology stack
+
+<table>
+  <tr>
+    <td align="center"><a><img src="https://simpleicons.org/icons/ansible.svg" width="50px;"/><br/>Ansible</td>
+    <td align="center"><a><img src="https://www.docker.com/sites/default/files/d8/2019-07/Moby-logo.png" width="50px;"/><br/>Docker</td>
+    <td align="center"><a><img src="https://avatars.githubusercontent.com/u/75713131?s=200&v=4" width="50px;"/><br/>Rocky Linux</td>
+    <td align="center"><a><img src="https://cncf-branding.netlify.app/img/projects/k3s/icon/color/k3s-icon-color.svg" width="50px;"/><br/>K3s</td>
+    <td align="center"><a><img src="https://cncf-branding.netlify.app/img/projects/kubernetes/icon/color/kubernetes-icon-color.svg" width="50px;"/><br/>Kubernetes</td>
+  </tr>
+  <tr>
+    <td align="center"><a><img src="https://cncf-branding.netlify.app/img/projects/argo/icon/color/argo-icon-color.svg" width="50px;"/><br/>ArgoCD</td>
+    <td align="center"><a><img src="https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg" width="50px;"/><br/>Helm</td>
+    <td align="center"><a><img src="https://cncf-branding.netlify.app/img/projects/longhorn/icon/color/longhorn-icon-color.svg" width="50px;"/><br/>Longhorn</td>
+    <td align="center"><a><img src="https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.svg" width="50px;"/><br/>Prometheus</td>
+    <td align="center"><a><img src="https://simpleicons.org/icons/vault.svg" width="50px;"/><br/>Vault</td>
+  </tr>
+  <tr>
+    <td align="center"><a><img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Gitea_Logo.svg" width="50px;"/><br/>Gitea</td>
+    <td align="center"><a><img src="https://avatars.githubusercontent.com/u/47602533?s=200&v=4" width="50px;"/><br/>Tekton</td>
+    <td align="center"><a><img src="https://knative.dev/docs/images/logo/rgb/knative-logo-rgb.png" width="50px;"/><br/>Knative</td>
+  </tr>
+</table>
+
+_This list might be outdated, please let me know if I forgot to update it._
+
+### Provisioning flow
 
 <!-- ![Provisioning flow](https://khuedoan.github.io/homelab/diagrams/provisioning_flow.jpg) -->
 
-A single `make` command will automatically:
+Everything is automated, I just need to run a single `make` command and it will:
 
 - Build the `./metal` layer:
   - Create an ephemeral, stateless PXE server
@@ -28,9 +56,13 @@ A single `make` command will automatically:
   - Build a Kubernetes cluster (based on k3s)
 - Build the `./bootstrap` layer:
   - Install ArgoCD
-  - Kustomize creates the [root Argo application](./bootstrap/root-app) that will install other Argo applications
+  - Install ApplicationSet to manage other layers (and also manage itself)
 
-From now on, the root app will install the remaining layers (`./system`, `./platform`, `./apps`) and the `./bootstrap` layer will manage itself.
+From now on, ArgoCD will do the rest:
+
+- Build the `./system` layer (storage, networking, monitoring, etc)
+- Build the `./platform` layer (Gitea, Vault, SSO, etc)
+- Build the `./apps` layer: (Syncthing, Jellyfin, etc)
 
 Please visit the [Provisioning flow document](https://khuedoan.github.io/homelab/deployment/provisioning_flow.html) to learn more.
 
@@ -95,29 +127,6 @@ Any contributions you make are greatly appreciated (feature, bug fixes, document
 ## License
 
 Distributed under the GPLv3 License. See `LICENSE` for more information.
-
-## Technology stack
-
-<table>
-  <tr>
-    <td align="center"><a><img src="https://simpleicons.org/icons/ansible.svg" width="50px;"/><br/>Ansible</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/cloudflare.svg" width="50px;"/><br/>Cloudflare</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/docker.svg" width="50px;"/><br/>Docker</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/fedora.svg" width="50px;"/><br/>Fedora</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/gitea.svg" width="50px;"/><br/>Gitea</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/helm.svg" width="50px;"/><br/>Helm</td>
-  </tr>
-  <tr>
-    <td align="center"><a><img src="https://simpleicons.org/icons/kubernetes.svg" width="50px;"/><br/>Kubernetes</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/prometheus.svg" width="50px;"/><br/>Prometheus</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/rancher.svg" width="50px;"/><br/>Rancher</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/terraform.svg" width="50px;"/><br/>Terraform</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/vault.svg" width="50px;"/><br/>Vault</td>
-    <td align="center"><a><img src="https://simpleicons.org/icons/wireguard.svg" width="50px;"/><br/>Wireguard</td>
-  </tr>
-  <tr>
-  </tr>
-</table>
 
 ## Acknowledgements
 
