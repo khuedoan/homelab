@@ -1,0 +1,16 @@
+vault:
+  injector:
+    enabled: false
+  server:
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+      hosts:
+      - host: vault.khuedoan.com
+      tls:
+      - secretName: vault-tls-certificate
+        hosts:
+        - vault.khuedoan.com
+    dev:
+      enabled: true # TODO disable vault dev mode
