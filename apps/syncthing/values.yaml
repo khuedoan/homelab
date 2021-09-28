@@ -14,7 +14,8 @@ syncthing:
         hosts:
         - syncthing.khuedoan.com
   persistence:
-    config:
-      enabled: false
+    data:
+      enabled: true
       size: 10Gi
+      accessMode: ReadWriteOne
       retain: true
