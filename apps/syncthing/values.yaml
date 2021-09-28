@@ -17,5 +17,5 @@ syncthing:
     data:
       enabled: true
       size: 10Gi
-      accessMode: ReadWriteOne
+      accessMode: ReadWriteOnce
       retain: true
