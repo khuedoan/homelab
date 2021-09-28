@@ -1,1 +1,12 @@
-
+syncthing:
+  ingress:
+    main:
+      enable: true
+      annotations:
+        cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+      hosts:
+      - host: syncthing.khuedoan.com
+      tls:
+      - secretName: syncthing-tls-certificate
+        hosts:
+        - syncthing.khuedoan.com
