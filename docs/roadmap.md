@@ -9,21 +9,21 @@ Good enough for playaround with and personal use
 - [x] Automated bare metal provisioning
   - [x] Controller set up (Docker)
   - [x] OS installation (PXE boot)
-- [x] Automated cluster creation (Terraform)
+- [x] Automated cluster creation (k3s)
 - [x] Automated application deployment (ArgoCD)
 - [x] Everything is defined as code
 - [ ] Basic services
   - [x] Gitea
-  - [x] DoneCI
-  - [ ] NextCloud
+  - [x] Tekton
+  - [x] Syncthing
   - [ ] PeerTube,
   - [ ] Mail server
   - [ ] Mattermost
   - [ ] Matrix with bridges
-  - [ ] Vault
+  - [x] Vault
   - [ ] VPN
   - [ ] Dashboard
-  - [x] Cloudflare tunnel (optional)
+- [ ] Cloudflare tunnel or multi-cluster communication (via Wireguard or a service mesh like Linkerd)
 - [ ] Local DNS
 - [ ] Mirror all git repositories from GitHub automatically
 - [ ] Monitoring and alerting
@@ -31,6 +31,7 @@ Good enough for playaround with and personal use
 - [ ] SSO
 - [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
 - [ ] 70% availability (might break in the weekend due to new experimentation)
+- [x] Only use open-source technologies
 
 ## Stable requirements
 
@@ -50,7 +51,6 @@ Can be used in "production" (for family or even small scale bussinesses)
 - [ ] Secure by default
 - [ ] Static code analysis
 - [ ] Minimal dependency on external services
-- [x] Only use open-source technologies
 - [ ] Complete documentation and architecture diagram (automated update if possible)
   - [ ] Book (this book)
   - [ ] Walkthrough building tutorial and feature demo (video)
