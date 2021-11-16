@@ -68,4 +68,5 @@
   copy:
     content: "{{ kubeconfig_base64.content | b64decode | replace('127.0.0.1', hostvars[groups['masters'][0]].ansible_host) }}"
     dest: "{{ playbook_dir }}/kubeconfig.yaml"
+    mode: 0600
   delegate_to: localhost
