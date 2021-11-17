@@ -1,7 +1,0 @@
-apiVersion: v2
-name: glauth
-version: 0.0.0
-dependencies:
-- name: glauth
-  version: 0.1.0
-  repository: https://glauth.github.io/helm-glauth
