@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - namespace.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.2.0-rc1/manifests/install.yaml # TODO switch back to stable
 - https://raw.githubusercontent.com/argoproj-labs/applicationset/stable/manifests/install.yaml
 - ingress.yaml
 
