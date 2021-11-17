@@ -10,6 +10,7 @@
   - [Prerequisites](./deployment/prerequisites.md)
   - [Configuration](./deployment/configuration.md)
   - [Deploy the homelab](./deployment/deployment.md)
+  - [DNS setup](./deployment/dns.md)
 - [Troubleshooting](./troubleshooting/README.md)
   - [PXE boot](./troubleshooting/pxe_boot.md)
 - [Reference](./reference/README.md)
