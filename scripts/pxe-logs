@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker compose --project-directory ./metal/roles/pxe-server/files/ logs --follow
