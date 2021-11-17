@@ -1,6 +1,6 @@
 apiVersion: v2
 name: longhorn
-version: 1.1.2
+version: 0.0.0
 dependencies:
 - name: longhorn
   version: 1.1.2
