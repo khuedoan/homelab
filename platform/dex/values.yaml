@@ -13,6 +13,11 @@ dex:
       hosts:
         - dex.khuedoan.com
   config:
+    issuer: https://dex.khuedoan.com:5556
+    storage:
+      type: kubernetes
+      config:
+        kubeConfigFile: $HOME/.kube/config
     connectors:
     - type: gitea
       id: gitea
