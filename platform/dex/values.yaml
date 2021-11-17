@@ -15,9 +15,9 @@ dex:
   config:
     issuer: https://dex.khuedoan.com
     storage:
-      type: sqlite3
+      type: kubernetes
       config:
-        file: /var/dex.db
+        inCluster: true
     connectors:
     - type: gitea
       id: gitea
@@ -25,5 +25,5 @@ dex:
       config:
         clientID: $GITEA_CLIENT_ID
         clientSecret: $GITEA_CLIENT_SECRET
-        redirectURI: https://127.0.0.1:5556/dex/callback
+        redirectURI: https://dex.khuedoan.com/callback
         baseURL: https://git.khuedoan.com
