@@ -1,0 +1,24 @@
+dex:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+    hosts:
+    - host: dex.khuedoan.com
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+    tls:
+    - secretName: dex-tls-certificate
+      hosts:
+        - dex.khuedoan.com
+  config:
+    connectors:
+    - type: gitea
+      id: gitea
+      name: Gitea
+      config:
+        clientID: $GITEA_CLIENT_ID
+        clientSecret: $GITEA_CLIENT_SECRET
+        redirectURI: https://127.0.0.1:5556/dex/callback
+        baseURL: https://git.khuedoan.com
