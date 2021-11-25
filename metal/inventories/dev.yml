@@ -1,5 +1,0 @@
-metal:
-  children:
-    masters:
-      hosts:
-        dev0: {ansible_host: 192.168.56.101}
