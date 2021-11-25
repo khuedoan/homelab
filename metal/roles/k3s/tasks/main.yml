@@ -2,6 +2,14 @@
   get_url:
     url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
     checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-amd64.txt
+    dest: "{{ role_path }}/files/bin/k3s"
+  delegate_to: localhost
+  run_once: true
+  register: k3s_binary
+
+- name: Copy k3s binary to nodes
+  copy:
+    src: bin/k3s
     dest: /usr/local/bin/k3s
     owner: root
     group: root
