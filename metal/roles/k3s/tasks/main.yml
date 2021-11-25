@@ -33,7 +33,7 @@
   run_once: yes
   when: not k3s_token_file_stat.stat.exists
   copy:
-    content: lookup('community.general.random_string', length=32)
+    content: "{{ lookup('community.general.random_string', length=32) }}"
     dest: "{{ k3s_token_file }}"
 
 - name: Get k3s token from the first node
