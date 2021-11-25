@@ -1,11 +1,16 @@
 .POSIX:
 
-default: run
+default: boot cluster
 
-run:
+boot:
 	ansible-playbook \
 		--inventory hosts.yml \
 		main.yml
+
+cluster:
+	ansible-playbook \
+		--inventory hosts.yml \
+		cluster.yml
 
 shutdown:
 	ansible-playbook \
