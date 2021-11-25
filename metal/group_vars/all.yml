@@ -1,3 +1,6 @@
+ansible_user: root
+ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+
 disk: "sda"
 dns_server: "8.8.8.8"
 network_interface: "eno1"

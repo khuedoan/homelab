@@ -1,3 +1,4 @@
+.vagrant/
 .venv/
 book/
 build/
