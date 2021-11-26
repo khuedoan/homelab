@@ -1,17 +1,17 @@
 hajimari:
   namespaceSelector:
     any: true
-ingress:
-  main:
-    enabled: true
-    annotations:
-      cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
-    hosts:
-    - host: home.khuedoan.com
-      paths:
-        - path: /
-          pathType: Prefix
-    tls:
-    - secretName: hajimari-tls-certificate
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
       hosts:
-        - home.khuedoan.com
+      - host: home.khuedoan.com
+        paths:
+          - path: /
+            pathType: Prefix
+      tls:
+      - secretName: hajimari-tls-certificate
+        hosts:
+          - home.khuedoan.com
