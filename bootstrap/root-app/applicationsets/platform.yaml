@@ -2,6 +2,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   generators:
   - git:
@@ -12,8 +14,6 @@ spec:
   template:
     metadata:
       name: '{{path.basename}}'
-      annotations:
-        argocd.argoproj.io/sync-wave: "3"
     spec:
       destination:
         name: in-cluster
