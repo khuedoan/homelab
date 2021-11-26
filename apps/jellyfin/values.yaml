@@ -1,0 +1,10 @@
+jellyfin:
+  ingress:
+    main:
+      enabled: true
+      hosts:
+      - host: jellyfin.khuedoan.com
+      tls:
+      - secretName: jellyfin-tls-certificate
+        hosts:
+        - jellyfin.khuedoan.com

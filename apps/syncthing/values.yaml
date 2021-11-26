@@ -1,0 +1,21 @@
+syncthing:
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+      hosts:
+      - host: syncthing.khuedoan.com
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - secretName: syncthing-tls-certificate
+        hosts:
+        - syncthing.khuedoan.com
+  persistence:
+    data:
+      enabled: true
+      size: 10Gi
+      accessMode: ReadWriteOnce
+      retain: true
