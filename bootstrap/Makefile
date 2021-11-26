@@ -12,4 +12,4 @@ argocd:
 
 .PHONY: root-app
 root-app:
-	kubectl apply -f root-app/applicationsets/bootstrap.yaml
+	kubectl apply -n argocd -f root-app/applicationsets/bootstrap.yaml
