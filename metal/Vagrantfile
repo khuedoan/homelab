@@ -1,9 +1,18 @@
+require 'yaml'
+
+group_vars = YAML.load_file('./group_vars/all.yml')
+
 Vagrant.configure("2") do |config|
   config.vm.box = "rockylinux/8"
 
-  config.vm.define "test" do |test|
-    test.vm.network "public_network", ip: "192.168.1.201"
-    test.vm.hostname = "dev0"
+  node_count = 1
+
+  (0..(node_count-1)).each do |i|
+    config.vm.define "dev#{i}" do |dev|
+      dev.vm.network "public_network", ip: "192.168.1.#{200+i+1}"
+      dev.vm.hostname = "dev#{i}"
+      dev.vm.disk :disk, size: "128GB", primary: true
+    end
   end
 
   config.vm.provider "virtualbox" do |vb|
@@ -11,10 +20,12 @@ Vagrant.configure("2") do |config|
     vb.memory = "8192"
   end
 
-  config.vm.provision "file", source: "~/.ssh/id_ed25519.pub", destination: "/tmp/id_ed25519.pub"
+  config.vm.provision "file", source: "#{group_vars['ansible_ssh_private_key_file']}.pub", destination: "/tmp/id_ed25519.pub"
 
   config.vm.provision "shell", inline: <<-SHELL
-    mkdir /root/.ssh
-    cat /tmp/id_ed25519.pub >> /root/.ssh/authorized_keys
+    mkdir /#{group_vars['ansible_user']}/.ssh
+    cat /tmp/id_ed25519.pub >> /#{group_vars['ansible_user']}/.ssh/authorized_keys
+    dnf install -y iscsi-initiator-utils
+    systemctl enable --now iscsid
   SHELL
 end
