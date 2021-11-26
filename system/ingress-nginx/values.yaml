@@ -1,7 +1,5 @@
 ingress-nginx:
   controller:
     watchIngressWithoutClass: true
-    ingressClassResource:
-      default: true
   tcp:
     22: "gitea/gitea-ssh:22"
