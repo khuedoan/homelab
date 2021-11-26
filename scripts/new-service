@@ -1,8 +1,8 @@
 #!/bin/sh
 
-mkdir -p "${1}"
+mkdir -p "apps/${1}"
 
-cat << EOT > "${1}/Chart.yaml"
+cat << EOT > "apps/${1}/Chart.yaml"
 apiVersion: v2
 name: CHANGEME
 version: 0.0.0
@@ -12,4 +12,4 @@ dependencies:
   repository: CHANGEME
 EOT
 
-touch "${1}/values.yaml"
+touch "apps/${1}/values.yaml"
