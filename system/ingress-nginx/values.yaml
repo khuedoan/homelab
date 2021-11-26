@@ -1,5 +1,6 @@
 ingress-nginx:
   controller:
+    watchIngressWithoutClass: true
     ingressClassResource:
       default: true
   tcp:
