@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/v2.2.0-rc1/manifests/install.yaml # TODO switch back to stable
-- https://raw.githubusercontent.com/argoproj-labs/applicationset/stable/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj-labs/applicationset/master/manifests/install.yaml # TODO switch back to stable
 - ingress.yaml
 
 patches:
