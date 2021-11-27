@@ -5,10 +5,10 @@ TAG = homelab-tools
 default: build run
 
 build:
-	docker build . --tag ${TAG}
+	@docker build . --tag ${TAG}
 
 run:
-	docker run \
+	@docker run \
 		--rm \
 		--interactive \
 		--tty \
