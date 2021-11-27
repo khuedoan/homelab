@@ -19,7 +19,7 @@ with Diagram("Provisioning flow", graph_attr=graph_attr, outformat="jpg", show=F
     with Cluster("./metal"):
         ansible = Ansible("Ansible")
         pxe = Docker("Ephemeral PXE server")
-        os = LinuxGeneral(f"CoreOS")
+        os = LinuxGeneral(f"Linux")
 
         controller >> ansible
         ansible >> pxe
