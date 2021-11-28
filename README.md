@@ -59,7 +59,7 @@ Any contributions you make are greatly appreciated (feature, bug fix, documentat
 
 ## License
 
-Distributed under the GPLv3 License. See [LICENSE](./LICENSE.md) for more information.
+Distributed under the GPLv3 License. See `LICENSE` for more information.
 
 ## Acknowledgements
 
