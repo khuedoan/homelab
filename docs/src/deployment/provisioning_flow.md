@@ -1,6 +1,6 @@
 # Provisioning flow
 
-![Provisioning flow](../diagrams/provisioning_flow.jpg)
+![Provisioning flow](../images/provisioning_flow.jpg)
 
 Everything is automated, after you edit the configuration files, you just need to run a single `make` command and it will:
 

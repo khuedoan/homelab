@@ -9,6 +9,8 @@ diagrams:
 		&& source .venv/bin/activate \
 		&& pip3 install -r requirements.txt \
 		&& python3 *.py
+	mkdir -p src/images
+	cp diagrams/*.jpg src/images/
 
 .PHONY: book
 book: diagrams
@@ -21,4 +23,6 @@ deploy:
 	cp -rp book/* /tmp/book/
 	cd /tmp/book \
 		&& git add . \
-		&& git commit --message "Updates" || echo "No changes to commit"
+		&& git commit --message "Updates" || echo "No changes to commit" \
+		&& git push
+	git worktree remove /tmp/book
