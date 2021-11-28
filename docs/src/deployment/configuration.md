@@ -50,6 +50,8 @@ Change the following parameters based on your hardware.
 
 ## Update Ingresses to point to your domain
 
+> Use [`home.arpa`](https://datatracker.ietf.org/doc/html/rfc8375) if you don't have a domain
+
 My domain is `khuedoan.com`, run the following command to replace it with yours:
 
 ```sh

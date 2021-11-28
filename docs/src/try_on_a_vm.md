@@ -23,21 +23,7 @@ make -C metal dev
 make bootstrap
 ```
 
-Get the Ingress addresses and IPs:
-
-```sh
-export KUBECONFIG=$PWD/metal/kubeconfig.yaml
-kubectl get ingress -A
-```
-
-Then update your `/etc/hosts` or your router DNS config based on the output:
-
-```
-192.168.1.150 argocd.mydomain.com
-192.168.1.150 git.mydomain.com
-192.168.1.150 jellyfin.mydomain.com
-# etc.
-```
+Finally follow the [DNS guide](./deployment/dns.md) to update your DNS setup (the easiest one is the `/etc/hosts` option)
 
 ## Clean up
 
