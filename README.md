@@ -46,12 +46,12 @@ _This list might be outdated, please let me know if I forgot to update it._
 
 ## Get Started
 
-- [Try it out on a VM](https://docs.khuedoan.com/homelab) without any hardware
-- [Deploy on real hardware](https://docs.khuedoan.com/homelab) for real workload
+- [Try it out on a VM](https://homelab.khuedoan.com/try_on_a_vm) without any hardware
+- [Deploy on real hardware](https://homelab.khuedoan.com/deployment) for real workload
 
 ## Roadmap
 
-See [roadmap](https://docs.khuedoan.com/homelab/roadmap.html) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
+See [roadmap](https://homelab.khuedoan.com/roadmap) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
 
 ## Contributing
 
