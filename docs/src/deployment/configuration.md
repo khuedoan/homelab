@@ -27,7 +27,7 @@ Then commit and push the changes.
 Edit the following file and replace the MAC addresses with the one on your servers.
 The IP addresses are the desired ones, since your servers have no operating system installed yet.
 
-> If you're trying it out on the dev VM, replace use the `dev.ini` instead of the `prod.ini` file
+> If you're trying it out on the dev VM, use `dev.ini` instead of `prod.ini`
 
 ```ini
 ; metal/inventories/prod.ini
