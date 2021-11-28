@@ -1,5 +1,36 @@
 # Prerequisites
 
+## Hardware requirements
+
+### Initial controller
+
+> The initial controller is the machine used to bootstrap the cluster, we only need it once, you can use your laptop or desktop
+
+- Any machine that can run Docker with the `host` networking driver ([which means only Docker on Linux hosts](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows)
+
+### Servers
+
+Any modern `x86_64` computer(s) should work, you can use old PCs, laptops or servers.
+
+> This is the requirements for _each_ node
+
+| Component | Minimum | Recommended |
+| --------- | ------- | ----------- |
+| CPU | 2 cores | 4 cores |
+| RAM | 8 GB | 16 GB |
+| Hard drive | 128 GB | 512 GB (depending on your storage usage, the base installation will not use more than 128GB) |
+| Node count | 1 | 3 or more for high availability |
+
+Additional capabilities:
+
+- Ability to boot from the network (PXE boot)
+- Wake-on-LAN capability, used to wake the machines up automatically without physically touching the power button
+
+### Network setup
+
+- All servers must be connected to the same **wired** network with the initial controller (Wifi is untested, please let me know if it works)
+- You have the access to change DNS config (on your router or at your domain registrar)
+
 ## BIOS setup
 
 > You need to do it once per machine if the default config is not sufficent,
@@ -35,21 +66,9 @@ Below is my BIOS setup, your motherboard may have a different name for the optio
 }
 ```
 
-## Update config files
-
-Gather the following information:
+## Gather the information
 
 - [ ] MAC address for each machine
 - [ ] OS disk name (for example `/dev/sda`)
 - [ ] Network interface name (for example `eth0`)
 - [ ] Choose a static IP address for each machine (just the desired address, we don't set anything up yet)
-
-[Fork this repo](https://github.com/khuedoan/homelab) and update these config files based on those information:
-
-- [ ] `metal/hosts.yml`
-- [ ] `metal/group_vars/all.yml`
-- [ ] TODO git config in `bootstrap/...`
-- [ ] TODO single place for Ingress domain
-- [ ] (Optional) TODO single place for docs link config
-
-TODO single place for all config, maybe a `./config` directory with some symlinks?

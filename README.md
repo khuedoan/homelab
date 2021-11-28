@@ -44,89 +44,22 @@
 
 _This list might be outdated, please let me know if I forgot to update it._
 
-### Provisioning flow
-
-<!-- ![Provisioning flow](https://khuedoan.github.io/homelab/diagrams/provisioning_flow.jpg) -->
-
-Everything is automated, I just need to run a single `make` command and it will:
-
-- Build the `./metal` layer:
-  - Create an ephemeral, stateless PXE server
-  - Install Linux on all servers in parallel
-  - Build a Kubernetes cluster (based on k3s)
-- Build the `./bootstrap` layer:
-  - Install ArgoCD
-  - Install ApplicationSet to manage other layers (and also manage itself)
-
-From now on, ArgoCD will do the rest:
-
-- Build the `./system` layer (storage, networking, monitoring, etc)
-- Build the `./platform` layer (Gitea, Vault, SSO, etc)
-- Build the `./apps` layer: (Syncthing, Jellyfin, etc)
-
-Please visit the [Provisioning flow document](https://khuedoan.github.io/homelab/deployment/provisioning_flow.html) to learn more.
-
 ## Get Started
 
-### Harware requirements
-
-Any modern `x86_64` computer(s) should work, you can use old PCs, laptops or servers.
-A total of 3 or more nodes is recommended for high availability.
-
-To view the detailed requirements, please visit the [Hareware requirements document](https://khuedoan.github.io/homelab/deployment/hardware_requirements.html).
-
-### Prerequisite
-
-For the controller (your laptop or desktop):
-
-- SSH keys in `~/.ssh/{id_ed25519,id_ed25519.pub}` (you can generate it with `ssh-keygen -t ed25519`)
-- Docker with `host` networking driver (which means [only Docker on Linux hosts](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows)
-
-For bare metal nodes:
-
-- PXE IPv4 enabled
-- Wake-on-LAN enabled and boot to network mode by default if turned on via Wake-on-LAN
-- Secure boot disabled (optional, depending on the OS)
-- Note their MAC addresses
-
-To view the detailed instruction, please visit the [Prerequisite document](https://khuedoan.github.io/homelab/deployment/prerequisite.html).
-
-### Configurations
-
-Change these configuration files to match your hardware and network setup:
-
-- [Bare metal nodes settings](./metal/hosts.yml) (IP, MAC...)
-- [OS settings](./metal/group_vars/all.yml) (PXE, network...)
-
-To view the detailed instruction, please visit the [Configuration document](https://khuedoan.github.io/homelab/deployment/configuration.html).
-
-### Build
-
-You can install all the tools manually, or you can use the convenience tools container:
-
-```sh
-make tools
-```
-
-Then build the homelab:
-
-```sh
-make
-```
-
-If you encounter any issue, please visit [Trouble shooting guide](https://khuedoan.github.io/homelab/troubleshooting/README.html)
+- [Try it out on a VM](https://docs.khuedoan.com/homelab) without any hardware
+- [Deploy on real hardware](https://docs.khuedoan.com/homelab) for real workload
 
 ## Roadmap
 
-See [roadmap](https://khuedoan.github.io/homelab/roadmap.html) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
+See [roadmap](https://docs.khuedoan.com/homelab/roadmap.html) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
 
 ## Contributing
 
-Any contributions you make are greatly appreciated (feature, bug fixes, documentation, grammar or typo fix...).
+Any contributions you make are greatly appreciated (feature, bug fix, documentation, grammar or typo fix...).
 
 ## License
 
-Distributed under the GPLv3 License. See `LICENSE` for more information.
+Distributed under the GPLv3 License. See [LICENSE](./LICENSE.md) for more information.
 
 ## Acknowledgements
 

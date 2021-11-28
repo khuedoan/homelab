@@ -8,9 +8,3 @@ No, and it's the beauty of this set up. You start from scratch (empty hard drive
 
 No, the ephemeral PXE server is stateless, after Linux is installed on your servers you can shut it down (or not, ideally you don't even need to care about its existence).
 The Ansible set up in `./metal` is idempotent and will start the PXE server if needed.
-
-## Where Terraform state is stored?
-
-In a Docker container on the first node, which was created by the `./metal` layer (it's not HA _yet_).
-
-However I'm experimenting with Cluster API, remove the needs for a Terraform state storage.
