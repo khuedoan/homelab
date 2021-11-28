@@ -31,6 +31,10 @@ Additional capabilities:
 - All servers must be connected to the same **wired** network with the initial controller (Wifi is untested, please let me know if it works)
 - You have the access to change DNS config (on your router or at your domain registrar)
 
+## Domain
+
+Buying a domain is highly recommended, but if you don't have one, you can also update your router config and point [`*.home.arpa`](https://datatracker.ietf.org/doc/html/rfc8375) to the load balancer (more on that later).
+
 ## BIOS setup
 
 > You need to do it once per machine if the default config is not sufficent,
@@ -66,7 +70,7 @@ Below is my BIOS setup, your motherboard may have a different name for the optio
 }
 ```
 
-## Gather the information
+## Gather information
 
 - [ ] MAC address for each machine
 - [ ] OS disk name (for example `/dev/sda`)

@@ -9,7 +9,14 @@ Install the following packages:
 
 ## Build
 
-Follow the [configuration guide](./deployment/configuration.md), then build the cluster and bootstrap it:
+Change the IP prefix in the Vagrant config to match your LAN setup, for example my IP prefix is `192.168.1.`:
+
+```ruby
+# metal/Vagrantfile
+{{#include ../../metal/Vagrantfile:4}}
+```
+
+Follow the remaining steps in the [configuration guide](./deployment/configuration.md), then build the cluster and bootstrap it:
 
 ```sh
 make -C metal dev

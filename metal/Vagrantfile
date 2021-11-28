@@ -1,5 +1,7 @@
+# require 'ipaddr' # TODO dynamic IP based on inventory
 require 'yaml'
 
+ip_prefix = '192.168.1.'
 group_vars = YAML.load_file('./group_vars/all.yml')
 
 Vagrant.configure("2") do |config|
@@ -9,7 +11,7 @@ Vagrant.configure("2") do |config|
 
   (0..(node_count-1)).each do |i|
     config.vm.define "dev#{i}" do |dev|
-      dev.vm.network "public_network", ip: "192.168.1.#{200+i+1}"
+      dev.vm.network "public_network", ip: "#{ip_prefix}#{200+i+1}"
       dev.vm.hostname = "dev#{i}"
       dev.vm.disk :disk, size: "128GB", primary: true
     end

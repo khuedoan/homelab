@@ -10,12 +10,50 @@ Generate SSH private key and public key on the controller (your laptop or deskto
 ssh-keygen -t ed25519
 ```
 
-## Update variables and parameters
+## Fork this repository
 
-This project follows GitOps practice, the git repository is the source of truth for you homelab setup, so you will need to [fork this repository](https://github.com/khuedoan/homelab) and update these config files based on those information:
+Because this repository applies GitOps practices, this git repository is the source of truth for my homelab, so you'll need to folk it to make it yours.
 
-- [ ] `metal/inventories/prod.ini`
-- [ ] `metal/group_vars/all.yml`
-- [ ] TODO git repository config in `bootstrap/...`
-- [ ] TODO single place for Ingress domain
-- [ ] TODO single place for docs link config
+After forking it, clone and replace the reference to my repository with yours (without `https://`):
+
+```sh
+./scripts/replace-gitops-repo "gitservicelikegithub.com/yourname/homelab"
+```
+
+Then commit and push the changes.
+
+## Server list
+
+Edit the following file and replace the MAC addresses with the one on your servers.
+The IP addresses are the desired ones, since your servers have no operating system installed yet.
+
+> If you're trying it out on the dev VM, replace use the `dev.ini` instead of the `prod.ini` file
+
+```ini
+; metal/inventories/prod.ini
+{{#include ../../../metal/inventories/prod.ini:5:}}
+```
+
+## Server hardware info
+
+> Skip this step if you're trying out the dev VM
+
+Change the following parameters based on your hardware.
+
+```yaml
+# metal/group_vars/all.yaml
+{{#include ../../../metal/group_vars/all.yml:6:}}
+```
+
+- Disk: based on `/dev/$DISK`, in my case it's `sda`, but yours can be `sdb`, `nvme0n1`...
+- Network interface: usually it's `eth0`, mine is `eno1`
+
+## Update Ingresses to point to your domain
+
+My domain is `khuedoan.com`, run the following command to replace it with yours:
+
+```sh
+./scripts/replace-domain "yourdomain.com"
+```
+
+Commit and push the changes.
