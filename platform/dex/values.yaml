@@ -1,6 +1,7 @@
 dex:
   ingress:
     enabled: true
+    className: nginx
     annotations:
       cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
     hosts:

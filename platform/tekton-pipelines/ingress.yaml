@@ -6,6 +6,7 @@ metadata:
   labels:
     cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
 spec:
+  ingressClassName: nginx
   rules:
   - host: tekton.khuedoan.com
     http:

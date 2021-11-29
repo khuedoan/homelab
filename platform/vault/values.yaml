@@ -4,6 +4,7 @@ vault:
   server:
     ingress:
       enabled: true
+      ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
       hosts:
