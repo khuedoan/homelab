@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -eu
+
+echo "Waiting for important services to reach heathy state"
+
+until argocd app wait \
+    argocd \
+    gitea \
+    hajimari \
+    ingress-nginx \
+    longhorn-system \
+    metallb-system \
+    > /dev/null
+do
+    sleep 3
+done

@@ -12,6 +12,7 @@ RUN pacman --sync --refresh --noconfirm \
 RUN yes | pacman --sync --refresh \
         ansible \
         ansible-lint \
+        argocd \
         diffutils \
         docker \
         docker-compose \
