@@ -15,6 +15,7 @@ syncthing:
         hosts:
         - syncthing.khuedoan.com
   persistence:
+    storageClass: longhorn
     data:
       enabled: true
       size: 10Gi
