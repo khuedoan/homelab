@@ -1,0 +1,7 @@
+apiVersion: v2
+name: seafile
+version: 0.0.0
+dependencies:
+- name: seafile
+  version: 1.2.0
+  repository: https://k8s-at-home.com/charts
