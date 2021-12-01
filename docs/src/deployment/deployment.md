@@ -14,4 +14,4 @@ Build the lab:
 make
 ```
 
-Yes it's that simple! Continue to the next section to update your DNS before you can access the home page at <home.example.com>.
+Yes it's that simple! Continue to the next section to update your DNS before you can access the home page at <https://home.example.com>.

@@ -38,7 +38,7 @@ make dev
 
 Finally follow the [DNS guide](./deployment/dns.md) to update your DNS setup (the easiest one is the `/etc/hosts` option)
 
-Now you can visit the dashboard at <home.example.com>
+Now you can visit the dashboard at <https://home.example.com>
 
 ## Clean up
 
