@@ -2,7 +2,7 @@
 require 'yaml'
 
 ip_prefix = '192.168.1.'
-group_vars = YAML.load_file('./group_vars/all.yml')
+group_vars = YAML.load_file(File.join(__dir__, './group_vars/all.yml'))
 
 Vagrant.configure("2") do |config|
   config.vm.box = "rockylinux/8"

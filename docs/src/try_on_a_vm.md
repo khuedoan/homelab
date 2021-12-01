@@ -21,9 +21,7 @@ Change the IP prefix in the Vagrant config to match your LAN setup, for example 
 Follow the **remaining steps in the [configuration guide](./deployment/configuration.md)**, then create a test VM:
 
 ```sh
-cd metal
-vagrant up
-cd ..
+VAGRANT_CWD=./metal vagrant up
 ```
 
 Open the tools container:
