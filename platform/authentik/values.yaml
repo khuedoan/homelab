@@ -1,0 +1,23 @@
+authentik:
+  authentik:
+    secret_key: "dontjudgemethisisjustfortesting" # TODO
+    postgresql:
+      password: &postgresql_password "IKnowThisIsNotASecurePasswordJust4Testing" # TODO
+
+  ingress:
+    enabled: true
+    hosts:
+    - host: &host authentik.khuedoan.com
+      paths:
+      - path: "/"
+        pathType: Prefix
+    tls:
+    - secretName: authentik-tls-certificate
+      hosts:
+      - *host
+
+  postgresql:
+    enabled: true
+    postgresqlPassword: *postgresql_password
+  redis:
+    enabled: true
