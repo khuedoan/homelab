@@ -4,8 +4,10 @@
 
 Install the following packages:
 
-- `virtualbox`
+- `docker`
+- `make`
 - `vagrant`
+- `virtualbox`
 
 ## Build
 
@@ -16,11 +18,24 @@ Change the IP prefix in the Vagrant config to match your LAN setup, for example 
 {{#include ../../metal/Vagrantfile:4}}
 ```
 
-Follow the remaining steps in the [configuration guide](./deployment/configuration.md), then build the cluster and bootstrap it:
+Follow the **remaining steps in the [configuration guide](./deployment/configuration.md)**, then create a test VM:
 
 ```sh
-make -C metal dev
-make bootstrap
+cd metal
+vagrant up
+cd ..
+```
+
+Open the tools container:
+
+```sh
+make tools
+```
+
+Build a cluster on the test VM and bootstrap it:
+
+```
+make dev
 ```
 
 Finally follow the [DNS guide](./deployment/dns.md) to update your DNS setup (the easiest one is the `/etc/hosts` option)
