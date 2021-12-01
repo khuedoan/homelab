@@ -5,7 +5,7 @@ default: boot cluster
 boot:
 	ansible-playbook \
 		--inventory inventories/prod.ini \
-		main.yml
+		boot.yml
 
 cluster:
 	ansible-playbook \
