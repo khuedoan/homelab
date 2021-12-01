@@ -6,6 +6,9 @@ authentik:
 
   ingress:
     enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
     hosts:
     - host: &host authentik.khuedoan.com
       paths:
@@ -19,5 +22,11 @@ authentik:
   postgresql:
     enabled: true
     postgresqlPassword: *postgresql_password
+    persistence:
+      enabled: true
+      storageClass: longhorn
   redis:
     enabled: true
+    persistence:
+      enabled: true
+      storageClass: longhorn
