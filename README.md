@@ -68,7 +68,6 @@ Distributed under the GPLv3 License. See `LICENSE` for more information.
 - [Run the same Cloudflare Tunnel across many `cloudflared` processes](https://developers.cloudflare.com/cloudflare-one/tutorials/many-cfd-one-tunnel)
 - [MAC address environment variable in GRUB config](https://askubuntu.com/questions/1272400/how-do-i-automate-network-installation-of-many-ubuntu-18-04-systems-with-efi-and)
 - [Official k3s systemd service file](https://github.com/k3s-io/k3s/blob/master/k3s.service)
-- [AWS Dex setup guide on EKS](https://aws.amazon.com/blogs/containers/using-dex-dex-k8s-authenticator-to-authenticate-to-amazon-eks/)
 
 ## Stargazers over time
 

@@ -41,7 +41,6 @@ resource "cloudflare_record" "homelab_records" {
   for_each = toset([
     "*.knative",
     "argocd",
-    "dex",
     "git",
     "grafana",
     "tekton",
