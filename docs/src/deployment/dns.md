@@ -22,15 +22,15 @@ You paste the output from the command above directly to your `/etc/hosts` file l
 # Static table lookup for hostnames.
 # See hosts(5) for details.
 
-192.168.1.150 argocd.mydomain.com
-192.168.1.150 git.mydomain.com
-192.168.1.150 jellyfin.mydomain.com
+192.168.1.150 argocd.example.com
+192.168.1.150 git.example.com
+192.168.1.150 jellyfin.example.com
 # etc.
 ```
 
 ## In your router
 
-You can add each subdomain one by one like the previous method, or use a wildcard `*.mydomain.com` and point it to the IP address of the load blancer (from the output of the previous command)
+You can add each subdomain one by one like the previous method, or use a wildcard `*.example.com` and point it to the IP address of the load blancer (from the output of the previous command)
 
 ## At your domain registrar
 
