@@ -2,6 +2,7 @@ kube-prometheus-stack:
   grafana:
     ingress:
       enabled: true
+      ingressClassName: nginx
       hosts:
       - grafana.khuedoan.com
       tls:
