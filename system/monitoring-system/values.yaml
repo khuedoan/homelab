@@ -11,4 +11,4 @@ kube-prometheus-stack:
     additionalDataSources:
     - name: Loki
       type: loki
-      url: http://monitoring-system-loki:3100
+      url: http://loki.loki:3100
