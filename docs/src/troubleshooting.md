@@ -1,4 +1,4 @@
-# PXE boot
+# Troubleshooting
 
 ## PXE server logs
 
