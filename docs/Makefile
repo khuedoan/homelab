@@ -1,6 +1,6 @@
 .POSIX:
 
-default: book
+default: book deploy
 
 .PHONY: diagrams
 diagrams:
