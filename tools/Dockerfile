@@ -27,7 +27,7 @@ RUN yes | pacman --sync --refresh \
         p7zip \
         python \
         python-netaddr \
-        terraform \
-        python-pip
+        python-pip \
+        terraform
 
 RUN pip install docker-compose
