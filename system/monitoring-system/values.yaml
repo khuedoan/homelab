@@ -3,6 +3,8 @@ kube-prometheus-stack:
     ingress:
       enabled: true
       ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
       hosts:
       - grafana.khuedoan.com
       tls:

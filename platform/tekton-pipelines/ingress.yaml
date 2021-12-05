@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: tekton-dashboard
   namespace: tekton-pipelines
-  labels:
+  annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
