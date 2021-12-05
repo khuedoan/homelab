@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.0.5-alpha
+
+- Add convenience scripts
+- Add Loki for logging
+- Add custom health check for Application and ApplicationSet
+- Use Vault with dev mode on (temporarily until we hit beta)
+- Replace Authelia with Authentik
+- Upgrade to Kubernetes 1.22
+- Upgrade most services to the latest version
+- Set ingress class and storage class explicitly
+- Initial Linkerd and Knative setup (not working yet)
+- Set up Hajimari for home page with automatic ingress discovery
+- Add dev VM for local development or evaluation
+- Optimize bare metal provisioning performance
+- Replace Syncthing with Seafile (may use both in the feature)
+- Enable Gitea SSH cloning via Ingress
+- Various code clean up
+- Add more documents
+
 ## 0.0.4-alpha
 
 - Switch to Rocky Linux
