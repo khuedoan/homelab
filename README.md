@@ -1,5 +1,11 @@
 # Homelab
 
+<!-- ANCHOR: introduction -->
+
+This is my homelab set up, it focused on automation to simplify provisioning, upgrading, and operating self-hosted services.
+
+<!-- ANCHOR_END: introduction -->
+
 ```diff
 ! ⚠️ WORK IN PROGRESS
 ```
@@ -41,8 +47,6 @@
     <td align="center"><a><img src="https://knative.dev/docs/images/logo/rgb/knative-logo-rgb.png" width="50px;"/><br/>Knative</td>
   </tr>
 </table>
-
-_This list might be outdated, please let me know if I forgot to update it._
 
 ## Get Started
 
