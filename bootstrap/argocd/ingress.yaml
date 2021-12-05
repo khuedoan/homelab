@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: argocd-server
   labels:
-    cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
   ingressClassName: nginx
   rules:

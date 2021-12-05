@@ -4,7 +4,7 @@ jellyfin:
       enabled: true
       ingressClassName: nginx
       annotations:
-        cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"
       hosts:
       - host: jellyfin.khuedoan.com
         paths:

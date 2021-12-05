@@ -3,7 +3,7 @@ gitea:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+      cert-manager.io/cluster-issuer: "letsencrypt-staging"
     hosts:
       - host: git.khuedoan.com
         paths:
