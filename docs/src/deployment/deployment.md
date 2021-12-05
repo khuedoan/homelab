@@ -17,7 +17,7 @@ make
 Yes it's that simple! Check the status using the following command:
 
 ```sh
-./scripts/get-status
+watch ./scripts/get-status
 ```
 
 While waiting for all services to become healthy, continue to the next section to update your DNS.
