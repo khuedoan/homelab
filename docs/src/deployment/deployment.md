@@ -14,4 +14,10 @@ Build the lab:
 make
 ```
 
-Yes it's that simple! Continue to the next section to update your DNS before you can access the home page at <https://home.example.com>.
+Yes it's that simple! Check the status using the following command:
+
+```sh
+./scripts/get-status
+```
+
+While waiting for all services to become healthy, continue to the next section to update your DNS.

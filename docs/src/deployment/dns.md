@@ -1,5 +1,6 @@
 # DNS setup
 
+Before you can access the home page at <https://home.example.com>, you'll need to update your DNS config.
 Because everyone DNS setup are different, DNS automation is not in the scope of the project.
 
 Some options for DNS config (choose one):
