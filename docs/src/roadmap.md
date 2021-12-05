@@ -15,14 +15,15 @@ Good enough for playaround with and personal use
 - [ ] Basic services
   - [x] Gitea
   - [x] Tekton
-  - [x] Syncthing
+  - [x] Seafile
   - [ ] PeerTube,
   - [ ] Mail server
   - [ ] Mattermost
   - [ ] Matrix with bridges
   - [x] Vault
   - [ ] VPN
-  - [ ] Dashboard
+  - [x] Homepage
+  - [ ] [Development dashboard](https://github.com/khuedoan/homelab-backstage)
 - [ ] Cloudflare tunnel or multi-cluster communication (via Wireguard or a service mesh like Linkerd)
 - [ ] Local DNS
 - [ ] Mirror all git repositories from GitHub automatically
@@ -44,15 +45,14 @@ Can be used in "production" (for family or even small scale bussinesses)
   - [ ] Backups
   - [ ] Secrets management and rotation
   - [ ] Self healing
-  - [ ] Autoscale to save electricity (optional)
 - [ ] 99,9% availability (less than 9 hours of downtime per year)
 - [ ] Backup encrytion
 - [ ] Split DNS
 - [ ] Secure by default
 - [ ] Static code analysis
 - [ ] Minimal dependency on external services
-- [ ] Complete documentation and architecture diagram (automated update if possible)
-  - [ ] Book (this book)
+- [ ] Complete documentation and diagram as code
+  - [x] Book (this book)
   - [ ] Walkthrough building tutorial and feature demo (video)
 
 ## Unplanned
@@ -63,6 +63,5 @@ Nice to have
 - [ ] Air-gap install
 - [ ] Automated testing
 - [ ] Security audit
-- [ ] Migrate to RKE2 (new Terraform provider for RKE2 is not release yet)
-- [ ] Serverless (OpenFaaS/Kubeless/Fission/Supabase...)
+- [ ] Serverless (Knative)
 - [ ] Cluster API (https://github.com/khuedoan/homelab/pull/2)
