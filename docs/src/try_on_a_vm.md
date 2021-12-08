@@ -36,7 +36,7 @@ Build a cluster on the test VM and bootstrap it:
 make dev
 ```
 
-Finally follow the [DNS guide](./deployment/dns.md) to update your DNS setup (the easiest one is the `/etc/hosts` option)
+Finally follow the [DNS guide](./deployment/dns.md) to update your DNS setup (the easiest one is the nip.io option)
 
 Now you can visit the dashboard at <https://home.example.com>
 

@@ -5,7 +5,7 @@ Because everyone DNS setup are different, DNS automation is not in the scope of 
 
 Some options for DNS config (choose one):
 
-- Update the `/etc/hosts` file (suitable for a test environment)
+- Use nip.io (suitable for a test environment)
 - Change the DNS config in your router
 - Change the DNS config at your domain registrar (doesn't work with the [`home.arpa`](https://datatracker.ietf.org/doc/html/rfc8375) domain)
 
@@ -15,19 +15,9 @@ Before continuing to the next section for some examples, run this command to get
 ./scripts/get-dns-config
 ```
 
-## Update `/etc/hosts`
+## Use nip.io
 
-You paste the output from the command above directly to your `/etc/hosts` file like this:
-
-```
-# Static table lookup for hostnames.
-# See hosts(5) for details.
-
-192.168.1.150 argocd.example.com
-192.168.1.150 git.example.com
-192.168.1.150 jellyfin.example.com
-# etc.
-```
+TODO
 
 ## In your router
 
@@ -35,24 +25,4 @@ You can add each subdomain one by one like the previous method, or use a wildcar
 
 ## At your domain registrar
 
-For example here is my set up for Cloudflare, automated using Terraform:
-
-```hcl
-resource "cloudflare_record" "homelab_records" {
-  for_each = toset([
-    "*.knative",
-    "argocd",
-    "git",
-    "grafana",
-    "tekton",
-    "vault",
-    # etc.
-  ])
-
-  zone_id = cloudflare_zone.khuedoan_com.id
-  type    = "A"
-  name    = each.key
-  value   = "192.168.1.150" # NGINX LoadBalancer IP
-  ttl     = 1 # Auto
-}
-```
+I'm using Cloudflare for DNS, continue to the next section for more information.

@@ -8,6 +8,7 @@
   - [Configuration](./deployment/configuration.md)
   - [Deploy the homelab](./deployment/deployment.md)
   - [DNS setup](./deployment/dns.md)
+  - [External resources (optional)](./deployment/external_resources.md)
 - [Troubleshooting](./troubleshooting.md)
 - [Reference](./reference/README.md)
   - [Architecture]()
