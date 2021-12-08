@@ -1,3 +1,8 @@
+provider "kubernetes" {
+  # Environment variables
+  # KUBE_CONFIG_PATH
+}
+
 resource "kubernetes_manifest" "external_applicationset" {
   manifest = {
     apiVersion = "argoproj.io/v1alpha1"

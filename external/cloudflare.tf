@@ -1,35 +1,13 @@
-locals {
-  internal_records = [
-    "*.knative",
-    "argocd",
-    "authentik",
-    "dex",
-    "grafana",
-    "home",
-    "jellyfin",
-    "paperless",
-    "seafile",
-    "syncthing",
-    "tekton",
-    "vault",
-  ]
-
-  tunnel_records = [
-    "git"
-  ]
+provider "cloudflare" {
+  # Environment variables
+  # CLOUDFLARE_API_KEY
 }
 
-resource "cloudflare_record" "internal_records" {
-  for_each = toset(local.internal_records)
-  zone_id = cloudflare_zone.khuedoan_com.id
-  type    = "A"
-  name    = each.key
-  # TODO use data to get ingress IP
-  value   = "192.168.1.150"
-  ttl     = 1 # Auto
+data "cloudflare_zone" "khuedoan_com" {
+  name = "khuedoan.com"
 }
 
-resource "random_password" "homelab_tunnel" {
+resource "random_password" "tunnel_secret" {
   length  = 64
   special = false
 }
@@ -38,14 +16,22 @@ resource "cloudflare_argo_tunnel" "homelab" {
   # TODO (optimize) Use variable for account_id
   account_id = "xxx"
   name       = "homelab"
-  secret     = base64encode(random_password.homelab_tunnel.result)
+  secret     = base64encode(random_password.tunnel_secret.result)
 }
 
-resource "cloudflare_record" "git" {
-  zone_id = cloudflare_zone.khuedoan_com.id
+resource "cloudflare_record" "tunnels" {
+  for_each = toset([
+    "git"
+  ])
+
+  zone_id = data.cloudflare_zone.khuedoan_com.id
   type    = "CNAME"
-  name    = "git"
+  name    = each.key
   value   = "${cloudflare_argo_tunnel.homelab.id}.cfargotunnel.com"
   proxied = true
   ttl     = 1 # Auto
 }
+
+# TODO
+# api token
+# add it to certmanager, external-dns, cloudflaredknamespace
