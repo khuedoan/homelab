@@ -1,0 +1,3 @@
+velero:
+  configuration:
+    provider: aws
