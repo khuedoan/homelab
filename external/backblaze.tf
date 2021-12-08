@@ -1,4 +1,4 @@
-provider "backblaze" {
+provider "b2" {
   # Environment variables
   # B2_APPLICATION_KEY
   # B2_APPLICATION_KEY_ID
