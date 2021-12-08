@@ -1,6 +1,6 @@
 provider "cloudflare" {
   # Environment variables
-  # CLOUDFLARE_API_KEY
+  # CLOUDFLARE_API_TOKEN
 }
 
 data "cloudflare_zone" "khuedoan_com" {
