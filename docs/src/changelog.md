@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.6-alpha
+
+- Support external reosources:
+  - Cloudflare DNS and Tunnel
+  - Backblaze backup
+- Replace self-signed certificates with Let's Encrypt
+
 ## 0.0.5-alpha
 
 - Add convenience scripts
