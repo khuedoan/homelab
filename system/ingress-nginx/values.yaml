@@ -1,6 +1,6 @@
 ingress-nginx:
   controller:
     admissionWebhooks:
-      timeoutSeconds: 60
+      timeoutSeconds: 30
   tcp:
     22: "gitea/gitea-ssh:22"
