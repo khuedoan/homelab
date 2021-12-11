@@ -2,6 +2,8 @@
 
 default: metal bootstrap
 
+all: default external
+
 .PHONY: metal
 metal:
 	make -C metal
@@ -9,6 +11,10 @@ metal:
 .PHONY: bootstrap
 bootstrap:
 	make -C bootstrap
+
+.PHONY: external
+external:
+	make -C external
 
 .PHONY: tools
 tools:
