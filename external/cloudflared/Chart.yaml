@@ -3,5 +3,5 @@ name: cloudflared
 version: 0.0.0
 dependencies:
 - name: cloudflared
-  version: 0.1.6
-  repository: file://../../../charts/charts/cloudflared
+  version: 0.1.7
+  repository: https://khuedoan.github.io/charts
