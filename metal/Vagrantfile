@@ -18,8 +18,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provider "virtualbox" do |vb|
-    vb.cpus   = 4
-    vb.memory = "8192"
+    vb.cpus   = 6
+    vb.memory = "10240"
   end
 
   config.vm.provision "file", source: "#{group_vars['ansible_ssh_private_key_file']}.pub", destination: "/tmp/id_ed25519.pub"
