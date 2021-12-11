@@ -60,11 +60,11 @@ resource "kubernetes_secret" "cloudflared_credentials" {
   }
 
   data = {
-    "credentials.json" = base64encode(jsonencode({
-      AccountTag   = "" # TODO account_id
+    "credentials.json" = jsonencode({
+      AccountTag   = var.cloudflare_account_id
       TunnelName   = cloudflare_argo_tunnel.homelab.name
       TunnelID     = cloudflare_argo_tunnel.homelab.id
       TunnelSecret = base64encode(random_password.tunnel_secret.result)
-    }))
+    })
   }
 }
