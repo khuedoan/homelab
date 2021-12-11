@@ -1,3 +1,7 @@
+variable "cloudflare_account_id" {
+  type = string
+}
+
 provider "cloudflare" {
   # Environment variables
   # CLOUDFLARE_API_TOKEN
@@ -14,7 +18,7 @@ resource "random_password" "tunnel_secret" {
 
 resource "cloudflare_argo_tunnel" "homelab" {
   # TODO (optimize) Use variable for account_id
-  account_id = "xxx"
+  account_id = var.cloudflare_account_id
   name       = "homelab"
   secret     = base64encode(random_password.tunnel_secret.result)
 }
