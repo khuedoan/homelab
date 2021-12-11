@@ -7,6 +7,7 @@ default: apply
 
 .terraform.lock.hcl: ~/.terraform.d/credentials.tfrc.json versions.tf
 	terraform init
+	touch .terraform.lock.hcl
 
 apply: .terraform.lock.hcl
 	terraform apply
