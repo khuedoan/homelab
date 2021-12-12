@@ -87,14 +87,6 @@ resource "cloudflare_api_token" "external_dns" {
       "com.cloudflare.api.account.zone.*" = "*"
     }
   }
-
-  condition {
-    request_ip {
-      in = [
-        data.http.public_ip.body
-      ]
-    }
-  }
 }
 
 resource "kubernetes_secret" "external_dns_token" {
@@ -105,5 +97,30 @@ resource "kubernetes_secret" "external_dns_token" {
 
   data = {
     "value" = cloudflare_api_token.external_dns.value
+  }
+}
+
+resource "cloudflare_api_token" "cert_manager" {
+  name = "homelab_cert_manager"
+
+  policy {
+    permission_groups = [
+      data.cloudflare_api_token_permission_groups.all.permissions["DNS Write"],
+      data.cloudflare_api_token_permission_groups.all.permissions["Zone Read"]
+    ]
+    resources = {
+      "com.cloudflare.api.account.zone.*" = "*"
+    }
+  }
+}
+
+resource "kubernetes_secret" "cert_manager_token" {
+  metadata {
+    name = "cloudflare-api-token"
+    namespace = "cert-manager"
+  }
+
+  data = {
+    "api-token" = cloudflare_api_token.cert_manager.value
   }
 }
