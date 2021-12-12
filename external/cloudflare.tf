@@ -13,10 +13,20 @@ data "cloudflare_zone" "khuedoan_com" {
 
 data "cloudflare_api_token_permission_groups" "all" {}
 
-# TODO
-# data "http" "public_ip" {
-#   url = "https://icanhazip.com"
-# }
+data "http" "public_ipv4" {
+  url = "https://ipv4.icanhazip.com"
+}
+
+data "http" "public_ipv6" {
+  url = "https://ipv6.icanhazip.com"
+}
+
+locals {
+  public_ips = [
+    "${chomp(data.http.public_ipv4.body)}/32",
+    "${chomp(data.http.public_ipv6.body)}/128"
+  ]
+}
 
 resource "random_password" "tunnel_secret" {
   length  = 64
@@ -24,7 +34,6 @@ resource "random_password" "tunnel_secret" {
 }
 
 resource "cloudflare_argo_tunnel" "homelab" {
-  # TODO (optimize) Use variable for account_id
   account_id = var.cloudflare_account_id
   name       = "homelab"
   secret     = base64encode(random_password.tunnel_secret.result)
@@ -85,14 +94,11 @@ resource "cloudflare_api_token" "external_dns" {
     }
   }
 
-  # TODO
-  # condition {
-  #   request_ip {
-  #     in = [
-  #       data.http.public_ip.body
-  #     ]
-  #   }
-  # }
+  condition {
+    request_ip {
+      in = local.public_ips
+    }
+  }
 }
 
 resource "kubernetes_secret" "external_dns_token" {
@@ -119,14 +125,11 @@ resource "cloudflare_api_token" "cert_manager" {
     }
   }
 
-  # TODO
-  # condition {
-  #   request_ip {
-  #     in = [
-  #       data.http.public_ip.body
-  #     ]
-  #   }
-  # }
+  condition {
+    request_ip {
+      in = local.public_ips
+    }
+  }
 }
 
 resource "kubernetes_secret" "cert_manager_token" {
