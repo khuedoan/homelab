@@ -13,9 +13,10 @@ data "cloudflare_zone" "khuedoan_com" {
 
 data "cloudflare_api_token_permission_groups" "all" {}
 
-data "http" "public_ip" {
-  url = "https://icanhazip.com"
-}
+# TODO
+# data "http" "public_ip" {
+#   url = "https://icanhazip.com"
+# }
 
 resource "random_password" "tunnel_secret" {
   length  = 64
@@ -41,10 +42,6 @@ resource "cloudflare_record" "tunnels" {
   proxied = true
   ttl     = 1 # Auto
 }
-
-# TODO
-# api token
-# add it to certmanager, external-dns, cloudflaredknamespace
 
 resource "kubernetes_namespace" "namespaces" {
   for_each = toset([
@@ -87,6 +84,15 @@ resource "cloudflare_api_token" "external_dns" {
       "com.cloudflare.api.account.zone.*" = "*"
     }
   }
+
+  # TODO
+  # condition {
+  #   request_ip {
+  #     in = [
+  #       data.http.public_ip.body
+  #     ]
+  #   }
+  # }
 }
 
 resource "kubernetes_secret" "external_dns_token" {
@@ -112,6 +118,15 @@ resource "cloudflare_api_token" "cert_manager" {
       "com.cloudflare.api.account.zone.*" = "*"
     }
   }
+
+  # TODO
+  # condition {
+  #   request_ip {
+  #     in = [
+  #       data.http.public_ip.body
+  #     ]
+  #   }
+  # }
 }
 
 resource "kubernetes_secret" "cert_manager_token" {
