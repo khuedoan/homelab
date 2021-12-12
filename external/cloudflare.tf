@@ -57,7 +57,7 @@ resource "kubernetes_namespace" "namespaces" {
     "cert-manager",
     "cloudflared",
     "external-dns",
-    "velero"
+    "k8up-operator"
   ])
 
   metadata {
