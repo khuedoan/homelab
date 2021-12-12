@@ -1,6 +1,20 @@
 # External resources
 
-> WIP documents
+**WIP documents**
+
+> These resources are optional, the homelab still works without them but will lack some features like trusted certificates and offsite backup
+
+Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
+Below is a list of external resources and why we need them.
+
+- Terraform Cloud:
+  - Workspace to store the state for external resources
+- Cloudflare:
+  - DNS
+  - DNS-01 challenge for Let's Encrypt
+  - Tunnel to public services to the internet without port-forwarding
+- Backblaze:
+  - B2 storage with S3 compatible API for offsite backup
 
 This layer will deploy resources that require external dependencies using the following provisioners:
 
@@ -11,20 +25,51 @@ This layer will deploy resources that require external dependencies using the fo
 - ArgoCD (via the ApplicationSet created by Terraform):
   - Deploy Helm charts in the subdirectories
 
-## Setup
+## Prerequisites
 
-- Create Terraform Cloud workspace
-- Run `terraform login`
-- Create Cloudflare key at <https://dash.cloudflare.com/profile/api-tokens>
-- Create Backblaze key at <https://secure.backblaze.com/app_keys.htm>
+### Create Terraform workspace
 
-```sh
-export CLOUDFLARE_API_TOKEN='xxx'
-export B2_APPLICATION_KEY_ID='xxx'
-export B2_APPLICATION_KEY='xxx'
-export KUBE_CONFIG_PATH="$PWD/../metal/kubeconfig.yaml"
+TODO
+
+### Create Cloudflare API token
+
+<https://dash.cloudflare.com/profile/api-tokens>
+
+Terraform API token summary:
+
+```
+This API token will affect the below accounts and zones, along with their respective permissions
+
+└── Khue Doan - Argo Tunnel:Edit, Account Settings:Read
+    └── khuedoan.com - Zone:Read, DNS:Edit
+
+Client IP Address Filtering
+
+└── Is in - 117.xxx.xxx.xxx, 2402:xxx:xxx:xxx:xxx:xxx:xxx:xxx
 ```
 
+### Create Backblaze API key
+
+<https://secure.backblaze.com/app_keys.htm>
+
+```
+Name of Key: Homelab
+Allow access to Bucket(s): All
+Type of Access: Read and Write
+```
+
+## Deploy
+
+Export environment variables for API keys:
+
 ```sh
-terraform apply
+export CLOUDFLARE_API_TOKEN=xxx
+export B2_APPLICATION_KEY_ID=xxx
+export B2_APPLICATION_KEY=xxx
+```
+
+Apply Terraform:
+
+```sh
+make
 ```
