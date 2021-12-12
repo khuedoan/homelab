@@ -1,6 +1,5 @@
 provider "kubernetes" {
-  # Environment variables
-  # KUBE_CONFIG_PATH
+  config_path = "${path.root}/../metal/kubeconfig.yaml"
 }
 
 resource "kubernetes_manifest" "external_applicationset" {

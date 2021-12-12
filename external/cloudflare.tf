@@ -11,6 +11,12 @@ data "cloudflare_zone" "khuedoan_com" {
   name = "khuedoan.com"
 }
 
+data "cloudflare_api_token_permission_groups" "all" {}
+
+data "http" "public_ip" {
+  url = "https://icanhazip.com"
+}
+
 resource "random_password" "tunnel_secret" {
   length  = 64
   special = false
@@ -66,5 +72,38 @@ resource "kubernetes_secret" "cloudflared_credentials" {
       TunnelID     = cloudflare_argo_tunnel.homelab.id
       TunnelSecret = base64encode(random_password.tunnel_secret.result)
     })
+  }
+}
+
+resource "cloudflare_api_token" "external_dns" {
+  name = "homelab_external_dns"
+
+  policy {
+    permission_groups = [
+      data.cloudflare_api_token_permission_groups.all.permissions["DNS Write"],
+      data.cloudflare_api_token_permission_groups.all.permissions["Zone Read"]
+    ]
+    resources = {
+      "com.cloudflare.api.account.zone.*" = "*"
+    }
+  }
+
+  condition {
+    request_ip {
+      in = [
+        data.http.public_ip.body
+      ]
+    }
+  }
+}
+
+resource "kubernetes_secret" "external_dns_token" {
+  metadata {
+    name = "cloudflare-api-token"
+    namespace = "external-dns"
+  }
+
+  data = {
+    "value" = cloudflare_api_token.external_dns.value
   }
 }
