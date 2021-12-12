@@ -4,6 +4,7 @@ gitea:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      external-dns.alpha.kubernetes.io/exclude: 'true'
     hosts:
       - host: git.khuedoan.com
         paths:

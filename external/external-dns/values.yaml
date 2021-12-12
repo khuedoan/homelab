@@ -6,3 +6,5 @@ external-dns:
       secretKeyRef:
         name: cloudflare-api-token
         key: value
+  extraArgs:
+  - --annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)
