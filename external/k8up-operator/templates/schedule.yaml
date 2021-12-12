@@ -1,0 +1,32 @@
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: schedule-test
+spec:
+  backend:
+    s3:
+      endpoint: s3.us-west-002.backblazeb2.com
+      bucket: khuedoan-homelab-backup
+      accessKeyIDSecretRef:
+        name: backblaze-credentials
+        key: username
+      secretAccessKeySecretRef:
+        name: backblaze-credentials
+        key: password
+    repoPasswordSecretRef:
+      name: backup-repo
+      key: password
+  backup:
+    schedule: '*/5 * * * *'
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 2
+    # TODO
+    #promURL: https://prometheus:8443
+  check:
+    schedule: '0 1 * * 1'
+    #promURL: https://prometheus:8443
+  prune:
+    schedule: '0 1 * * 0'
+    retention:
+      keepLast: 5
+      keepDaily: 14
