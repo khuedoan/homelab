@@ -31,7 +31,7 @@ resource "cloudflare_record" "tunnels" {
   zone_id = data.cloudflare_zone.khuedoan_com.id
   type    = "CNAME"
   name    = each.key
-  value   = cloudflare_argo_tunnel.homelab.cname
+  value   = "${cloudflare_argo_tunnel.homelab.id}.cfargotunnel.com"
   proxied = true
   ttl     = 1 # Auto
 }
