@@ -3,13 +3,13 @@
 
 KUBECONFIG = ../metal/kubeconfig.yaml
 
-default: argocd root-app
+default: argocd root
 
 .PHONY: argocd
 argocd:
 	kustomize build ./argocd | kubectl apply -f -
 	# TODO wait for argocd
 
-.PHONY: root-app
-root-app:
-	kustomize build ./root-app | kubectl apply -f -
+.PHONY: root
+root:
+	kustomize build ./root | kubectl apply -f -
