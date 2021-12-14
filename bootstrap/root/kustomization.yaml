@@ -2,10 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-# - projects/system.yaml
-- applicationsets/bootstrap.yaml
-- applicationsets/system.yaml
-- applicationsets/platform.yaml
-- applicationsets/apps.yaml
+- system.yaml
+- platform.yaml
+- apps.yaml
 
 namespace: argocd
