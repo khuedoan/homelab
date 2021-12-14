@@ -24,7 +24,27 @@ This is my homelab set up, it focused on automation to simplify provisioning, up
   - Ports: `8`
   - Speed: `1000Mbps`
 
-### Technology stack
+### Features
+
+Status: **Alpha**
+
+- [x] Common applications: Gitea, Seafile, Jellyfin, Paperless...
+- [x] Automated bare metal provisioning with PXE boot
+- [x] Automated Kubernetes installation and management
+- [x] Installing and managing applications using GitOps
+- [x] Modular architecture, easy to add or remove features/components
+- [x] Automated certificate management
+- [x] Expose services to the internet securely with [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
+- [x] CI/CD platform
+- [x] Distributed storage
+- [ ] Monitoring and alerting
+- [ ] Support multiple environments (dev, stag, prod)
+- [ ] Automated offsite backups
+- [ ] Single sign-on
+
+See [Roadmap](#roadmap) for more details.
+
+### Tech stack
 
 | Logo                                                                                                                                   | Name          | Description                                                                                   |
 | :------------------------------------------------------------------------------------------------------------------------------------: | :----------   | :-------------------------------------------------------------------------------------------- |
@@ -58,7 +78,7 @@ See [roadmap](https://homelab.khuedoan.com/roadmap) and [open issues](https://gi
 
 ## Contributing
 
-Any contributions you make are greatly appreciated (feature, bug fix, documentation, grammar or typo fix...).
+Any contributions you make, either big or small, are greatly appreciated.
 
 ## License
 
