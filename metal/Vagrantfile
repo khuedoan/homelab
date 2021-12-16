@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     mkdir /#{group_vars['ansible_user']}/.ssh
     cat /tmp/id_ed25519.pub >> /#{group_vars['ansible_user']}/.ssh/authorized_keys
+    setenforce Permissive
     dnf install -y iscsi-initiator-utils
     systemctl enable --now iscsid
   SHELL
