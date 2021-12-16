@@ -6,13 +6,13 @@ seafile:
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
       hosts:
-      - host: seafile.khuedoan.com
+      - host: &host seafile.khuedoan.com
         paths:
           - path: /
             pathType: Prefix
       tls:
       - secretName: seafile-tls-certificate
         hosts:
-          - seafile.khuedoan.com
+          - *host
   mariadb:
     enabled: true

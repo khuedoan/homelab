@@ -6,11 +6,11 @@ jellyfin:
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
       hosts:
-      - host: jellyfin.khuedoan.com
+      - host: &host jellyfin.khuedoan.com
         paths:
           - path: /
             pathType: Prefix
       tls:
       - secretName: jellyfin-tls-certificate
         hosts:
-        - jellyfin.khuedoan.com
+        - *host

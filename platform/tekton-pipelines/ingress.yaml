@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: tekton.khuedoan.com
+  - host: &host tekton.khuedoan.com
     http:
       paths:
       - pathType: ImplementationSpecific
@@ -19,5 +19,5 @@ spec:
               name: http
   tls:
   - hosts:
-    - tekton.khuedoan.com
+    - *host
     secretName: tekton-tls-certificate

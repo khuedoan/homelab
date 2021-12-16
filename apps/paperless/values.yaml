@@ -6,11 +6,11 @@ paperless:
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
       hosts:
-      - host: paperless.khuedoan.com
+      - host: &host paperless.khuedoan.com
         paths:
           - path: /
             pathType: Prefix
       tls:
       - secretName: paperless-tls-certificate
         hosts:
-          - paperless.khuedoan.com
+          - *host

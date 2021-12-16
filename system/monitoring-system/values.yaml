@@ -6,11 +6,11 @@ kube-prometheus-stack:
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
       hosts:
-      - grafana.khuedoan.com
+      - &host grafana.khuedoan.com
       tls:
       - secretName: grafana-general-tls
         hosts:
-        - grafana.khuedoan.com
+        - *host
     additionalDataSources:
     - name: Loki
       type: loki

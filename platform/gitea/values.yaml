@@ -6,14 +6,14 @@ gitea:
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
       external-dns.alpha.kubernetes.io/exclude: 'true'
     hosts:
-      - host: git.khuedoan.com
+      - host: &host git.khuedoan.com
         paths:
           - path: /
             pathType: Prefix
     tls:
     - secretName: gitea-tls-certificate
       hosts:
-        - git.khuedoan.com
+        - *host
   gitea:
     config:
       server:

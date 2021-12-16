@@ -14,11 +14,11 @@ hajimari:
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
       hosts:
-      - host: home.khuedoan.com
+      - host: &host home.khuedoan.com
         paths:
           - path: /
             pathType: Prefix
       tls:
       - secretName: hajimari-tls-certificate
         hosts:
-          - home.khuedoan.com
+          - *host

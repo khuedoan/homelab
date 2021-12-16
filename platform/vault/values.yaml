@@ -8,10 +8,10 @@ vault:
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
       hosts:
-      - host: vault.khuedoan.com
+      - host: &host vault.khuedoan.com
       tls:
       - secretName: vault-tls-certificate
         hosts:
-        - vault.khuedoan.com
+        - *host
     dev:
       enabled: true # TODO disable vault dev mode
