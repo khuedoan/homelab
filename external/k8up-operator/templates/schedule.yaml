@@ -3,7 +3,7 @@ kind: Schedule
 metadata:
   name: schedule-test
   annotations:
-    helm.sh/hook: post-install
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   backend:
     s3:
