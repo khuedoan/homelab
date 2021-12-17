@@ -2,6 +2,8 @@ apiVersion: k8up.io/v1
 kind: Schedule
 metadata:
   name: schedule-test
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   backend:
     s3:
