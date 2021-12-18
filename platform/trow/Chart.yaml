@@ -1,0 +1,7 @@
+apiVersion: v2
+name: trow
+version: 0.0.0
+dependencies:
+- name: trow
+  version: 0.3.3
+  repository: https://trow.io
