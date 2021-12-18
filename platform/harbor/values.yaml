@@ -1,0 +1,23 @@
+harbor:
+  expose:
+    ingress:
+      hosts:
+        core: harbor.khuedoan.com
+        notary: harbor.khuedoan.com
+      controller: nginx
+  persistence:
+    enabled: true
+    resourcePolicy: "keep"
+    persistentVolumeClaim:
+      registry:
+        storageClass: "longhorn"
+      chartmuseum:
+        storageClass: "longhorn"
+      jobservice:
+        storageClass: "longhorn"
+      database:
+        storageClass: "longhorn"
+      redis:
+        storageClass: "longhorn"
+      trivy:
+        storageClass: "longhorn"
