@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blog
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    external-dns.alpha.kubernetes.io/exclude: 'true'
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: &host blog.khuedoan.com
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: blog
+            port:
+              name: http
+  tls:
+  - hosts:
+    - *host
+    secretName: blog-tls-certificate

@@ -41,6 +41,7 @@ resource "cloudflare_argo_tunnel" "homelab" {
 
 resource "cloudflare_record" "tunnels" {
   for_each = toset([
+    "blog",
     "git"
   ])
 
