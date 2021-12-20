@@ -32,3 +32,18 @@ terraform {
     }
   }
 }
+
+provider "cloudflare" {
+  # Environment variables
+  # CLOUDFLARE_API_TOKEN
+}
+
+provider "b2" {
+  # Environment variables
+  # B2_APPLICATION_KEY
+  # B2_APPLICATION_KEY_ID
+}
+
+provider "kubernetes" {
+  config_path = "${path.root}/../metal/kubeconfig.yaml"
+}

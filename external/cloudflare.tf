@@ -2,11 +2,6 @@ variable "cloudflare_account_id" {
   type = string
 }
 
-provider "cloudflare" {
-  # Environment variables
-  # CLOUDFLARE_API_TOKEN
-}
-
 data "cloudflare_zone" "khuedoan_com" {
   name = "khuedoan.com"
 }
