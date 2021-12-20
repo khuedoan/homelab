@@ -39,20 +39,6 @@ resource "cloudflare_argo_tunnel" "homelab" {
   secret     = base64encode(random_password.tunnel_secret.result)
 }
 
-resource "cloudflare_record" "tunnels" {
-  for_each = toset([
-    "blog",
-    "git"
-  ])
-
-  zone_id = data.cloudflare_zone.khuedoan_com.id
-  type    = "CNAME"
-  name    = each.key
-  value   = "${cloudflare_argo_tunnel.homelab.id}.cfargotunnel.com"
-  proxied = true
-  ttl     = 1 # Auto
-}
-
 resource "kubernetes_namespace" "namespaces" {
   for_each = toset([
     "cert-manager",
@@ -100,6 +86,16 @@ resource "cloudflare_api_token" "external_dns" {
       in = local.public_ips
     }
   }
+}
+
+# Not proxied, not accessible. Just a record for auto-created CNAMEs by external-dns.
+resource "cloudflare_record" "tunnel" {
+  zone_id = data.cloudflare_zone.khuedoan_com.id
+  type    = "CNAME"
+  name    = "homelab-tunnel"
+  value   = "${cloudflare_argo_tunnel.homelab.id}.cfargotunnel.com"
+  proxied = false
+  ttl     = 1 # Auto
 }
 
 resource "kubernetes_secret" "external_dns_token" {
