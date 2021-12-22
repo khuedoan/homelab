@@ -5,7 +5,9 @@ server: https://{{ hostvars[groups['masters'][0]].ansible_host }}:6443
 {% endif %}
 token-file: {{ k3s_token_file }}
 {% if 'masters' in group_names %}
+disable-cloud-controller: true
 disable:
 - local-storage
+- servicelb
 - traefik
 {% endif %}
