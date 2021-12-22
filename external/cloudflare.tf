@@ -34,19 +34,6 @@ resource "cloudflare_argo_tunnel" "homelab" {
   secret     = base64encode(random_password.tunnel_secret.result)
 }
 
-resource "kubernetes_namespace" "namespaces" {
-  for_each = toset([
-    "cert-manager",
-    "cloudflared",
-    "external-dns",
-    "k8up-operator"
-  ])
-
-  metadata {
-    name = each.key
-  }
-}
-
 resource "kubernetes_secret" "cloudflared_credentials" {
   metadata {
     name = "cloudflared-credentials"
