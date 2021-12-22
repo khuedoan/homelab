@@ -9,5 +9,8 @@ default: apply
 	terraform init
 	touch .terraform.lock.hcl
 
+plan: .terraform.lock.hcl
+	terraform plan
+
 apply: .terraform.lock.hcl
-	terraform apply
+	terraform apply -auto-approve
