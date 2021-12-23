@@ -11,7 +11,7 @@ jobs:
       - get: homelab-git
         trigger: true
       - set_pipeline: self
-        file: .concourse/seed.yaml
+        file: homelab-git/.concourse/seed.yaml
   - name: configure-pipelines
     plan:
       - get: homelab-git
@@ -19,4 +19,4 @@ jobs:
         passed:
           - configure-self
       - set_pipeline: yaml-lint
-        file: .concourse/yaml-lint.yaml
+        file: homelab-git/.concourse/yaml-lint.yaml
