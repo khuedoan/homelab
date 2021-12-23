@@ -1,0 +1,26 @@
+resources:
+  - name: homelab-git
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/khuedoan/homelab
+  - name: yamllint
+    type: registry-image
+    icon: docker
+    source:
+      repository: cytopia/yamllint
+      tag: latest
+
+jobs:
+  - name: lint
+    plan:
+      - get: homelab-git
+        trigger: true
+      - task: plan
+        image: yamllint
+        config:
+          platform: linux
+          run:
+            path: yamllint
+            args:
+              - .

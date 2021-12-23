@@ -1,23 +1,22 @@
 resources:
-- name: ci
-  type: git
-  icon: github
-  source:
-    uri: https://github.com/khuedoan/homelab
+  - name: homelab-git
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/khuedoan/homelab
 
 jobs:
-- name: configure-self
-  plan:
-  - get: ci
-    trigger: true
-  - set_pipeline: self
-    file: .concourse/seed.yaml
-- name: configure-pipelines
-  plan:
-  - get: ci
-    trigger: true
-    passed: [configure-self]
-  # - set_pipeline: external
-  #   file: .concourse/external.yaml
-  # - set_pipeline: yaml-lint
-  #   file: .concourse/yaml-lint.yaml
+  - name: configure-self
+    plan:
+      - get: homelab-git
+        trigger: true
+      - set_pipeline: self
+        file: .concourse/seed.yaml
+  - name: configure-pipelines
+    plan:
+      - get: homelab-git
+        trigger: true
+        passed:
+          - configure-self
+      - set_pipeline: yaml-lint
+        file: .concourse/yaml-lint.yaml
