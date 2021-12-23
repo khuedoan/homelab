@@ -1,0 +1,14 @@
+concourse:
+  web:
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      ingressClassName: nginx
+      hosts:
+      - &host concourse.khuedoan.com
+      tls:
+      - secretName: concourse-tls-certificate
+        hosts:
+        - *host
+      externalUrl: *host

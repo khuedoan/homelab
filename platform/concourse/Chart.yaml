@@ -1,0 +1,7 @@
+apiVersion: v2
+name: concourse
+version: 0.0.0
+dependencies:
+- name: concourse
+  version: 16.1.7
+  repository: https://concourse-charts.storage.googleapis.com/
