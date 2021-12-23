@@ -11,4 +11,6 @@ concourse:
       - secretName: concourse-tls-certificate
         hosts:
         - *host
-      externalUrl: *host
+  concourse:
+    web:
+      externalUrl: https://concourse.khuedoan.com
