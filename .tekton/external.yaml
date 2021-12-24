@@ -1,0 +1,99 @@
+# TODO automate this
+# kubectl create secret generic -n tekton-pipelines kube-config --from-file=$PWD/../metal/kubeconfig.yaml
+# kubectl create secret generic -n tekton-pipelines terraform-env-vars \
+# --from-literal=CLOUDFLARE_EMAIL=xxx@yyy.com \
+# --from-literal=CLOUDFLARE_API_KEY=xxx \
+# --from-literal=B2_APPLICATION_KEY_ID=xxx \
+# --from-literal=B2_APPLICATION_KEY=xxx \
+# --from-literal=TF_VAR_cloudflare_account_id=xxx
+
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: homelab-git
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://github.com/khuedoan/homelab
+    - name: revision
+      value: master
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: terraform-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: terraform-sa
+    namespace: tekton-pipelines
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: terraform-sa
+secrets:
+  - name: terraform-credentials
+  - name: terraform-env-vars
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: terraform-external
+spec:
+  resources:
+    inputs:
+      - name: homelab-source
+        type: git
+  stepTemplate:
+    envFrom:
+      - secretRef:
+          name: terraform-env-vars
+    volumeMounts:
+      - name: terraform-credentials
+        mountPath: /root/.terraform.d/
+  volumes:
+    - name: terraform-credentials
+      secret:
+        secretName: terraform-credentials
+  steps:
+    - name: init
+      image: hashicorp/terraform:1.1.2
+      workingDir: /workspace/homelab-source/external # TODO
+      command:
+        - terraform
+      args:
+        - init
+    - name: plan
+      image: hashicorp/terraform:1.1.2
+      workingDir: /workspace/homelab-source/external # TODO
+      command:
+        - terraform
+      args:
+        - plan
+    - name: apply
+      image: hashicorp/terraform:1.1.2
+      workingDir: /workspace/homelab-source/external # TODO
+      command:
+        - terraform
+      args:
+        - apply
+        - -auto-approve
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: terraform-external-run
+spec:
+  serviceAccountName: terraform-sa
+  taskRef:
+    name: terraform-external
+  resources:
+    inputs:
+      - name: homelab-source
+        resourceRef:
+          name: homelab-git
