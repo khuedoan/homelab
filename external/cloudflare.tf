@@ -36,7 +36,7 @@ resource "cloudflare_argo_tunnel" "homelab" {
 
 resource "kubernetes_secret" "cloudflared_credentials" {
   metadata {
-    name = "cloudflared-credentials"
+    name      = "cloudflared-credentials"
     namespace = "cloudflared"
   }
 
@@ -82,7 +82,7 @@ resource "cloudflare_record" "tunnel" {
 
 resource "kubernetes_secret" "external_dns_token" {
   metadata {
-    name = "cloudflare-api-token"
+    name      = "cloudflare-api-token"
     namespace = "external-dns"
   }
 
@@ -113,7 +113,7 @@ resource "cloudflare_api_token" "cert_manager" {
 
 resource "kubernetes_secret" "cert_manager_token" {
   metadata {
-    name = "cloudflare-api-token"
+    name      = "cloudflare-api-token"
     namespace = "cert-manager"
   }
 
