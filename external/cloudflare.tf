@@ -1,7 +1,3 @@
-variable "cloudflare_account_id" {
-  type = string
-}
-
 data "cloudflare_zone" "khuedoan_com" {
   name = "khuedoan.com"
 }

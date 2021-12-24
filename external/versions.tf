@@ -34,17 +34,16 @@ terraform {
 }
 
 provider "cloudflare" {
-  # Environment variables
-  # CLOUDFLARE_API_TOKEN
+  email = var.cloudflare_email
+  api_key = var.cloudflare_api_key
 }
 
 provider "b2" {
-  # Environment variables
-  # B2_APPLICATION_KEY
-  # B2_APPLICATION_KEY_ID
+  application_key_id = var.b2_application_key_id
+  application_key = var.b2_application_key
 }
 
 provider "kubernetes" {
-  # Environment variables
-  # KUBE_CONFIG_PATH
+  # Use KUBE_CONFIG_PATH environment variables
+  # Or in cluster service account
 }
