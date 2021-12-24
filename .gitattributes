@@ -1,1 +1,3 @@
+*.yaml linguist-detectable=true
+*.yml linguist-detectable=true
 external/** -linguist-vendored
