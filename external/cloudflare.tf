@@ -68,6 +68,12 @@ resource "cloudflare_api_token" "external_dns" {
       in = local.public_ips
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      modified_on
+    ]
+  }
 }
 
 # Not proxied, not accessible. Just a record for auto-created CNAMEs by external-dns.
@@ -108,6 +114,12 @@ resource "cloudflare_api_token" "cert_manager" {
     request_ip {
       in = local.public_ips
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      modified_on
+    ]
   }
 }
 
