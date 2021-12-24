@@ -34,13 +34,13 @@ terraform {
 }
 
 provider "cloudflare" {
-  email = var.cloudflare_email
+  email   = var.cloudflare_email
   api_key = var.cloudflare_api_key
 }
 
 provider "b2" {
   application_key_id = var.b2_application_key_id
-  application_key = var.b2_application_key
+  application_key    = var.b2_application_key
 }
 
 provider "kubernetes" {

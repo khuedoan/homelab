@@ -3,7 +3,7 @@ variable "cloudflare_email" {
 }
 
 variable "cloudflare_api_key" {
-  type = string
+  type      = string
   sensitive = true
 }
 
@@ -16,6 +16,6 @@ variable "b2_application_key_id" {
 }
 
 variable "b2_application_key" {
-  type = string
+  type      = string
   sensitive = true
 }
