@@ -8,27 +8,6 @@
 # --from-literal=B2_APPLICATION_KEY=xxx \
 # --from-literal=TF_VAR_cloudflare_account_id=xxx
 
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: terraform-admin
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - kind: ServiceAccount
-    name: terraform-sa
-    namespace: tekton-pipelines
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: terraform-sa
-secrets:
-  - name: terraform-credentials
-  - name: terraform-env-vars
----
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -80,48 +59,3 @@ spec:
       args:
         - apply
         - -auto-approve
----
-apiVersion: tekton.dev/v1beta1
-kind: Pipeline
-metadata:
-  name: homelab
-spec:
-  workspaces:
-  - name: shared-data
-  tasks:
-  - name: fetch-repo
-    taskRef:
-      name: git-clone
-    workspaces:
-    - name: output
-      workspace: shared-data
-    params:
-    - name: url
-      value: http://gitea-http.gitea:3000/ops/homelab
-    - name: revision
-      value: master
-  - name: external
-    runAfter: ["fetch-repo"]  # Wait until the clone is done before reading the readme.
-    workspaces:
-    - name: source
-      workspace: shared-data
-    taskRef:
-      name: terraform-external
----
-apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
-metadata:
-  name: homelab-run
-spec:
-  serviceAccountName: terraform-sa
-  pipelineRef:
-    name: homelab
-  workspaces:
-  - name: shared-data
-    volumeClaimTemplate:
-      spec:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Gi
