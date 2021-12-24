@@ -16,14 +16,10 @@ Below is a list of external resources and why we need them.
 - Backblaze:
   - B2 storage with S3 compatible API for offsite backup
 
-This layer will deploy resources that require external dependencies using the following provisioners:
+This layer will:
 
-- Terraform:
-  - Create external resources
-  - Add external secrets to namespaces
-  - Create an ApplicationSet
-- ArgoCD (via the ApplicationSet created by Terraform):
-  - Deploy Helm charts in the subdirectories
+- Create external resources
+- Add external secrets to namespaces
 
 ## Prerequisites
 
@@ -60,15 +56,7 @@ Type of Access: Read and Write
 
 ## Deploy
 
-Export environment variables for API keys:
-
-```sh
-export CLOUDFLARE_API_TOKEN=xxx
-export B2_APPLICATION_KEY_ID=xxx
-export B2_APPLICATION_KEY=xxx
-```
-
-Apply Terraform:
+Apply Terraform (you will be prompted to login to Terraform Cloud and enter API keys from the previous steps):
 
 ```sh
 make
