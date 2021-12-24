@@ -45,5 +45,6 @@ provider "b2" {
 }
 
 provider "kubernetes" {
-  config_path = "${path.root}/../metal/kubeconfig.yaml"
+  # Environment variables
+  # KUBE_CONFIG_PATH
 }
