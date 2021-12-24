@@ -86,12 +86,13 @@ Distributed under the GPLv3 License. See `LICENSE` for more information.
 
 ## Acknowledgements
 
-- ArgoCD usage in [my coworker's homelab](https://github.com/locmai/humble)
+- [ArgoCD usage in my coworker's homelab](https://github.com/locmai/humble)
 - [README template](https://github.com/othneildrew/Best-README-Template)
 - [Run the same Cloudflare Tunnel across many `cloudflared` processes](https://developers.cloudflare.com/cloudflare-one/tutorials/many-cfd-one-tunnel)
 - [MAC address environment variable in GRUB config](https://askubuntu.com/questions/1272400/how-do-i-automate-network-installation-of-many-ubuntu-18-04-systems-with-efi-and)
 - [Official k3s systemd service file](https://github.com/k3s-io/k3s/blob/master/k3s.service)
 - [Official Cloudflare Tunnel examples](https://github.com/cloudflare/argo-tunnel-examples)
+- [Initialize GitOps repository on Gitea and integrate with Tekton by RedHat](https://github.com/redhat-scholars/tekton-tutorial/tree/master/triggers)
 
 ## Stargazers over time
 

@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-gitops-repo
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: script
+          image: python
+          env:
+            - name: GITEA_USER
+              value: "{{ .Values.gitea.gitea.admin.username }}"
+            - name: GITEA_PASSWORD
+              value: "{{ .Values.gitea.gitea.admin.password }}"
+          command:
+            - python
+            - -c
+          args:
+            - |
+{{ .Files.Get "files/init_gitops_repo.py" | indent 14 }}
