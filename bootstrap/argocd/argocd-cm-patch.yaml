@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
+  users.anonymous.enabled: "true"
   resource.customizations.health.argoproj.io_Application: |
     hs = {}
     hs.status = "Progressing"
