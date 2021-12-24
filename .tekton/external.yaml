@@ -1,13 +1,3 @@
-# TODO automate this
-# kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.5/git-clone.yaml
-# kubectl create secret generic -n tekton-pipelines kube-config --from-file=$PWD/../metal/kubeconfig.yaml
-# kubectl create secret generic -n tekton-pipelines terraform-env-vars \
-# --from-literal=CLOUDFLARE_EMAIL=xxx@yyy.com \
-# --from-literal=CLOUDFLARE_API_KEY=xxx \
-# --from-literal=B2_APPLICATION_KEY_ID=xxx \
-# --from-literal=B2_APPLICATION_KEY=xxx \
-# --from-literal=TF_VAR_cloudflare_account_id=xxx
-
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -18,18 +8,19 @@ spec:
   stepTemplate:
     image: hashicorp/terraform:1.1.2
     workingDir: /workspace/source/external
-    envFrom:
-      - secretRef:
-          name: terraform-env-vars
     volumeMounts:
-      - name: terraform-credentials
-        mountPath: /root/.terraform.d/
+      - name: terraform-secrets
+        mountPath: /root/.terraform.d/credentials.tfrc.json
+        subPath: credentials.tfrc.json
+      - name: terraform-secrets
+        mountPath: /workspace/source/external/terraform.tfvars
+        subPath: terraform.tfvars
     command:
       - terraform
   volumes:
-    - name: terraform-credentials
+    - name: terraform-secrets
       secret:
-        secretName: terraform-credentials
+        secretName: terraform
   steps:
     - name: lint
       args:
