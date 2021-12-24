@@ -16,46 +16,34 @@ spec:
   workspaces:
     - name: source
   stepTemplate:
+    image: hashicorp/terraform:1.1.2
+    workingDir: /workspace/source/external
     envFrom:
       - secretRef:
           name: terraform-env-vars
     volumeMounts:
       - name: terraform-credentials
         mountPath: /root/.terraform.d/
+    command:
+      - terraform
   volumes:
     - name: terraform-credentials
       secret:
         secretName: terraform-credentials
   steps:
     - name: lint
-      image: hashicorp/terraform:1.1.2
-      workingDir: $(workspaces.source.path)/external
-      command:
-        - terraform
       args:
         - fmt
         - -recursive
         - -diff
         - -check
     - name: init
-      image: hashicorp/terraform:1.1.2
-      workingDir: $(workspaces.source.path)/external
-      command:
-        - terraform
       args:
         - init
     - name: plan
-      image: hashicorp/terraform:1.1.2
-      workingDir: $(workspaces.source.path)/external
-      command:
-        - terraform
       args:
         - plan
     - name: apply
-      image: hashicorp/terraform:1.1.2
-      workingDir: $(workspaces.source.path)/external
-      command:
-        - terraform
       args:
         - apply
         - -auto-approve
