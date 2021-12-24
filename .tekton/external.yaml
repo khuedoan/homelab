@@ -1,4 +1,5 @@
 # TODO automate this
+# kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.5/git-clone.yaml
 # kubectl create secret generic -n tekton-pipelines kube-config --from-file=$PWD/../metal/kubeconfig.yaml
 # kubectl create secret generic -n tekton-pipelines terraform-env-vars \
 # --from-literal=CLOUDFLARE_EMAIL=xxx@yyy.com \
@@ -7,18 +8,6 @@
 # --from-literal=B2_APPLICATION_KEY=xxx \
 # --from-literal=TF_VAR_cloudflare_account_id=xxx
 
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: homelab-git
-spec:
-  type: git
-  params:
-    - name: url
-      value: http://gitea-http.gitea:3000/ops/homelab
-    - name: revision
-      value: master
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -45,10 +34,8 @@ kind: Task
 metadata:
   name: terraform-external
 spec:
-  resources:
-    inputs:
-      - name: homelab-source
-        type: git
+  workspaces:
+    - name: source
   stepTemplate:
     envFrom:
       - secretRef:
@@ -63,21 +50,21 @@ spec:
   steps:
     - name: init
       image: hashicorp/terraform:1.1.2
-      workingDir: /workspace/homelab-source/external # TODO
+      workingDir: $(workspaces.source.path)/external
       command:
         - terraform
       args:
         - init
     - name: plan
       image: hashicorp/terraform:1.1.2
-      workingDir: /workspace/homelab-source/external # TODO
+      workingDir: $(workspaces.source.path)/external
       command:
         - terraform
       args:
         - plan
     - name: apply
       image: hashicorp/terraform:1.1.2
-      workingDir: /workspace/homelab-source/external # TODO
+      workingDir: $(workspaces.source.path)/external
       command:
         - terraform
       args:
@@ -85,15 +72,46 @@ spec:
         - -auto-approve
 ---
 apiVersion: tekton.dev/v1beta1
-kind: TaskRun
+kind: Pipeline
 metadata:
-  name: terraform-external-run
+  name: homelab
+spec:
+  workspaces:
+  - name: shared-data
+  tasks:
+  - name: fetch-repo
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-data
+    params:
+    - name: url
+      value: http://gitea-http.gitea:3000/ops/homelab
+    - name: revision
+      value: master
+  - name: terraform
+    runAfter: ["fetch-repo"]  # Wait until the clone is done before reading the readme.
+    workspaces:
+    - name: source
+      workspace: shared-data
+    taskRef:
+      name: terraform-external
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: homelab-run
 spec:
   serviceAccountName: terraform-sa
-  taskRef:
-    name: terraform-external
-  resources:
-    inputs:
-      - name: homelab-source
-        resourceRef:
-          name: homelab-git
+  pipelineRef:
+    name: homelab
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
