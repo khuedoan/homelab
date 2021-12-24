@@ -43,7 +43,9 @@ spec:
     - name: plan
       args:
         - plan
+        - -out=tfplan
     - name: apply
       args:
         - apply
         - -auto-approve
+        - tfplan
