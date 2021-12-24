@@ -34,13 +34,14 @@ Status: **Alpha**
 - [x] Installing and managing applications using GitOps
 - [x] Modular architecture, easy to add or remove features/components
 - [x] Automated certificate management
+- [x] Automatically update DNS records for exposed services
 - [x] Expose services to the internet securely with [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
 - [x] CI/CD platform
 - [x] Distributed storage
-- [ ] Monitoring and alerting
-- [ ] Support multiple environments (dev, stag, prod)
-- [ ] Automated offsite backups
-- [ ] Single sign-on
+- [ ] Monitoring and alerting 🚧
+- [ ] Support multiple environments (dev, stag, prod) 🚧
+- [ ] Automated offsite backups 🚧
+- [ ] Single sign-on 🚧
 
 See [Roadmap](#roadmap) for more details.
 
