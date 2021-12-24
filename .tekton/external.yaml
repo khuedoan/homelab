@@ -15,7 +15,7 @@ spec:
   type: git
   params:
     - name: url
-      value: https://github.com/khuedoan/homelab
+      value: http://gitea-http.gitea:3000/ops/homelab
     - name: revision
       value: master
 ---
