@@ -48,6 +48,16 @@ spec:
       secret:
         secretName: terraform-credentials
   steps:
+    - name: lint
+      image: hashicorp/terraform:1.1.2
+      workingDir: $(workspaces.source.path)/external
+      command:
+        - terraform
+      args:
+        - fmt
+        - -recursive
+        - -diff
+        - -check
     - name: init
       image: hashicorp/terraform:1.1.2
       workingDir: $(workspaces.source.path)/external
@@ -90,7 +100,7 @@ spec:
       value: http://gitea-http.gitea:3000/ops/homelab
     - name: revision
       value: master
-  - name: terraform
+  - name: external
     runAfter: ["fetch-repo"]  # Wait until the clone is done before reading the readme.
     workspaces:
     - name: source
