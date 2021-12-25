@@ -15,3 +15,4 @@ resources:
 - service-account.yaml
 # Tasks
 - https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.5/git-clone.yaml
+- https://raw.githubusercontent.com/tektoncd/catalog/main/task/kaniko/0.5/kaniko.yaml
