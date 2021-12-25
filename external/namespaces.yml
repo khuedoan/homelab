@@ -7,7 +7,8 @@
         name: "{{ item }}"
         state: present
       loop:
-        - tekton-pipelines
         - cert-manager
-        - external-dns
         - cloudflared
+        - external-dns
+        - k8up-operator
+        - tekton-pipelines
