@@ -16,6 +16,10 @@ gitea:
       hosts:
         - *host
   gitea:
+    admin:
+      # existingSecret: gitea-admin-secret
+      username: admin
+      password: asdfasdfasdf # TODO yes I know this is just for testing
     config:
       server:
         LANDING_PAGE: explore
