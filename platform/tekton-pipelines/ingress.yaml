@@ -5,8 +5,6 @@ metadata:
   namespace: tekton-pipelines
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    external-dns.alpha.kubernetes.io/target: "homelab-tunnel.khuedoan.com"
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
   ingressClassName: nginx
   rules:
