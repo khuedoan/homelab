@@ -1,15 +1,5 @@
 # Configuration
 
-## SSH keys
-
-> Skip this step if you already have an Ed25519 key pair
-
-Generate SSH private key and public key on the controller (your laptop or desktop):
-
-```sh
-ssh-keygen -t ed25519
-```
-
 ## Fork this repository
 
 Because this repository applies GitOps practices, this git repository is the source of truth for my homelab, so you'll need to folk it to make it yours.
