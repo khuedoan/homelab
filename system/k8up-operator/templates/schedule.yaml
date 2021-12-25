@@ -5,7 +5,7 @@ metadata:
 spec:
   backend:
     b2:
-      path: .
+      path: prod
       bucket: khuedoan-homelab-backup
       accountIDSecretRef:
         name: backblaze-credentials
