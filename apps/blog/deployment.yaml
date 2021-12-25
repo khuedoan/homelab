@@ -16,33 +16,5 @@ spec:
         app: blog
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
-        volumeMounts:
-        - mountPath: /usr/share/nginx/html
-          name: static
-      - name: build
-        image: alpine:latest
-        workingDir: /usr/local/src
-        command:
-        - /bin/sh
-        - -c
-        args:
-        - |
-          apk add git go hugo
-          git clone https://github.com/khuedoan/blog .
-          while true; do
-            hugo --minify --destination /usr/share/nginx/html
-            sleep 120
-            git pull
-          done
-        volumeMounts:
-        - mountPath: /usr/local/src
-          name: source
-        - mountPath: /usr/share/nginx/html
-          name: static
-      volumes:
-      - name: source
-        emptyDir: {}
-      - name: static
-        emptyDir: {}
+      - name: blog
+        image: registry.khuedoan.com/blog:latest
