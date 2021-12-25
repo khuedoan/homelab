@@ -5,7 +5,7 @@ metadata:
 spec:
   backend:
     b2:
-      path: s3.us-west-002.backblazeb2.com
+      path: .
       bucket: khuedoan-homelab-backup
       accountIDSecretRef:
         name: backblaze-credentials
