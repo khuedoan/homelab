@@ -27,6 +27,7 @@ authentik:
       storageClass: longhorn
   redis:
     enabled: true
-    persistence:
-      enabled: true
-      storageClass: longhorn
+    master:
+      persistence:
+        enabled: true
+        storageClass: longhorn
