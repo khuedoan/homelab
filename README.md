@@ -37,6 +37,7 @@ Status: **Alpha**
 - [x] Automatically update DNS records for exposed services
 - [x] Expose services to the internet securely with [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
 - [x] CI/CD platform
+- [x] Private container registry
 - [x] Distributed storage
 - [ ] Monitoring and alerting 🚧
 - [ ] Support multiple environments (dev, stag, prod) 🚧
@@ -66,6 +67,7 @@ See [Roadmap](#roadmap) for more details.
 | <img width="32" alt="Prometheus" src="https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.svg"> | Prometheus    | Systems monitoring and alerting toolkit                                                       |
 | <img width="32" alt="Rocky Linux" src="https://avatars.githubusercontent.com/u/75713131?s=200&v=4">                                    | Rocky Linux   | Base OS for Kubernetes nodes                                                                  |
 | <img width="32" alt="Tekton" src="https://avatars.githubusercontent.com/u/47602533?s=200&v=4">                                         | Tekton        | Cloud native solution for building CI/CD systems                                              |
+| <img width="32" alt="Trow" src="https://trow.io/trow.png">                                                                             | Trow          | Private container registry                                                                    |
 | <img width="32" alt="Vault" src="https://simpleicons.org/icons/vault.svg">                                                             | Vault         | Secrets and encryption management system                                                      |
 
 ## Get Started

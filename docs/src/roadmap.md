@@ -1,6 +1,10 @@
 # Roadmap
 
-Current status: **Alpha**
+> Current status: **Alpha**
+
+## Alpha requirements
+
+- [x] Literally anything that works
 
 ## Beta requirements
 
@@ -11,28 +15,22 @@ Good enough for playaround with and personal use
   - [x] OS installation (PXE boot)
 - [x] Automated cluster creation (k3s)
 - [x] Automated application deployment (ArgoCD)
-- [x] Everything is defined as code
-- [ ] Basic services
+- [x] Basic services
   - [x] Gitea
   - [x] Tekton
-  - [x] Seafile
-  - [ ] PeerTube,
-  - [ ] Mail server
-  - [ ] Mattermost
-  - [ ] Matrix with bridges
   - [x] Vault
-  - [ ] VPN
+  - [x] Private container registry
   - [x] Homepage
-  - [ ] [Development dashboard](https://github.com/khuedoan/homelab-backstage)
-- [ ] Cloudflare tunnel or multi-cluster communication (via Wireguard or a service mesh like Linkerd)
-- [ ] Local DNS
-- [ ] Mirror all git repositories from GitHub automatically
-- [ ] Monitoring and alerting
-- [ ] Local container registry
-- [ ] SSO
-- [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
+- [x] Cloudflare tunnel ~~or multi-cluster communication (via Wireguard or a service mesh like Linkerd)~~
+- [x] Automated DNS management
+- [x] Automated certificate management
+- [x] Initialize GitOps repository on Gitea automatically
+- [x] Observability
+  - [x] Monitoring
+  - [x] Logging
 - [ ] 70% availability (might break in the weekend due to new experimentation)
-- [x] Only use open-source technologies
+- [x] Only use open-source technologies (except external managed services in `./external`)
+- [x] Everything is defined as code
 
 ## Stable requirements
 
@@ -45,11 +43,25 @@ Can be used in "production" (for family or even small scale bussinesses)
   - [ ] Backups
   - [ ] Secrets management and rotation
   - [ ] Self healing
+- [ ] Additional services
+  - [ ] Matrix with bridges
+  - [ ] VPN server
+  - [ ] PeerTube
+  - [x] Seafile
+  - [x] Blog
+  - [ ] [Development dashboard](https://github.com/khuedoan/homelab-backstage)
+- [ ] Observability
+  - [ ] Alerting
+- [ ] SSO
 - [ ] 99,9% availability (less than 9 hours of downtime per year)
-- [ ] Backup encrytion
-- [ ] Split DNS
+- [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite) with encryption
 - [ ] Secure by default
+  - [ ] SELinux
+  - [ ] Firewall
+  - [ ] Network policy
+  - [ ] Replace all default passwords with randomly generated ones
 - [ ] Static code analysis
+- [ ] Chaos testing
 - [ ] Minimal dependency on external services
 - [ ] Complete documentation and diagram as code
   - [x] Book (this book)
@@ -59,9 +71,11 @@ Can be used in "production" (for family or even small scale bussinesses)
 
 Nice to have
 
-- [ ] Addition services (TBD)
+- [ ] Addition services
+  - [ ] Mail server
 - [ ] Air-gap install
 - [ ] Automated testing
 - [ ] Security audit
 - [ ] Serverless (Knative)
 - [ ] Cluster API (https://github.com/khuedoan/homelab/pull/2)
+- [ ] Split DNS
