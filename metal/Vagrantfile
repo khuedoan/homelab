@@ -30,5 +30,7 @@ Vagrant.configure("2") do |config|
     setenforce Permissive
     dnf install -y iscsi-initiator-utils
     systemctl enable --now iscsid
+    sysctl fs.inotify.max_user_instances=8192
+    sysctl -p
   SHELL
 end
