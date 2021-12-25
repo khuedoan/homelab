@@ -4,6 +4,7 @@ metadata:
   name: trow
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-body-size: 128m
 spec:
   ingressClassName: nginx
   rules:
