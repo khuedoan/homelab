@@ -25,3 +25,5 @@ trow:
     - secretName: trow-tls-certificate
       hosts:
         - *host
+  volumeClaim:
+    storageClassName: longhorn
