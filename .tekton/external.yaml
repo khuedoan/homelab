@@ -20,7 +20,7 @@ spec:
   volumes:
     - name: terraform-secrets
       secret:
-        secretName: terraform
+        secretName: terraform-secrets
   steps:
     - name: lint
       args:

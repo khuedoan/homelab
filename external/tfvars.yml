@@ -1,0 +1,21 @@
+- name: Bootstrap external secrets
+  hosts: localhost
+  vars_prompt:
+    - name: cloudflare_email
+      prompt: Enter Cloudflare email
+      private: no
+    - name: cloudflare_api_key
+      prompt: Enter Cloudflare API Key (sensitive)
+    - name: cloudflare_account_id
+      prompt: Enter Cloudflare account ID
+      private: no
+    - name: b2_application_key_id
+      prompt: Enter Backblaze application key ID
+      private: no
+    - name: b2_application_key
+      prompt: Enter Backblaze application key (sensitive)
+  tasks:
+    - name: Render environment file
+      template:
+        src: ./terraform.tfvars.j2
+        dest: ./terraform.tfvars
