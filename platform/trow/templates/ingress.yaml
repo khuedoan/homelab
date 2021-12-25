@@ -15,9 +15,9 @@ spec:
       - pathType: ImplementationSpecific
         backend:
           service:
-            name: trow-svc
+            name: trow
             port:
-              name: http-tcp
+              number: {{ .Values.trow.service.port }}
   tls:
   - hosts:
     - *host
