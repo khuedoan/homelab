@@ -17,4 +17,4 @@ spec:
     spec:
       containers:
       - name: blog
-        image: registry.khuedoan.com/blog:latest
+        image: trow.trow:8000/blog:latest
