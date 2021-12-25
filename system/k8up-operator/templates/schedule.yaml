@@ -4,18 +4,18 @@ metadata:
   name: schedule-test
 spec:
   backend:
-    repoPasswordSecretRef:
-      name: backblaze-credentials
-      key: password
     b2:
       path: s3.us-west-002.backblazeb2.com
       bucket: khuedoan-homelab-backup
       accountIDSecretRef:
         name: backblaze-credentials
-        key: username
+        key: application-key-id
       accountKeySecretRef:
         name: backblaze-credentials
-        key: password
+        key: application-key
+    repoPasswordSecretRef:
+      name: backblaze-credentials
+      key: repo-password
   backup:
     schedule: '*/5 * * * *'
     failedJobsHistoryLimit: 2
