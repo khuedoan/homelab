@@ -1,8 +1,8 @@
 trow:
   trow:
     domain: registry.khuedoan.com
-    user: admin
-    password: testingtestingdontuseit
+    # user: user
+    # password: password
     validation:
       enabled: false
       allowDocker: false
