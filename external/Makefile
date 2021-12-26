@@ -1,7 +1,8 @@
 .POSIX:
 .EXPORT_ALL_VARIABLES:
 
-KUBE_CONFIG_PATH = ../metal/kubeconfig.yaml
+KUBECONFIG = ../metal/kubeconfig.yaml
+KUBE_CONFIG_PATH = $(KUBECONFIG)
 
 default: apply terraform-secrets
 
