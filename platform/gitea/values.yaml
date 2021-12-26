@@ -3,22 +3,22 @@ gitea:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.khuedoan.com"
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/target: homelab-tunnel.khuedoan.com
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
     hosts:
       - host: &host git.khuedoan.com
         paths:
           - path: /
             pathType: Prefix
     tls:
-    - secretName: gitea-tls-certificate
-      hosts:
-        - *host
+      - secretName: gitea-tls-certificate
+        hosts:
+          - *host
   gitea:
     admin:
       # existingSecret: gitea-admin-secret
-      password: asdfasdfasdf # TODO yes I know this is just for testing
+      password: asdfasdfasdf  # TODO yes I know this is just for testing
     config:
       server:
         LANDING_PAGE: explore

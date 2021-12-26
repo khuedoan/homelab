@@ -2,6 +2,6 @@ apiVersion: v2
 name: jellyfin
 version: 0.0.0
 dependencies:
-- name: jellyfin
-  version: 9.2.0
-  repository: https://k8s-at-home.com/charts/
+  - name: jellyfin
+    version: 9.2.0
+    repository: https://k8s-at-home.com/charts/

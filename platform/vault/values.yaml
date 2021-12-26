@@ -6,12 +6,12 @@ vault:
       enabled: true
       ingressClassName: nginx
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-      - host: &host vault.khuedoan.com
+        - host: &host vault.khuedoan.com
       tls:
-      - secretName: vault-tls-certificate
-        hosts:
-        - *host
+        - secretName: vault-tls-certificate
+          hosts:
+            - *host
     dev:
-      enabled: true # TODO disable vault dev mode
+      enabled: true  # TODO disable vault dev mode

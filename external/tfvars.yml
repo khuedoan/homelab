@@ -3,15 +3,15 @@
   vars_prompt:
     - name: cloudflare_email
       prompt: Enter Cloudflare email
-      private: no
+      private: false
     - name: cloudflare_api_key
       prompt: Enter Cloudflare API Key (sensitive)
     - name: cloudflare_account_id
       prompt: Enter Cloudflare account ID
-      private: no
+      private: false
     - name: b2_application_key_id
       prompt: Enter Backblaze application key ID
-      private: no
+      private: false
     - name: b2_application_key
       prompt: Enter Backblaze application key (sensitive)
   tasks:

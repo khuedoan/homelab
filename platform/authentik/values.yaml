@@ -1,23 +1,23 @@
 authentik:
   authentik:
-    secret_key: "dontjudgemethisisjustfortesting" # TODO
+    secret_key: dontjudgemethisisjustfortesting    # TODO
     postgresql:
-      password: &postgresql_password "IKnowThisIsNotASecurePasswordJust4Testing" # TODO
+      password: &postgresql_password IKnowThisIsNotASecurePasswordJust4Testing    # TODO
 
   ingress:
     enabled: true
     ingressClassName: nginx
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-    - host: &host authentik.khuedoan.com
-      paths:
-      - path: "/"
-        pathType: Prefix
+      - host: &host authentik.khuedoan.com
+        paths:
+          - path: /
+            pathType: Prefix
     tls:
-    - secretName: authentik-tls-certificate
-      hosts:
-      - *host
+      - secretName: authentik-tls-certificate
+        hosts:
+          - *host
 
   postgresql:
     enabled: true

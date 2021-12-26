@@ -14,16 +14,16 @@ trow:
       proxyDockerHub: false
 
   ingress:
-    enabled: false # TODO https://github.com/ContainerSolutions/trow/issues/282
+    enabled: false  # TODO https://github.com/ContainerSolutions/trow/issues/282
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-    - host: &host registry.khuedoan.com
-      paths:
-        - "/"
+      - host: &host registry.khuedoan.com
+        paths:
+          - /
     tls:
-    - secretName: trow-tls-certificate
-      hosts:
-        - *host
+      - secretName: trow-tls-certificate
+        hosts:
+          - *host
   volumeClaim:
     storageClassName: longhorn

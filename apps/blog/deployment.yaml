@@ -16,5 +16,5 @@ spec:
         app: blog
     spec:
       containers:
-      - name: blog
-        image: registry.khuedoan.com/blog:latest
+        - name: blog
+          image: registry.khuedoan.com/blog:latest

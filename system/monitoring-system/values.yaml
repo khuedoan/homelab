@@ -4,14 +4,14 @@ kube-prometheus-stack:
       enabled: true
       ingressClassName: nginx
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-      - &host grafana.khuedoan.com
+        - &host grafana.khuedoan.com
       tls:
-      - secretName: grafana-general-tls
-        hosts:
-        - *host
+        - secretName: grafana-general-tls
+          hosts:
+            - *host
     additionalDataSources:
-    - name: Loki
-      type: loki
-      url: http://loki.loki:3100
+      - name: Loki
+        type: loki
+        url: http://loki.loki:3100

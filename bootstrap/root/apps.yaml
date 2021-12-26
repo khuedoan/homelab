@@ -4,11 +4,11 @@ metadata:
   name: apps
 spec:
   generators:
-  - git:
-      repoURL: https://github.com/khuedoan/homelab.git
-      revision: master
-      directories:
-      - path: apps/*
+    - git:
+        repoURL: https://github.com/khuedoan/homelab.git
+        revision: master
+        directories:
+          - path: apps/*
   template:
     metadata:
       name: '{{path.basename}}'
@@ -25,4 +25,4 @@ spec:
           prune: true
           selfHeal: true
         syncOptions:
-        - CreateNamespace=true
+          - CreateNamespace=true

@@ -4,20 +4,20 @@ metadata:
   name: tekton-dashboard
   namespace: tekton-pipelines
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
   rules:
-  - host: &host tekton.khuedoan.com
-    http:
-      paths:
-      - pathType: ImplementationSpecific
-        backend:
-          service:
-            name: tekton-dashboard
-            port:
-              name: http
+    - host: &host tekton.khuedoan.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tekton-dashboard
+                port:
+                  name: http
   tls:
-  - hosts:
-    - *host
-    secretName: tekton-tls-certificate
+    - hosts:
+        - *host
+      secretName: tekton-tls-certificate
