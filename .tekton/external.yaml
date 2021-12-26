@@ -22,12 +22,6 @@ spec:
       secret:
         secretName: terraform-secrets
   steps:
-    - name: lint
-      args:
-        - fmt
-        - -recursive
-        - -diff
-        - -check
     - name: init
       args:
         - init

@@ -17,6 +17,14 @@ spec:
           value: http://gitea-http.gitea:3000/ops/homelab
         - name: revision
           value: master
+    - name: lint
+      runAfter:
+        - fetch-repo
+      workspaces:
+        - name: source
+          workspace: shared-data
+      taskRef:
+        name: lint
     - name: external
       runAfter:
         - fetch-repo
@@ -29,7 +37,7 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: homelab-run
+  name: homelab
 spec:
   serviceAccountName: terraform-sa
   pipelineRef:
