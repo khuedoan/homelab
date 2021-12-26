@@ -14,21 +14,24 @@
   template:
     src: dhcpd.conf.j2
     dest: "{{ role_path }}/files/data/pxe-config/dhcpd.conf"
+    mode: 0644
 
 - name: Render GRUB config
   template:
     src: grub.cfg.j2
     dest: "{{ role_path }}/files/data/pxe-config/grub.cfg"
+    mode: 0644
 
 - name: Render machine specific init config
   template:
     src: kickstart.ks.j2
     dest: "{{ role_path }}/files/data/init-config/{{ hostvars[item]['mac'] }}.ks"
+    mode: 0644
   loop: "{{ groups['metal'] }}"
 
 - name: Start ephemeral PXE server
   docker_compose:
     project_src: "{{ role_path }}/files"
     state: present
-    restarted: yes
-    build: yes
+    restarted: true
+    build: true

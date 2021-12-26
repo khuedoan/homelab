@@ -1,10 +1,10 @@
 - name: Start PXE server
   hosts: localhost
   roles:
-    - pxe-server
+    - pxe_server
 
 - name: Provision bare metal machines
   hosts: metal
-  gather_facts: no
+  gather_facts: false
   roles:
     - wake
