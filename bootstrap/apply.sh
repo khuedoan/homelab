@@ -8,6 +8,7 @@ helm template \
     --namespace argocd \
     ${extra_args} \
     argocd . \
+    | kubectl apply -n argocd -f -
 
 # TODO https://github.com/argoproj/argo-helm/pull/1070
 # kubectl --namespace argocd wait --timeout=300s --for condition=ResourcesUpToDate \
