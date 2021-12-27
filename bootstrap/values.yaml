@@ -5,6 +5,7 @@ argo-cd:
     rbacConfig:
       policy.default: role:readonly
     config:
+      statusbadge.enabled: 'true'
       users.anonymous.enabled: 'true'
       resource.customizations.health.argoproj.io_Application: |
         hs = {}
