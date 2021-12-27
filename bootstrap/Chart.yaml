@@ -1,0 +1,10 @@
+apiVersion: v2
+name: bootstrap
+version: 0.0.0
+dependencies:
+  - name: argo-cd
+    version: 3.29.4
+    repository: https://argoproj.github.io/argo-helm
+  - name: argocd-applicationset
+    version: 1.7.0
+    repository: https://argoproj.github.io/argo-helm

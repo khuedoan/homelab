@@ -1,25 +1,28 @@
+{{- range $index, $stack := .Values.stacks }}
+---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: apps
+  name: {{ $stack }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   generators:
     - git:
-        repoURL: https://github.com/khuedoan/homelab.git
-        revision: master
+        repoURL: {{ $.Values.gitops.repo }}
+        revision: {{ $.Values.gitops.revision }}
         directories:
-          - path: apps/*
+          - path: {{ $stack }}/*
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{ `{{path.basename}}` }}'
     spec:
       destination:
         name: in-cluster
-        namespace: '{{path.basename}}'
-      project: default
+        namespace: '{{ `{{path.basename}}` }}'
+      project: default # TODO
       source:
-        repoURL: https://github.com/khuedoan/homelab.git
-        path: '{{path}}'
+        repoURL: {{ $.Values.gitops.repo }}
+        path: '{{ `{{path}}` }}'
       syncPolicy:
         automated:
           prune: true
@@ -32,3 +35,4 @@ spec:
             maxDuration: 16m
         syncOptions:
           - CreateNamespace=true
+{{- end }}

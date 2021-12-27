@@ -2,21 +2,21 @@
 .EXPORT_ALL_VARIABLES:
 
 KUBECONFIG = ../metal/kubeconfig.yaml
+NAMESPACE = argocd
 
-default: argocd root
+default: namespace apply
 
-.PHONY: argocd
-argocd:
-	kustomize build ./argocd | kubectl apply -f -
-	kubectl -n argocd wait --timeout=60s --for condition=Established \
-		crd/applications.argoproj.io \
-		crd/applicationsets.argoproj.io
+charts: Chart.yaml
+	helm dependency update
 
-.PHONY: root
-root:
-	kustomize build ./root | kubectl apply -f -
-	kubectl -n argocd wait --timeout=300s --for condition=ResourcesUpToDate \
-		applicationset/bootstrap \
-		applicationset/system \
-		applicationset/platform \
-		applicationset/apps
+namespace:
+	kubectl create namespace argocd --dry-run=client --output=yaml \
+		| kubectl apply -f -
+
+apply: charts
+	# ArgoCD only uses Helm as YAML generator
+	helm template \
+		--include-crds \
+		--namespace ${NAMESPACE} \
+		argocd . \
+		| kubectl apply -n argocd -f -
