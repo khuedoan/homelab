@@ -22,3 +22,9 @@ spec:
       syncPolicy:
         automated:
           selfHeal: true
+        retry:
+          limit: 10
+          backoff:
+            duration: 1m
+            factor: 2
+            maxDuration: 16m
