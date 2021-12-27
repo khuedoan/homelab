@@ -2,10 +2,22 @@
 
 ## 0.0.6-alpha
 
+- Upgrade to Kubernetes 1.23
 - Support external reosources:
   - Cloudflare DNS and Tunnel
   - Backblaze backup
-- Replace self-signed certificates with Let's Encrypt
+  - Auto inject secrets to required namespaces
+- Replace self-signed certificates with Let's Encrypt production (with API token injected from the `external` layer)
+- Add DNS records automatically using external-dns
+- Easy Cloudflare Tunnel configuration with annotations
+- Offsite backup to Backblaze B2 bucket using k8up-operator
+- Add private container registry
+- Remove Knative to save resources (temporarily)
+- Enable encryption at rest for Kubernetes Secrets
+- Add more Tekton tasks and pipelines
+- Initialize GitOps repository on Gitea automatically after install
+- Generate MetalLB address pool automatically (default to the last `/27` subnet)
+- Some bug fixes
 
 ## 0.0.5-alpha
 
