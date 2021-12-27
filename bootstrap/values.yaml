@@ -1,5 +1,7 @@
 argo-cd:
   server:
+    extraArgs:
+      - --insecure
     rbacConfig:
       policy.default: role:readonly
     config:
