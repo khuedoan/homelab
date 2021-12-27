@@ -53,7 +53,7 @@ argo-cd:
             - *host
 
 gitops:
-  repo: https://github.com/khuedoan/homelab.git
+  repo: https://git.khuedoan.com/ops/homelab
   revision: master
 stacks:
   - system
