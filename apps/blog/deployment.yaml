@@ -18,3 +18,4 @@ spec:
       containers:
         - name: blog
           image: registry.khuedoan.com/blog:latest
+          imagePullPolicy: Always
