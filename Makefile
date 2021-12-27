@@ -24,10 +24,6 @@ tools:
 docs:
 	make -C docs
 
-lint:
-	# TODO (feature) Add lint checks for everything
-	make -C metal lint
-
 dev:
 	make -C metal cluster env=dev
 	make -C bootstrap

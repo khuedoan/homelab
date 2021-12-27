@@ -22,8 +22,5 @@ shutdown:
 		--inventory inventories/${env}.ini \
 		shutdown.yml
 
-lint:
-	ansible-lint --project-dir .
-
 vagrant:
 	vagrant up
