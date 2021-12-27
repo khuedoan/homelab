@@ -3,4 +3,4 @@ kind: Kustomization
 
 bases:
   - https://git.khuedoan.com/ops/homelab/.tekton?ref=master
-  - https://git.khuedoan.com/khuedoan/blog/.tekton?ref=master
+  # - https://git.khuedoan.com/khuedoan/blog/.tekton?ref=master
