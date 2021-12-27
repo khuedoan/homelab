@@ -2,3 +2,10 @@
   hosts: metal
   roles:
     - k3s
+
+- name: Create some basic config
+  hosts: localhost
+  environment:
+    KUBECONFIG: ./kubeconfig.yaml
+  roles:
+    - metallb_config

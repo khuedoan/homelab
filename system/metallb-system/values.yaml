@@ -1,8 +1,2 @@
 metallb:
-  configInline:
-    address-pools:
-      - name: default
-        protocol: layer2
-        addresses:
-          # TODO (optimize) Use metal values for MetalLB values
-          - 192.168.1.150-192.168.1.180
+  existingConfigMap: metallb-config
