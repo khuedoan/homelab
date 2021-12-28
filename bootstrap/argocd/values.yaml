@@ -54,11 +54,3 @@ argo-cd:
         - secretName: argocd-tls-certificate
           hosts:
             - *host
-
-gitops:
-  repo: https://git.khuedoan.com/ops/homelab
-  revision: master
-stacks:
-  - system
-  - platform
-  - apps

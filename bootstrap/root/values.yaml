@@ -1,0 +1,9 @@
+gitops:
+  repo: https://git.khuedoan.com/ops/homelab
+  revision: master
+stacks:
+  - name: bootstrap
+    namespace: argocd  # Override default value
+  - name: system
+  - name: platform
+  - name: apps

@@ -1,16 +1,24 @@
 .POSIX:
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG = ../metal/kubeconfig.yaml
+KUBECONFIG = $(shell pwd)/../metal/kubeconfig.yaml
 
-default: namespace apply
+default: namespace argocd root
 
-charts: Chart.yaml
-	helm dependency update
+argocd/charts: argocd/Chart.yaml
+	cd argocd \
+		&& helm dependency update
 
 namespace:
 	kubectl create namespace argocd --dry-run=client --output=yaml \
 		| kubectl apply -f -
 
-apply: charts
-	./apply.sh
+.PHONY: argocd
+argocd: argocd/charts
+	cd argocd && \
+		./apply.sh
+
+.PHONY: root
+root:
+	cd root && \
+		./apply.sh

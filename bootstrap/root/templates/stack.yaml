@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ $stack }}
+  name: {{ $stack.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
   generators:
@@ -11,14 +11,14 @@ spec:
         repoURL: {{ $.Values.gitops.repo }}
         revision: {{ $.Values.gitops.revision }}
         directories:
-          - path: {{ $stack }}/*
+          - path: {{ $stack.name }}/*
   template:
     metadata:
       name: '{{ `{{path.basename}}` }}'
     spec:
       destination:
         name: in-cluster
-        namespace: '{{ `{{path.basename}}` }}'
+        namespace: '{{ default `{{path.basename}}` $stack.namespace }}'
       project: default # TODO
       source:
         repoURL: {{ $.Values.gitops.repo }}
