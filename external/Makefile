@@ -4,7 +4,7 @@
 KUBECONFIG = ../metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: apply terraform-secrets
+default: apply
 
 ~/.terraform.d/credentials.tfrc.json:
 	terraform login
@@ -24,6 +24,3 @@ plan: .terraform.lock.hcl
 
 apply: .terraform.lock.hcl namespaces
 	terraform apply
-
-terraform-secrets:
-	ansible-playbook terraform-secrets.yml
