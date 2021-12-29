@@ -17,6 +17,7 @@ trow:
     enabled: false  # TODO https://github.com/ContainerSolutions/trow/issues/282
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/proxy-body-size: 0
     hosts:
       - host: &host registry.khuedoan.com
         paths:
