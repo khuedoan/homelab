@@ -1,7 +1,7 @@
-# require 'ipaddr' # TODO dynamic IP based on inventory
+# require 'ipaddr' # TODO dynamic IP based on inventory OR dynamic inventory
 require 'yaml'
 
-ip_prefix = '192.168.1.'
+ip_prefix = '192.168.1.' # TODO see above
 group_vars = YAML.load_file(File.join(__dir__, './group_vars/all.yml'))
 
 Vagrant.configure("2") do |config|
@@ -9,21 +9,32 @@ Vagrant.configure("2") do |config|
 
   node_count = 1
 
+  # TODO clean up
+  # - support multiple nodes
+  # - generate inventory dynamically https://www.simonholywell.com/post/2016/02/intelligent-vagrant-and-ansible-files/
+  Dir.mkdir(File.join(__dir__, './host_vars')) unless Dir.exist?(File.join(__dir__, './host_vars'))
+
   (0..(node_count-1)).each do |i|
     config.vm.define "dev#{i}" do |dev|
       dev.vm.network "public_network", ip: "#{ip_prefix}#{200+i+1}"
       dev.vm.hostname = "dev#{i}"
       dev.vm.disk :disk, size: "256GB", primary: true
+
+      File.open("#{File.join(__dir__, './host_vars')}/dev#{i}.yml" ,'w') do |f|
+        f.write "ansible_host: #{ip_prefix}#{200+i+1}"
+      end
     end
   end
 
   config.vm.provider "virtualbox" do |vb|
+    # TODO this is ridiculous for a dev VM, optimize it
     vb.cpus   = 6
     vb.memory = "10240"
   end
 
   config.vm.provision "file", source: "#{group_vars['ansible_ssh_private_key_file']}.pub", destination: "/tmp/id_ed25519.pub"
 
+  # TODO move part of this to Ansible?
   config.vm.provision "shell", inline: <<-SHELL
     mkdir /#{group_vars['ansible_user']}/.ssh
     cat /tmp/id_ed25519.pub >> /#{group_vars['ansible_user']}/.ssh/authorized_keys
