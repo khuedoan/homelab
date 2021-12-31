@@ -25,8 +25,10 @@ RUN yes | pacman --sync --refresh \
         mdbook \
         p7zip \
         python \
+        python-kubernetes \
         python-netaddr \
         python-pip \
         terraform
 
+# TODO https://github.com/ansible-collections/community.docker/issues/216
 RUN pip install docker-compose
