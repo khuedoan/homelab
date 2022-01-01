@@ -1,5 +1,12 @@
 cert-manager:
   installCRDs: true
+  prometheus:
+    enabled: true
+    servicemonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack
 
 issuer:
   email: khuedoan98@gmail.com
+

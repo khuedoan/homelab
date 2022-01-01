@@ -49,3 +49,41 @@ argo-cd:
         - secretName: argocd-tls-certificate
           hosts:
             - *host
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: "kube-prometheus-stack"
+
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: "kube-prometheus-stack"
+
+  repoServer:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: "kube-prometheus-stack"
+  
+  redis:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: "kube-prometheus-stack"
+  
+  dex:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: "kube-prometheus-stack"
