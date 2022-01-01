@@ -8,3 +8,11 @@ external-dns:
           key: value
   extraArgs:
     - --annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)
+  
+  labels:
+    release: kube-prometheus-stack
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true

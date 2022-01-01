@@ -2,5 +2,14 @@ ingress-nginx:
   controller:
     admissionWebhooks:
       timeoutSeconds: 30
+    
+    metrics:
+      enabled: true
+
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+        
   tcp:
     22: gitea/gitea-ssh:22
