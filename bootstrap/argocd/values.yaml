@@ -2,11 +2,8 @@ argo-cd:
   server:
     extraArgs:
       - --insecure
-    rbacConfig:
-      policy.default: role:readonly
     config:
       statusbadge.enabled: 'true'
-      users.anonymous.enabled: 'true'
       resource.customizations.health.argoproj.io_Application: |
         hs = {}
         hs.status = "Progressing"
