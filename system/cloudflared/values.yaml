@@ -15,7 +15,7 @@ cloudflared:
   podMonitor:
     enabled: true
     metricsEndpoints:
-    - port: http
+      - port: http
 
     # additional labels for the PodMonitor
     extraLabels:

@@ -12,6 +12,6 @@ spec:
       app: longhorn-manager
   namespaceSelector:
     matchNames:
-    - longhorn-system
+      - longhorn-system
   endpoints:
-  - port: manager
+    - port: manager
