@@ -11,3 +11,12 @@ cloudflared:
         originRequest:
           noTLSVerify: true
       - service: http_status:404
+
+  podMonitor:
+    enabled: true
+    metricsEndpoints:
+    - port: http
+
+    # additional labels for the PodMonitor
+    extraLabels:
+      release: kube-prometheus-stack
