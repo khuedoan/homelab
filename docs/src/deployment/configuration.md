@@ -19,8 +19,8 @@ The IP addresses are the desired ones, since your servers have no operating syst
 
 > Skip this step if you're trying out the dev VM
 
-```ini
-; metal/inventories/prod.yml
+```yaml
+# metal/inventories/prod.yml
 {{#include ../../../metal/inventories/prod.yml:3:}}
 ```
 
