@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     properties['hosts'].each do |host, host_vars|
       config.vm.define host do |node|
         ip = host_vars['ansible_host']
-        node.vm.network "private_network", ip: ip
+        node.vm.network "public_network", ip: ip
         node.vm.hostname = host
         node.vm.disk :disk, size: "256GB", primary: true
       end
