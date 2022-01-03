@@ -1,4 +1,5 @@
 minio:
+  replicas: 3
   ingress:
     enabled: true
     ingressClassName: nginx
