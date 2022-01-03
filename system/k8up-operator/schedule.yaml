@@ -4,13 +4,13 @@ metadata:
   name: schedule-test
 spec:
   backend:
-    b2:
-      path: prod
+    s3:
+      endpoint: s3.us-west-002.backblazeb2.com
       bucket: khuedoan-homelab-backup
-      accountIDSecretRef:
+      accessKeyIDSecretRef:
         name: backblaze-credentials
         key: application-key-id
-      accountKeySecretRef:
+      secretAccessKeySecretRef:
         name: backblaze-credentials
         key: application-key
     repoPasswordSecretRef:
