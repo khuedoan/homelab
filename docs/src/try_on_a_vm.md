@@ -9,16 +9,11 @@ Install the following packages:
 - `vagrant`
 - `virtualbox`
 
+## Configuration
+
+Follow the the steps in the [configuration guide](./deployment/configuration.md).
+
 ## Build
-
-Change the IP prefix in the Vagrant config to match your LAN setup, for example my IP prefix is `192.168.1.`:
-
-```ruby
-# metal/Vagrantfile
-{{#include ../../metal/Vagrantfile:4}}
-```
-
-Follow the **remaining steps in the [configuration guide](./deployment/configuration.md)**, then create a test VM:
 
 ```sh
 VAGRANT_CWD=./metal vagrant up
@@ -36,7 +31,7 @@ Build a cluster on the test VM and bootstrap it:
 make dev
 ```
 
-Finally follow the [DNS guide](./deployment/dns.md) to update your DNS setup (the easiest one is the nip.io option)
+Finally follow the [DNS guide](./deployment/dns.md) to update your DNS setup.
 
 Now you can visit the dashboard at <https://home.example.com>
 
@@ -46,7 +41,7 @@ Shut down the VM:
 
 ```sh
 cd metal
-vagrant destroy -f
+vagrant destroy
 ```
 
-Then clean up your router config or `/etc/hosts` file from the previous step
+Then clean up your DNS config from the previous step.

@@ -17,7 +17,7 @@ Then commit and push the changes.
 Edit the following file and replace the MAC addresses with the one on your servers.
 The IP addresses are the desired ones, since your servers have no operating system installed yet.
 
-> Skip this step if you're trying out the dev VM
+> Use `dev.yml` instead of `prod.yml` if you're trying out the dev VM
 
 ```yaml
 # metal/inventories/prod.yml
