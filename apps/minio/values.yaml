@@ -1,0 +1,43 @@
+minio:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/target: homelab-tunnel.khuedoan.com
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
+    hosts:
+      - &host s3.minio.khuedoan.com
+    tls:
+      - secretName: minio-tls-certificate
+        hosts:
+          - *host
+  consoleIngress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - &consoleHost minio.khuedoan.com
+    tls:
+      - secretName: minio-console-tls-certificate
+        hosts:
+          - *consoleHost
+  buckets:
+    - name: khuedoan-backup
+      policy: none
+      purge: false
+      versioning: false
+    - name: locmai-backup
+      policy: none
+      purge: false
+      versioning: false
+  podDisruptionBudget:
+    enabled: true
+    maxUnavailable: 1
+  metrics:
+    serviceMonitor:
+      enabled: false
+      additionalLabels:
+        release: kube-prometheus-stack
+
