@@ -1,5 +1,5 @@
 minio:
-  replicas: 3
+  replicas: 1
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -42,3 +42,6 @@ minio:
   #     additionalLabels:
   #       release: kube-prometheus-stack
 
+  persistence:
+    enabled: true
+    size: 1Gi
