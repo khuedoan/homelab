@@ -23,21 +23,21 @@ minio:
       - secretName: minio-console-tls-certificate
         hosts:
           - *consoleHost
-  buckets:
-    - name: khuedoan-backup
-      policy: none
-      purge: false
-      versioning: false
-    - name: locmai-backup
-      policy: none
-      purge: false
-      versioning: false
-  podDisruptionBudget:
-    enabled: true
-    maxUnavailable: 1
-  metrics:
-    serviceMonitor:
-      enabled: false
-      additionalLabels:
-        release: kube-prometheus-stack
+  # buckets:
+  #   - name: khuedoan-backup
+  #     policy: none
+  #     purge: false
+  #     versioning: false
+  #   - name: locmai-backup
+  #     policy: none
+  #     purge: false
+  #     versioning: false
+  # podDisruptionBudget:
+  #   enabled: true
+  #   maxUnavailable: 1
+  # metrics:
+  #   serviceMonitor:
+  #     enabled: false
+  #     additionalLabels:
+  #       release: kube-prometheus-stack
 
