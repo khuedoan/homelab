@@ -42,6 +42,9 @@ minio:
   #     additionalLabels:
   #       release: kube-prometheus-stack
 
+  resources:
+    requests:
+      memory: 128Mi
   persistence:
     enabled: true
     size: 1Gi
