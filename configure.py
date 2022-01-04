@@ -4,6 +4,7 @@
 Basic configure script for new users
 """
 
+import os
 import platform
 import sys
 
@@ -22,5 +23,5 @@ if platform.system() != 'Linux':
 # - change gitops repo
 # - add Gitea remote?
 # - change hardware info
+os.system(f"{os.getenv('EDITOR')} 'metal/inventories/prod.yml'")
 # - change Terraform workspace (and make it optional?)
-# - step counter?
