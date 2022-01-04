@@ -15,5 +15,6 @@ To view PXE server (includes DHCP, TFTP and HTTP server) logs:
 - Check if bare metal nodes are configured to boot from the network
 - Check if Wake-on-LAN is enabled
 - Check if the operating system ISO file is mounted
-- Check the controller firewall config
+- Check the controller's firewall config
 - Check PXE server Docker logs
+- Check if the servers are booting to the correct OS (Rocky Linux installer instead of the previously installed OS), if not try to select it manually or remove the previous OS boot entry
