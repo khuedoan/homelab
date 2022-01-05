@@ -16,7 +16,3 @@ cloudflared:
     enabled: true
     metricsEndpoints:
       - port: http
-
-    # additional labels for the PodMonitor
-    extraLabels:
-      release: kube-prometheus-stack
