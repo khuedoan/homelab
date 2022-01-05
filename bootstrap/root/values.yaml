@@ -1,5 +1,5 @@
 gitops:
-  repo: https://git.khuedoan.com/ops/homelab
+  repo: http://gitea-http.gitea:3000/ops/homelab
   revision: master
 stacks:
   - name: bootstrap
