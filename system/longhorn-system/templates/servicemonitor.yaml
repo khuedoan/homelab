@@ -4,8 +4,6 @@ kind: ServiceMonitor
 metadata:
   name: longhorn
   namespace: longhorn-system
-  labels:
-    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:

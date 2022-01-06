@@ -8,8 +8,6 @@ ingress-nginx:
 
       serviceMonitor:
         enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
         
   tcp:
     22: gitea/gitea-ssh:22
