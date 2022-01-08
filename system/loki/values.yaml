@@ -1,5 +1,3 @@
 loki:
   serviceMonitor:
     enabled: true
-    annotations: {}
-    # scrapeTimeout: 10s

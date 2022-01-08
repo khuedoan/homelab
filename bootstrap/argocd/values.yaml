@@ -50,31 +50,15 @@ argo-cd:
         - secretName: argocd-tls-certificate
           hosts:
             - *host
-    metrics:
+    metrics: &metrics
       enabled: true
       serviceMonitor:
         enabled: true
-
   controller:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-
+    metrics: *metrics
   repoServer:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-  
+    metrics: *metrics
   redis:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-  
+    metrics: *metrics
   dex:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
+    metrics: *metrics

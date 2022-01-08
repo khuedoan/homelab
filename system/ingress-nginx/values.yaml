@@ -2,12 +2,9 @@ ingress-nginx:
   controller:
     admissionWebhooks:
       timeoutSeconds: 30
-    
     metrics:
       enabled: true
-
       serviceMonitor:
         enabled: true
-        
   tcp:
     22: gitea/gitea-ssh:22
