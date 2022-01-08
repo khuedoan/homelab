@@ -41,33 +41,34 @@ Buying a domain is highly recommended, but if you don't have one, you can also u
 > usually for consumer hardware this can not be automated
 > (it requires something like [IPMI](https://en.wikipedia.org/wiki/Intelligent_Platform_Management_Interface) to automate).
 
-Below is my BIOS setup, your motherboard may have a different name for the options, so you'll need to adapt it with your hardware.
+Common settings:
 
-```json
-{
-    "Devices": {
-        "Network Setup": {
-            "PXE IPv4": true,
-            "PXE IPv6": false
-        }
-    },
-    "Advanced": {
-        "CPU Setup": {
-            "VT-d": true
-        }
-    },
-    "Power": {
-        "Automatic Power On": {
-            "WoL": "Automatic"
-        }
-    },
-    "Security": {
-        "Secure Boot": false
-    },
-    "Startup": {
-        "CSM": false
-    }
-}
+- Enable Wake-on-LAN (WoL) and network boot
+- Use UEFI mode and disable CSM (legacy) mode
+- Disable secure boot
+
+Boot order options (select one, each has their pros and cons):
+
+1. Only boot from the network if no operating system found: works on most hardware but you need to manually wipe your hard drive or delete the existing boot record for the current OS
+2. Prefer booting from the network if turned on via WoL: more convenience but your BIOS must support it, and you must test it throughly to ensure you don't accidentally wipe your servers
+
+Below is my BIOS setup for reference. Your motherboard may have a different name for the options, so you'll need to adapt it to your hardware.
+
+```yaml
+Devices:
+  NetworkSetup:
+    PXEIPv4: true
+    PXEIPv6: false
+Advanced:
+  CPUSetup:
+    VT-d: true
+Power:
+  AutomaticPowerOn:
+    WoL: Automatic  # Use network boot if Wake-on-LAN
+Security:
+  SecureBoot: false
+Startup:
+  CSM: false
 ```
 
 ## Gather information
