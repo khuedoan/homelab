@@ -10,6 +10,8 @@ cloudflared:
         service: https://ingress-nginx-controller.ingress-nginx
         originRequest:
           noTLSVerify: true
+      - hostname: 'git.khuedoan.com'
+        service: ssh://gitea-ssh.gitea:22
       - service: http_status:404
 
   podMonitor:
