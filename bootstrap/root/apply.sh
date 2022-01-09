@@ -10,8 +10,7 @@ helm template \
     argocd . \
     | kubectl apply -n argocd -f -
 
-# TODO https://github.com/argoproj/argo-helm/pull/1070
-# kubectl --namespace argocd wait --timeout=300s --for condition=ResourcesUpToDate \
-# 	applicationset/system \
-# 	applicationset/platform \
-# 	applicationset/apps
+kubectl --namespace argocd wait --timeout=300s --for condition=ResourcesUpToDate \
+	applicationset/system \
+	applicationset/platform \
+	applicationset/apps
