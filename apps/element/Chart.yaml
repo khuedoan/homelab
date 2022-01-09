@@ -1,0 +1,7 @@
+apiVersion: v2
+name: elementweb
+version: 0.0.0
+dependencies:
+  - name: elementweb
+    version: 0.0.1
+    repository: https://locmai.github.io/charts  # TODO switch to official chart
