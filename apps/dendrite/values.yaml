@@ -7,7 +7,7 @@ dendrite:
     version: 2
     servername: &host matrix.khuedoan.com
     database:
-      host:  "dendrite-postgresql.apps.svc.cluster.local:5432"
+      host:  "dendrite-postgresql:5432"
       user:  "dendrite"
       password: "dendrite"
       max_open_conns: 100
