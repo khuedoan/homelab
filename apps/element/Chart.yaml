@@ -3,5 +3,5 @@ name: elementweb
 version: 0.0.0
 dependencies:
   - name: elementweb
-    version: 0.0.1
+    version: 0.0.3
     repository: https://locmai.github.io/charts  # TODO switch to official chart
