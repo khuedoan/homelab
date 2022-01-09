@@ -22,12 +22,3 @@ kube-prometheus-stack:
       serviceMonitorNamespaceSelector: {}
       podMonitorSelectorNilUsesHelmValues: false
       podMonitorNamespaceSelector: {}
-
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: longhorn
-            accessModes: ["ReadWriteOnce"]
-            resources:
-              requests:
-                storage: 20Gi
