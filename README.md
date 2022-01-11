@@ -1,22 +1,32 @@
-# Homelab
+# Khue's Homelab
 
 <!-- ANCHOR: introduction -->
 
-This is my homelab set up, it focused on automation to simplify provisioning, upgrading, and operating self-hosted services.
+[![chat](https://img.shields.io/matrix/homelab:matrix.khuedoan.com?style=flat-square&logo=matrix&logoColor=white&label=chat)](https://matrix.to/#/#homelab:matrix.khuedoan.com)
+[![tag](https://img.shields.io/github/v/tag/khuedoan/homelab?style=flat-square&logo=semver&logoColor=white)](https://github.com/khuedoan/homelab/tags)
+[![document](https://img.shields.io/website?label=document&logo=gitbook&logoColor=white&style=flat-square&url=https%3A%2F%2Fhomelab.khuedoan.com)](https://homelab.khuedoan.com)
+[![license](https://img.shields.io/github/license/khuedoan/homelab?style=flat-square&logo=gnu&logoColor=white)](https://www.gnu.org/licenses/gpl-3.0.html)
+[![stars](https://img.shields.io/github/stars/khuedoan/homelab?logo=github&logoColor=white&color=gold&style=flat-square)](https://github.com/khuedoan/homelab)
+
+This project utilizes [Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_code) to automate provisioning, operating, and updating self-hosted services in my homelab.
+It can be used as a highly customizable framework to build your own homelab.
+
+Feel free to join me on my Matrix chat server at [chat.khuedoan.com](https://chat.khuedoan.com/#/room/#homelab/general:matrix.khuedoan.com),
+or [`#homelab:matrix.khuedoan.com`](https://matrix.to/#/#homelab:matrix.khuedoan.com) if you already have a Matrix client.
+Please note that the chat server is self-hosted on my homelab and still at the experimental stage.
 
 <!-- ANCHOR_END: introduction -->
 
-```diff
-! ⚠️ WORK IN PROGRESS
-```
-
 ## Overview
+
+This section provides a high level overview of the project.
+For further information, please see the [documentation](https://homelab.khuedoan.com).
 
 ### Hardware
 
 ![Hardware](https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG)
 
-- 4 nodes of NEC SFF `PC-MK26ECZDR` (Japanese version of the ThinkCentre M700):
+- 4 × NEC SFF `PC-MK26ECZDR` (Japanese version of the ThinkCentre M700):
   - CPU: `Intel Core i5-6600T @ 2.70GHz`
   - RAM: `16GB`
   - SSD: `128GB`
