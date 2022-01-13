@@ -1,0 +1,39 @@
+#!/usr/bin/python
+
+import requests
+
+from kubernetes import client, config
+
+# Essential services
+ingresses = [
+    {
+        'name': 'argocd-server',
+        'namespace': 'argocd',
+        'purpose': 'manage your applications'
+    },
+    {
+        'name': 'gitea',
+        'namespace': 'gitea',
+        'purpose': 'manage your git repositories'
+    },
+    {
+        'name': 'hajimari',
+        'namespace': 'hajimari',
+        'purpose': 'view your homepage'
+    },
+]
+
+config.load_kube_config()
+
+for ingress in ingresses:
+    i = client.NetworkingV1Api().read_namespaced_ingress(
+        ingress['name'],
+        ingress['namespace']
+    )
+
+    # TODO wait for ingress and retry
+
+    host = i.spec.rules[0].host
+
+    if requests.get(f"https://{host}").status_code == 200:
+        print(f"Visit \033[4mhttps://{host}\033[0m to {ingress['purpose']}")
