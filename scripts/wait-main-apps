@@ -25,6 +25,19 @@ ingresses = [
 
 config.load_kube_config()
 
+# TODO wait for Argo apps
+# until argocd app wait \
+#     argocd \
+#     gitea \
+#     hajimari \
+#     ingress-nginx \
+#     longhorn-system \
+#     metallb-system \
+#     > /dev/null
+# do
+#     sleep 3
+# done
+
 for ingress in ingresses:
     i = client.NetworkingV1Api().read_namespaced_ingress(
         ingress['name'],
@@ -36,4 +49,6 @@ for ingress in ingresses:
     host = i.spec.rules[0].host
 
     if requests.get(f"https://{host}").status_code == 200:
-        print(f"Visit \033[4mhttps://{host}\033[0m to {ingress['purpose']}")
+        print(f"Visit https://{host} to {ingress['purpose']}")
+
+print("\nThere're more services but the above is enough for you to start exploring!")
