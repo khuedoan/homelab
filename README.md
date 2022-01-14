@@ -97,7 +97,9 @@ Any contributions you make, either big or small, are greatly appreciated.
 
 > Copyright (c) 2020, 2021, 2022 Khue Doan
 
-Distributed under the GPLv3 License.
+<details>
+
+<summary>Distributed under the GPLv3 License.</summary>
 
 This project is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
@@ -106,6 +108,8 @@ See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this project (`LICENSE.md`).
 If not, see <https://www.gnu.org/licenses>.
+
+</details>
 
 ## Acknowledgements
 
