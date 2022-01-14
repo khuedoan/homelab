@@ -36,7 +36,7 @@ For further information, please see the [documentation](https://homelab.khuedoan
 
 ### Features
 
-Status: **Alpha**
+Project status: **Alpha** (see [roadmap](#roadmap) below)
 
 - [x] Common applications: Gitea, Seafile, Jellyfin, Paperless...
 - [x] Automated bare metal provisioning with PXE boot
@@ -54,7 +54,25 @@ Status: **Alpha**
 - [ ] Automated offsite backups 🚧
 - [ ] Single sign-on 🚧
 
-See [Roadmap](#roadmap) for more details.
+Screenshots of some user-facing applications are shown here, I will update them before each release.
+They can't capture all of the project's features, but they are sufficient to get a concept of what is deployed.
+
+| Screenshot                                                                                                                                                                       |
+| :--:                                                                                                                                                                             |
+| ![](https://user-images.githubusercontent.com/27996771/149445807-0f869eb7-d8f5-4fef-ab97-ac281df91a06.png)                                                                       |
+| Homepage with Ingress discovery powered by [Hajimari](https://github.com/toboshii/hajimari)                                                                                      |
+| ![](https://user-images.githubusercontent.com/27996771/149444871-38889c9d-862f-41ff-8c05-8ece21da3e9c.png)                                                                       |
+| Git server powered by [Gitea](https://gitea.io/en-us/)                                                                                                                           |
+| ![](https://user-images.githubusercontent.com/27996771/149445374-58fd0605-bb9a-46e4-81d6-5e584d2b94a9.png)                                                                       |
+| Continuous integration with [Tekton](https://tekton.dev/)                                                                                                                        |
+| ![](https://user-images.githubusercontent.com/27996771/149444716-fc0d7282-4cf7-4ddb-97a4-1a3fb47ff2b8.png)                                                                       |
+| Continuous deployment with [ArgoCD](https://argoproj.github.io/cd/)                                                                                                              |
+| ![](https://user-images.githubusercontent.com/27996771/149446631-1c5d056b-1fdc-48e6-96ba-e1abe1762be0.png)                                                                       |
+| Monitoring dashboard powered by [Grafana](https://grafana.com/)                                                                                                                  |
+| ![](https://user-images.githubusercontent.com/27996771/149448510-7163310c-2049-4ccd-901d-f11f605bfc32.png)                                                                       |
+| [Matrix](https://matrix.org/) chat server powered by [Element](https://matrix.org/docs/projects/client/element) and [Dendrite](https://matrix.org/docs/projects/server/dendrite) |
+| ![](https://user-images.githubusercontent.com/27996771/149448896-9d79947d-468c-45c6-a81d-b43654e8ab6b.png)                                                                       |
+| Cluster management using [Lens](https://k8slens.dev/) (or you can just use `kubectl`)                                                                                            |
 
 ### Tech stack
 
