@@ -95,7 +95,7 @@ Any contributions you make, either big or small, are greatly appreciated.
 
 ## License
 
-> Copyright (c) 2021 Khue Doan
+> Copyright (c) 2020, 2021, 2022 Khue Doan
 
 Distributed under the GPLv3 License.
 
