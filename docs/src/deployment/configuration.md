@@ -7,14 +7,15 @@ Because this repository applies GitOps practices, this git repository is the sou
 After forking it, clone and replace the reference to my repository with yours (without `https://`):
 
 ```sh
-./scripts/replace-gitops-repo "github.com/yourname/homelab"
+./scripts/replace-gitops-repo "gitservicelikegithub.com/yourname/homelab"
 ```
 
 Then commit and push the changes.
 
-## Server list and hardware info
+## Server list
 
-Edit the following file and replace the hardware information with the one on your servers:
+Edit the following file and replace the MAC addresses with the one on your servers.
+The IP addresses are the desired ones, since your servers have no operating system installed yet.
 
 > Use `dev.yml` instead of `prod.yml` if you're trying out the dev VM
 
@@ -23,7 +24,17 @@ Edit the following file and replace the hardware information with the one on you
 {{#include ../../../metal/inventories/prod.yml:3:}}
 ```
 
-- The IP addresses are the desired ones, not the current one, since your servers have no operating system installed yet.
+## Server hardware info
+
+> Skip this step if you're trying out the dev VM
+
+Change the following parameters based on your hardware.
+
+```yaml
+# metal/group_vars/all.yaml
+{{#include ../../../metal/group_vars/all.yml:6:}}
+```
+
 - Disk: based on `/dev/$DISK`, in my case it's `sda`, but yours can be `sdb`, `nvme0n1`...
 - Network interface: usually it's `eth0`, mine is `eno1`
 
