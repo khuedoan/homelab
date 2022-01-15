@@ -9,13 +9,13 @@ keyboard --xlayouts='us'
 lang en_US.UTF-8
 
 # Partition clearing information
-clearpart --all --drives={{ disk }}
+clearpart --all --drives={{ hostvars[item]['disk'] }}
 # Partitioning
-ignoredisk --only-use={{ disk }}
+ignoredisk --only-use={{ hostvars[item]['disk'] }}
 autopart
 
 # Network information
-network --bootproto=static --device={{ network_interface }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
+network --bootproto=static --device={{ hostvars[item]['network_interface'] }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
 
 # Use network installation
 repo --name="Minimal" --baseurl=http://{{ ansible_default_ipv4.address }}/os/Minimal
