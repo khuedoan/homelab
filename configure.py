@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# WIP
+# clean this up
+
 """
 Basic configure script for new users
 """
@@ -14,14 +17,24 @@ if sys.version_info < (3, 10, 0):
 if platform.system() != 'Linux':
     raise Exception("Only Linux is supported, please us a Linux VM or switch operating system")
 
-# TODO
-# - check if docker installed
-# - check if make installed
-# - confirm text editor $EDITOR
-# - change domain
-# - change seed repo
-# - change gitops repo
-# - add Gitea remote?
-# - change hardware info
-os.system(f"{os.getenv('EDITOR')} 'metal/inventories/prod.yml'")
-# - change Terraform workspace (and make it optional?)
+# confirm text editor
+editor = os.getenv('EDITOR')
+editor = str(input(f"Text editor ({editor}): ") or editor)
+
+# Replace seed repo
+seed_repo = "github.com/khuedoan/homelab"
+seed_repo = str(input(f"Enter seed repo ({seed_repo}): ") or seed_repo)
+os.system(f"./scripts/replace-gitops-repo {seed_repo}")
+
+# Replace domain
+domain = "khuedoan.com"
+domain = str(input(f"Enter your domain ({domain}): ") or domain)
+os.system(f"./scripts/replace-domain {domain}")
+
+# change hardware info
+os.system(f"{editor} 'metal/inventories/prod.yml'")
+
+# TODO change Terraform workspace
+
+# TODO switch to git lib
+os.system("git diff")
