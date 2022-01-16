@@ -14,7 +14,6 @@ RUN yes | pacman --sync --refresh \
         argocd \
         diffutils \
         docker \
-        docker-compose \
         git \
         graphviz \
         helm \
@@ -28,6 +27,7 @@ RUN yes | pacman --sync --refresh \
         python-kubernetes \
         python-netaddr \
         python-pip \
+        sudo \
         terraform
 
 # TODO https://github.com/ansible-collections/community.docker/issues/216
