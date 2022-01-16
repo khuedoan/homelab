@@ -33,7 +33,7 @@ domain = str(input(f"Enter your domain ({domain}): ") or domain)
 os.system(f"./scripts/replace-domain {domain}")
 
 # change hardware info
-os.system(f"{editor} 'metal/inventories/prod.yml'")
+os.system(f"{editor} 'metal/inventories/prod.yml'") # TODO use var for inventory
 
 # TODO change Terraform workspace
 
