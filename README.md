@@ -154,6 +154,12 @@ If not, see <https://www.gnu.org/licenses>.
 - [Official Cloudflare Tunnel examples](https://github.com/cloudflare/argo-tunnel-examples)
 - [Initialize GitOps repository on Gitea and integrate with Tekton by RedHat](https://github.com/redhat-scholars/tekton-tutorial/tree/master/triggers)
 
-## Stargazers over time
+## Some gimmicks
+
+### Git history visualization
+
+https://user-images.githubusercontent.com/27996771/149993221-8df9a1cc-30a2-4074-9606-2a53eb021b00.mp4
+
+### Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/khuedoan/homelab.svg)](https://starchart.cc/khuedoan/homelab)
