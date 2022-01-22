@@ -14,6 +14,7 @@ RUN yes | pacman --sync --refresh \
         argocd \
         diffutils \
         docker \
+        docker-compose \
         git \
         graphviz \
         helm \
