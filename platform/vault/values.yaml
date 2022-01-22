@@ -13,3 +13,5 @@ vault:
         - secretName: vault-tls-certificate
           hosts:
             - *host
+    dev:
+      enabled: true  # TODO disable vault dev mode
