@@ -2,6 +2,8 @@ vault:
   injector:
     enabled: false
   server:
+    dataStorage:
+      storageClass: longhorn
     ingress:
       enabled: true
       ingressClassName: nginx
