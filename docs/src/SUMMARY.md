@@ -10,6 +10,8 @@
   - [DNS setup](./deployment/dns.md)
   - [External resources (optional)](./deployment/external_resources.md)
 - [Troubleshooting](./troubleshooting.md)
+- [Tutorials]()
+  - [Single node adjustments](./tutorials/single_node_adjustments.md)
 - [Reference](./reference/README.md)
   - [Architecture]()
   - [FAQ](./reference/faq.md)
