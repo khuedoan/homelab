@@ -1,8 +1,10 @@
 renovate:
   cronjob:
-    schedule: '0 9 1 * *'  # At 09:00 every month
+    # schedule: '0 9 1 * *'  # At 09:00 every month
+    schedule: '*/10 * * * *'  # TODO remove after testing
     suspend: false
   renovate:
+    # TODO generate token automatically
     config: |
       {
         "platform": "gitea",
