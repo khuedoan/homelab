@@ -6,18 +6,8 @@ metadata:
   labels:
     k3s-upgrade: agent
 spec:
-  concurrency: 1
   nodeSelector:
     matchExpressions:
-      - key: k3s-upgrade
-        operator: Exists
-      - key: k3s-upgrade
-        operator: NotIn
-        values:
-          - 'disabled'
-          - 'false'
-      - key: k3os.io/mode
-        operator: DoesNotExist
       - key: node-role.kubernetes.io/control-plane
         operator: DoesNotExist
   serviceAccountName: system-upgrade
@@ -26,6 +16,7 @@ spec:
     args:
       - prepare
       - k3s-server
+  concurrency: 1
   cordon: true
   drain:
     force: true
