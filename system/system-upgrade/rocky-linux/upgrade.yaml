@@ -35,4 +35,4 @@ spec:
   drain:
     force: true
     skipWaitForDeleteTimeout: 300  # Honor PodDisruptionBudgets
-  version: 20220123  # TODO dummy value
+  version: "20220123"  # TODO dummy value
