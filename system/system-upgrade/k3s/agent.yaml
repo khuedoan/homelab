@@ -1,0 +1,35 @@
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: k3s-agent
+  namespace: system-upgrade
+  labels:
+    k3s-upgrade: agent
+spec:
+  concurrency: 1
+  nodeSelector:
+    matchExpressions:
+      - key: k3s-upgrade
+        operator: Exists
+      - key: k3s-upgrade
+        operator: NotIn
+        values:
+          - 'disabled'
+          - 'false'
+      - key: k3os.io/mode
+        operator: DoesNotExist
+      - key: node-role.kubernetes.io/control-plane
+        operator: DoesNotExist
+  serviceAccountName: system-upgrade
+  prepare:
+    image: rancher/k3s-upgrade
+    args:
+      - prepare
+      - k3s-server
+  cordon: true
+  drain:
+    force: true
+    skipWaitForDeleteTimeout: 300  # Honor PodDisruptionBudgets
+  upgrade:
+    image: rancher/k3s-upgrade
+  channel: https://update.k3s.io/v1-release/channels/v1.23
