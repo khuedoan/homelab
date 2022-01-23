@@ -1,22 +1,14 @@
 renovate:
   cronjob:
-    # At 09:00 every month
-    schedule: '0 9 1 * *'
+    schedule: '0 9 1 * *'  # At 09:00 every month
     suspend: false
   renovate:
-    # # -- Custom exiting global renovate config
-    # existingConfigFile: ''
-    # # -- Inline global renovate config.json
-    # config: ''
-    # # See https://docs.renovatebot.com/self-hosted-configuration
-    # # config: |
-    # #   {
-    # #     "platform": "gitlab",
-    # #     "endpoint": "https://gitlab.example.com/api/v4",
-    # #     "token": "your-gitlab-renovate-user-token",
-    # #     "autodiscover": "false",
-    # #     "dryRun": true,
-    # #     "printConfig": true,
-    # #     "logLevel": "debug",
-    # #     "repositories": ["username/repo", "orgname/repo"]
-    # #   }
+    config: |
+      {
+        "platform": "gitea",
+        "token": "TODO-gitea-renovate-token",
+        "autodiscover": "false",
+        "repositories": [
+          "ops/homelab"
+        ]
+      }
