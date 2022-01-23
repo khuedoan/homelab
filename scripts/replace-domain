@@ -2,6 +2,6 @@
 
 CURRENT_DOMAIN="khuedoan.com"
 
-git grep "${CURRENT_DOMAIN}" -- bootstrap system platform apps | cut -d ':' -f1 | uniq | while read p; do
+git grep "${CURRENT_DOMAIN}" -- bootstrap system platform apps .tekton | cut -d ':' -f1 | uniq | while read p; do
   sed -i "s/${CURRENT_DOMAIN}/${1}/g" $p
 done
