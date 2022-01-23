@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
   - server.yaml
   - agent.yaml
+
+commonAnnotations:
+  argocd.argoproj.io/sync-wave: "1"
