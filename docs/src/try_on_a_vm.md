@@ -9,6 +9,13 @@ Install the following packages:
 - `vagrant`
 - `virtualbox`
 
+VM specifications:
+
+```ruby
+# metal/Vagrantfile
+{{#include ../../metal/Vagrantfile:vm_specs}}
+```
+
 ## Configuration
 
 Follow the the steps in the [configuration guide](./deployment/configuration.md).
