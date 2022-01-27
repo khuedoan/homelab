@@ -36,7 +36,7 @@ Good enough for playaround with and personal use
 
 ## Stable requirements
 
-Can be used in "production" (for family or even small scale bussinesses)
+Can be used in "production" (for family or even small scale businesses)
 
 - [x] A single command to deploy everything
 - [x] Fast deployment time (from empty hard drive to running services under 1 hour)
