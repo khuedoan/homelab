@@ -3,5 +3,5 @@ name: longhorn
 version: 0.0.0
 dependencies:
   - name: longhorn
-    version: 1.2.2
+    version: 1.2.3
     repository: https://charts.longhorn.io
