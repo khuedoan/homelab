@@ -5,7 +5,7 @@
 > These resources are optional, the homelab still works without them but will lack some features like trusted certificates and offsite backup
 
 Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
-Below is a list of external resources and why we need them.
+Below is a list of external resources and why we need them (also see some [alternatives](#alternatives) below).
 
 - Terraform Cloud:
   - Workspace to store the state for external resources
@@ -61,3 +61,9 @@ Apply Terraform (you will be prompted to login to Terraform Cloud and enter API 
 ```sh
 make
 ```
+
+## Alternatives
+
+- Terraform Cloud: any other [Terraform backends](https://www.terraform.io/language/settings/backends)
+- Cloudflare Tunnel: you can build a small VPS in the cloud and route traffic via it using Wireguard and HAProxy. 
+- Backblaze B2: any S3 compatible object storage, such as S3 Glacier, Minio...
