@@ -8,8 +8,7 @@ renovate:
     config: |
       {
         "platform": "gitea",
-        "endpoint": "http://gitea-http.gitea:3000/api/v1",
-        "gitUrl": "endpoint",
+        "endpoint": "https://git.khuedoan.com/api/v1",
         "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
         "token": "31a914fe134384e4044a7d3f7f965bea7a5be5b0",
         "autodiscover": false,

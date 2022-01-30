@@ -20,6 +20,7 @@ gitea:
     config:
       server:
         LANDING_PAGE: explore
+        ROOT_URL: https://git.khuedoan.com
   persistence:
     storageClass: longhorn
   postgresql:
