@@ -25,24 +25,6 @@ spec:
           workspace: shared-data
       taskRef:
         name: lint
-    - name: tools
-      runAfter:
-        - fetch-repo
-      workspaces:
-        - name: source
-          workspace: shared-data
-        # - name: dockerconfig
-        #   workspace: dockerconfig
-      taskRef:
-        name: kaniko
-      params:
-        - name: CONTEXT
-          value: ./tools
-        - name: IMAGE
-          value: registry.khuedoan.com/tools:latest
-        - name: EXTRA_ARGS
-          value:
-            - --cache=true
     - name: external
       runAfter:
         - fetch-repo
