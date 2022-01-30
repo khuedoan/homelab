@@ -4,12 +4,13 @@ renovate:
     schedule: '*/10 * * * *'  # TODO remove after testing
     suspend: false
   renovate:
-    # TODO generate token automatically
+    # TODO generate token automatically, this is just for testing
     config: |
       {
         "platform": "gitea",
         "endpoint": "http://gitea-http.gitea:3000/api/v1",
-        "token": "TODO-gitea-renovate-token",
+        "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
+        "token": "31a914fe134384e4044a7d3f7f965bea7a5be5b0",
         "autodiscover": "false",
         "repositories": [
           "ops/homelab"
