@@ -1,14 +1,15 @@
 renovate:
   cronjob:
     # schedule: '0 9 1 * *'  # At 09:00 every month
-    schedule: '*/10 * * * *'  # TODO remove after testing
+    schedule: '*/5 * * * *'  # TODO remove after testing
     suspend: false
   renovate:
     # TODO generate token automatically, this is just for testing
     config: |
       {
         "platform": "gitea",
-        "endpoint": "https://git.khuedoan.com/api/v1",
+        "endpoint": "http://gitea-http.gitea:3000/api/v1",
+        "gitUrl": "endpoint",
         "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
         "token": "31a914fe134384e4044a7d3f7f965bea7a5be5b0",
         "autodiscover": false,
