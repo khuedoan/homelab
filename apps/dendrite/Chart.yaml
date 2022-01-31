@@ -3,5 +3,5 @@ name: dendrite
 version: 0.0.0
 dependencies:
   - name: dendrite
-    version: 0.0.1
+    version: 0.0.2
     repository: https://locmai.github.io/charts  # TODO switch to official chart
