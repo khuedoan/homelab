@@ -10,7 +10,7 @@ diagrams:
 		&& pip3 install -r requirements.txt \
 		&& python3 *.py
 	mkdir -p src/images
-	cp diagrams/*.jpg src/images/
+	cp diagrams/*.png src/images/
 
 .PHONY: book
 book: diagrams

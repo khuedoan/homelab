@@ -9,7 +9,7 @@ graph_attr = {
     "pad": "0"
 }
 
-with Diagram("Provisioning flow", graph_attr=graph_attr, outformat="jpg", show=False):
+with Diagram("Provisioning flow", graph_attr=graph_attr, outformat="png", show=False):
     with Cluster("./metal"):
         pxe = Docker("PXE server")
         os = LinuxGeneral(f"Rocky Linux")

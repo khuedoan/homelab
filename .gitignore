@@ -3,8 +3,8 @@
 book/
 
 *.iso
-*.jpg
 *.log
+*.png
 *.tgz
 *kubeconfig.yaml
 Chart.lock
