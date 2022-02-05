@@ -29,7 +29,8 @@ RUN yes | pacman --sync --refresh \
         python-netaddr \
         python-pip \
         sudo \
-        terraform
+        terraform \
+        openssh
 
 # TODO https://github.com/ansible-collections/community.docker/issues/216
 RUN pip install docker-compose
