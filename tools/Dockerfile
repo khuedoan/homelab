@@ -23,6 +23,7 @@ RUN yes | pacman --sync --refresh \
         libisoburn \
         make \
         mdbook \
+        openssh \
         p7zip \
         python \
         python-kubernetes \
