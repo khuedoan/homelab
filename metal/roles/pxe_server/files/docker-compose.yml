@@ -4,21 +4,21 @@ services:
   dhcp:
     build: ./dhcp
     volumes:
-      - ${REAL_DIR}/data/pxe-config/dhcpd.conf:/etc/dhcp/dhcpd.conf
+      - ./data/pxe-config/dhcpd.conf:/etc/dhcp/dhcpd.conf
     network_mode: host
   tftp:
     build: ./tftp
     network_mode: host
     volumes:
-      - ${REAL_DIR}/data/pxe-config/grub.cfg:/var/lib/tftpboot/grub.cfg
-      - ${REAL_DIR}/data/os/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
-      - ${REAL_DIR}/data/os/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
-      - ${REAL_DIR}/data/os/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
+      - ./data/pxe-config/grub.cfg:/var/lib/tftpboot/grub.cfg
+      - ./data/os/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
+      - ./data/os/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
+      - ./data/os/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
   http:
     build: ./http
     network_mode: host
     volumes:
-      - ${REAL_DIR}/data/os:/usr/share/nginx/html/os
-      - ${REAL_DIR}/data/init-config/:/usr/share/nginx/html/init-config
+      - ./data/os:/usr/share/nginx/html/os
+      - ./data/init-config/:/usr/share/nginx/html/init-config
     environment:
       NGINX_PORT: 80
