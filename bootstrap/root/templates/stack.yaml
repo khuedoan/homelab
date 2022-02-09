@@ -23,6 +23,7 @@ spec:
       source:
         repoURL: {{ $.Values.gitops.repo }}
         path: '{{ `{{path}}` }}'
+        targetRevision: {{ $.Values.gitops.revision }}
       syncPolicy:
         automated:
           prune: true
