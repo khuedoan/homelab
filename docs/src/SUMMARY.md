@@ -15,7 +15,7 @@
   - [Add or remove nodes (scale up or down)]()
   - [Install new applications]()
 - [Reference](./reference/README.md)
-  - [Architecture]()
+  - [Architecture](./reference/architecture.md)
   - [FAQ](./reference/faq.md)
   - [Contributors](./reference/contributors.md)
 
