@@ -29,6 +29,7 @@ It will prompt you to edit the inventory, for example:
 > - The IP addresses are the desired ones, not the current one, since your servers have no operating system installed yet.
 > - Disk: based on `/dev/$DISK`, in my case it's `sda`, but yours can be `sdb`, `nvme0n1`...
 > - Network interface: usually it's `eth0`, mine is `eno1`
+> - MAC address: the **lowercase, colon separated** MAC address of the above network interface
 
 ```yaml
 # metal/inventories/prod.yml
