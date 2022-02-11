@@ -7,11 +7,11 @@ it's the source of truth for my homelab, so you'll need to folk it to make it yo
 
 ## Choose the environment
 
-| Environment | Branch   |
-| ----------- | ------   |
-| Production  | `master` |
-| Staging     | `stag`   |
-| Development | `dev`    |
+| Environment | Branch   | Recommended setup             |
+| ----------- | -------- | ----------------------------- |
+| Production  | `master` | Real hardware                 |
+| Staging     | `stag`   | Multiple VM with network boot |
+| Development | `dev`    | A single Vagrant VM           |
 
 For example, if you're trying out the dev VM, use the development environment:
 
