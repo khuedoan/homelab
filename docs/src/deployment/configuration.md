@@ -5,6 +5,22 @@
 Because this repository ([khuedoan/homelab](https://github.com/khuedoan/homelab)) applies GitOps practices,
 it's the source of truth for my homelab, so you'll need to folk it to make it yours.
 
+## Choose the environment
+
+| Environment | Branch   |
+| ----------- | ------   |
+| Production  | `master` |
+| Staging     | `stag`   |
+| Development | `dev`    |
+
+For example, if you're trying out the dev VM, use the development environment:
+
+```sh
+git checkout dev
+```
+
+<!-- TODO show complete workflow -->
+
 ## Run the configure script
 
 Run the following script to configure the homelab:

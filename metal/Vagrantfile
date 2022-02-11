@@ -4,11 +4,9 @@ inventory = YAML.load_file(File.join(__dir__, './inventories/dev.yml'))
 group_vars = YAML.load_file(File.join(__dir__, './group_vars/all.yml'))
 
 # ANCHOR: vm_specs
-# TODO This is ridiculous for a local development environment.
-# After multi-env is supported, optimize it.
-cpus = 4
-memory = "10240"
-disk_size = "256GB"
+cpus = 2
+memory = "8192"
+disk_size = "128GB"
 # ANCHOR_END: vm_specs
 
 Vagrant.configure("2") do |config|
