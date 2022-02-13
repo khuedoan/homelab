@@ -7,7 +7,7 @@ option architecture-type code 93 = unsigned integer 16;
 
 subnet {{ ansible_default_ipv4.network }} netmask {{ ansible_default_ipv4.netmask }} {
     option routers {{ ansible_default_ipv4.gateway }};
-    range {{ ansible_default_ipv4.gateway | ansible.netcommon.ipmath(1) }} {{ ansible_default_ipv4.broadcast | ansible.netcommon.ipmath(-1) }};
+    range {{ ansible_default_ipv4.network | ansible.netcommon.ipmath(1) }} {{ ansible_default_ipv4.broadcast | ansible.netcommon.ipmath(-1) }};
 
     class "pxeclients" {
         match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
