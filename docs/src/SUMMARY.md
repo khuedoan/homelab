@@ -12,7 +12,7 @@
 - [Troubleshooting](./troubleshooting.md)
 - [Tutorials]()
   - [Single node cluster adjustments](./tutorials/single_node_cluster_adjustments.md)
-  - [Add or remove nodes (scale up or down)]()
+  - [Add or remove nodes (scale up or down)](./tutorials/add-or-remove-nodes.md)
   - [Install new applications]()
 - [Reference](./reference/README.md)
   - [Architecture](./reference/architecture.md)
