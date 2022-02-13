@@ -1,3 +1,4 @@
 loki-stack:
-  serviceMonitor:
-    enabled: true
+  loki:
+    serviceMonitor:
+      enabled: true
