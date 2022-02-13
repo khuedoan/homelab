@@ -6,7 +6,7 @@ Or how to scale vertically. To replace the same node with a clean OS, remove it 
 
 > You can add multiple nodes at the same time
 
-Ensure that it meets the requirements in [prerequisites](../deployment/prerequisites.md), then add its details to the inventory:
+Ensure that it meets the requirements in [prerequisites](../deployment/prerequisites.md), then add its details to the inventory **at the end of the group** (masters or workers):
 
 ```diff
 diff --git a/metal/inventories/prod.yml b/metal/inventories/prod.yml
