@@ -62,6 +62,8 @@ Apply Terraform (you will be prompted to login to Terraform Cloud and enter API 
 make
 ```
 
+Note: If you are using Terraform Cloud, ensure you set "Execution Mode" as "Local" in your workspace settings as Terraform Cloud won't be able to access your homelab cluster.
+
 ## Alternatives
 
 - Terraform Cloud: any other [Terraform backends](https://www.terraform.io/language/settings/backends)
