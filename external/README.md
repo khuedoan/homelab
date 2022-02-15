@@ -25,7 +25,13 @@ This layer will:
 
 ### Create Terraform workspace
 
-TODO
+Terraform is stateful, which means it needs somewhere to store it's state. The Terraform Cloud is one option for a state backend with a generous free tier perfect for a homelab.
+
+1. Sign up for a [Terraform Cloud](https://cloud.hashicorp.com/products/terraform)
+2. Create a workspace named `homelab-external`, this is the workspace where your homelab state will be stored.
+3. Change the "Execution Mode" from "Remote" to "Local". This will ensure your local machine, which can access your lab, is the one executing the terraform plan rather than the cloud runners.
+
+If you decide to use a different terraform backend, you'll need to edit the [external/versions.tf](./versions.tf) file as required.
 
 ### Create Cloudflare API token
 
