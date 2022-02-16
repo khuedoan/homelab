@@ -25,7 +25,9 @@ spec:
         path: '{{ `{{path}}` }}'
         targetRevision: {{ $.Values.gitops.revision }}
         helm:
-          valueFiles: value-{{ .Values.env}}.yaml
+          valueFiles: 
+          - value.yaml
+          - value-{{ .Values.env}}.yaml
       syncPolicy:
         automated:
           prune: true
