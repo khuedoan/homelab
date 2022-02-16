@@ -5,3 +5,4 @@ dependencies:
   - name: dendrite
     version: 0.0.2
     repository: https://locmai.github.io/charts  # TODO switch to official chart
+    condition: dendrite.enabled

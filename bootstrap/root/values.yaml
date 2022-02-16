@@ -7,3 +7,5 @@ stacks:
   - name: system
   - name: platform
   - name: apps
+
+env: dev

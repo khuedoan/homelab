@@ -1,0 +1,63 @@
+dendrite:
+  enabled: false
+  polylith: false
+  image:
+    name: "locmai/dendrite-monolith:010922"  # TODO switch to official image
+    pullPolicy: IfNotPresent
+  configuration:
+    version: 2
+    servername: &host matrix.khuedoan.com
+    database:
+      host:  "dendrite-postgresql:5432"
+      user:  "dendrite"
+      password: "dendrite"
+      max_open_conns: 100
+      max_idle_conns: 2
+      conn_max_lifetime: -1
+    metrics:
+      enabled: true
+    jetstream:
+      in_memory: false
+      addresses:
+        - nats://dendrite-nats:4222
+  persistence:
+    storageClass: longhorn
+    logs:
+      capacity: 1Gi
+    media:
+      capacity: 5Gi
+  nats:
+    enabled: true
+    nats:
+      jetstream:
+        enabled: true
+  postgresql:
+    enabled: true
+    global:
+      postgresql:
+        postgresqlDatabase: dendrite
+        postgresqlUsername: dendrite
+        postgresqlPassword: dendrite
+    persistence:
+      enabled: true
+      storageClass: longhorn
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.khuedoan.com"
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: 32m
+    hosts:
+      - host: *host
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: dendrite-tls-certificate
+        hosts:
+          - *host

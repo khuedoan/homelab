@@ -24,6 +24,8 @@ spec:
         repoURL: {{ $.Values.gitops.repo }}
         path: '{{ `{{path}}` }}'
         targetRevision: {{ $.Values.gitops.revision }}
+        helm:
+          valueFiles: value-{{ .Values.env}}.yaml
       syncPolicy:
         automated:
           prune: true
