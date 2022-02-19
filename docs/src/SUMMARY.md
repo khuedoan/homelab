@@ -13,6 +13,7 @@
 - [Tutorials]()
   - [Single node cluster adjustments](./tutorials/single_node_cluster_adjustments.md)
   - [Add or remove nodes (scale up or down)](./tutorials/add-or-remove-nodes.md)
+  - [Run commands on multiple nodes](./tutorials/run-commands-on-multiple-nodes.md)
   - [Install new applications]()
 - [Reference](./reference/README.md)
   - [Architecture](./reference/architecture.md)
