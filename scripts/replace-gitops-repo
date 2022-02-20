@@ -1,8 +1,0 @@
-#!/bin/sh
-
-CURRENT_REPO=$(echo 'github.com/khuedoan/homelab' | sed 's/\([.,/]\)/\\\1/g')
-NEW_REPO=$(echo "${1}" | sed 's/\([.,/]\)/\\\1/g')
-
-git grep "${CURRENT_REPO}" -- bootstrap platform | cut -d ':' -f1 | uniq | while read p; do
-  sed -i "s/${CURRENT_REPO}/${NEW_REPO}/g" $p
-done

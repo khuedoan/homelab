@@ -7,52 +7,83 @@
 Basic configure script for new users
 """
 
+import fileinput
 import os
-import platform
-import sys
+import subprocess
 
-editor = os.getenv('EDITOR')
-seed_repo = "github.com/khuedoan/homelab"
-domain = "khuedoan.com"
-terraform_workspace = "khuedoan"
+default_editor = os.getenv('EDITOR')
+default_seed_repo = "https://github.com/khuedoan/homelab"
+default_domain = "khuedoan.com"
+default_timezone = "Asia/Ho_Chi_Minh"
+default_terraform_workspace = "khuedoan"
 
-if sys.version_info < (3, 10, 0):
-    raise Exception("Must be using Python >= 3.10.0")
+editor = str(input(f"Text editor ({default_editor}): ") or default_editor)
+domain = str(input(f"Enter your domain ({default_domain}): ") or default_domain)
+seed_repo = str(input(f"Enter seed repo ({default_seed_repo}): ") or default_seed_repo)
+timezone = str(input(f"Enter time zone ({default_timezone}): ") or default_timezone)
+terraform_workspace = str(input(f"Enter your Terraform Workspace, skip if you don't want to use external resources yet ({default_terraform_workspace}): ") or default_terraform_workspace)
 
-# confirm text editor
-editor = str(input(f"Text editor ({editor}): ") or editor)
+def find_and_replace(pattern: str, replacement: str, directories: list[str]) -> None:
+    files_with_matches = subprocess.run(
+        ["git", "grep", "--files-with-matches", pattern, "--"] + directories,
+        capture_output=True,
+        text=True,
+        check=True
+    ).stdout.splitlines()
 
-# Replace seed repo
-seed_repo = str(input(f"Enter seed repo ({seed_repo}): ") or seed_repo)
-os.system(f"./scripts/replace-gitops-repo {seed_repo}")
-
-# Replace domain
-domain = str(input(f"Enter your domain ({domain}): ") or domain)
-os.system(f"./scripts/replace-domain {domain}")
-
-# Change hardware info
-os.system(f"{editor} 'metal/inventories/prod.yml'") # TODO use var for inventory
-
-def replace_terraform_workspace(current, new):
-    filename = 'external/versions.tf'
-    # Read in the file
-    with open(filename, 'r') as file:
-        filedata = file.read()
-
-    # Replace the target string
-    filedata = filedata.replace(current, new)
-
-    # Write the file out again
-    with open(filename, 'w') as file:
-        file.write(filedata)
+    for file_with_maches in files_with_matches:
+        with fileinput.FileInput(file_with_maches, inplace=True) as file:
+            for line in file:
+                print(line.replace(pattern, replacement), end='')
 
 
-new_terraform_workspace = str(
-    input(f"Enter your Terraform Workspace ({terraform_workspace}): ")
-    or terraform_workspace
-)
+def main() -> None:
+    find_and_replace(
+        pattern=default_domain,
+        replacement=domain,
+        directories=[
+            ".tekton"
+            "apps",
+            "bootstrap",
+            "platform",
+            "system",
+        ]
+    )
 
-replace_terraform_workspace(terraform_workspace, new_terraform_workspace)
+    find_and_replace(
+        pattern=default_seed_repo,
+        replacement=seed_repo,
+        directories=[
+            "bootstrap",
+            "platform"
+        ]
+    )
 
-# TODO switch to git lib
-os.system("git diff")
+    find_and_replace(
+        pattern=default_timezone,
+        replacement=timezone,
+        directories=[
+            "apps",
+            "metal"
+        ]
+    )
+
+    find_and_replace(
+        pattern=default_terraform_workspace,
+        replacement=terraform_workspace,
+        directories=[
+            "external/versions.tf"
+        ]
+    )
+
+    subprocess.run(
+        [editor, 'metal/inventories/prod.yml']
+    )
+
+    subprocess.run(
+        ["git", "diff"]
+    )
+
+
+if __name__ == '__main__':
+    main()
