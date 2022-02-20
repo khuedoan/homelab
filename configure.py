@@ -23,9 +23,10 @@ seed_repo = str(input(f"Enter seed repo ({default_seed_repo}): ") or default_see
 timezone = str(input(f"Enter time zone ({default_timezone}): ") or default_timezone)
 terraform_workspace = str(input(f"Enter your Terraform Workspace, skip if you don't want to use external resources yet ({default_terraform_workspace}): ") or default_terraform_workspace)
 
-def find_and_replace(pattern: str, replacement: str, directories: list[str]) -> None:
+
+def find_and_replace(pattern: str, replacement: str, paths: list[str]) -> None:
     files_with_matches = subprocess.run(
-        ["git", "grep", "--files-with-matches", pattern, "--"] + directories,
+        ["git", "grep", "--files-with-matches", pattern, "--"] + paths,
         capture_output=True,
         text=True,
         check=True
@@ -41,7 +42,7 @@ def main() -> None:
     find_and_replace(
         pattern=default_domain,
         replacement=domain,
-        directories=[
+        paths=[
             ".tekton"
             "apps",
             "bootstrap",
@@ -53,7 +54,7 @@ def main() -> None:
     find_and_replace(
         pattern=default_seed_repo,
         replacement=seed_repo,
-        directories=[
+        paths=[
             "bootstrap",
             "platform"
         ]
@@ -62,7 +63,7 @@ def main() -> None:
     find_and_replace(
         pattern=default_timezone,
         replacement=timezone,
-        directories=[
+        paths=[
             "apps",
             "metal"
         ]
@@ -71,7 +72,7 @@ def main() -> None:
     find_and_replace(
         pattern=default_terraform_workspace,
         replacement=terraform_workspace,
-        directories=[
+        paths=[
             "external/versions.tf"
         ]
     )
