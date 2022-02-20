@@ -52,7 +52,7 @@ Project status: **Alpha** (see [roadmap](#roadmap) below)
 - [x] CI/CD platform
 - [x] Private container registry
 - [x] Distributed storage
-- [x] Support multiple environments (dev, stag, prod)
+- [x] Support multiple environments (dev, prod)
 - [ ] Monitoring and alerting 🚧
 - [ ] Automated offsite backups 🚧
 - [ ] Single sign-on 🚧
