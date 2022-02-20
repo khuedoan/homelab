@@ -1,0 +1,7 @@
+rook-ceph: {}
+  # currentNamespaceOnly: true
+  # monitoring:
+  #   enabled: true
+rook-ceph-cluster: {}
+  # monitoring:
+  #   enabled: true
