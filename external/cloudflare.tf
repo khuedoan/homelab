@@ -1,4 +1,4 @@
-data "cloudflare_zone" "khuedoan_com" {
+data "cloudflare_zone" "zone" {
   name = "khuedoan.com"
 }
 
