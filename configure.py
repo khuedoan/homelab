@@ -28,8 +28,7 @@ def find_and_replace(pattern: str, replacement: str, paths: list[str]) -> None:
     files_with_matches = subprocess.run(
         ["git", "grep", "--files-with-matches", pattern, "--"] + paths,
         capture_output=True,
-        text=True,
-        check=True
+        text=True
     ).stdout.splitlines()
 
     for file_with_maches in files_with_matches:
