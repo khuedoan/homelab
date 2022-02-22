@@ -47,6 +47,7 @@ def main() -> None:
             "bootstrap",
             "platform",
             "system",
+            "external",
         ]
     )
 
