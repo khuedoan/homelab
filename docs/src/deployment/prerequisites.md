@@ -14,12 +14,12 @@ Any modern `x86_64` computer(s) should work, you can use old PCs, laptops or ser
 
 > This is the requirements for _each_ node
 
-| Component  | Minimum                                                                                      | Recommended                                                                                  |
-| :--        | :--                                                                                          | :--                                                                                          |
-| CPU        | 2 cores                                                                                      | 4 cores                                                                                      |
-| RAM        | 8 GB                                                                                         | 16 GB                                                                                        |
-| Hard drive | 128 GB                                                                                       | 512 GB (depending on your storage usage, the base installation will not use more than 128GB) |
-| Node count | 1 (checkout the [single node cluster adjustments](../tutorials/single_node_cluster_adjustments.md) tutorial) | 3 or more for high availability                                                              |
+| Component  | Minimum                                                                                                      | Recommended                                                                                  |
+| :--        | :--                                                                                                          | :--                                                                                          |
+| CPU        | 2 cores                                                                                                      | 4 cores                                                                                      |
+| RAM        | 8 GB                                                                                                         | 16 GB                                                                                        |
+| Hard drive | 128 GB                                                                                                       | 512 GB (depending on your storage usage, the base installation will not use more than 128GB) |
+| Node count | 1 (checkout the [single node cluster adjustments](../tutorials/single-node-cluster-adjustments.md) tutorial) | 3 or more for high availability                                                              |
 
 Additional capabilities:
 

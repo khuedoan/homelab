@@ -7,4 +7,4 @@ In this section you will learn how to:
 - Build the cluster and bootstrap it
 - Perform some addtional steps depending on your set up (DNS, external secrets...)
 
-If you encounter any issue, please see the [Troubleshooting](../troubleshooting) section.
+If you encounter any issue, please see the [Troubleshooting](../troubleshooting.md) section.
