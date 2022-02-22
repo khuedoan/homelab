@@ -1,3 +1,3 @@
 kured:
   configuration:
-    rebootSentinelCommand: "needs-restarting --reboothint && exit 1 || exit 0"
+    rebootSentinelCommand: sh -c 'needs-restarting --reboothint && exit 1 || exit 0'
