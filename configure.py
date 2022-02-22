@@ -42,7 +42,7 @@ def main() -> None:
         pattern=default_domain,
         replacement=domain,
         paths=[
-            ".tekton"
+            ".tekton",
             "apps",
             "bootstrap",
             "platform",
