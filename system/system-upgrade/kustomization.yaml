@@ -3,6 +3,4 @@ kind: Kustomization
 
 resources:
   - https://github.com/rancher/system-upgrade-controller/releases/download/v0.8.1/system-upgrade-controller.yaml
-  # TODO re-enable rolling upgrade
-  # - k3s
-  # - rocky-linux
+  - k3s
