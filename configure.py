@@ -47,7 +47,7 @@ def main() -> None:
             "bootstrap",
             "platform",
             "system",
-            "external",
+            "external"
         ]
     )
 
@@ -65,6 +65,7 @@ def main() -> None:
         replacement=timezone,
         paths=[
             "apps",
+            "system",
             "metal"
         ]
     )
