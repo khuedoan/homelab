@@ -2,6 +2,7 @@
   hosts: metal
   roles:
     - k3s
+    - automatic_upgrade
 
 - name: Create some basic config
   hosts: localhost
