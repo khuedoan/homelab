@@ -17,5 +17,9 @@ cluster:
 		--inventory inventories/${env}.yml \
 		cluster.yml
 
+console:
+	ansible-console \
+		--inventory inventories/${env}.yml
+
 vagrant:
 	vagrant up
