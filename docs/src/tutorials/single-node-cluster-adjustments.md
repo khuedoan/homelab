@@ -11,13 +11,15 @@ Set the `defaultClassReplicaCount` to 1:
 {{#include ../../../system/longhorn-system/values.yaml}}
 ```
 
-## Disable automated system upgrade
+## Disable automatic upgrade for OS and k3s
 
-Because the system upgrade controller will try to drain the node,
-the pods will have no place to go on a single node set up.
-
-Remove the system upgrade controller entirely:
+Because they will try to drain the only node, the pods will have no place to go.
+Remove them entirely:
 
 ```sh
+rm -rf system/kured
 rm -rf system/system-upgrade
 ```
+
+Commit and push the change.
+You can revert it later when you add more nodes.
