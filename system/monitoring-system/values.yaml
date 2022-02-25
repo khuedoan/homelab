@@ -1,5 +1,6 @@
 kube-prometheus-stack:
   grafana:
+    adminPassword: null
     ingress:
       enabled: true
       ingressClassName: nginx
