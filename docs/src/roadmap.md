@@ -45,8 +45,8 @@ Can be used in "production" (for family or even small scale businesses).
 - [x] A single command to deploy everything
 - [x] Fast deployment time (from empty hard drive to running services in under 1 hour)
 - [ ] Fully _automatic_, not just _automated_
-  - [ ] Bare-metal OS rolling upgrade
-  - [x] Kubernetes rolling upgrade
+  - [x] Bare-metal OS rolling upgrade
+  - [x] Kubernetes version rolling upgrade
   - [ ] Application version upgrade
   - [ ] Encrypted backups
   - [ ] Secrets rotation
