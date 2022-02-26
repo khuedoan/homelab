@@ -15,8 +15,7 @@ gitea:
           - *host
   gitea:
     admin:
-      # existingSecret: gitea-admin-secret
-      password: asdfasdfasdf  # TODO yes I know this is just for testing
+      existingSecret: gitea-admin-secret
     config:
       server:
         LANDING_PAGE: explore
