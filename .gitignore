@@ -8,3 +8,4 @@ book/
 *.tgz
 *kubeconfig.yaml
 Chart.lock
+go.sum
