@@ -61,8 +61,12 @@ Project status: **Alpha** (see [roadmap](#roadmap) below)
 - [ ] Automated offsite backups 🚧
 - [ ] Single sign-on 🚧
 
-Screenshots of some user-facing applications are shown here, I will update them before each release.
+Some demo videos and screenshots are shown here.
 They can't capture all of the project's features, but they are sufficient to get a concept of it.
+
+| [![PXE boot](https://user-images.githubusercontent.com/27996771/156927956-83646797-7dea-44cc-aa6e-768fa0798659.png)](https://www.youtube.com/watch?v=y-d7btNNAT8) |
+| :--:                                                                                                                                                              |
+| PXE boot                                                                                                                                                          |
 
 | ![](https://user-images.githubusercontent.com/27996771/149445807-0f869eb7-d8f5-4fef-ab97-ac281df91a06.png) |
 | :--:                                                                                                       |
