@@ -25,23 +25,32 @@ import (
 
 var data = `
 - path: gitea/admin
-  key: password
-  length: 32
-  special: true
+  data:
+    - key: password
+      length: 32
+      special: true
 - path: gitea/renovate
-  key: id
-  length: 32
-  special: false
-- path: gitea/renovate
-  key: token
-  length: 32
-  special: false
+  data:
+    - key: id
+      length: 32
+      special: true
+    - key: token
+      length: 32
+      special: true
+- path: trow/admin
+  data:
+    - key: password
+      length: 32
+      special: true
 `
 
 type RandomPassword struct {
-	Path    string `yaml:"path"`
-	Length  int    `yaml:"length"`
-	Special bool   `yaml:"special"`
+	Path string
+	Data []struct {
+		Key     string
+		Length  int
+		Special bool
+	}
 }
 
 func main() {
@@ -68,18 +77,21 @@ func main() {
 		secret, _ := client.Logical().Read(path)
 
 		if secret == nil {
-			res, err := password.Generate(32, 3, 3, false, true)
-			if err != nil {
-				log.Fatal(err)
+			secretData := map[string]interface{}{
+				"data": map[string]interface{}{},
 			}
 
-			secretData := map[string]interface{}{
-				"data": map[string]interface{}{
-					"password": res,
-				},
+			for _, randomKey := range randomPassword.Data {
+				res, err := password.Generate(32, 3, 3, false, true)
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				secretData["data"].(map[string]interface{})[randomKey.Key] = res
 			}
 
 			_, err = client.Logical().Write(path, secretData)
+
 			if err != nil {
 				log.Fatalf("Unable to write secret: %v", err)
 			} else {
