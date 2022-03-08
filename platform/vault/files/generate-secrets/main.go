@@ -17,32 +17,12 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	vault "github.com/hashicorp/vault/api"
 	"github.com/sethvargo/go-password/password"
 	"gopkg.in/yaml.v2"
 )
-
-var data = `
-- path: gitea/admin
-  data:
-    - key: password
-      length: 32
-      special: true
-- path: gitea/renovate
-  data:
-    - key: id
-      length: 32
-      special: true
-    - key: token
-      length: 32
-      special: true
-- path: trow/admin
-  data:
-    - key: password
-      length: 32
-      special: true
-`
 
 type RandomPassword struct {
 	Path string
@@ -54,9 +34,15 @@ type RandomPassword struct {
 }
 
 func main() {
+	data, err := os.ReadFile("./config.yaml")
+
+	if err != nil {
+		log.Fatalf("unable to read config file: %v", err)
+	}
+
 	randomPasswords := []RandomPassword{}
 
-	err := yaml.Unmarshal([]byte(data), &randomPasswords)
+	err = yaml.Unmarshal([]byte(data), &randomPasswords)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
