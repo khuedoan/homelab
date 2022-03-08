@@ -64,7 +64,7 @@ Project status: **Alpha** (see [roadmap](#roadmap) below)
 Some demo videos and screenshots are shown here.
 They can't capture all of the project's features, but they are sufficient to get a concept of it.
 
-| [![PXE boot](https://user-images.githubusercontent.com/27996771/156927956-83646797-7dea-44cc-aa6e-768fa0798659.png)](https://www.youtube.com/watch?v=y-d7btNNAT8) |
+| [![PXE boot](https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png)](https://www.youtube.com/watch?v=y-d7btNNAT8) |
 | :--:                                                                                                                                                              |
 | PXE boot                                                                                                                                                          |
 
