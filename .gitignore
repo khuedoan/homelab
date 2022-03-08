@@ -9,3 +9,6 @@ book/
 *kubeconfig.yaml
 Chart.lock
 go.sum
+
+# Mac Specific files
+.DS_Store
