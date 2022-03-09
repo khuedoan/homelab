@@ -15,9 +15,15 @@ spec:
           image: python
           env:
             - name: GITEA_USER
-              value: "{{ .Values.gitea.gitea.admin.username }}"
+              valueFrom:
+                secretKeyRef:
+                  name: gitea-admin-secret
+                  key: username
             - name: GITEA_PASSWORD
-              value: "{{ .Values.gitea.gitea.admin.password }}"
+              valueFrom:
+                secretKeyRef:
+                  name: gitea-admin-secret
+                  key: password
           command:
             - python
             - -c
