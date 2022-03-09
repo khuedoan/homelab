@@ -1,10 +1,6 @@
 package main
 
-// TODO WIP
-
-// TODO env vars
-// export VAULT_ADDR='https://127.0.0.1:8200'
-// export VAULT_TOKEN=root
+// TODO WIP clean up
 
 // TODO ACL policy
 // path "secret/*" {
@@ -48,14 +44,10 @@ func main() {
 	}
 	config := vault.DefaultConfig()
 
-	config.Address = "http://127.0.0.1:8200"
-
 	client, err := vault.NewClient(config)
 	if err != nil {
 		log.Fatalf("unable to initialize Vault client: %v", err)
 	}
-
-	client.SetToken("root")
 
 	for _, randomPassword := range randomPasswords {
 		path := fmt.Sprintf("/secret/data/%s", randomPassword.Path)
