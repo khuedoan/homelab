@@ -10,6 +10,7 @@ Basic configure script for new users
 import fileinput
 import os
 import subprocess
+import sys
 
 default_editor = os.getenv('EDITOR') or "vim"
 default_seed_repo = "https://github.com/khuedoan/homelab"
@@ -17,11 +18,10 @@ default_domain = "khuedoan.com"
 default_timezone = "Asia/Ho_Chi_Minh"
 default_terraform_workspace = "khuedoan"
 
-editor = str(input(f"Text editor ({default_editor}): ") or default_editor)
-domain = str(input(f"Enter your domain ({default_domain}): ") or default_domain)
-seed_repo = str(input(f"Enter seed repo ({default_seed_repo}): ") or default_seed_repo)
-timezone = str(input(f"Enter time zone ({default_timezone}): ") or default_timezone)
-terraform_workspace = str(input(f"Enter your Terraform Workspace, skip if you don't want to use external resources yet ({default_terraform_workspace}): ") or default_terraform_workspace)
+
+def check_python_version(required_version: str) -> None:
+    if sys.version_info < tuple(map(int, required_version.split('.'))):
+        raise Exception(f"Must be using Python >= {required_version}")
 
 
 def find_and_replace(pattern: str, replacement: str, paths: list[str]) -> None:
@@ -38,6 +38,16 @@ def find_and_replace(pattern: str, replacement: str, paths: list[str]) -> None:
 
 
 def main() -> None:
+    check_python_version(
+        required_version='3.10.0'
+    )
+
+    editor = str(input(f"Text editor ({default_editor}): ") or default_editor)
+    domain = str(input(f"Enter your domain ({default_domain}): ") or default_domain)
+    seed_repo = str(input(f"Enter seed repo ({default_seed_repo}): ") or default_seed_repo)
+    timezone = str(input(f"Enter time zone ({default_timezone}): ") or default_timezone)
+    terraform_workspace = str(input(f"Enter your Terraform Workspace, skip if you don't want to use external resources yet ({default_terraform_workspace}): ") or default_terraform_workspace)
+
     find_and_replace(
         pattern=default_domain,
         replacement=domain,
