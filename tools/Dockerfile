@@ -9,7 +9,7 @@ RUN pacman --sync --refresh --noconfirm \
         --latest 20 \
         --sort rate
 
-RUN yes | pacman --sync --refresh \
+RUN pacman --sync --refresh --noconfirm \
         ansible \
         argocd \
         diffutils \
