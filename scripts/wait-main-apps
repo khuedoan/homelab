@@ -48,7 +48,7 @@ for ingress in ingresses:
 
     host = i.spec.rules[0].host
 
-    if requests.get(f"https://{host}").status_code == 200:
+    if requests.get(f"https://{host}", verify=False).status_code == 200:
         print(f"Visit https://{host} to {ingress['purpose']}")
 
 print("\nThere're more services but the above is enough for you to start exploring!")
