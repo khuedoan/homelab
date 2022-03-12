@@ -11,7 +11,6 @@ RUN pacman --sync --refresh --noconfirm \
 
 RUN pacman --sync --refresh --noconfirm \
         ansible \
-        argocd \
         diffutils \
         docker \
         docker-compose \

@@ -1,7 +1,0 @@
-#!/bin/sh
-
-argocd login \
-    argocd.khuedoan.com \
-    --username admin \
-    --password "$(./scripts/argocd-admin-password)" \
-    --insecure # TODO Remove insecure login
