@@ -1,54 +1,56 @@
 #!/usr/bin/python
 
 import requests
+import time
 
 from kubernetes import client, config
+from rich.console import Console
 
 # Essential services
 ingresses = [
     {
         'name': 'argocd-server',
+        'fullname': 'ArgoCD',
         'namespace': 'argocd',
-        'purpose': 'manage your applications'
-    },
-    {
-        'name': 'gitea',
-        'namespace': 'gitea',
-        'purpose': 'manage your git repositories'
     },
     {
         'name': 'hajimari',
+        'fullname': 'Homepage',
         'namespace': 'hajimari',
-        'purpose': 'view your homepage'
-    },
+    }
 ]
 
-config.load_kube_config()
+config.load_kube_config(config_file='./metal/kubeconfig.yaml')
 
-# TODO wait for Argo apps
-# until argocd app wait \
-#     argocd \
-#     gitea \
-#     hajimari \
-#     ingress-nginx \
-#     longhorn-system \
-#     metallb-system \
-#     > /dev/null
-# do
-#     sleep 3
-# done
 
-for ingress in ingresses:
+def wait_app(name: str, fullname: str, namespace: str) -> None:
     i = client.NetworkingV1Api().read_namespaced_ingress(
-        ingress['name'],
-        ingress['namespace']
+        name,
+        namespace
     )
-
-    # TODO wait for ingress and retry
 
     host = i.spec.rules[0].host
 
-    if requests.get(f"https://{host}", verify=False).status_code == 200:
-        print(f"Visit https://{host} to {ingress['purpose']}")
+    console = Console()
 
-print("\nThere're more services but the above is enough for you to start exploring!")
+    with console.status(f"Waiting for {fullname}") as status:
+        while requests.get(f"https://{host}", verify=False).status_code != 200:
+            time.sleep(30)
+        console.log(f"{fullname} is ready, visit https://{host}")
+
+
+# TODO
+# from concurrent.futures import ThreadPoolExecutor
+# with ThreadPoolExecutor(max_workers=4) as pool:
+#     # Number of tasks is greater than max workers
+#     pool.map(wait_app, range(8))
+
+
+requests.urllib3.disable_warnings()
+
+for ingress in ingresses:
+    wait_app(
+        name=ingress['name'],
+        fullname=ingress['fullname'],
+        namespace=ingress['namespace'],
+    )
