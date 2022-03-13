@@ -1,10 +1,14 @@
 #!/usr/bin/python
 
+# TODO wip clean this up
+
 import requests
 import time
 
 from kubernetes import client, config
 from rich.console import Console
+
+requests.urllib3.disable_warnings()
 
 # Essential services
 ingresses = [
@@ -24,19 +28,24 @@ config.load_kube_config(config_file='./metal/kubeconfig.yaml')
 
 
 def wait_app(name: str, fullname: str, namespace: str) -> None:
-    i = client.NetworkingV1Api().read_namespaced_ingress(
-        name,
-        namespace
-    )
-
-    host = i.spec.rules[0].host
-
     console = Console()
+    success = False
 
-    with console.status(f"Waiting for {fullname}") as status:
-        while requests.get(f"https://{host}", verify=False).status_code != 200:
-            time.sleep(30)
-        console.log(f"{fullname} is ready, visit https://{host}")
+    with console.status(f"Waiting for {fullname}"):
+
+        while not success:
+            try:
+                i = client.NetworkingV1Api().read_namespaced_ingress(
+                    name,
+                    namespace
+                )
+
+                host = i.spec.rules[0].host
+                requests.get(f"https://{host}", verify=False)
+                console.log(f"{fullname} is ready, visit https://{host}")
+                success = True
+            except Exception:
+                time.sleep(60)
 
 
 # TODO
@@ -45,8 +54,6 @@ def wait_app(name: str, fullname: str, namespace: str) -> None:
 #     # Number of tasks is greater than max workers
 #     pool.map(wait_app, range(8))
 
-
-requests.urllib3.disable_warnings()
 
 for ingress in ingresses:
     wait_app(
