@@ -32,15 +32,14 @@ def wait_app(name: str, fullname: str, namespace: str) -> None:
     success = False
 
     with console.status(f"Waiting for {fullname}"):
-
         while not success:
             try:
-                i = client.NetworkingV1Api().read_namespaced_ingress(
+                ingress = client.NetworkingV1Api().read_namespaced_ingress(
                     name,
                     namespace
                 )
 
-                host = i.spec.rules[0].host
+                host = ingress.spec.rules[0].host
                 requests.get(f"https://{host}", verify=False)
                 console.log(f"{fullname} is ready, visit https://{host}")
                 success = True
