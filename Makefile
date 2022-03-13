@@ -2,7 +2,7 @@
 
 default: metal bootstrap wait
 
-all: default external
+all: metal bootstrap external wait
 
 .PHONY: metal
 metal:
