@@ -1,0 +1,15 @@
+users:
+  - name: renovate
+    token:
+      secretRef: renovate-secret # ???
+organizations:
+  - name: ops
+    members:
+      - renovate
+repositories:
+  - path: ops/homelab
+    migrate:
+      source: https://github.com/khuedoan/homelab
+      mirror: false
+  - path: khuedoan/blog
+  - path: khuedoan/backstage
