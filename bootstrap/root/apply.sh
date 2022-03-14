@@ -9,8 +9,3 @@ helm template \
     ${extra_args} \
     argocd . \
     | kubectl apply -n argocd -f -
-
-kubectl --namespace argocd wait --timeout=300s --for condition=ResourcesUpToDate \
-	applicationset/system \
-	applicationset/platform \
-	applicationset/apps
