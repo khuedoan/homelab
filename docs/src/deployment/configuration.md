@@ -31,7 +31,7 @@ make tools
 Run the following script to configure the homelab:
 
 ```sh
-./configure.py
+make configure
 ```
 
 Example input:
@@ -39,7 +39,6 @@ Example input:
 <!-- TODO update example input -->
 
 ```
-$ ./configure.py
 Text editor (nvim):
 Enter seed repo (github.com/khuedoan/homelab): github.com/example/homelab
 Enter your domain (khuedoan.com): example.com

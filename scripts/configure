@@ -94,10 +94,6 @@ def main() -> None:
         [editor, 'metal/inventories/prod.yml']
     )
 
-    subprocess.run(
-        ["git", "diff"]
-    )
-
 
 if __name__ == '__main__':
     main()
