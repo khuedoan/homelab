@@ -22,9 +22,11 @@ RUN pacman --sync --refresh --noconfirm \
         libisoburn \
         make \
         mdbook \
+        neovim \
         openssh \
         p7zip \
         python \
+        python-jinja \
         python-kubernetes \
         python-netaddr \
         python-pip \
