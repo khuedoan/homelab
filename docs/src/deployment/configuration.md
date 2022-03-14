@@ -22,6 +22,12 @@ git checkout dev
 
 ## Run the configure script
 
+Open the tools container if you haven't already:
+
+```sh
+make tools
+```
+
 Run the following script to configure the homelab:
 
 ```sh
