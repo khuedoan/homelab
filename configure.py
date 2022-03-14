@@ -8,13 +8,11 @@ Basic configure script for new users
 """
 
 import fileinput
-import os
 import subprocess
 import sys
 
 from rich.prompt import Confirm, Prompt
 
-default_editor = os.getenv('EDITOR') or "vim"
 default_seed_repo = "https://github.com/khuedoan/homelab"
 default_domain = "khuedoan.com"
 default_timezone = "Asia/Ho_Chi_Minh"
@@ -44,7 +42,7 @@ def main() -> None:
         required_version='3.10.0'
     )
 
-    editor = Prompt.ask("Select text editor", default=default_editor)
+    editor = Prompt.ask("Select text editor", default='nvim')
     domain = Prompt.ask("Enter your domain", default=default_domain)
     seed_repo = Prompt.ask("Enter seed repo", default=default_seed_repo)
     timezone = Prompt.ask("Enter time zone", default=default_timezone)
