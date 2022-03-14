@@ -1,30 +1,29 @@
 #!/usr/bin/python
 
-# TODO wip clean this up
-
 import requests
-import time
 
 from kubernetes import client, config
 from rich.console import Console
-
-requests.urllib3.disable_warnings()
+from time import sleep
 
 # Essential services
 ingresses = [
     {
         'name': 'argocd-server',
         'fullname': 'ArgoCD',
-        'namespace': 'argocd',
+        'namespace': 'argocd'
     },
     {
         'name': 'hajimari',
         'fullname': 'Homepage',
-        'namespace': 'hajimari',
+        'namespace': 'hajimari'
+    },
+    {
+        'name': 'gitea',
+        'fullname': 'Gitea',
+        'namespace': 'gitea'
     }
 ]
-
-config.load_kube_config(config_file='./metal/kubeconfig.yaml')
 
 
 def wait_app(name: str, fullname: str, namespace: str) -> None:
@@ -38,25 +37,22 @@ def wait_app(name: str, fullname: str, namespace: str) -> None:
                     name,
                     namespace
                 )
-
-                host = ingress.spec.rules[0].host
-                requests.get(f"https://{host}", verify=False)
-                console.log(f"{fullname} is ready, visit https://{host}")
+                url = f"https://{ingress.spec.rules[0].host}"
+                requests.get(url, verify=False).raise_for_status()
+                sleep(3)
+                console.log(f"{fullname} is ready, visit {url}")
                 success = True
             except Exception:
-                time.sleep(60)
+                sleep(60)
 
 
-# TODO
-# from concurrent.futures import ThreadPoolExecutor
-# with ThreadPoolExecutor(max_workers=4) as pool:
-#     # Number of tasks is greater than max workers
-#     pool.map(wait_app, range(8))
+def main() -> None:
+    config.load_kube_config(config_file='./metal/kubeconfig.yaml')
+    requests.urllib3.disable_warnings()
+
+    for ingress in ingresses:
+        wait_app(ingress['name'], ingress['fullname'], ingress['namespace'])
 
 
-for ingress in ingresses:
-    wait_app(
-        name=ingress['name'],
-        fullname=ingress['fullname'],
-        namespace=ingress['namespace'],
-    )
+if __name__ == '__main__':
+    main()
