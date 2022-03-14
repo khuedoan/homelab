@@ -1,7 +1,6 @@
 users:
   - name: renovate
-    token:
-      secretRef: renovate-secret # ???
+    tokenSecretRef: renovate-secret # ???
 organizations:
   - name: ops
     members:
@@ -11,5 +10,11 @@ repositories:
     migrate:
       source: https://github.com/khuedoan/homelab
       mirror: false
+    webhooks:
+      - http://gitea-webhook.tekton-pipelines:3000
   - path: khuedoan/blog
+    webhooks:
+      - http://gitea-webhook.tekton-pipelines:3000
   - path: khuedoan/backstage
+    webhooks:
+      - http://gitea-webhook.tekton-pipelines:3000
