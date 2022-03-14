@@ -17,11 +17,6 @@ ingresses = [
         'name': 'hajimari',
         'fullname': 'Homepage',
         'namespace': 'hajimari'
-    },
-    {
-        'name': 'gitea',
-        'fullname': 'Gitea',
-        'namespace': 'gitea'
     }
 ]
 
@@ -39,7 +34,6 @@ def wait_app(name: str, fullname: str, namespace: str) -> None:
                 )
                 url = f"https://{ingress.spec.rules[0].host}"
                 requests.get(url, verify=False).raise_for_status()
-                sleep(3)
                 console.log(f"{fullname} is ready, visit {url}")
                 success = True
             except Exception:
@@ -47,11 +41,14 @@ def wait_app(name: str, fullname: str, namespace: str) -> None:
 
 
 def main() -> None:
+    Console().rule("Waiting for essential applications")
     config.load_kube_config(config_file='./metal/kubeconfig.yaml')
     requests.urllib3.disable_warnings()
 
     for ingress in ingresses:
         wait_app(ingress['name'], ingress['fullname'], ingress['namespace'])
+
+    print("There's more, but you can start exploring right away!")
 
 
 if __name__ == '__main__':
