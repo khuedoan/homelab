@@ -12,6 +12,8 @@ import os
 import subprocess
 import sys
 
+from rich.prompt import Confirm, Prompt
+
 default_editor = os.getenv('EDITOR') or "vim"
 default_seed_repo = "https://github.com/khuedoan/homelab"
 default_domain = "khuedoan.com"
@@ -42,11 +44,10 @@ def main() -> None:
         required_version='3.10.0'
     )
 
-    editor = str(input(f"Text editor ({default_editor}): ") or default_editor)
-    domain = str(input(f"Enter your domain ({default_domain}): ") or default_domain)
-    seed_repo = str(input(f"Enter seed repo ({default_seed_repo}): ") or default_seed_repo)
-    timezone = str(input(f"Enter time zone ({default_timezone}): ") or default_timezone)
-    terraform_workspace = str(input(f"Enter your Terraform Workspace, skip if you don't want to use external resources yet ({default_terraform_workspace}): ") or default_terraform_workspace)
+    editor = Prompt.ask("Select text editor", default=default_editor)
+    domain = Prompt.ask("Enter your domain", default=default_domain)
+    seed_repo = Prompt.ask("Enter seed repo", default=default_seed_repo)
+    timezone = Prompt.ask("Enter time zone", default=default_timezone)
 
     find_and_replace(
         pattern=default_domain,
@@ -80,13 +81,16 @@ def main() -> None:
         ]
     )
 
-    find_and_replace(
-        pattern=default_terraform_workspace,
-        replacement=terraform_workspace,
-        paths=[
-            "external/versions.tf"
-        ]
-    )
+    if Confirm.ask("Do you want to use managed services?"):
+        terraform_workspace = Prompt.ask("Enter Terraform Workspace", default=default_terraform_workspace)
+
+        find_and_replace(
+            pattern=default_terraform_workspace,
+            replacement=terraform_workspace,
+            paths=[
+                "external/versions.tf"
+            ]
+        )
 
     subprocess.run(
         [editor, 'metal/inventories/prod.yml']
