@@ -13,8 +13,8 @@ Below is a list of external resources and why we need them (also see some [alter
   - DNS
   - DNS-01 challenge for Let's Encrypt
   - Tunnel to public services to the internet without port-forwarding
-- Backblaze:
-  - B2 storage with S3 compatible API for offsite backup
+- AWS:
+  - S3 Glacier for offsite backup
 
 This layer will:
 
@@ -50,15 +50,9 @@ Client IP Address Filtering
 └── Is in - 117.xxx.xxx.xxx, 2402:xxx:xxx:xxx:xxx:xxx:xxx:xxx
 ```
 
-### Create Backblaze API key
+### Create AWS API key
 
-<https://secure.backblaze.com/app_keys.htm>
-
-```
-Name of Key: Homelab
-Allow access to Bucket(s): All
-Type of Access: Read and Write
-```
+TODO
 
 ## Deploy
 
@@ -72,4 +66,4 @@ make
 
 - Terraform Cloud: any other [Terraform backends](https://www.terraform.io/language/settings/backends)
 - Cloudflare Tunnel: you can build a small VPS in the cloud and route traffic via it using Wireguard and HAProxy. 
-- Backblaze B2: any S3 compatible object storage, such as S3 Glacier, Minio...
+- S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio...

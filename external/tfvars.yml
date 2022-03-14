@@ -9,11 +9,6 @@
     - name: cloudflare_account_id
       prompt: Enter Cloudflare account ID
       private: false
-    - name: b2_application_key_id
-      prompt: Enter Backblaze application key ID
-      private: false
-    - name: b2_application_key
-      prompt: Enter Backblaze application key (sensitive)
   tasks:
     - name: Render environment file
       template:
