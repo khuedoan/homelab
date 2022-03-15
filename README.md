@@ -64,6 +64,10 @@ Project status: **Alpha** (see [roadmap](#roadmap) below)
 Some demo videos and screenshots are shown here.
 They can't capture all of the project's features, but they are sufficient to get a concept of it.
 
+| [![Deployment](https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg)](https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7) |
+| :--:                                                                                                                      |
+| Deploy with a single command (after updating the config files of course)                                                  |
+
 | [![PXE boot](https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png)](https://www.youtube.com/watch?v=y-d7btNNAT8) |
 | :--:                                                                                                                                                              |
 | PXE boot                                                                                                                                                          |
