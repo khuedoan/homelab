@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"code.gitea.io/sdk/gitea"
+	"gopkg.in/yaml.v2"
 )
 
 type User struct {
@@ -13,7 +16,7 @@ type User struct {
 
 type Organization struct {
 	Name    string
-	Members []string
+	Description string
 }
 
 type Repository struct {
@@ -32,6 +35,22 @@ type Config struct {
 }
 
 func main() {
+	data, err := os.ReadFile("./config.yaml")
+
+	if err != nil {
+		log.Fatalf("unable to read config file: %v", err)
+	}
+
+	config := Config{}
+
+	err = yaml.Unmarshal([]byte(data), &config)
+
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+
+	fmt.Println(config)
+
 	// TODO
 	url := "https://git.khuedoan.com"
 	// url := "http://gitea-http:3000"
@@ -44,13 +63,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	_, _, err = client.CreateOrg(gitea.CreateOrgOption{
-		Name:        "testing",
-		Description: "this is org description",
-	})
+	for _, org := range config.Organizations {
+		_, _, err = client.CreateOrg(gitea.CreateOrgOption{
+			Name:        org.Name,
+			Description: org.Description,
+		})
 
-	if err != nil {
-		log.Printf("Create organization %s: %s", "testing", err)
+		if err != nil {
+			log.Printf("Create organization %s: %s", "testing", err)
+		}
 	}
 
 	_, _, err = client.MigrateRepo(gitea.MigrateRepoOption{
