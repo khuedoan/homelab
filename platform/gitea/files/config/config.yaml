@@ -3,10 +3,14 @@ users:
     tokenSecretRef: renovate-secret # ???
 organizations:
   - name: ops
-    members:
-      - renovate
+    description: Operations
+    teams:
+      - name: Owners
+        members:
+          - renovate
 repositories:
   - path: ops/homelab
+    private: false
     migrate:
       source: https://github.com/khuedoan/homelab
       mirror: false
