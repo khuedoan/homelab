@@ -15,12 +15,14 @@ type User struct {
 }
 
 type Organization struct {
-	Name    string
+	Name        string
 	Description string
 }
 
 type Repository struct {
-	Path    string
+	Name    string
+	Owner   string
+	Private bool
 	Migrate struct {
 		Source string
 		Mirror bool
@@ -74,17 +76,26 @@ func main() {
 		}
 	}
 
-	_, _, err = client.MigrateRepo(gitea.MigrateRepoOption{
-		RepoName:       "homelab",
-		RepoOwner:      "ops",
-		CloneAddr:      "https://github.com/khuedoan/homelab",
-		Service:        gitea.GitServicePlain,
-		Mirror:         true,
-		Private:        false,
-		MirrorInterval: "10m",
-	})
+	for _, repo := range config.Repositories {
+		if repo.Migrate.Source != "" {
+			_, _, err = client.MigrateRepo(gitea.MigrateRepoOption{
+				RepoName:       repo.Name,
+				RepoOwner:      repo.Owner,
+				CloneAddr:      repo.Migrate.Source,
+				Service:        gitea.GitServicePlain,
+				Mirror:         repo.Migrate.Mirror,
+				Private:        repo.Private,
+				MirrorInterval: "10m",
+			})
 
-	if err != nil {
-		log.Printf("Migrate %s/%s: %s", "ops", "homelab", err)
+			if err != nil {
+				log.Printf("Migrate %s/%s: %s", repo.Owner, repo.Name, err)
+			}
+		} else {
+			_, _, err = client.AdminCreateRepo(repo.Owner, gitea.CreateRepoOption{
+				Name: repo.Name,
+				Private: repo.Private,
+			})
+		}
 	}
 }

@@ -9,16 +9,25 @@ organizations:
         members:
           - renovate
 repositories:
-  - path: ops/homelab
+  - name: homelab
+    owner: ops
     private: false
     migrate:
       source: https://github.com/khuedoan/homelab
       mirror: false
     webhooks:
       - http://gitea-webhook.tekton-pipelines:3000
-  - path: khuedoan/blog
+  - name: blog
+    owner: khuedoan
+    migrate:
+      source: https://github.com/khuedoan/blog
+      mirror: true
     webhooks:
       - http://gitea-webhook.tekton-pipelines:3000
-  - path: khuedoan/backstage
+  - name: backstage
+    owner: khuedoan
+    migrate:
+      source: https://github.com/khuedoan/backstage
+      mirror: true
     webhooks:
       - http://gitea-webhook.tekton-pipelines:3000
