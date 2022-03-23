@@ -3,5 +3,5 @@ name: seafile
 version: 0.0.0
 dependencies:
   - name: seafile
-    version: 2.0.0
+    version: 2.0.1
     repository: https://k8s-at-home.com/charts
