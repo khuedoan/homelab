@@ -1,18 +1,14 @@
 package main
 
+// TODO WIP clean this up
+
 import (
-	"fmt"
 	"log"
 	"os"
 
 	"code.gitea.io/sdk/gitea"
 	"gopkg.in/yaml.v2"
 )
-
-type User struct {
-	Name           string
-	TokenSecretRef string
-}
 
 type Organization struct {
 	Name        string
@@ -27,11 +23,9 @@ type Repository struct {
 		Source string
 		Mirror bool
 	}
-	Webhooks []string
 }
 
 type Config struct {
-	Users         []User
 	Organizations []Organization
 	Repositories  []Repository
 }
@@ -40,7 +34,7 @@ func main() {
 	data, err := os.ReadFile("./config.yaml")
 
 	if err != nil {
-		log.Fatalf("unable to read config file: %v", err)
+		log.Fatalf("Unable to read config file: %v", err)
 	}
 
 	config := Config{}
@@ -51,15 +45,12 @@ func main() {
 		log.Fatalf("error: %v", err)
 	}
 
-	fmt.Println(config)
+	gitea_host := os.Getenv("GITEA_HOST")
+	gitea_user := os.Getenv("GITEA_USER")
+	gitea_password := os.Getenv("GITEA_PASSWORD")
 
-	// TODO
-	url := "https://git.khuedoan.com"
-	// url := "http://gitea-http:3000"
-	password := "thisisjustfortestingdude"
-
-	options := (gitea.SetBasicAuth("gitea_admin", password))
-	client, err := gitea.NewClient(url, options)
+	options := (gitea.SetBasicAuth(gitea_user, gitea_password))
+	client, err := gitea.NewClient(gitea_host, options)
 
 	if err != nil {
 		log.Fatal(err)
@@ -72,7 +63,7 @@ func main() {
 		})
 
 		if err != nil {
-			log.Printf("Create organization %s: %s", "testing", err)
+			log.Printf("Create organization %s: %v", org.Name, err)
 		}
 	}
 
@@ -89,11 +80,12 @@ func main() {
 			})
 
 			if err != nil {
-				log.Printf("Migrate %s/%s: %s", repo.Owner, repo.Name, err)
+				log.Printf("Migrate %s/%s: %v", repo.Owner, repo.Name, err)
 			}
 		} else {
 			_, _, err = client.AdminCreateRepo(repo.Owner, gitea.CreateRepoOption{
 				Name: repo.Name,
+				// Description: "TODO",
 				Private: repo.Private,
 			})
 		}

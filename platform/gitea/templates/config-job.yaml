@@ -1,7 +1,7 @@
 apiVersion: batch/v1
-kind: Job
+kind: Job  # TODO switch to CronJob
 metadata:
-  name: init-gitops-repo
+  name: gitea-config
   namespace: {{ .Release.Namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -11,9 +11,11 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-        - name: script
-          image: python
+        - name: apply
+          image: golang:1.17-alpine
           env:
+            - name: GITEA_HOST
+              value: http://gitea-http:3000
             - name: GITEA_USER
               valueFrom:
                 secretKeyRef:
@@ -24,9 +26,18 @@ spec:
                 secretKeyRef:
                   name: gitea-admin-secret
                   key: password
+          workingDir: /go/src/gitea-config
           command:
-            - python
+            - sh
             - -c
           args:
             - |
-{{ .Files.Get "files/init_gitops_repo.py" | indent 14 }}
+              go get .
+              go run .
+          volumeMounts:
+            - name: source
+              mountPath: /go/src/gitea-config
+      volumes:
+        - name: source
+          configMap:
+            name: gitea-config-source

@@ -1,6 +1,9 @@
-users:
-  - name: renovate
-    tokenSecretRef: renovate-secret # ???
+# TODO create user and access token
+# users:
+#   - name: renovate
+#     fullName: Renovate
+#     email: bot@renovateapp.com
+#     tokenSecretRef: renovate-secret # ???
 organizations:
   - name: ops
     description: Operations
@@ -15,19 +18,16 @@ repositories:
     migrate:
       source: https://github.com/khuedoan/homelab
       mirror: false
-    webhooks:
-      - http://gitea-webhook.tekton-pipelines:3000
+    # TODO create webhook (use a global one?)
+    # webhooks:
+    #   - http://gitea-webhook.tekton-pipelines:3000
   - name: blog
     owner: khuedoan
     migrate:
       source: https://github.com/khuedoan/blog
       mirror: true
-    webhooks:
-      - http://gitea-webhook.tekton-pipelines:3000
   - name: backstage
     owner: khuedoan
     migrate:
       source: https://github.com/khuedoan/backstage
       mirror: true
-    webhooks:
-      - http://gitea-webhook.tekton-pipelines:3000
