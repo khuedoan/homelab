@@ -1,8 +1,6 @@
 renovate:
   cronjob:
-    # schedule: '0 9 1 * *'  # At 09:00 every month
-    schedule: '*/5 * * * *'  # TODO remove after testing
-    suspend: false
+    schedule: '0 9 1 * *'  # At 09:00 every month
   renovate:
     # TODO generate token automatically, this is just for testing
     config: |
