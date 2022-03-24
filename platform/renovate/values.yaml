@@ -10,9 +10,6 @@ renovate:
         "platform": "gitea",
         "endpoint": "https://git.khuedoan.com/api/v1",
         "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
-        "token": "31a914fe134384e4044a7d3f7f965bea7a5be5b0",
-        "autodiscover": false,
-        "repositories": [
-          "ops/homelab"
-        ]
+        "autodiscover": true
       }
+  existingSecret: renovate-secret
