@@ -5,9 +5,9 @@
       special: true
 - path: gitea/renovate
   data:
-    - key: id
-      length: 20
-      special: false
+    - key: password
+      length: 32
+      special: true
     - key: token
       length: 40
       special: false
@@ -16,7 +16,7 @@
     - key: password
       length: 32
       special: true
-- path: matrix/bot/alert
+- path: matrix/alert
   data:
     - key: password
       length: 32
