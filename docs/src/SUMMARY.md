@@ -11,6 +11,7 @@
   - [External resources (optional)](./deployment/external-resources.md)
 - [Troubleshooting](./troubleshooting.md)
 - [Tutorials]()
+  - [Use both GitHub and Gitea](./tutorials/use-both-github-and-gitea.md)
   - [Single node cluster adjustments](./tutorials/single-node-cluster-adjustments.md)
   - [Add or remove nodes (scale up or down)](./tutorials/add-or-remove-nodes.md)
   - [Run commands on multiple nodes](./tutorials/run-commands-on-multiple-nodes.md)
