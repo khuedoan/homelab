@@ -1,7 +1,7 @@
 # Summary
 
 - [Introduction](introduction.md)
-- [Try on a VM](try-on-a-vm.md)
+- [Try locally](try-locally.md)
 - [Deployment](./deployment/README.md)
   - [Provisioning flow](./deployment/provisioning-flow.md)
   - [Prerequisites](./deployment/prerequisites.md)

@@ -7,10 +7,10 @@ it's the source of truth for my homelab, so you'll need to fork it to make it yo
 
 ## Choose the environment
 
-| Environment | Branch   | Recommended setup             |
-| ----------- | -------- | ----------------------------- |
-| Production  | `master` | Real hardware                 |
-| Development | `dev`    | A single Vagrant VM           |
+| Environment | Branch   | Recommended setup                     |
+| ----------- | -------- | ------------------------------------- |
+| Production  | `master` | Real hardware                         |
+| Development | `dev`    | A local [k3d](https://k3d.io) cluster |
 
 For example, if you're trying out the dev VM, use the development environment:
 

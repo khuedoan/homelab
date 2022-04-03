@@ -1,0 +1,20 @@
+apiVersion: k3d.io/v1alpha4
+kind: Simple
+metadata:
+  name: homelab-dev
+image: docker.io/rancher/k3s:v1.23.4-k3s1
+servers: 3
+agents: 0
+options:
+  k3s:
+    extraArgs:
+      - arg: --disable=local-storage
+        nodeFilters:
+          - server:*
+      - arg: --disable=traefik
+        nodeFilters:
+          - server:*
+      - arg: --disable-cloud-controller
+        nodeFilters:
+          - server:*
+subnet: 172.28.0.0/16

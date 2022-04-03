@@ -223,7 +223,7 @@ They can't capture all of the project's features, but they are sufficient to get
 
 ## Get Started
 
-- [Try it out on a VM](https://homelab.khuedoan.com/try-on-a-vm.html) without any hardware
+- [Try it out locally](https://homelab.khuedoan.com/try-locally.html) without any hardware
 - [Deploy on real hardware](https://homelab.khuedoan.com/deployment) for real workload
 
 ## Roadmap

@@ -8,3 +8,7 @@ title = "Khue's Homelab"
 [output.html]
 git-repository-url = "https://github.com/khuedoan/homelab"
 edit-url-template = "https://github.com/khuedoan/homelab/edit/master/docs/{path}"
+
+# TODO deprecate this after 6 months
+[output.html.redirect]
+"/try-on-a-vm.html" = "/try-locally.html"

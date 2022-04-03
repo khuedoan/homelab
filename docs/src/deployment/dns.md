@@ -5,7 +5,7 @@ Because everyone DNS setup are different, DNS automation is not in the scope of 
 
 Some options for DNS config (choose one):
 
-- Use nip.io (suitable for a test environment)
+- Use [nip.io](https://nip.io) (suitable for a test environment)
 - Change the DNS config in your router
 - Change the DNS config at your domain registrar (doesn't work with the [`home.arpa`](https://datatracker.ietf.org/doc/html/rfc8375) domain)
 
@@ -17,7 +17,7 @@ Before continuing to the next section for some examples, run this command to get
 
 ## Use nip.io
 
-TODO
+Preconfigured in the `dev` branch.
 
 ## In your router
 

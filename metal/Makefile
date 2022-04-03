@@ -20,6 +20,3 @@ cluster:
 console:
 	ansible-console \
 		--inventory inventories/${env}.yml
-
-vagrant:
-	vagrant up
