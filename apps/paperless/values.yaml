@@ -16,5 +16,3 @@ paperless:
             - *host
   postgresql:
     enabled: true
-  redis:
-    enabled: true
