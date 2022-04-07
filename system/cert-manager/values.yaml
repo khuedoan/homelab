@@ -6,4 +6,4 @@ cert-manager:
       enabled: true
 
 issuer:
-  email: mail@khuedoan.com
+  email: mail@kleinsorge.us

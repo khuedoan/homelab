@@ -45,7 +45,7 @@ argo-cd:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - &host argocd.khuedoan.com
+        - &host argocd.kleinsorge.us
       tls:
         - secretName: argocd-tls-certificate
           hosts:

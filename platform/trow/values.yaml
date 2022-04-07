@@ -1,6 +1,6 @@
 trow:
   trow:
-    domain: registry.khuedoan.com
+    domain: registry.kleinsorge.us
     # user: user
     # password: password
     validation:
@@ -19,7 +19,7 @@ trow:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
     hosts:
-      - host: &host registry.khuedoan.com
+      - host: &host registry.kleinsorge.us
         paths:
           - /
     tls:

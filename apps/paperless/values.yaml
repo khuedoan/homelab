@@ -6,7 +6,7 @@ paperless:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host paperless.khuedoan.com
+        - host: &host paperless.kleinsorge.us
           paths:
             - path: /
               pathType: Prefix

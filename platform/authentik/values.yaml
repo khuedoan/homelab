@@ -10,7 +10,7 @@ authentik:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - host: &host authentik.khuedoan.com
+      - host: &host authentik.kleinsorge.us
         paths:
           - path: /
             pathType: Prefix

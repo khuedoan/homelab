@@ -10,7 +10,7 @@ vault:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host vault.khuedoan.com
+        - host: &host vault.kleinsorge.us
       tls:
         - secretName: vault-tls-certificate
           hosts:
