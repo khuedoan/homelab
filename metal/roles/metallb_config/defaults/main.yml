@@ -1,5 +1,5 @@
 metallb_namespace: metallb-system
-metallb_subnet_cidr_prefix: 24  # /27
+metallb_subnet_cidr_prefix: 27  # /27
 metallb_subnet_index: -1  # last subnet
 metallb_addresses: |  # Use the last subnet with the specified size from the network
   {{
