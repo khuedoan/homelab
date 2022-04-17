@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - external.yaml
   - lint.yaml
+  - check-git-files-changed.yaml
