@@ -1,4 +1,4 @@
-k3s_version: v1.23.4+k3s1
+k3s_version: v1.23.5+k3s1
 k3s_config_file: /etc/rancher/k3s/config.yaml
 k3s_token_file: /etc/rancher/node/password
 k3s_service_file: /etc/systemd/system/k3s.service
