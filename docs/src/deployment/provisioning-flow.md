@@ -20,47 +20,47 @@ From now on, ArgoCD will do the rest:
 
 ```mermaid
 flowchart TD
-  subgraph metal
-    RockyLinux --> k3s
+  subgraph metal[./metal]
+    pxe[PXE Server] -.-> linux[Rocky Linux] --> k3s
   end
 
-  subgraph bootstrap
-    ArgoCD --> RootApp
+  subgraph bootstrap[./bootstrap]
+    argocd[ArgoCD] --> rootapp[Root app]
   end
 
-  subgraph system
-    MetalLB
-    NGINX
-    Longhorn
+  subgraph system[./system]
+    metallb[MetalLB]
+    nginx[NGINX]
+    longhorn[Longhorn]
     cert-manager
-    ExternalDNS
-    CloudflareTunnel
+    external-dns[External DNS]
+    cloudflared
   end
 
-  subgraph external
-    LetsEncrypt
-    Cloudflare
+  subgraph external[./external]
+    letsencrypt[Let's Encrypt]
+    cloudflare[Cloudflare]
   end
 
-  LetsEncrypt -.-> cert-manager
-  Cloudflare -.-> cert-manager
-  Cloudflare -.-> ExternalDNS
-  Cloudflare -.-> CloudflareTunnel
+  letsencrypt -.-> cert-manager
+  cloudflare -.-> cert-manager
+  cloudflare -.-> external-dns
+  cloudflare -.-> cloudflared
 
   subgraph platform
-    Gitea
-    Tekton
-    Vault
+    gitea[Gitea]
+    tekton[Tekton]
+    vault[Vault]
   end
 
   subgraph apps
-    Jellyfin
-    Matrix
-    Paperless
-    Seafile
+    jellyfin[Jellyfin]
+    matrix[Matrix]
+    paperless[Paperless]
+    seafile[Seafile]
   end
 
-  Hardware -- 1 --> metal -- 2 --> bootstrap -. 3 .-> system -. 4 .-> platform -. 5 .-> apps
+  make[Run make] -- 1 --> metal -- 2 --> bootstrap -. 3 .-> system -. 4 .-> platform -. 5 .-> apps
 ```
 
 ## Detailed steps
