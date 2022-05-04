@@ -3,10 +3,6 @@ hajimari:
     tag: v0.2.0
   env:
     TZ: Asia/Ho_Chi_Minh
-  hajimari:
-    defaultEnable: true
-    namespaceSelector:
-      any: true
   ingress:
     main:
       enabled: true
@@ -22,3 +18,20 @@ hajimari:
         - secretName: hajimari-tls-certificate
           hosts:
             - *host
+  hajimari:
+    defaultEnable: true
+    namespaceSelector:
+      any: true
+    groups:
+      - name: Homelab
+        links:
+          - name: Documentation
+            url: https://homelab.khuedoan.com
+          - name: Public GitHub repository
+            url: https://github.com/khuedoan/homelab
+      - name: Managed services
+        links:
+          - name: Terraform Cloud
+            url: https://app.terraform.io
+          - name: Cloudflare
+            url: https://dash.cloudflare.com
