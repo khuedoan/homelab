@@ -9,6 +9,8 @@ authentik:
     ingressClassName: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
+      hajimari.io/appName: Authentik
+      hajimari.io/icon: account
     hosts:
       - host: &host authentik.khuedoan.com
         paths:

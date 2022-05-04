@@ -5,6 +5,8 @@ seafile:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: Seafile
+        hajimari.io/icon: google-drive
       hosts:
         - host: &host seafile.khuedoan.com
           paths:

@@ -4,6 +4,8 @@ gitea:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
+      hajimari.io/appName: Gitea
+      hajimari.io/icon: git
     hosts:
       - host: &host git.khuedoan.com
         paths:

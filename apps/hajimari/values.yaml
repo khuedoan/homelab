@@ -9,6 +9,7 @@ hajimari:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/enable: 'false'
       hosts:
         - host: &host home.khuedoan.com
           paths:

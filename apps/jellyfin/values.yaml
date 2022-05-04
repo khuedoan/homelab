@@ -5,6 +5,8 @@ jellyfin:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: Jellyfin
+        hajimari.io/icon: filmstrip
       hosts:
         - host: &host jellyfin.khuedoan.com
           paths:

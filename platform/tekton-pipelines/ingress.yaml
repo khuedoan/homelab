@@ -5,6 +5,8 @@ metadata:
   namespace: tekton-pipelines
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    hajimari.io/appName: Tekton
+    hajimari.io/icon: robot-industrial
 spec:
   ingressClassName: nginx
   rules:

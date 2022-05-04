@@ -18,6 +18,7 @@ trow:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
+      hajimari.io/enable: 'false'
     hosts:
       - host: &host registry.khuedoan.com
         paths:
