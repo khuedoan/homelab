@@ -261,6 +261,7 @@ If not, see <https://www.gnu.org/licenses>.
 - [Official k3s systemd service file](https://github.com/k3s-io/k3s/blob/master/k3s.service)
 - [Official Cloudflare Tunnel examples](https://github.com/cloudflare/argo-tunnel-examples)
 - [Initialize GitOps repository on Gitea and integrate with Tekton by RedHat](https://github.com/redhat-scholars/tekton-tutorial/tree/master/triggers)
+- [SSO configuration from xUnholy/k8s-gitops](https://github.com/xUnholy/k8s-gitops)
 
 ## Stargazers over time
 
