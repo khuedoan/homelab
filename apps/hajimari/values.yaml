@@ -2,17 +2,22 @@ hajimari:
   image:  # TODO remove this https://github.com/toboshii/hajimari/blob/main/charts/hajimari/values.yaml
     tag: v0.2.0
   env:
+<<<<<<< HEAD
     TZ: America/New_York
   hajimari:
     defaultEnable: true
     namespaceSelector:
       any: true
+=======
+    TZ: Asia/Ho_Chi_Minh
+>>>>>>> 71b0217a54395fe3f4ec6007a3f59bb81d3b56ad
   ingress:
     main:
       enabled: true
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/enable: 'false'
       hosts:
         - host: &host home.kleinsorge.us
           paths:
@@ -22,3 +27,20 @@ hajimari:
         - secretName: hajimari-tls-certificate
           hosts:
             - *host
+  hajimari:
+    defaultEnable: true
+    namespaceSelector:
+      any: true
+    groups:
+      - name: Homelab
+        links:
+          - name: Documentation
+            url: https://homelab.khuedoan.com
+          - name: Public GitHub repository
+            url: https://github.com/khuedoan/homelab
+      - name: Managed services
+        links:
+          - name: Terraform Cloud
+            url: https://app.terraform.io
+          - name: Cloudflare
+            url: https://dash.cloudflare.com

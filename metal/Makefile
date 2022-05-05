@@ -4,6 +4,11 @@ env ?= "prod"
 
 default: cluster
 
+
+
+
+
+
 cluster:
 	ansible-playbook \
 		--inventory inventories/${env}.yml \
