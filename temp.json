@@ -1,0 +1,60 @@
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"creationTimestamp\":null,\"name\":\"argocd\"},\"spec\":{},\"status\":{}}\n"
+    },
+    "creationTimestamp": "2022-04-28T20:04:49Z",
+    "deletionTimestamp": "2022-04-30T23:37:32Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "argocd"
+    },
+    "name": "argocd",
+    "resourceVersion": "418585",
+    "uid": "b96315bd-b98b-46aa-b770-4db488099f74"
+  },
+  "spec": {
+    "finalizers": []
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2022-04-30T23:48:10Z",
+        "message": "Discovery failed for some groups, 1 failing: unable to retrieve the complete list of server APIs: metrics.k8s.io/v1beta1: the server is currently unable to handle the request",
+        "reason": "DiscoveryFailed",
+        "status": "True",
+        "type": "NamespaceDeletionDiscoveryFailure"
+      },
+      {
+        "lastTransitionTime": "2022-04-30T23:41:25Z",
+        "message": "All legacy kube types successfully parsed",
+        "reason": "ParsedGroupVersions",
+        "status": "False",
+        "type": "NamespaceDeletionGroupVersionParsingFailure"
+      },
+      {
+        "lastTransitionTime": "2022-04-30T23:41:25Z",
+        "message": "Failed to delete all resource types, 1 remaining: unexpected items still remain in namespace: argocd for gvr: /v1, Resource=pods",
+        "reason": "ContentDeletionFailed",
+        "status": "True",
+        "type": "NamespaceDeletionContentFailure"
+      },
+      {
+        "lastTransitionTime": "2022-04-30T23:41:25Z",
+        "message": "Some resources are remaining: applications.argoproj.io has 26 resource instances, challenges.acme.cert-manager.io has 1 resource instances, pods. has 8 resource instances",
+        "reason": "SomeResourcesRemain",
+        "status": "True",
+        "type": "NamespaceContentRemaining"
+      },
+      {
+        "lastTransitionTime": "2022-04-30T23:41:25Z",
+        "message": "Some content in the namespace has finalizers remaining: finalizer.acme.cert-manager.io in 1 resource instances, resources-finalizer.argocd.argoproj.io in 26 resource instances",
+        "reason": "SomeFinalizersRemain",
+        "status": "True",
+        "type": "NamespaceFinalizersRemaining"
+      }
+    ],
+    "phase": "Terminating"
+  }
+}

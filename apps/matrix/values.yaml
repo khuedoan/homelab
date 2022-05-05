@@ -6,6 +6,8 @@ elementweb:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       external-dns.alpha.kubernetes.io/target: "homelab-tunnel.kleinsorge.us"
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      hajimari.io/appName: Chat
+      hajimari.io/icon: chat
     hosts:
       - host: &frontend_host chat.kleinsorge.us
         paths:
@@ -73,6 +75,7 @@ dendrite:
       external-dns.alpha.kubernetes.io/target: "homelab-tunnel.kleinsorge.us"
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       nginx.ingress.kubernetes.io/proxy-body-size: 32m
+      hajimari.io/enable: 'false'
     hosts:
       - host: *backend_host
         paths:

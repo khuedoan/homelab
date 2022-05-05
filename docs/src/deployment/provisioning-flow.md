@@ -2,23 +2,66 @@
 
 ## Overview
 
-![Provisioning flow](../images/provisioning_flow.png)
-
 Everything is automated, after you edit the configuration files, you just need to run a single `make` command and it will:
 
-- Build the `./metal` layer:
+- (1) Build the `./metal` layer:
   - Create an ephemeral, stateless PXE server
   - Install Linux on all servers in parallel
   - Build a Kubernetes cluster (based on k3s)
-- Build the `./bootstrap` layer:
+- (2) Build the `./bootstrap` layer:
   - Install ArgoCD
-  - Install ApplicationSet to manage other layers (and also manage itself)
+  - Configure the root app to manage other layers (and also manage itself)
 
 From now on, ArgoCD will do the rest:
 
-- Build the `./system` layer (storage, networking, monitoring, etc)
-- Build the `./platform` layer (Gitea, Vault, SSO, etc)
-- Build the `./apps` layer: (Syncthing, Jellyfin, etc)
+- (3) Build the `./system` layer (storage, networking, monitoring, etc)
+- (4) Build the `./platform` layer (Gitea, Vault, SSO, etc)
+- (5) Build the `./apps` layer: (Syncthing, Jellyfin, etc)
+
+```mermaid
+flowchart TD
+  subgraph metal[./metal]
+    pxe[PXE Server] -.-> linux[Rocky Linux] --> k3s
+  end
+
+  subgraph bootstrap[./bootstrap]
+    argocd[ArgoCD] --> rootapp[Root app]
+  end
+
+  subgraph system[./system]
+    metallb[MetalLB]
+    nginx[NGINX]
+    longhorn[Longhorn]
+    cert-manager
+    external-dns[External DNS]
+    cloudflared
+  end
+
+  subgraph external[./external]
+    letsencrypt[Let's Encrypt]
+    cloudflare[Cloudflare]
+  end
+
+  letsencrypt -.-> cert-manager
+  cloudflare -.-> cert-manager
+  cloudflare -.-> external-dns
+  cloudflare -.-> cloudflared
+
+  subgraph platform
+    gitea[Gitea]
+    tekton[Tekton]
+    vault[Vault]
+  end
+
+  subgraph apps
+    jellyfin[Jellyfin]
+    matrix[Matrix]
+    paperless[Paperless]
+    seafile[Seafile]
+  end
+
+  make[Run make] -- 1 --> metal -- 2 --> bootstrap -. 3 .-> system -. 4 .-> platform -. 5 .-> apps
+```
 
 ## Detailed steps
 
