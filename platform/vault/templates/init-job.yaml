@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vault-init
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1" # TODO init and unseal in previous waves for production usage
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: apply
+          image: golang:1.18-alpine
+          env:
+            - name: VAULT_ADDR
+              value: http://vault:8200
+          workingDir: /go/src/generate-secrets
+          command:
+            - sh
+            - -c
+          args:
+            - |
+              echo hello
+          # volumeMounts:
+          #   - name: source
+          #     mountPath: /go/src/vault-init
+      # volumes:
+        # - name: source
+          # configMap:
+          #   name: vault-init-source
