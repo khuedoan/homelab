@@ -125,10 +125,10 @@ spec:
     listener:
       tcp:
         address: "0.0.0.0:8200"
-        # Uncommenting the following line and deleting tls_cert_file and tls_key_file disables TLS
-        # tls_disable: true
-        tls_cert_file: /vault/tls/server.crt
-        tls_key_file: /vault/tls/server.key
+        # TODO enable TLS?
+        tls_disable: true
+        # tls_cert_file: /vault/tls/server.crt
+        # tls_key_file: /vault/tls/server.key
     telemetry:
       statsd_address: localhost:9125
     ui: true
