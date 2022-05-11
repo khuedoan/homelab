@@ -140,7 +140,7 @@ They can't capture all of the project's features, but they are sufficient to get
     <td>Ephermeral PXE server and convenient tools container</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/img/external-dns.png"></td>
+    <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
     <td><a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a></td>
     <td>Synchronizes exposed Kubernetes Services and Ingresses with DNS providers</td>
   </tr>
