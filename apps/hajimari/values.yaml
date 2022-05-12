@@ -9,7 +9,7 @@ hajimari:
     namespaceSelector:
       any: true
 =======
-    TZ: Asia/Ho_Chi_Minh
+    TZ: America/New_York
 >>>>>>> 71b0217a54395fe3f4ec6007a3f59bb81d3b56ad
   ingress:
     main:
@@ -35,7 +35,7 @@ hajimari:
       - name: Homelab
         links:
           - name: Documentation
-            url: https://homelab.khuedoan.com
+            url: https://homelab.kleinsorge.us
           - name: Public GitHub repository
             url: https://github.com/khuedoan/homelab
       - name: Managed services
