@@ -1,0 +1,268 @@
+apiVersion: "vault.banzaicloud.com/v1alpha1"
+kind: "Vault"
+metadata:
+  name: "vault"
+spec:
+  size: 1
+  image: vault:1.6.2
+  # specify a custom bank-vaults image with bankVaultsImage:
+  # bankVaultsImage: ghcr.io/banzaicloud/bank-vaults:latest
+
+  # Common annotations for all created resources
+  annotations:
+    common/annotation: "true"
+
+  # Vault Pods , Services and TLS Secret annotations
+  vaultAnnotations:
+    type/instance: "vault"
+
+  # Vault Configurer Pods and Services annotations
+  vaultConfigurerAnnotations:
+    type/instance: "vaultconfigurer"
+
+  # Vault Pods , Services and TLS Secret labels
+  vaultLabels:
+    example.com/log-format: "json"
+
+  # Vault Configurer Pods and Services labels
+  vaultConfigurerLabels:
+    example.com/log-format: "string"
+
+  # Support for affinity Rules, same as in PodSpec
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key : "node-role.kubernetes.io/your_role"
+  #           operator: In
+  #           values: ["true"]
+
+  # Support for pod nodeSelector rules to control which nodes can be chosen to run
+  # the given pods
+  # nodeSelector:
+  #   "node-role.kubernetes.io/your_role": "true"
+
+  # Support for node tolerations that work together with node taints to control
+  # the pods that can like on a node
+  # tolerations:
+  # - effect: NoSchedule
+  #   key: node-role.kubernetes.io/your_role
+  #   operator: Equal
+  #   value: "true"
+
+  # Specify the ServiceAccount where the Vault Pod and the Bank-Vaults configurer/unsealer is running
+  serviceAccount: vault
+
+  # Specify the Service's type where the Vault Service is exposed
+  # Please note that some Ingress controllers like https://github.com/kubernetes/ingress-gce
+  # forces you to expose your Service on a NodePort
+  serviceType: ClusterIP
+
+  # Specify existing secret contains TLS certificate (accepted secret type: kubernetes.io/tls)
+  # If it is set, generating certificate will be disabled
+  # existingTlsSecretName: selfsigned-cert-tls
+
+  # Specify threshold for renewing certificates. Valid time units are "ns", "us", "ms", "s", "m", "h".
+  # tlsExpiryThreshold: 168h
+
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      hajimari.io/appName: Vault
+      hajimari.io/icon: database-lock
+    spec:
+      ingressClassName: nginx
+      rules:
+        - host: &host vault.khuedoan.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: vault
+                    port:
+                      number: 8200
+                path: /
+                pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: vault-tls-certificate
+
+  # Use local disk to store Vault file data, see config section.
+  volumes:
+    - name: vault-file
+      persistentVolumeClaim:
+        claimName: vault-file
+
+  volumeMounts:
+    - name: vault-file
+      mountPath: /vault/file
+
+  # Support for distributing the generated CA certificate Secret to other namespaces.
+  # Define a list of namespaces or use ["*"] for all namespaces.
+  caNamespaces:
+    - "vswh"
+
+  # Describe where you would like to store the Vault unseal keys and root token.
+  unsealConfig:
+    options:
+      # The preFlightChecks flag enables unseal and root token storage tests
+      # This is true by default
+      preFlightChecks: true
+      # The storeRootToken flag enables storing of root token in chosen storage
+      # This is true by default
+      storeRootToken: true
+    kubernetes:
+      secretNamespace: {{ .Release.Namespace }}
+
+  # A YAML representation of a final vault config file.
+  # See https://www.vaultproject.io/docs/configuration/ for more information.
+  config:
+    storage:
+      file:
+        path: "${ .Env.VAULT_STORAGE_FILE }" # An example how Vault config environment interpolation can be used
+    listener:
+      tcp:
+        address: "0.0.0.0:8200"
+        # TODO enable TLS?
+        tls_disable: true
+        # tls_cert_file: /vault/tls/server.crt
+        # tls_key_file: /vault/tls/server.key
+    telemetry:
+      statsd_address: localhost:9125
+    ui: true
+
+  # See: https://banzaicloud.com/docs/bank-vaults/cli-tool/#example-external-vault-configuration
+  # The repository also contains a lot examples in the deploy/ and operator/deploy directories.
+  externalConfig:
+    policies:
+      - name: allow_secrets
+        rules: path "secret/*" {
+          capabilities = ["create", "read", "update", "delete", "list"]
+          }
+      - name: allow_pki
+        rules: path "pki/*" {
+          capabilities = ["create", "read", "update", "delete", "list"]
+          }
+
+    groups:
+      - name: admin1
+        policies:
+          - allow_secrets
+        metadata:
+          privileged: true
+        type: external
+      - name: admin2
+        policies:
+          - allow_secrets
+        metadata:
+          privileged: true
+        type: external
+
+    group-aliases:
+      - name: admin1
+        mountpath: token
+        group: admin1
+
+
+    auth:
+      - type: kubernetes
+        roles:
+          # Allow every pod in the default namespace to use the secret kv store
+          - name: default
+            bound_service_account_names: ["default", "vault-secrets-webhook", "vault"]
+            bound_service_account_namespaces: ["default", "vswh"]
+            policies: ["allow_secrets", "allow_pki"]
+            ttl: 1h
+
+    secrets:
+      - path: secret
+        type: kv
+        description: General secrets.
+        options:
+          version: 2
+
+      - type: pki
+        description: Vault PKI Backend
+        config:
+          default_lease_ttl: 168h
+          max_lease_ttl: 720h
+        configuration:
+          config:
+          - name: urls
+            issuing_certificates: https://vault.default:8200/v1/pki/ca
+            crl_distribution_points: https://vault.default:8200/v1/pki/crl
+          root/generate:
+          - name: internal
+            common_name: vault.default
+          roles:
+          - name: default
+            allowed_domains: localhost,pod,svc,default
+            allow_subdomains: true
+            generate_lease: true
+            ttl: 1m
+
+    # Allows writing some secrets to Vault (useful for development purposes).
+    # See https://www.vaultproject.io/docs/secrets/kv/index.html for more information.
+    startupSecrets:
+      - type: kv
+        path: secret/data/accounts/aws
+        data:
+          data:
+            AWS_ACCESS_KEY_ID: secretId
+            AWS_SECRET_ACCESS_KEY: s3cr3t
+      - type: kv
+        path: secret/data/dockerrepo
+        data:
+          data:
+            DOCKER_REPO_USER: dockerrepouser
+            DOCKER_REPO_PASSWORD: dockerrepopassword
+      - type: kv
+        path: secret/data/mysql
+        data:
+          data:
+            MYSQL_ROOT_PASSWORD: s3cr3t
+            MYSQL_PASSWORD: 3xtr3ms3cr3t
+
+  vaultEnvsConfig:
+    - name: VAULT_LOG_LEVEL
+      value: debug
+    - name: VAULT_STORAGE_FILE
+      value: "/vault/file"
+
+  # If you are using a custom certificate and are setting the hostname in a custom way
+  # sidecarEnvsConfig:
+  #   - name: VAULT_ADDR
+  #     value: https://vault.local:8200
+
+  # # https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+  # vaultPodSpec:
+  #   hostAliases:
+  #   - ip: "127.0.0.1"
+  #     hostnames:
+  #     - "vault.local"
+
+  # It is possible to override the Vault container directly:
+  # vaultContainerSpec:
+  #   lifecycle:
+  #     postStart:
+  #       exec:
+  #         command:
+  #              - setcap cap_ipc_lock=+ep /vault/plugins/orchestrate
+
+  # Marks presence of Istio, which influences things like port namings
+  istioEnabled: false
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vault-file
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

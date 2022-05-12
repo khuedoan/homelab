@@ -1,43 +1,46 @@
 apiVersion: batch/v1
-kind: Job  # TODO switch to CronJob
+kind: CronJob
 metadata:
   name: gitea-config
   namespace: {{ .Release.Namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  backoffLimit: 3
-  template:
+  schedule: '*/5 * * * *'
+  jobTemplate:
     spec:
-      restartPolicy: Never
-      containers:
-        - name: apply
-          image: golang:1.17-alpine
-          env:
-            - name: GITEA_HOST
-              value: http://gitea-http:3000
-            - name: GITEA_USER
-              valueFrom:
-                secretKeyRef:
-                  name: gitea-admin-secret
-                  key: username
-            - name: GITEA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: gitea-admin-secret
-                  key: password
-          workingDir: /go/src/gitea-config
-          command:
-            - sh
-            - -c
-          args:
-            - |
-              go get .
-              go run .
-          volumeMounts:
+      backoffLimit: 3
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: apply
+              image: golang:1.17-alpine
+              env:
+                - name: GITEA_HOST
+                  value: http://gitea-http:3000
+                - name: GITEA_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: gitea-admin-secret
+                      key: username
+                - name: GITEA_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: gitea-admin-secret
+                      key: password
+              workingDir: /go/src/gitea-config
+              command:
+                - sh
+                - -c
+              args:
+                - |
+                  go get .
+                  go run .
+              volumeMounts:
+                - name: source
+                  mountPath: /go/src/gitea-config
+          volumes:
             - name: source
-              mountPath: /go/src/gitea-config
-      volumes:
-        - name: source
-          configMap:
-            name: gitea-config-source
+              configMap:
+                name: gitea-config-source
