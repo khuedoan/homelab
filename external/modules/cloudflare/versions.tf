@@ -18,8 +18,8 @@ terraform {
 }
 
 provider "cloudflare" {
-  email   = var.cloudflare_email
-  api_key = var.cloudflare_api_key
+  email   = "josephkleinsorge@gmail.com"
+  api_key = "a865618d79734cb2bb61200d22d6ce764d6bb"
 }
 
 provider "kubernetes" {
