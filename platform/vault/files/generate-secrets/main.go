@@ -2,14 +2,6 @@ package main
 
 // TODO WIP clean up
 
-// TODO ACL policy
-// path "secret/*" {
-//   capabilities = [
-//     "create",
-//     "list"
-//   ]
-// }
-
 import (
 	"fmt"
 	"log"

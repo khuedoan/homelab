@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 vault:
   injector:
     enabled: false
@@ -19,3 +20,5 @@ vault:
             - *host
     dev:
       enabled: true  # TODO disable vault dev mode
+=======
+>>>>>>> e0a3f374e32624674ec1db8041d88ca881f944f8

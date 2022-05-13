@@ -2,6 +2,6 @@ apiVersion: v2
 name: vault
 version: 0.0.0
 dependencies:
-  - name: vault
-    version: 0.19.0
-    repository: https://helm.releases.hashicorp.com
+  - name: vault-operator
+    version: 1.15.6
+    repository: https://kubernetes-charts.banzaicloud.com
