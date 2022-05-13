@@ -17,28 +17,6 @@ argo-cd:
           end
         end
         return hs
-      # TODO https://github.com/argoproj/argo-helm/pull/1070
-      # resource.customizations.health.argoproj.io_ApplicationSet: |
-      #   hs = {}
-      #   if obj.status ~= nil then
-      #     if obj.status.conditions ~= nil then
-      #       for i, condition in pairs(obj.status.conditions) do
-      #         if condition.type == "ErrorOccurred" and condition.status == "True" then
-      #           hs.status = "Degraded"
-      #           hs.message = condition.message
-      #           return hs
-      #         end
-      #         if condition.type == "ResourcesUpToDate" and condition.status == "True" then
-      #           hs.status = "Healthy"
-      #           hs.message = condition.message
-      #           return hs
-      #         end
-      #       end
-      #     end
-      #   end
-      #   hs.status = "Progressing"
-      #   hs.message = ""
-      #   return hs
     ingress:
       enabled: true
       ingressClassName: nginx
