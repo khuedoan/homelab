@@ -23,6 +23,7 @@
   - [Vault]()
 - [Reference](./reference/README.md)
   - [Architecture](./reference/architecture.md)
+  - [Secret management](./reference/secret-management.md)
   - [FAQ](./reference/faq.md)
   - [Contributors](./reference/contributors.md)
 
