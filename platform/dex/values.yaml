@@ -7,7 +7,6 @@ dex:
         inCluster: true
     oauth2:
       skipApprovalScreen: true
-      # alwaysShowLoginScreen: true
     connectors:
       - type: gitea
         id: gitea
@@ -23,21 +22,9 @@ dex:
         redirectURIs:
           - 'https://grafana.khuedoan.com/login/generic_oauth'
         secretEnv: GRAFANA_SSO_CLIENT_SECRET
-    # enablePasswordDB: true
-    # staticPasswords:
-    #   - email: "admin@localhost"
-    #     userID: 28e21718-2f8d-18ba-92a2-5f73d3ad2b4c
-    #     username: admin
-    #     hash: $2y$10$ft3vlZMQraUhRNFM4RvfeeYdErEBBrGirjN/nR4SujAJE3rHmdb7a
-  # TODO remove test values
-  # envFrom:
-  envVars:
-    - name: GITEA_CLIENT_ID
-      value: 38e22718-4f7d-48ab-92a2-6f73d3ad2b4c
-    - name: GITEA_CLIENT_SECRET
-      value: klZ0sU1EXA5il68lwCOW9kAjCoFFMVINdSuvG951B3Pr
-    - name: GRAFANA_SSO_CLIENT_SECRET
-      value: klZ0sU1EXA5il68lwCOW9kAjCoFFMVINdSuvG951B3Pr
+  envFrom:
+    - secretRef:
+        name: dex-secrets
   ingress:
     enabled: true
     className: nginx
