@@ -7,6 +7,4 @@ resources:
   - https://raw.githubusercontent.com/tektoncd/catalog/main/task/gitleaks/0.1/gitleaks.yaml
   - https://raw.githubusercontent.com/tektoncd/catalog/main/task/kaniko/0.5/kaniko.yaml
   - https://raw.githubusercontent.com/tektoncd/catalog/main/task/pull-request/0.1/pull-request.yaml
-  - external.yaml
-  - lint.yaml
   - check-git-files-changed.yaml
