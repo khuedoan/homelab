@@ -31,7 +31,7 @@ dendrite:
     version: 2
     servername: &backend_host matrix.khuedoan.com
     database:
-      host:  "dendrite-postgresql:5432"
+      host:  "matrix-postgresql:5432"
       user:  "dendrite"
       password: "dendrite"
       max_open_conns: 100
@@ -42,7 +42,7 @@ dendrite:
     jetstream:
       in_memory: false
       addresses:
-        - nats://dendrite-nats:4222
+        - nats://matrix-nats:4222
   persistence:
     storageClass: longhorn
     logs:
