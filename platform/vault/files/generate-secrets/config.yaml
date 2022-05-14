@@ -11,6 +11,15 @@
 # - gitea/dex:
 #   - client_id
 #   - client_secret
+# TODO import to vault?
+# - metal/ssh:
+#   - private_key  # needs ending new line https://github.com/ansible/awx/issues/9082
+# - external/terraform-cloud:
+#   - token
+# - external/cloudflare:
+#   - email
+#   - api_token
+#   - account_id
 
 # Dex
 - path: dex/grafana
