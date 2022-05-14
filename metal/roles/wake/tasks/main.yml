@@ -4,5 +4,5 @@
   delegate_to: localhost
 
 - name: Wait for the machines to come online
-  wait_for_connection:
+  ansible.builtin.wait_for_connection:
     timeout: 600
