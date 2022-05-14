@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Secret are stored in [HashiCorp Vault](https://www.vaultproject.io)
+- Secrets are stored in [HashiCorp Vault](https://www.vaultproject.io)
 - Vault is managed with [Vault Operator (Bank Vaults)](https://banzaicloud.com/docs/bank-vaults/operator), automatically initialize and unseal
 - Secrets that can be generated are automatically generated and stored in Vault.
 - Integrate with GitOps using [External Secrets Operator](https://external-secrets.io)
