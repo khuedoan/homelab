@@ -10,3 +10,6 @@ resources:
   # Dashboard
   - https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
   - ingress.yaml
+  # Service account
+  - serviceaccount.yaml
+  - clusterrolebinding.yaml

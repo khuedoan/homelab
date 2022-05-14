@@ -49,9 +49,18 @@ spec:
       taskSpec:
         workspaces:
           - name: source
+        volumes:
+          - name: ansible-secrets
+            secret:
+              secretName: ansible-secrets
+              defaultMode: 0400
         stepTemplate:
           image: registry.khuedoan.com/tools:latest
           workingDir: /workspace/source/metal
+          volumeMounts:
+            - name: ansible-secrets
+              mountPath: /root/.ssh/id_ed25519
+              subPath: id_ed25519
           command:
             - make
         steps:
@@ -90,9 +99,20 @@ spec:
       taskSpec:
         workspaces:
           - name: source
+        volumes:
+          - name: terraform-secrets
+            secret:
+              secretName: terraform-secrets
         stepTemplate:
           image: registry.khuedoan.com/tools:latest
           workingDir: /workspace/source/external
+          volumeMounts:
+            - name: terraform-secrets
+              mountPath: /root/.terraform.d/credentials.tfrc.json
+              subPath: credentials.tfrc.json
+            - name: terraform-secrets
+              mountPath: /workspace/source/external/terraform.tfvars
+              subPath: terraform.tfvars
           command:
             - make
         steps:
@@ -108,6 +128,7 @@ kind: PipelineRun
 metadata:
   name: homelab
 spec:
+  serviceAccountName: tekton-admin
   pipelineRef:
     name: homelab
   workspaces:
