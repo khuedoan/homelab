@@ -18,18 +18,16 @@ kube-prometheus-stack:
       - name: Loki
         type: loki
         url: http://loki.loki:3100
+    envFromSecret: grafana-secrets
     grafana.ini:
       server:
         root_url: https://grafana.khuedoan.com
-      # TODO disable basic auth
-      # auth.basic:
-      #   disable_login_form: true
       auth.generic_oauth:
         enabled: true
         allow_sign_up: true
         name: Dex
         client_id: grafana-sso
-        client_secret: klZ0sU1EXA5il68lwCOW9kAjCoFFMVINdSuvG951B3Pr
+        client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
         scopes: openid profile email groups
         auth_url: https://dex.khuedoan.com/auth
         token_url: https://dex.khuedoan.com/token
