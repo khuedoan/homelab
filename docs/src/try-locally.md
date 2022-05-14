@@ -15,7 +15,7 @@ Please keep in mind that the development cluster may be unstable and things may 
 
 Host machine:
 
-- OS: Linux (Windows and macOS are untested)
+- OS: Linux (Windows and macOS will not work due to networking limitations, you can use a Linux VM)
 - Recommended hardware specifications:
   - CPU: 4 cores
   - RAM: 16 GiB
