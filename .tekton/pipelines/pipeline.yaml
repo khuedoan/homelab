@@ -6,7 +6,8 @@ spec:
   workspaces:
     - name: shared-data
   tasks:
-    - name: fetch-repo
+
+    - name: git-clone
       taskRef:
         name: git-clone
       workspaces:
@@ -17,29 +18,96 @@ spec:
           value: http://gitea-http.gitea:3000/ops/homelab
         - name: revision
           value: master
-    - name: lint
+
+    - name: tools
       runAfter:
-        - fetch-repo
+        - git-clone
       workspaces:
         - name: source
           workspace: shared-data
+        # TODO secure registry
+        # - name: dockerconfig
+        #   workspace: dockerconfig
       taskRef:
-        name: lint
+        name: kaniko
+      params:
+        - name: CONTEXT
+          value: ./tools
+        - name: IMAGE
+          value: registry.khuedoan.com/tools:latest
+        - name: EXTRA_ARGS
+          value:
+            - --cache=true
+
+    # TODO lint
+    - name: metal
+      runAfter:
+        - tools
+      workspaces:
+        - name: source
+          workspace: shared-data
+      taskSpec:
+        workspaces:
+          - name: source
+        stepTemplate:
+          image: registry.khuedoan.com/tools:latest
+          workingDir: /workspace/source/metal
+          command:
+            - make
+        steps:
+          - name: cluster
+            args:
+              - cluster
+
+    - name: bootstrap
+      runAfter:
+        - tools
+      workspaces:
+        - name: source
+          workspace: shared-data
+      taskSpec:
+        workspaces:
+          - name: source
+        stepTemplate:
+          image: registry.khuedoan.com/tools:latest
+          workingDir: /workspace/source/bootstrap
+          command:
+            - make
+        steps:
+          - name: argocd
+            args:
+              - argocd
+          - name: root
+            args:
+              - root
+
     - name: external
       runAfter:
-        - fetch-repo
+        - tools
       workspaces:
         - name: source
           workspace: shared-data
-      taskRef:
-        name: terraform-external
+      taskSpec:
+        workspaces:
+          - name: source
+        stepTemplate:
+          image: registry.khuedoan.com/tools:latest
+          workingDir: /workspace/source/external
+          command:
+            - make
+        steps:
+          - name: plan
+            args:
+              - plan
+          - name: apply
+            args:
+              - apply
 ---
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   name: homelab
 spec:
-  serviceAccountName: terraform-sa
   pipelineRef:
     name: homelab
   workspaces:
