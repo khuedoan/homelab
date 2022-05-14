@@ -39,10 +39,42 @@ spec:
           value:
             - --cache=true
 
-    # TODO lint
-    - name: metal
+    - name: lint
       runAfter:
         - tools
+      workspaces:
+        - name: source
+          workspace: shared-data
+      taskSpec:
+        workspaces:
+          - name: source
+        stepTemplate:
+          image: registry.khuedoan.com/tools:latest
+        steps:
+          - name: ansible
+            workingDir: /workspace/source/metal
+            command:
+              - ansible-lint
+            args:
+              - -v
+          - name: yaml
+            command:
+              - yamllint
+            args:
+              - .
+          - name: terraform
+            workingDir: /workspace/source/external
+            command:
+              - terraform
+            args:
+              - fmt
+              - -recursive
+              - -check
+              - -diff
+
+    - name: metal
+      runAfter:
+        - lint
       workspaces:
         - name: source
           workspace: shared-data
@@ -70,7 +102,7 @@ spec:
 
     - name: bootstrap
       runAfter:
-        - tools
+        - lint
       workspaces:
         - name: source
           workspace: shared-data
@@ -92,7 +124,7 @@ spec:
 
     - name: external
       runAfter:
-        - tools
+        - lint
       workspaces:
         - name: source
           workspace: shared-data
