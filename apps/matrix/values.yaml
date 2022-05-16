@@ -31,9 +31,15 @@ dendrite:
     version: 2
     servername: &backend_host matrix.kleinsorge.us
     database:
+<<<<<<< HEAD
       host:  "matrix-postgresql:5432"
       user:  "dendrite"
       password: "dendrite"
+=======
+      host: matrix-postgresql:5432
+      user: dendrite
+      password: dendrite
+>>>>>>> c726a0ae20957ebd3aeb418a0d43b5a59c1f00b9
       max_open_conns: 100
       max_idle_conns: 2
       conn_max_lifetime: -1
