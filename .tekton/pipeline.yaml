@@ -59,10 +59,7 @@ spec:
               - -v
               - --force-color
           - name: yaml
-<<<<<<< HEAD
-=======
             workingDir: /workspace/source
->>>>>>> c726a0ae20957ebd3aeb418a0d43b5a59c1f00b9
             command:
               - yamllint
             args:
