@@ -9,7 +9,7 @@ descheduler:
         enabled: true
         params:
           nodeAffinityType:
-          - requiredDuringSchedulingIgnoredDuringExecution
+            - requiredDuringSchedulingIgnoredDuringExecution
       RemovePodsViolatingInterPodAntiAffinity:
         enabled: true
       LowNodeUtilization:

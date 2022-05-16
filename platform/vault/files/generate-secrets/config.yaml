@@ -1,21 +1,41 @@
+# Gitea
 - path: gitea/admin
   data:
     - key: password
       length: 32
       special: true
-- path: gitea/renovate
+# TODO create tokens and put to Vault automatically
+# - gitea/renovate:
+#   - id
+#   - token
+# - gitea/dex:
+#   - client_id
+#   - client_secret
+# TODO import to vault?
+# - metal/ssh:
+#   - private_key  # needs ending new line https://github.com/ansible/awx/issues/9082
+# - external/terraform-cloud:
+#   - token
+# - external/cloudflare:
+#   - email
+#   - api_token
+#   - account_id
+
+# Dex
+- path: dex/grafana
   data:
-    - key: id
-      length: 20
+    - key: client_secret
+      length: 32
       special: false
-    - key: token
-      length: 40
-      special: false
+
+# Trow
 - path: trow/admin
   data:
     - key: password
       length: 32
       special: true
+
+# Matrix
 - path: matrix/bot/alert
   data:
     - key: password

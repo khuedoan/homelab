@@ -3,5 +3,8 @@ kind: Kustomization
 namespace: tekton-pipelines
 
 bases:
-  - ./tasks/
-  - ./pipelines/
+  - ./tasks
+
+resources:
+  - secrets.yaml
+  - pipeline.yaml

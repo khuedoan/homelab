@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.0.7-alpha
+
+- Replace standard Vault with Vault Operator
+- Automatically initialize and unseal Vault
+- Declarative secret generation and management
+- Declarative Gitea configuration with YAML
+- Automatic OS rolling upgrade
+- Automatic Kubernetes rolling upgrade
+- Automatic application updates using Renovate (still require manual token generation)
+- Add script to wait for essential services after deployment
+- Add icons and bookmarks to the home page
+- Deploy Matrix chat
+- Replace Authentik with Dex for SSO (still require manual token generation)
+- Switch to Mermaid for diagrams in documentation
+- Replace Vagrant with k3d for development environment
+- Use nip.io domain for development environment
+- Remove Backblaze (S3 Glacier and/or Minio will be added in future version)
+- Enable monitor for the majority of applications
+- Many code refactorings and bug fixes
+
 ## 0.0.6-alpha
 
 - Upgrade to Kubernetes 1.23
