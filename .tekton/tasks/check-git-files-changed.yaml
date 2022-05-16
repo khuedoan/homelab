@@ -28,10 +28,10 @@ spec:
     - name: check-files-changed
       image: alpine/git
       env:
-      - name: GIT_CLONE_DEPTH
-        value: $(params.gitCloneDepth)
-      - name: REGEX
-        value: $(params.regex)
+        - name: GIT_CLONE_DEPTH
+          value: $(params.gitCloneDepth)
+        - name: REGEX
+          value: $(params.regex)
       script: |
         #!/bin/sh
         set -ex
