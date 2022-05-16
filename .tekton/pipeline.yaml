@@ -57,6 +57,7 @@ spec:
               - ansible-lint
             args:
               - -v
+              - --force-color
           - name: yaml
             command:
               - yamllint

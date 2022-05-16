@@ -1,14 +1,15 @@
 - name: Download k3s binary
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
     checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-amd64.txt
     dest: "{{ role_path }}/files/bin/k3s"
+    mode: 0755
   delegate_to: localhost
   run_once: true
   register: k3s_binary
 
 - name: Copy k3s binary to nodes
-  copy:
+  ansible.builtin.copy:
     src: bin/k3s
     dest: /usr/local/bin/k3s
     owner: root
@@ -16,7 +17,7 @@
     mode: 0755
 
 - name: Ensure config directories exist
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0755
@@ -26,32 +27,32 @@
 
 - name: Check if k3s token file exists on the first node
   run_once: true
-  stat:
+  ansible.builtin.stat:
     path: "{{ k3s_token_file }}"
   register: k3s_token_file_stat
 
 - name: Generate k3s token file on the first node if not exist yet
   run_once: true
   when: not k3s_token_file_stat.stat.exists
-  copy:
+  ansible.builtin.copy:
     content: "{{ lookup('community.general.random_string', length=32) }}"
     dest: "{{ k3s_token_file }}"
     mode: 0600
 
 - name: Get k3s token from the first node
   run_once: true
-  slurp:
+  ansible.builtin.slurp:
     src: "{{ k3s_token_file }}"
   register: k3s_token_base64
 
 - name: Ensure all nodes has the same token
-  copy:
+  ansible.builtin.copy:
     content: "{{ k3s_token_base64.content | b64decode }}"
     dest: "{{ k3s_token_file }}"
     mode: 0600
 
 - name: Copy k3s config files
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: 0644
@@ -62,7 +63,7 @@
       dest: "{{ k3s_service_file }}"
 
 - name: Enable k3s service
-  systemd:
+  ansible.builtin.systemd:
     name: k3s
     enabled: true
     state: started
@@ -72,12 +73,12 @@
 
 - name: Get Kubernetes config file
   run_once: true
-  slurp:
+  ansible.builtin.slurp:
     src: /etc/rancher/k3s/k3s.yaml
   register: kubeconfig_base64
 
 - name: Write Kubernetes config file with the correct cluster address
-  copy:
+  ansible.builtin.copy:
     content: "{{ kubeconfig_base64.content | b64decode | replace('127.0.0.1', hostvars[groups['masters'][0]].ansible_host) }}"
     dest: "{{ playbook_dir }}/kubeconfig.yaml"
     mode: 0600
