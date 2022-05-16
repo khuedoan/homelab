@@ -2,15 +2,11 @@ hajimari:
   image:  # TODO remove this https://github.com/toboshii/hajimari/blob/main/charts/hajimari/values.yaml
     tag: v0.2.0
   env:
-<<<<<<< HEAD
     TZ: America/New_York
   hajimari:
     defaultEnable: true
     namespaceSelector:
       any: true
-=======
-    TZ: America/New_York
->>>>>>> 71b0217a54395fe3f4ec6007a3f59bb81d3b56ad
   ingress:
     main:
       enabled: true
