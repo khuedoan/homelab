@@ -9,6 +9,7 @@
   - [Deploy the homelab](./deployment/deployment.md)
   - [DNS setup](./deployment/dns.md)
   - [External resources (optional)](./deployment/external-resources.md)
+  - [Post-installation](./deployment/post-installation.md)
 - [Troubleshooting](./troubleshooting.md)
 - [Tutorials]()
   - [Use both GitHub and Gitea](./tutorials/use-both-github-and-gitea.md)
