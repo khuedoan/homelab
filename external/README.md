@@ -13,6 +13,8 @@ Below is a list of external resources and why we need them (also see some [alter
   - DNS
   - DNS-01 challenge for Let's Encrypt
   - Tunnel to public services to the internet without port-forwarding
+- Minio:
+  - S3 compatible storage for onsite backup
 - AWS:
   - S3 Glacier for offsite backup
 
@@ -25,45 +27,53 @@ This layer will:
 
 ### Create Terraform workspace
 
-Terraform is stateful, which means it needs somewhere to store it's state. The Terraform Cloud is one option for a state backend with a generous free tier perfect for a homelab.
+Terraform is stateful, which means it needs somewhere to store its state. Terraform Cloud is one option for a state backend with a generous free tier, perfect for a homelab.
 
-1. Sign up for a [Terraform Cloud](https://cloud.hashicorp.com/products/terraform)
+1. Sign up for a [Terraform Cloud](https://cloud.hashicorp.com/products/terraform) account
 2. Create a workspace named `homelab-external`, this is the workspace where your homelab state will be stored.
 3. Change the "Execution Mode" from "Remote" to "Local". This will ensure your local machine, which can access your lab, is the one executing the terraform plan rather than the cloud runners.
 
-If you decide to use a different terraform backend, you'll need to edit the [external/versions.tf](./versions.tf) file as required.
+If you decide to use a [different Terraform backend](https://www.terraform.io/language/settings/backends#available-backends), you'll need to edit the `external/versions.tf` file as required.
 
-### Create Cloudflare API token
+### Cloudflare
 
-<https://dash.cloudflare.com/profile/api-tokens>
+- Buy a domain and [transfer it to Cloudflare](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare) if you haven't already
+- Get Cloudflare email and account ID
+- Global API key: <https://dash.cloudflare.com/profile/api-tokens>
 
-Terraform API token summary:
+<!-- TODO switch to API token instead of API key? -->
+<!-- Terraform API token summary: -->
 
-```
-This API token will affect the below accounts and zones, along with their respective permissions
+<!-- ``` -->
+<!-- This API token will affect the below accounts and zones, along with their respective permissions -->
 
-└── Khue Doan - Argo Tunnel:Edit, Account Settings:Read
-    └── khuedoan.com - Zone:Read, DNS:Edit
+<!-- └── Khue Doan - Argo Tunnel:Edit, Account Settings:Read -->
+<!--     └── khuedoan.com - Zone:Read, DNS:Edit -->
 
-Client IP Address Filtering
+<!-- Client IP Address Filtering -->
 
-└── Is in - 117.xxx.xxx.xxx, 2402:xxx:xxx:xxx:xxx:xxx:xxx:xxx
-```
+<!-- └── Is in - 117.xxx.xxx.xxx, 2402:xxx:xxx:xxx:xxx:xxx:xxx:xxx -->
+<!-- ``` -->
+
+### Create Minio keys
+
+TODO: skip this for now
 
 ### Create AWS API key
 
-TODO
+TODO: skip this for now
 
 ## Deploy
 
-Apply Terraform (you will be prompted to login to Terraform Cloud and enter API keys from the previous steps):
+Apply Terraform (you will be prompted to log in to Terraform Cloud and enter API keys from the previous steps):
 
 ```sh
-make
+# From the project root
+make external
 ```
 
 ## Alternatives
 
 - Terraform Cloud: any other [Terraform backends](https://www.terraform.io/language/settings/backends)
-- Cloudflare Tunnel: you can build a small VPS in the cloud and route traffic via it using Wireguard and HAProxy. 
-- S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio...
+- Cloudflare Tunnel: you can create a small VPS in the cloud and utilize Wireguard and HAProxy to route traffic via it, or just use simple port-forwarding if it's available (see also [awesome tunneling](https://github.com/anderspitman/awesome-tunneling))
+- Minio and S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio...
