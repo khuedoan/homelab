@@ -7,16 +7,13 @@
 Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
 Below is a list of external resources and why we need them (also see some [alternatives](#alternatives) below).
 
-- Terraform Cloud:
-  - Workspace to store the state for external resources
-- Cloudflare:
-  - DNS
-  - DNS-01 challenge for Let's Encrypt
-  - Tunnel to public services to the internet without port-forwarding
-- Minio:
-  - S3 compatible storage for onsite backup
-- AWS:
-  - S3 Glacier for offsite backup
+| Provider        | Resource   | Purpose                                                                                                     |
+| --------        | --------   | -------                                                                                                     |
+| Terraform Cloud | Workspace  | Terraform state backend                                                                                     |
+| Cloudflare      | DNS        | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates |
+| Cloudflare      | Tunnel     | Public services to the internet without port-forwarding                                                     |
+| Minio           | Bucket     | Onsite backup                                                                                               |
+| AWS             | S3 Glacier | Offsite backup                                                                                              |
 
 This layer will:
 
