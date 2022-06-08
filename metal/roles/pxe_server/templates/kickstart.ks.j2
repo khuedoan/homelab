@@ -34,6 +34,8 @@ timezone {{ timezone }} --isUtc
 user --groups=wheel --name=admin
 # Add SSH key
 sshkey --username=root "{{ ssh_public_key }}"
+# Disable root password login
+rootpw --lock
 
 # Disable SELinux
 selinux --disabled
