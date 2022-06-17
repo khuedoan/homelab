@@ -1,0 +1,8 @@
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+spec:
+  externalAccess:
+    enabled: True
+    host: keycloak.khuedoan.com
