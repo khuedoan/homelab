@@ -3,6 +3,7 @@ kind: Keycloak
 metadata:
   name: keycloak
 spec:
+  instances: 1
   externalAccess:
     enabled: True
     host: keycloak.khuedoan.com
