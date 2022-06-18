@@ -35,9 +35,3 @@
       length: 32
       special: true
 
-# Matrix
-- path: matrix/bot/alert
-  data:
-    - key: password
-      length: 32
-      special: true
