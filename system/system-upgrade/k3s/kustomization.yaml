@@ -4,7 +4,8 @@ kind: Kustomization
 resources:
   - server.yaml
   - agent.yaml
+# TODO: add OS upgrade
 
 commonAnnotations:
-  # TODO https://github.com/rancher/system-upgrade-controller/issues/172
+  # TODO: https://github.com/rancher/system-upgrade-controller/issues/172
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true

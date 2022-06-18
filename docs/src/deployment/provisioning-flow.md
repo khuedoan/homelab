@@ -16,7 +16,7 @@ From now on, ArgoCD will do the rest:
 
 - (3) Build the `./system` layer (storage, networking, monitoring, etc)
 - (4) Build the `./platform` layer (Gitea, Vault, SSO, etc)
-- (5) Build the `./apps` layer: (Syncthing, Jellyfin, etc)
+- (5) Build the `./apps` layer:
 
 ```mermaid
 flowchart TD

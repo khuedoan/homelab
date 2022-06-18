@@ -4,9 +4,9 @@ renovate:
   renovate:
     config: |
       {
-        "platform": "gitea",
-        "endpoint": "https://git.khuedoan.com/api/v1",
+        "platform": "github",
         "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
-        "autodiscover": true
+        "autodiscover": true,
+        "autodiscoverFilter": ".*/homelab",
       }
   existingSecret: renovate-secret

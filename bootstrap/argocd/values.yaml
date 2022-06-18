@@ -4,6 +4,10 @@ argo-cd:
       - --insecure
     config:
       statusbadge.enabled: 'true'
+      # The health assessement of argoproj.io/Application CRD has been removed in argocd 1.8
+      # (see https://github.com/argoproj/argo-cd/issues/3781 for more information)
+      # You might need to restore it if you are using app-of-apps pattern and orchestrating
+      # syncronization using sync waves. Add the following resource customization in argocd-cm:
       resource.customizations.health.argoproj.io_Application: |
         hs = {}
         hs.status = "Progressing"

@@ -2,15 +2,15 @@
 
 ## Fork this repository
 
-Because this repository ([khuedoan/homelab](https://github.com/khuedoan/homelab)) applies GitOps practices,
+Because this repository ([pando85/homelab](https://github.com/pando85/homelab)) applies GitOps practices,
 it's the source of truth for my homelab, so you'll need to fork it to make it yours.
 
 ## Choose the environment
 
-| Environment | Branch   | Recommended setup                     |
-| ----------- | -------- | ------------------------------------- |
-| Production  | `master` | Real hardware                         |
-| Development | `dev`    | A local [k3d](https://k3d.io) cluster |
+| Branch   | Recommended setup                     |
+| -------- | ------------------------------------- |
+| `master` | Real hardware                         |
+| `dev`    | A local [k3d](https://k3d.io) cluster |
 
 For example, if you're trying out the dev VM, use the development environment:
 
@@ -40,8 +40,8 @@ Example input:
 
 ```
 Text editor (nvim):
-Enter seed repo (github.com/khuedoan/homelab): github.com/example/homelab
-Enter your domain (khuedoan.com): example.com
+Enter seed repo (github.com/pando85/homelab): github.com/example/homelab
+Enter your domain (pando85.com): example.com
 ```
 
 It will prompt you to edit the inventory, for example:
