@@ -124,38 +124,6 @@ spec:
             args:
               - root
 
-    - name: external
-      runAfter:
-        - lint
-      workspaces:
-        - name: source
-          workspace: shared-data
-      taskSpec:
-        workspaces:
-          - name: source
-        volumes:
-          - name: terraform-secrets
-            secret:
-              secretName: terraform-secrets
-        stepTemplate:
-          image: registry.khuedoan.com/tools:latest
-          workingDir: /workspace/source/external
-          volumeMounts:
-            - name: terraform-secrets
-              mountPath: /root/.terraform.d/credentials.tfrc.json
-              subPath: credentials.tfrc.json
-            - name: terraform-secrets
-              mountPath: /workspace/source/external/terraform.tfvars
-              subPath: terraform.tfvars
-          command:
-            - make
-        steps:
-          - name: plan
-            args:
-              - plan
-          - name: apply
-            args:
-              - apply
 ---
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
