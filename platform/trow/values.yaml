@@ -1,6 +1,6 @@
 trow:
   trow:
-    domain: registry.khuedoan.com
+    domain: registry.k8s.grigri
     # user: user
     # password: password
     validation:
@@ -20,7 +20,7 @@ trow:
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
       hajimari.io/enable: 'false'
     hosts:
-      - host: &host registry.khuedoan.com
+      - host: &host registry.k8s.grigri
         paths:
           - /
     tls:

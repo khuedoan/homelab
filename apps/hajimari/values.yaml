@@ -2,7 +2,7 @@ hajimari:
   image:  # TODO remove this https://github.com/toboshii/hajimari/blob/main/charts/hajimari/values.yaml
     tag: v0.2.0
   env:
-    TZ: Asia/Ho_Chi_Minh
+    TZ: Europe/Madrid
   ingress:
     main:
       enabled: true
@@ -11,7 +11,7 @@ hajimari:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/enable: 'false'
       hosts:
-        - host: &host home.khuedoan.com
+        - host: &host home.k8s.grigri
           paths:
             - path: /
               pathType: Prefix
@@ -27,7 +27,7 @@ hajimari:
       - name: Homelab
         links:
           - name: Documentation
-            url: https://homelab.khuedoan.com
+            url: https://homelab.k8s.grigri
           - name: Public GitHub repository
             url: https://github.com/khuedoan/homelab
       - name: Managed services

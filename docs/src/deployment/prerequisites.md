@@ -24,7 +24,6 @@ Any modern `x86_64` computer(s) should work, you can use old PCs, laptops or ser
 Additional capabilities:
 
 - Ability to boot from the network (PXE boot)
-- Wake-on-LAN capability, used to wake the machines up automatically without physically touching the power button
 
 ### Network setup
 

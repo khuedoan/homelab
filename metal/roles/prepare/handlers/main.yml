@@ -1,0 +1,31 @@
+---
+
+- name: update-ca-certificates
+  command: update-ca-certificates
+
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+
+- name: update grub
+  command: update-grub
+
+- name: restart cpufrequtils
+  service:
+    name: cpufrequtils
+    state: restarted
+
+- name: restart systemd-logind
+  systemd:
+    name: systemd-logind
+    daemon_reload: true
+    state: restarted
+
+- name: apply network interface
+  command: netplan apply
+
+- name: restart server
+  vars:
+    ansible_user: "{{ prepare_username }}"
+  reboot:

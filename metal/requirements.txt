@@ -1,0 +1,6 @@
+ansible~=2.9.0,>=2.9.16
+netaddr~=0.8.0
+pbr~=5.9.0
+jmespath~=1.0.1
+ruamel.yaml~=0.17.21
+openshift~=0.13.1

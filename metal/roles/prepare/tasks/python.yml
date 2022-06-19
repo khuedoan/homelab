@@ -1,0 +1,23 @@
+---
+- name: Check if python is needed
+  raw: which python
+  register: need_python
+  failed_when: false
+  changed_when: false
+  check_mode: no
+
+- name: Check if python3 is installed
+  raw: which python3
+  register: need_python3
+  failed_when: false
+  changed_when: false
+  check_mode: no
+
+- name: Create a symbolic link
+  file:
+    src: "{{ need_python3.stdout_lines | first }}"
+    dest: /usr/bin/python
+    state: link
+  when:
+    - need_python.rc != 0
+    - need_python3.rc == 0

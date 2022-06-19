@@ -1,8 +1,0 @@
-- name: Send Wake-on-LAN magic packets
-  community.general.wakeonlan:
-    mac: "{{ hostvars[inventory_hostname]['mac'] }}"
-  delegate_to: localhost
-
-- name: Wait for the machines to come online
-  ansible.builtin.wait_for_connection:
-    timeout: 600

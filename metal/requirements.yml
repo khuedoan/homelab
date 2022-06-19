@@ -1,0 +1,11 @@
+---
+roles:
+  - src: geerlingguy.ntp
+    version: 2.0.0
+
+collections:
+  - name: kubernetes.core
+    version: 2.3.2
+
+  - name: community.general
+    version: 5.1.1

@@ -1,0 +1,8 @@
+---
+# TODO: apply k8s labels
+node_labels:
+  storage-node: "true"
+
+prepare_additional_disks:
+ - dev: /dev/sda
+   path: "/var/lib/lonhorn/{{ ansible_devices['sda'].model }}"

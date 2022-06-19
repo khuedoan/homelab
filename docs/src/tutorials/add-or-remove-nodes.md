@@ -6,23 +6,28 @@ Or how to scale vertically. To replace the same node with a clean OS, remove it 
 
 > You can add multiple nodes at the same time
 
-Ensure that it meets the requirements in [prerequisites](../deployment/prerequisites.md), then add its details to the inventory **at the end of the group** (masters or workers):
+Ensure that it meets the requirements in [prerequisites](../deployment/prerequisites.md), then add its details to the inventory **at the end of the group** (kube_control_plane or kube_node):
 
 ```diff
-diff --git a/metal/inventories/prod.yml b/metal/inventories/prod.yml
-index 7f6474a..1bb2cbc 100644
---- a/metal/inventories/prod.yml
-+++ b/metal/inventories/prod.yml
-@@ -8,3 +8,4 @@ metal:
-     workers:
-       hosts:
-         metal3: {ansible_host: 192.168.1.113, mac: '00:23:24:d1:f5:69', disk: sda, network_interface: eno1}
-+        metal4: {ansible_host: 192.168.1.114, mac: '00:11:22:33:44:55', disk: sda, network_interface: eno1}
+diff --git a/metal/inventories/master/inventory.ini b/metal/inventories/master/inventory.ini
+index fe0ca8b..ddbca8d 100644
+--- a/metal/inventories/master/inventory.ini
++++ b/metal/inventories/master/inventory.ini
+@@ -18,6 +18,7 @@ odroid-hc4
+ k8s-odroid-hc4-1
+ k8s-odroid-hc4-2
+ k8s-odroid-hc4-3
++k8s-odroid-hc4-4
+
+ [amd64]
+ k8s-amd64-1
 ```
 
-Install the OS and join the cluster:
+Setup OS and network: [manual Setup](../deployment/manual-setup.md)
 
-```
+Join the cluster:
+
+```bash
 make metal
 ```
 
@@ -35,18 +40,18 @@ That's it!
 Remove it from the inventory:
 
 ```diff
-diff --git a/metal/inventories/prod.yml b/metal/inventories/prod.yml
-index 7f6474a..d12b50a 100644
---- a/metal/inventories/prod.yml
-+++ b/metal/inventories/prod.yml
-@@ -4,7 +4,6 @@ metal:
-       hosts:
-         metal0: {ansible_host: 192.168.1.110, mac: '00:23:24:d1:f3:f0', disk: sda, network_interface: eno1}
-         metal1: {ansible_host: 192.168.1.111, mac: '00:23:24:d1:f4:d6', disk: sda, network_interface: eno1}
--        metal2: {ansible_host: 192.168.1.112, mac: '00:23:24:e7:04:60', disk: sda, network_interface: eno1}
-     workers:
-       hosts:
-         metal3: {ansible_host: 192.168.1.113, mac: '00:23:24:d1:f5:69', disk: sda, network_interface: eno1}
+diff --git a/metal/inventories/master/inventory.ini b/metal/inventories/master/inventory.ini
+index fe0ca8b..19891bf 100644
+--- a/metal/inventories/master/inventory.ini
++++ b/metal/inventories/master/inventory.ini
+@@ -17,7 +17,6 @@ odroid-hc4
+ [odroid-hc4]
+ k8s-odroid-hc4-1
+ k8s-odroid-hc4-2
+-k8s-odroid-hc4-3
+
+ [amd64]
+ k8s-amd64-1
 ```
 
 Drain the node:

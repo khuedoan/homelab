@@ -27,18 +27,17 @@ RUN pacman --sync --refresh --noconfirm \
     openssh \
     p7zip \
     python \
-    python-jinja \
     python-kubernetes \
-    python-netaddr \
     python-pip \
     python-rich \
     sudo \
     terraform \
     yamllint
 
-# TODO better way to install k3d?
+RUN curl -L https://raw.githubusercontent.com/pando85/homelab/master/metal/k3d-dev.yaml \
+    > /tmp/requirements.txt \
+    && pip install -r /tmp/requirements.txt \
+    && rm /tmp/requirements.txt
+
 RUN curl -L https://github.com/k3d-io/k3d/releases/download/v5.4.1/k3d-linux-amd64 > /usr/local/bin/k3d \
     && chmod +x /usr/local/bin/k3d
-
-# TODO https://github.com/ansible-collections/community.docker/issues/216
-RUN pip install docker-compose

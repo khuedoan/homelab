@@ -6,4 +6,4 @@ spec:
   instances: 1
   externalAccess:
     enabled: True
-    host: keycloak.khuedoan.com
+    host: keycloak.k8s.grigri

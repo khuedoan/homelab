@@ -34,7 +34,7 @@ spec:
         - name: CONTEXT
           value: ./tools
         - name: IMAGE
-          value: registry.khuedoan.com/tools:latest
+          value: registry.k8s.grigri/tools:latest
         - name: EXTRA_ARGS
           value:
             - --cache=true
@@ -49,7 +49,7 @@ spec:
         workspaces:
           - name: source
         stepTemplate:
-          image: registry.khuedoan.com/tools:latest
+          image: registry.k8s.grigri/tools:latest
         steps:
           - name: ansible
             workingDir: /workspace/source/metal
@@ -64,15 +64,6 @@ spec:
               - yamllint
             args:
               - .
-          - name: terraform
-            workingDir: /workspace/source/external
-            command:
-              - terraform
-            args:
-              - fmt
-              - -recursive
-              - -check
-              - -diff
 
     - name: metal
       runAfter:
@@ -89,7 +80,7 @@ spec:
               secretName: ansible-secrets
               defaultMode: 0400
         stepTemplate:
-          image: registry.khuedoan.com/tools:latest
+          image: registry.k8s.grigri/tools:latest
           workingDir: /workspace/source/metal
           volumeMounts:
             - name: ansible-secrets
@@ -112,7 +103,7 @@ spec:
         workspaces:
           - name: source
         stepTemplate:
-          image: registry.khuedoan.com/tools:latest
+          image: registry.k8s.grigri/tools:latest
           workingDir: /workspace/source/bootstrap
           command:
             - make

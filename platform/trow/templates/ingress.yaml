@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: &host registry.khuedoan.com
+  - host: &host registry.k8s.grigri
     http:
       paths:
       - pathType: ImplementationSpecific

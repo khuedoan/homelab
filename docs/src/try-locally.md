@@ -28,7 +28,7 @@ Install the following packages:
 Clone the repository (follow the [configuration guide](./deployment/configuration.md) if you want to customize it):
 
 ```sh
-git clone https://github.com/khuedoan/homelab
+git clone https://github.com/pando85/homelab
 git checkout dev
 ```
 

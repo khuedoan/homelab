@@ -1,0 +1,7 @@
+127.0.0.1 localhost localhost.localdomain
+127.0.1.1	{{ ansible_hostname }}.{{ prepare_domain }}	{{ ansible_hostname }}
+::1 {{ ansible_hostname }}.{{ prepare_domain }}	{{ ansible_hostname }} ip6-localhost ip6-loopback localhost6 localhost6.localdomain
+fe00::0     ip6-localnet
+ff00::0     ip6-mcastprefix
+ff02::1     ip6-allnodes
+ff02::2     ip6-allrouters

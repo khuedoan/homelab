@@ -1,0 +1,47 @@
+---
+- name: Format "{{ item.dev }}"
+  parted:
+    device: "{{ item.dev }}"
+    number: 1
+    state: absent
+  when: prepare_additional_disks_force_format
+  tags:
+    - aditional-disk
+
+- name: Create a new primary partition in {{ item.dev }}
+  parted:
+    device: "{{ item.dev }}"
+    label: gpt
+    number: 1
+    state: present
+    resize: true
+    fs_type: ext4
+  tags:
+    - aditional-disk
+
+- name: Create a ext4 filesystem on {{ item.dev }}1
+  filesystem:
+    fstype: ext4
+    dev: "{{ item.dev }}1"
+    force: "{{ prepare_additional_disks_force_format }}"
+  tags:
+    - aditional-disk
+
+- name: Get UUID for partition
+  command: blkid -s UUID -o value "{{ item.dev }}1"
+  register: disk_blkid
+  check_mode: no
+  changed_when: false
+  tags:
+    - aditional-disk
+
+- name: Mount "{{ prepare_additional_disk_dev }}1" to /mnt
+  mount:
+    path: "{{ item.path }}"
+    src: "UUID={{ disk_blkid.stdout }}"
+    fstype: ext4
+    opts: defaults,noatime
+    state: mounted
+  tags:
+    - aditional-disk
+

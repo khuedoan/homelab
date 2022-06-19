@@ -2,9 +2,9 @@
   kubernetes.core.k8s:
     api_version: v1
     kind: Namespace
-    name: "{{ metallb_namespace }}"
+    name: metallb-system
     state: present
 
 - name: Create MetalLB config base on network info
   kubernetes.core.k8s:
-    definition: "{{ lookup('template', 'configmap.yaml.j2') | from_yaml }}"
+    definition: "{{ lookup('file', 'configmap.yaml') | from_yaml }}"

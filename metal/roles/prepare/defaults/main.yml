@@ -1,0 +1,42 @@
+---
+prepare_public_keys: []
+
+prepare_username: "{{ lookup('env', 'USER') }}"
+
+prepare_unused_services:
+  - wpa_supplicant
+
+prepare_basic_packages:
+  - ca-certificates
+  - parted
+  - vim
+  # lonhorn dependencies
+  - open-iscsi
+  - nfs-common
+  - curl
+  - bash
+  - gawk
+  - mount
+  - util-linux
+  # debug
+  - htop
+  - bpftrace
+  - bpfcc-tools
+  #- linux-tools-{{ ansible_kernel }}
+  - sysstat
+  - lsof
+
+prepare_unnecesary_packages:
+  - snapd
+
+prepare_sysctl:
+  # Since kernel 5.4 default is 4096, in earlier kernels the default value is 128.
+  - key: net.core.somaxconn
+    value: 4096
+
+prepare_additional_disks: []
+# - dev: /dev/sda
+#   path: /mnt
+prepare_additional_disks_force_format: false
+
+prepare_domain: localdomain

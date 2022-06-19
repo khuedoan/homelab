@@ -1,0 +1,14 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    {{ ansible_default_ipv4.alias }}:
+      dhcp4: true
+      dhcp4-overrides:
+        use-mtu: false
+      dhcp6-overrides:
+        use-mtu: false
+      dhcp6: true
+      match:
+        macaddress: {{ ansible_default_ipv4.macaddress }}
+      mtu: {{ prepare_mtu }}

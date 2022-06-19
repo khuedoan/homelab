@@ -1,0 +1,31 @@
+---
+- name: "Add group {{ prepare_username }}"
+  group:
+    name: "{{ prepare_username }}"
+    gid: 1000
+
+- name: "Add user {{ prepare_username }}"
+  user:
+    name: "{{ prepare_username }}"
+    shell: /bin/bash
+    uid: 1000
+    groups: "sudo,{{ prepare_username }}"
+    append: yes
+
+- name: Configure vim as default editor
+  copy:
+    content: "export EDITOR=vi"
+    dest: /etc/profile.d/editor.sh
+
+- name: Allow sudo without password
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^%sudo"
+    line: "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL"
+
+- name: Set authorized keys
+  authorized_key:
+    user: "{{ prepare_username }}"
+    state: present
+    key: "{{ item }}"
+  loop: "{{ prepare_public_keys }}"

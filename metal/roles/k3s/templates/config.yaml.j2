@@ -1,9 +1,9 @@
-{% if inventory_hostname == groups['masters'][0] %}
+{% if inventory_hostname == groups['kube_control_plane'][0] %}
 cluster-init: true
 {% else %}
-server: https://{{ hostvars[groups['masters'][0]].ansible_host }}:6443
+server: https://{{ hostvars[groups['kube_control_plane'][0]].ansible_hostname }}:6443
 {% endif %}
 token-file: {{ k3s_token_file }}
-{% if 'masters' in group_names %}
+{% if 'kube_control_plane' in group_names %}
 {{ k3s_server_config | to_nice_yaml }}
 {% endif %}

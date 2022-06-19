@@ -1,0 +1,146 @@
+---
+- name: Set python interpreter
+  import_tasks: python.yml
+
+- name: Create user and enable login
+  import_tasks: user.yml
+
+- name: Set up sshd
+  import_tasks: sshd.yml
+
+- name: Set max speed
+  lineinfile:
+    path: /etc/default/cpufrequtils
+    regex: "^MAX_SPEED="
+    line: 'MAX_SPEED={{ prepare_max_cpu_freq }}'
+  ignore_errors: true
+  when: prepare_max_cpu_freq is defined
+  notify: restart cpufrequtils
+
+- meta: flush_handlers
+
+- name: Generate new machine-id
+  shell: >
+    rm /etc/machine-id && dbus-uuidgen --ensure=/etc/machine-id &&
+    rm /var/lib/dbus/machine-id; dbus-uuidgen --ensure && touch /etc/machine-id-new
+  args:
+    creates: /etc/machine-id-new
+  register: first_execution
+  tags:
+    - aditional-disk
+
+- name: First execution
+  when: first_execution.changed
+  block:
+  - name: Change user password
+    user:
+      name: "{{ prepare_username }}"
+      password: "{{ prepare_password }}"
+      update_password: always
+    when: prepare_password is defined
+
+  - name: Upgrade all packages to the latest version
+    apt:
+      name: "*"
+      state: latest
+      force_apt_get: true
+      update_cache: true
+    notify: restart server
+
+  - debug: var=prepare_additional_disks
+
+  - name: Additional storage
+    include_tasks: aditional_disk.yml
+    loop: "{{ prepare_additional_disks }}"
+    tags:
+      - aditional-disk
+
+- name: Disable unused services
+  systemd:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop: "{{ prepare_unused_services }}"
+  ignore_errors: true
+
+- name: Remove first login file from armbian
+  file:
+    path: /root/.not_logged_in_yet
+    state: absent
+  ignore_errors: true
+
+- name: Install basic packages
+  apt:
+    name: "{{ prepare_basic_packages }}"
+    state: latest
+    force_apt_get: true
+    update_cache: true
+
+- name: Remove unnecesary packages
+  apt:
+    name: "{{ prepare_unnecesary_packages }}"
+    state: absent
+
+- name: Disable swap in armbian
+  lineinfile:
+    path: /etc/default/armbian-zram-config
+    regex: "^ENABLED"
+    line: "ENABLED=false"
+  # armbian ansible_distribution is Ubuntu
+  ignore_errors: true
+  when:
+    - ansible_architecture == "aarch64"
+    - ansible_distribution == "Ubuntu"
+  notify: restart server
+
+- name: Disable swap usage per cgroups
+  lineinfile:
+    path: /etc/default/grub
+    regex: "^GRUB_CMDLINE_LINUX="
+    line: 'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
+  ignore_errors: true
+  when: ansible_distribution == "Debian"
+  notify:
+    - update grub
+    - restart server
+
+- name: Remove unused cron
+  file:
+    state: absent
+    path: /etc/cron.d/make_nas_processes_faster
+
+- name: Add CA to CA trust
+  copy:
+    content: "{{ item.cert }}"
+    dest: "/usr/local/share/ca-certificates/{{ item.name }}.crt"
+  when:
+    - prepare_custom_cas is defined
+  loop: "{{ prepare_custom_cas }}"
+  tags:
+    - custom-cas
+  notify: update-ca-certificates
+
+- name: Modify kernel parameters
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/40-kubernetes-custom.conf
+    sysctl_set: true
+  loop: "{{ prepare_sysctl }}"
+  tags:
+    - sysctl
+
+- name: Set hostname
+  hostname:
+    name: "{{ ansible_hostname }}"
+  tags:
+    - hostname
+
+- name: Set hosts
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    mode: 0644
+  tags:
+    - hostname
+
