@@ -5,7 +5,7 @@ longhorn:
 
   defaultSettings:
     nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-
+    systemManagedComponentsNodeSelector: storage-node:true
   resources:
     limits:
      cpu: 100m

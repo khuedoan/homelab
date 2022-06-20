@@ -5,4 +5,5 @@ node_labels:
 
 prepare_additional_disks:
  - dev: /dev/sda
-   path: "/var/lib/lonhorn/{{ ansible_devices['sda'].model }}"
+   # path: "/var/lib/longhorn/{{ ansible_devices['sda'].model }}"
+   path: /var/lib/longhorn
