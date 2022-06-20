@@ -6,9 +6,9 @@ hajimari:
   ingress:
     main:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: nginx-internal
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
+        cert-manager.io/cluster-issuer: internal
         hajimari.io/enable: 'false'
       hosts:
         - host: &host home.k8s.grigri

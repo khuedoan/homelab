@@ -16,7 +16,7 @@ trow:
   ingress:
     enabled: false  # TODO https://github.com/ContainerSolutions/trow/issues/282
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      cert-manager.io/cluster-issuer: internal
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
       hajimari.io/enable: 'false'
     hosts:
@@ -29,3 +29,6 @@ trow:
           - *host
   volumeClaim:
     storageClassName: longhorn
+    resources:
+      requests:
+        storage: 20Gi

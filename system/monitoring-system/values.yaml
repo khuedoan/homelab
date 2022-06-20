@@ -1,41 +1,216 @@
 kube-prometheus-stack:
-  grafana:
-    adminPassword: null
+  defaultRules:
+    rules:
+      etcd: false
+
+  alertmanager:
+    config:
+      global:
+        resolve_timeout: 5m
+      route:
+        group_by:
+        - job
+        group_interval: 5m
+        group_wait: 30s
+        receiver: telegram
+        repeat_interval: 12h
+        routes:
+        - receiver: 'null'
+          match:
+            alertname: Watchdog
+        - receiver: 'null'
+          match:
+            severity: info
+      receivers:
+        - name: telegram
+          webhook_configs:
+          - send_resolved: True
+            url: http://alertmanager-telegram-forwarder:8080/v1/alerts/7055881
+        - name: 'null'
+    alertmanagerSpec:
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: longhorn
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 100Mi
+
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: nginx-internal-internal
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
+        cert-manager.io/cluster-issuer: internal
+      hosts:
+        - alertmanager.k8s.grigri
+      paths:
+      - /
+      tls:
+      - secretName: alertmanager-general-tls
+        hosts:
+        - alertmanager.k8s.grigri
+
+
+  grafana:
+    enabled: true
+    admin:
+      existingSecret: grafana-admin
+      userKey: user
+      passwordKey: password
+    ingress:
+      enabled: true
+      ingressClassName: nginx-internal-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
         hajimari.io/appName: Grafana
         hajimari.io/icon: chart-bar
       hosts:
         - &host grafana.k8s.grigri
       tls:
-        - secretName: grafana-general-tls
-          hosts:
-            - *host
+      - secretName: grafana-general-tls
+        hosts:
+        - *host
+    plugins:
+      - grafana-piechart-panel
+    persistence:
+      enabled: false
+    inMemory:
+      enabled: true
+      ## The maximum usage on memory medium EmptyDir would be
+      ## the minimum value between the SizeLimit specified
+      ## here and the sum of memory limits of all containers in a pod
+      ##
+      sizeLimit: 256Mi
     additionalDataSources:
-      - name: Loki
-        type: loki
-        url: http://loki.loki:3100
-    envFromSecret: grafana-secrets
+    - name: Loki
+      type: loki
+      url: http://loki-stack:3100
+      access: proxy
+      isDefault: false
+      version: 1
+
+    sidecar:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 64Mi
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        resource: configmap
+        folderAnnotation: k8s-sidecar-target-directory
+        provider:
+          foldersFromFilesStructure: true
+        annotations:
+          k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
+        searchNamespace: ALL
+
     grafana.ini:
       server:
         root_url: https://grafana.k8s.grigri
-      auth.generic_oauth:
-        enabled: true
-        allow_sign_up: true
-        name: Dex
-        client_id: grafana-sso
-        client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
-        scopes: openid profile email groups
-        auth_url: https://dex.k8s.grigri/auth
-        token_url: https://dex.k8s.grigri/token
-        api_url: https://dex.k8s.grigri/userinfo
+
+  coreDns:
+    enabled: true
+    service:
+      selector:
+        k8s-app: kube-dns
+
+  kubeEtcd:
+    enabled: false
+
+  prometheusOperator:
+    # https://github.com/helm/charts/issues/19147
+    admissionWebhooks:
+      enabled: false
+    tls:
+      enabled: false
+
+    resources:
+      limits:
+        cpu: 200m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  # smart disk data metrics
+  prometheus-node-exporter:
+    extraArgs:
+      - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+      - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+      # this is the new line
+      - --collector.textfile.directory=/host/root/var/log/prometheus
 
   prometheus:
     prometheusSpec:
-      ruleSelectorNilUsesHelmValues: false
-      serviceMonitorSelectorNilUsesHelmValues: false
-      podMonitorSelectorNilUsesHelmValues: false
-      probeSelectorNilUsesHelmValues: false
+      replicas: 1
+      retentionSize: 30GB
+      retention: 30d
+      resources:
+        requests:
+          cpu: 1
+          memory: 2Gi
+        limits:
+          cpu: 2
+          memory: 2Gi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: longhorn
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 35Gi
+      additionalScrapeConfigs:
+        - job_name: 'blackboxhttp'
+          metrics_path: /probe
+          params:
+            module: [http_2xx_ipv4]
+          static_configs:
+            - targets:
+              - http://monitoring-grafana/login
+          relabel_configs:
+            - source_labels: [__address__]
+              target_label: __param_target
+            # Make instance label the target
+            - source_labels: [__param_target]
+              target_label: instance
+            # Actually talk to the blackblacx exporter though
+            - target_label: __address__
+              replacement: blackbox-exporter:9115 # Blackbox exporter's real name
+        - job_name: 'blackboxssh'
+          metrics_path: /probe
+          params:
+            module: [ssh_banner]
+          static_configs:
+            - targets: {{ .Values.monitoring_prometheus_blackboxssh_ips | toJson }}
+          relabel_configs:
+            # address and port as target parameter
+            - source_labels: [__address__]
+              regex: (.*)(:.*)?
+              replacement: ${1}:22
+              target_label: __param_target
+            # Make instance label the target
+            - source_labels: [__param_target]
+              target_label: instance
+            # Actually talk to the blackbox exporter though
+            - target_label: __address__
+              replacement: blackbox-exporter:9115 # Blackbox exporter's real name
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx-internal-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+      hosts:
+        - prometheus.k8s.grigri
+      paths:
+      - /
+      tls:
+      - secretName: prometheus-general-tls
+        hosts:
+        - prometheus.k8s.grigri

@@ -3,7 +3,7 @@ gitea:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      cert-manager.io/cluster-issuer: internal
       hajimari.io/appName: Gitea
       hajimari.io/icon: git
     hosts:

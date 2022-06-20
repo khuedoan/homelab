@@ -1,17 +1,9 @@
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-prod
+  name: internal
+  namespace: cert-manager
 spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    email: {{ .Values.issuer.email }}
-    privateKeySecretRef:
-      name: letsencrypt-prod
-    solvers:
-    - dns01:
-        cloudflare:
-          email: {{ .Values.issuer.email }}
-          apiTokenSecretRef:
-            name: cloudflare-api-token
-            key: api-token
+  ca:
+    secretName: kubernetes-internal-ca-key-pair

@@ -68,11 +68,11 @@ spec:
 
   ingress:
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      cert-manager.io/cluster-issuer: internal
       hajimari.io/appName: Vault
       hajimari.io/icon: database-lock
     spec:
-      ingressClassName: nginx
+      ingressClassName: nginx-internal
       rules:
         - host: &host vault.k8s.grigri
           http:
@@ -141,10 +141,6 @@ spec:
         rules: path "secret/*" {
           capabilities = ["create", "read", "update", "delete", "list"]
           }
-      - name: allow_pki
-        rules: path "pki/*" {
-          capabilities = ["create", "read", "update", "delete", "list"]
-          }
 
     groups:
       - name: admin1
@@ -183,26 +179,6 @@ spec:
         options:
           version: 2
 
-      - type: pki
-        description: Vault PKI Backend
-        config:
-          default_lease_ttl: 168h
-          max_lease_ttl: 720h
-        configuration:
-          config:
-          - name: urls
-            issuing_certificates: https://vault.default:8200/v1/pki/ca
-            crl_distribution_points: https://vault.default:8200/v1/pki/crl
-          root/generate:
-          - name: internal
-            common_name: vault.default
-          roles:
-          - name: default
-            allowed_domains: localhost,pod,svc,default
-            allow_subdomains: true
-            generate_lease: true
-            ttl: 1m
-
     # Allows writing some secrets to Vault (useful for development purposes).
     # See https://www.vaultproject.io/docs/secrets/kv/index.html for more information.
     startupSecrets:
@@ -227,7 +203,7 @@ spec:
 
   vaultEnvsConfig:
     - name: VAULT_LOG_LEVEL
-      value: debug
+      value: info
     - name: VAULT_STORAGE_FILE
       value: "/vault/file"
 

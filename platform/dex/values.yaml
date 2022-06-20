@@ -29,7 +29,7 @@ dex:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      cert-manager.io/cluster-issuer: internal
       hajimari.io/enable: 'false'
     hosts:
       - host: &host dex.k8s.grigri

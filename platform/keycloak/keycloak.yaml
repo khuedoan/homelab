@@ -1,9 +1,0 @@
-apiVersion: keycloak.org/v1alpha1
-kind: Keycloak
-metadata:
-  name: keycloak
-spec:
-  instances: 1
-  externalAccess:
-    enabled: True
-    host: keycloak.k8s.grigri

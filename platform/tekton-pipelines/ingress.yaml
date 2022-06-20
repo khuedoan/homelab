@@ -4,11 +4,11 @@ metadata:
   name: tekton-dashboard
   namespace: tekton-pipelines
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: internal
     hajimari.io/appName: Tekton
     hajimari.io/icon: robot-industrial
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-internal
   rules:
     - host: &host tekton.k8s.grigri
       http:

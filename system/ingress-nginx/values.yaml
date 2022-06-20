@@ -2,9 +2,87 @@ ingress-nginx:
   controller:
     admissionWebhooks:
       timeoutSeconds: 30
+
+    image:
+      # www-data -> 33 but if not 101 I get permission deny in: /etc/ingress-controller/ssl/default-fake-certificate.pem
+      runAsUser: 101
+
+    config:
+      replicaCount: 2
+      http-snippet: |
+        proxy_cache_path /dev/shm levels=1:2 keys_zone=static-cache:2m max_size=300m inactive=7d use_temp_path=off;
+        proxy_cache_key $scheme$proxy_host$request_uri;
+        proxy_cache_lock on;
+        proxy_cache_use_stale updating;
+
+    ingressClass: nginx-internal
+
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 11
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 50
+
+    service:
+      enabled: true
+
+      annotations: {}
+      labels: {}
+
+      ## List of IP addresses at which the controller services are available
+      ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+      ##
+      externalIPs: []
+
+      loadBalancerIP: "192.168.2.1"
+
+      enableHttp: true
+      enableHttps: true
+
+      ports:
+        http: 80
+        https: 443
+
+      targetPorts:
+        http: http
+        https: https
+
+      type: LoadBalancer
+
+      ## Enables an additional internal load balancer (besides the external one).
+      ## Annotations are mandatory for the load balancer to come up. Varies with the cloud service.
+      internal:
+        enabled: false
+        annotations: {}
+
+        ## Set external traffic policy to: "Local" to preserve source IP on
+        ## providers supporting it
+        ## Ref: https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
+        # externalTrafficPolicy: ""
+
+    extraVolumeMounts:
+      - name: dshm
+        mountPath: /dev/shm
+
+    extraVolumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          # not working until v1.21? https://github.com/kubernetes/kubernetes/issues/63126
+          sizeLimit: 303Mi
+
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
+
   tcp:
-    22: gitea/gitea-ssh:22
+    29518: gitea/gitea-ssh:29518
