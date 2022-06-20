@@ -29,4 +29,3 @@ data:
 kind: ConfigMap
 metadata:
   name: alertmanager-forwarder-template
-  namespace: monitoring

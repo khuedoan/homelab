@@ -7,7 +7,6 @@ metadata:
   labels:
     app: alertmanager-telegram-forwarder
   name: alertmanager-telegram-forwarder
-  namespace: monitoring
 spec:
   ports:
   - name: alertmanager-telegram-forwarder
