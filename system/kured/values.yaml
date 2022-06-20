@@ -1,4 +1,8 @@
 kured:
+  image:
+    repository: quay.io/paulfantom/kured
+    tag: "1.9.2"
+
   configuration:
     annotateNodes: true
     timeZone: Europe/Madrid
