@@ -24,6 +24,25 @@ gitea:
         ROOT_URL: https://git.k8s.grigri
   persistence:
     storageClass: longhorn
+    size: 10Gi
+
   postgresql:
+    image:
+      repository: postgres
+      tag: 11.9
+      pullPolicy: IfNotPresent
+    volumePermissions:
+      enabled: true
+      pullPolicy: IfNotPresent
+    postgresqlDataDir: /data/pgdata
     persistence:
       storageClass: longhorn
+      size: 5Gi
+      mountPath: /data/
+
+  memcached:
+    image:
+      repository: memcached
+      tag: 1.6.6
+      pullPolicy: IfNotPresent
+    arguments: []
