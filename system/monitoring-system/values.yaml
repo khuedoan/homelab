@@ -182,6 +182,24 @@ kube-prometheus-stack:
             # Actually talk to the blackblacx exporter though
             - target_label: __address__
               replacement: blackbox-exporter:9115 # Blackbox exporter's real name
+        - job_name: 'blackboxssh'
+          metrics_path: /probe
+          params:
+            module: [ssh_banner]
+          static_configs:
+            - targets: {{ .Values.monitoring_prometheus_blackboxssh_ips | toJson }}
+          relabel_configs:
+            # address and port as target parameter
+            - source_labels: [__address__]
+              regex: (.*)(:.*)?
+              replacement: ${1}:22
+              target_label: __param_target
+            # Make instance label the target
+            - source_labels: [__param_target]
+              target_label: instance
+            # Actually talk to the blackbox exporter though
+            - target_label: __address__
+              replacement: blackbox-exporter:9115 # Blackbox exporter's real name
 
     ingress:
       enabled: true
