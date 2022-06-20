@@ -43,7 +43,7 @@ argo-cd:
   controller:
     resources:
       limits:
-        cpu: 500m
+        cpu: 1
         memory: 512Mi
       requests:
         cpu: 250m
@@ -60,8 +60,8 @@ argo-cd:
       targetMemoryUtilizationPercentage: 50
     resources:
       limits:
-        cpu: 500m
-        memory: 512Mi
+        cpu: 1
+        memory: 256Mi
       requests:
         cpu: 10m
         memory: 64Mi
