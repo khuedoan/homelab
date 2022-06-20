@@ -63,6 +63,6 @@ cluster: $(SSH_KEY_FILE) requirements-ansible
 .PHONY: console
 console:
 console: $(SSH_KEY_FILE) requirements
-	${PYTHON} -m ansible-console \
+	${PYTHON_BIN_DIR}/ansible-console \
 		$(ANSIBLE_EXTRA_ARGS) \
 		 --become
