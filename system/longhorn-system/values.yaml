@@ -6,6 +6,7 @@ longhorn:
   defaultSettings:
     nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
     systemManagedComponentsNodeSelector: storage-node:true
+
   resources:
     limits:
      cpu: 100m
@@ -29,3 +30,13 @@ longhorn:
     - secretName: grafana-general-tls
       hosts:
       - *host
+
+  longhornManager:
+    nodeSelector:
+      storage-node: "true"
+  longhornDriver:
+    nodeSelector:
+      storage-node: "true"
+  longhornUI:
+    nodeSelector:
+      storage-node: "true"
