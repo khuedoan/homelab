@@ -1,9 +1,13 @@
 ---
-# TODO: apply k8s labels
+prepare_additional_disks:
+ - name: hdd
+   dev: /dev/sda
+   path: "/var/lib/longhorn/{{ ansible_devices['sda'].model }}"
+   allowScheduling: true
+   tags:
+     - hdd
+
 node_labels:
   storage-node: "true"
-
-prepare_additional_disks:
- - dev: /dev/sda
-   # path: "/var/lib/longhorn/{{ ansible_devices['sda'].model }}"
-   path: /var/lib/longhorn
+  node.longhorn.io/create-default-disk: 'config'
+  node.longhorn.io/default-disks-config: '{{ prepare_additional_disks | to_json }}'
