@@ -14,4 +14,4 @@ Save the following files to a safe location (like a password manager):
 
 ## Next steps
 
-TODO
+- [User onboarding](../../user-guide/onboarding.md)

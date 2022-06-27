@@ -1,4 +1,4 @@
-# Try locally
+# Development environment
 
 ## Caveats compare to production environment
 
@@ -17,15 +17,15 @@ Host machine:
 
 - OS: Linux (Windows and macOS will not work due to networking limitations, you can use a Linux VM)
 - Recommended hardware specifications:
-  - CPU: 4 cores
-  - RAM: 16 GiB
+    - CPU: 4 cores
+    - RAM: 16 GiB
 
 Install the following packages:
 
 - `docker`
 - `make`
 
-Clone the repository (follow the [configuration guide](./deployment/configuration.md) if you want to customize it):
+Clone the repository and checkout the development branch:
 
 ```sh
 git clone https://github.com/khuedoan/homelab

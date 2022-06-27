@@ -4,8 +4,6 @@ cloudflared:
   config:
     tunnel: homelab
     ingress:
-      # It is safe to put a wildcard here
-      # Please see https://homelab.khuedoan.com/reference/faq.html#is-it-safe-to-use-wildcard-in-cloudflare-tunnel-ingress-config
       - hostname: '*.khuedoan.com'
         service: https://ingress-nginx-controller.ingress-nginx
         originRequest:

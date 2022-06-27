@@ -9,7 +9,7 @@ make console
 
 Then enter the command(s) you want to run, for example:
 
-```
+```console
 root@all (4)[f:5]$ uptime
 metal0 | CHANGED | rc=0 >>
  10:52:02 up 2 min,  1 user,  load average: 0.17, 0.15, 0.06

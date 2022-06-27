@@ -1,4 +1,4 @@
-# Secret management
+# Vault
 
 ## Overview
 

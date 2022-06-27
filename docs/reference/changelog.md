@@ -24,9 +24,9 @@
 
 - Upgrade to Kubernetes 1.23
 - Support external resources:
-  - Cloudflare DNS and Tunnel
-  - Backblaze for backup
-  - Auto inject secrets to required namespaces
+    - Cloudflare DNS and Tunnel
+    - Backblaze for backup
+    - Auto inject secrets to required namespaces
 - Replace self-signed certificates with Let's Encrypt production (with API token injected from the `external` layer)
 - Add DNS records automatically using external-dns
 - Easy Cloudflare Tunnel configuration with annotations

@@ -1,27 +1,5 @@
 # Configuration
 
-## Fork this repository
-
-Because this repository ([khuedoan/homelab](https://github.com/khuedoan/homelab)) applies GitOps practices,
-it's the source of truth for my homelab, so you'll need to fork it to make it yours.
-
-## Choose the environment
-
-| Environment | Branch   | Recommended setup                     |
-| ----------- | -------- | ------------------------------------- |
-| Production  | `master` | Real hardware                         |
-| Development | `dev`    | A local [k3d](https://k3d.io) cluster |
-
-For example, if you're trying out the dev VM, use the development environment:
-
-```sh
-git checkout dev
-```
-
-<!-- TODO show complete workflow -->
-
-## Run the configure script
-
 Open the tools container if you haven't already:
 
 ```sh
@@ -51,9 +29,10 @@ It will prompt you to edit the inventory, for example:
 > - Network interface: usually it's `eth0`, mine is `eno1`
 > - MAC address: the **lowercase, colon separated** MAC address of the above network interface
 
-```yaml
-# metal/inventories/prod.yml
-{{#include ../../../metal/inventories/prod.yml:3:}}
+```yaml title="metal/inventories/prod.yml"
+--8<--
+metal/inventories/prod.yml
+--8<--
 ```
 
 At the end it will show what has changed. After examining the diff, commit and push the changes.

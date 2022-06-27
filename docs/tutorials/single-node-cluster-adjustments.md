@@ -6,9 +6,10 @@ Update the following changes, then commit and push.
 
 Set the `defaultClassReplicaCount` to 1:
 
-```yaml
-# system/longhorn-system/values.yaml
-{{#include ../../../system/longhorn-system/values.yaml}}
+```yaml title="system/longhorn-system/values.yaml" hl_lines="6"
+--8<--
+system/longhorn-system/values.yaml
+--8<--
 ```
 
 ## Disable automatic upgrade for OS and k3s

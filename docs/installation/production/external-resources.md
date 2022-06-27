@@ -1,7 +1,5 @@
 # External resources
 
-**WIP documents**
-
 > These resources are optional, the homelab still works without them but will lack some features like trusted certificates and offsite backup
 
 Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
@@ -12,15 +10,17 @@ Below is a list of external resources and why we need them (also see some [alter
 | Terraform Cloud | Workspace  | Terraform state backend                                                                                     |
 | Cloudflare      | DNS        | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates |
 | Cloudflare      | Tunnel     | Public services to the internet without port-forwarding                                                     |
-| Minio           | Bucket     | Onsite backup                                                                                               |
-| AWS             | S3 Glacier | Offsite backup                                                                                              |
+<!-- | Minio           | Bucket     | Onsite backup                                                                                               | -->
+<!-- | AWS             | S3 Glacier | Offsite backup                                                                                              | -->
 
 This layer will:
 
 - Create external resources
 - Add external secrets to namespaces
 
-## Prerequisites
+## Create credentials
+
+You'll be asked to provide these credentials on first build.
 
 ### Create Terraform workspace
 
@@ -52,25 +52,17 @@ If you decide to use a [different Terraform backend](https://www.terraform.io/la
 <!-- └── Is in - 117.xxx.xxx.xxx, 2402:xxx:xxx:xxx:xxx:xxx:xxx:xxx -->
 <!-- ``` -->
 
-### Create Minio keys
+<!-- ### Create Minio keys -->
 
-TODO: skip this for now
+<!-- TODO: skip this for now -->
 
-### Create AWS API key
+<!-- ### Create AWS API key -->
 
-TODO: skip this for now
-
-## Deploy
-
-Apply Terraform (you will be prompted to log in to Terraform Cloud and enter API keys from the previous steps):
-
-```sh
-# From the project root
-make external
-```
+<!-- TODO: skip this for now -->
 
 ## Alternatives
 
 - Terraform Cloud: any other [Terraform backends](https://www.terraform.io/language/settings/backends)
+- Cloudflare DNS: see [manual DNS setup](../../tutorials/manual-dns-setup.md)
 - Cloudflare Tunnel: you can create a small VPS in the cloud and utilize Wireguard and HAProxy to route traffic via it, or just use simple port-forwarding if it's available (see also [awesome tunneling](https://github.com/anderspitman/awesome-tunneling))
-- Minio and S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio...
+<!-- - Minio and S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio... -->

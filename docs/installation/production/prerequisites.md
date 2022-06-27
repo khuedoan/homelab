@@ -1,5 +1,23 @@
 # Prerequisites
 
+## Fork this repository
+
+Because [this project](https://github.com/khuedoan/homelab) applies GitOps practices,
+it's the source of truth for _my_ homelab, so you'll need to fork it to make it yours:
+
+[:fontawesome-solid-code-fork: Fork khuedoan/homelab](https://github.com/khuedoan/homelab/fork){ .md-button }
+
+!!! license "License notice"
+
+    By using this project you agree to [the license](/license).
+
+    TL;DR:
+
+       - This project is free to use for any purpose, but it comes with no warranty
+       - You must use the same GPLv3 license (`LICENSE.md`)
+       - You must keep the copy right notice and/or include an acknowledgement
+       - Your project must remain open-source
+
 ## Hardware requirements
 
 ### Initial controller
@@ -19,7 +37,7 @@ Any modern `x86_64` computer(s) should work, you can use old PCs, laptops or ser
 | CPU        | 2 cores                                                                                                      | 4 cores                                                                                      |
 | RAM        | 8 GB                                                                                                         | 16 GB                                                                                        |
 | Hard drive | 128 GB                                                                                                       | 512 GB (depending on your storage usage, the base installation will not use more than 128GB) |
-| Node count | 1 (checkout the [single node cluster adjustments](../tutorials/single-node-cluster-adjustments.md) tutorial) | 3 or more for high availability                                                              |
+| Node count | 1 (checkout the [single node cluster adjustments](../../tutorials/single-node-cluster-adjustments.md) tutorial) | 3 or more for high availability                                                              |
 
 Additional capabilities:
 
@@ -28,12 +46,12 @@ Additional capabilities:
 
 ### Network setup
 
-- All servers must be connected to the same **wired** network with the initial controller (Wifi is untested, please let me know if it works)
+- All servers must be connected to the same **wired** network with the initial controller
 - You have the access to change DNS config (on your router or at your domain registrar)
 
 ## Domain
 
-Buying a domain is highly recommended, but if you don't have one, you can also update your router config and point [`*.home.arpa`](https://datatracker.ietf.org/doc/html/rfc8375) to the load balancer (more on that later).
+Buying a domain is highly recommended, but if you don't have one, see [manual DNS setup](../../tutorials/manual-dns-setup.md).
 
 ## BIOS setup
 
