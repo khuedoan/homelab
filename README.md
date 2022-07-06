@@ -199,23 +199,25 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 ## Get Started
 
-- [Try it out locally](./installation/development.md) without any hardware
-- [Deploy on real hardware](./installation/production/prerequisites.md) for real workload
+- [Try it out locally](https://homelab.khuedoan.com/installation/development.md) without any hardware
+- [Deploy on real hardware](https://homelab.khuedoan.com/installation/production/prerequisites.md) for production workload
 
 ## Roadmap
 
-See [roadmap](https://homelab.khuedoan.com/roadmap) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
+See [roadmap](https://homelab.khuedoan.com/reference/roadmap) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
 
 ## Contributing
 
 Any contributions you make, either big or small, are greatly appreciated.
+
+Please see [contributing guide](https://homelab.khuedoan.com/reference/contributing) for more information.
 
 ## License
 
 Copyright &copy; 2020 - 2022 Khue Doan
 
 Distributed under the GPLv3 License.
-See [license page](https://homelab.khuedoan.com/license) or `LICENSE.md` file for more information.
+See [license page](https://homelab.khuedoan.com/reference/license) or `LICENSE.md` file for more information.
 
 ## Acknowledgements
 
