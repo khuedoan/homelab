@@ -4,7 +4,9 @@ Or how to scale vertically. To replace the same node with a clean OS, remove it 
 
 ## Add new nodes
 
-> You can add multiple nodes at the same time
+!!! tip
+
+    You can add multiple nodes at the same time
 
 Add its details to the inventory **at the end of the group** (masters or workers):
 
@@ -30,7 +32,9 @@ That's it!
 
 ## Remove a node
 
-> It is recommended to remove nodes one at a time
+!!! danger
+
+    It is recommended to remove nodes one at a time
 
 Remove it from the inventory:
 

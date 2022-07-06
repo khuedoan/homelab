@@ -1,6 +1,8 @@
 # External resources
 
-> These resources are optional, the homelab still works without them but will lack some features like trusted certificates and offsite backup
+!!! info
+
+    These resources are optional, the homelab still works without them but will lack some features like trusted certificates and offsite backup
 
 Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
 Below is a list of external resources and why we need them (also see some [alternatives](#alternatives) below).

@@ -1,6 +1,8 @@
 # Manual DNS setup
 
-> Skip this step if you already use the included Cloudflare setup
+!!! info
+
+        Skip this step if you already use the included Cloudflare setup
 
 Before you can access the home page at <https://home.example.com>, you'll need to update your DNS config.
 
@@ -16,7 +18,9 @@ The default configuration is for Cloudflare DNS, but you can change the code to 
 
 ## In your router
 
-> If you don't have a domain, you can use the `home.arpa` domain (based on [RFC-8375](https://datatracker.ietf.org/doc/html/rfc8375)).
+!!! tip
+
+    If you don't have a domain, you can use the `home.arpa` domain (according to [RFC-8375](https://datatracker.ietf.org/doc/html/rfc8375)).
 
 You can add each subdomain one by one, or use a wildcard `*.example.com` and point it to the IP address of the load balancer.
 To acquire a list of subdomains and their addresses, use this command:

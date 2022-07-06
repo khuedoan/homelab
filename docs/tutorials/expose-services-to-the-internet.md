@@ -1,6 +1,8 @@
 # Expose services to the internet
 
-> This tutorial is for Cloudflare Tunnel users, please skip if you use port-forwarding.
+!!! info
+
+    This tutorial is for Cloudflare Tunnel users, please skip if you use port-forwarding.
 
 Apply the `./external` layer to create a tunnel if you haven't already,
 then add the following annotations to your `Ingress` object (replace `example.com` with your domain):

@@ -7,8 +7,10 @@
 - Secrets that can be generated are automatically generated and stored in Vault.
 - Integrate with GitOps using [External Secrets Operator](https://external-secrets.io)
 
-> Despite the name "_External_ Secrets Operator", our Vault is deployed on the same cluster.
-> HashiCorp Vault can be replaced with AWS Secret Manager, Google Cloud Secret Manager, Azure Key Vault, etc.
+!!! info
+
+    Despite the name _External_ Secrets Operator, our Vault is deployed on the same cluster.
+    HashiCorp Vault can be replaced with AWS Secret Manager, Google Cloud Secret Manager, Azure Key Vault, etc.
 
 ```mermaid
 flowchart TD

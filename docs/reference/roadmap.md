@@ -1,6 +1,8 @@
 # Roadmap
 
-> Current status: **Alpha**
+!!! info
+
+    Current status: **ALPHA**
 
 ## Alpha requirements
 
@@ -24,13 +26,14 @@ Good enough for tinkering and personal usage, and reasonably secure.
 - [ ] SSO
 - [ ] Reasonably secure
     - [x] Automated certificate management
-    - [ ] Declarative secrets management
+    - [x] Declarative secret management
     - [ ] Replace all default passwords with randomly generated ones
     - [x] Expose services to the internet securely with Cloudflare Tunnel
 - [x] Only use open-source technologies (except external managed services in `./external`)
 - [x] Everything is defined as code
 - [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
-- [ ] 70% availability (might break in the weekend due to new experimentation)
+- [ ] Define [SLOs](https://en.wikipedia.org/wiki/Service-level_objective):
+    - [ ] 70% availability (might break in the weekend due to new experimentation)
 - [x] Core applications
     - [x] Gitea
     - [x] Tekton
@@ -47,23 +50,24 @@ Can be used in "production" (for family or even small scale businesses).
 - [ ] Fully _automatic_, not just _automated_
     - [x] Bare-metal OS rolling upgrade
     - [x] Kubernetes version rolling upgrade
-    - [ ] Application version upgrade
+    - [x] Application version upgrade
     - [ ] Encrypted backups
     - [ ] Secrets rotation
     - [x] Self healing
 - [ ] Secure by default
     - [ ] SELinux
-    - [ ] Network policy
+    - [ ] Network policies
 - [ ] Static code analysis
 - [ ] Chaos testing
-- [ ] Minimal dependency on external services
+- [x] Minimal dependency on external services
 - [ ] Complete documentation
     - [x] Diagram as code
     - [x] Book (this book)
     - [ ] Walkthrough tutorial and feature demo (video)
 - [x] Configuration script for new users
-- [ ] 99,9% availability (less than 9 hours of downtime per year)
-- [ ] 99,99% data durability
+- [ ] SLOs:
+    - [ ] 99,9% availability (less than 9 hours of downtime per year)
+    - [ ] 99,99% data durability
 - [ ] Clear upgrade path
 - [ ] Additional applications
     - [ ] Matrix with bridges
@@ -82,6 +86,6 @@ Nice to have
 - [ ] Air-gap install
 - [ ] Automated testing
 - [ ] Security audit
-- [ ] Serverless (Knative)
+- [ ] Serverless ([Knative](https://knative.dev))
 - [ ] Cluster API ([last attempt](https://github.com/khuedoan/homelab/pull/2))
 - [ ] Split DNS (requires a better router)
