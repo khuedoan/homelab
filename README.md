@@ -199,8 +199,8 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 ## Get Started
 
-- [Try it out locally](https://homelab.khuedoan.com/installation/development.md) without any hardware
-- [Deploy on real hardware](https://homelab.khuedoan.com/installation/production/prerequisites.md) for production workload
+- [Try it out locally](https://homelab.khuedoan.com/installation/development) without any hardware
+- [Deploy on real hardware](https://homelab.khuedoan.com/installation/production/prerequisites) for production workload
 
 ## Roadmap
 
