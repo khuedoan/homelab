@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+site_name: Khue's Homelab
+copyright: Copyright &copy; 2020 - 2022 Khue Doan
+
+repo_url: https://github.com/khuedoan/homelab
+
+theme:
+  name: material
+  palette:
+    primary: black
+  features:
+    - navigation.indexes
+    - navigation.expand
+    - search.highlight
+    - search.share
+
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.snippets:
+      check_paths: true
+  - def_list
+  - pymdownx.tasklist:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Installation:
+    - installation/development.md
+    - Production:
+      - installation/production/prerequisites.md
+      - installation/production/external-resources.md
+      - installation/production/configuration.md
+      - installation/production/deployment.md
+      - installation/production/post-installation.md
+  - Tutorials:
+    - tutorials/manual-dns-setup.md
+    - tutorials/create-a-new-user-account.md
+    - tutorials/expose-services-to-the-internet.md
+    - tutorials/use-both-github-and-gitea.md
+    - tutorials/add-or-remove-nodes.md
+    - tutorials/run-commands-on-multiple-nodes.md
+    - tutorials/single-node-cluster-adjustments.md
+  - Runbooks:
+    - runbooks/argocd.md
+    - runbooks/cert-manager.md
+    - runbooks/gitea.md
+    - runbooks/longhorn.md
+    - runbooks/vault.md
+  - troubleshooting.md
+  - User guide:
+    - user-guide/onboarding.md
+  - Reference:
+    - reference/architecture.md
+    - reference/license.md
+    - reference/changelog.md
+    - reference/roadmap.md
+    - reference/contributing.md
+    - reference/faq.md
