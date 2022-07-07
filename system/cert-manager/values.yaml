@@ -4,6 +4,3 @@ cert-manager:
     enabled: true
     servicemonitor:
       enabled: true
-
-issuer:
-  email: mail@khuedoan.com
