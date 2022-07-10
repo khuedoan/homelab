@@ -1,0 +1,9 @@
+port=0
+dhcp-range={{ ansible_default_ipv4.address }},proxy
+
+log-queries
+log-facility=/var/log/dnsmasq.log
+
+pxe-service=X86-64_EFI, "Boot From Network, (UEFI)", grubx64.efi
+
+# pxe-service=0,"Raspberry Pi Boot",{{ ansible_default_ipv4.address }}

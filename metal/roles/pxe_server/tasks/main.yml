@@ -16,6 +16,20 @@
     src: dhcpd.conf.j2
     dest: "{{ role_path }}/files/data/pxe-config/dhcpd.conf"
     mode: 0644
+  when: dhcp_mode|lower == "dhcpd"
+
+- name: Generate DNSmasq config
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: "{{ role_path }}/files/data/pxe-config/dnsmasq.conf"
+    mode: 0644
+  when: dhcp_mode|lower == "dnsmasq"
+
+- name: Generate Docker Compose
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ role_path }}/files/docker-compose.yml"
+    mode: 0644
 
 - name: Generate GRUB config
   ansible.builtin.template:
