@@ -1,13 +1,6 @@
 version: "3"
 
 services:
-{% if dhcp_mode.lower() == 'dhcpd' %}
-  dhcp:
-    build: ./dhcp
-    volumes:
-      - ./data/pxe-config/dhcpd.conf:/etc/dhcp/dhcpd.conf
-    network_mode: host
-{% elif dhcp_mode.lower() == 'dnsmasq' %}
   dhcp:
     build: ./dnsmasq
     volumes:
@@ -15,7 +8,6 @@ services:
     network_mode: host
     cap_add:
       - NET_ADMIN
-{% endif %}
   tftp:
     build: ./tftp
     network_mode: host
