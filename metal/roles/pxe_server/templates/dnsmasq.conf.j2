@@ -16,9 +16,9 @@ dhcp-match=set:efi-x86_64,option:client-arch,9
 # Set the Boot file based on the tag from above
 dhcp-boot=tag:efi-x86_64,grubx64.efi
 {% endif %}
-# Log DHCP queries
+# Log DHCP queries to stdout
 log-queries
-log-facility=/var/log/dnsmasq.log
+log-facility=-
 
 #Enable TFTP server
 enable-tftp
