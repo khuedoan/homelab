@@ -2,7 +2,7 @@
 
 ## PXE server logs
 
-To view PXE server (includes DHCP, TFTP and HTTP server) logs:
+To view PXE server (includes DHCP (or proxy), TFTP and HTTP server) logs:
 
 ```sh
 ./scripts/pxe-logs
@@ -13,7 +13,7 @@ To view PXE server (includes DHCP, TFTP and HTTP server) logs:
     You can view the logs of one or more containers selectively, for example:
 
     ```sh
-    ./scripts/pxe-logs dhcp
+    ./scripts/pxe-logs dnsmasq
     ./scripts/pxe-logs tftp http
     ```
 

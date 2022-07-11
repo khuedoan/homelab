@@ -17,7 +17,7 @@ default_seed_repo = "https://github.com/khuedoan/homelab"
 default_domain = "khuedoan.com"
 default_timezone = "Asia/Ho_Chi_Minh"
 default_terraform_workspace = "khuedoan"
-
+default_dhcp_server = "dhcp_proxy: false"
 
 def check_python_version(required_version: str) -> None:
     if sys.version_info < tuple(map(int, required_version.split('.'))):
@@ -87,6 +87,15 @@ def main() -> None:
             replacement=terraform_workspace,
             paths=[
                 "external/versions.tf"
+            ]
+        )
+
+    if Confirm.ask("Do you want to an existing DHCP server?"):
+        find_and_replace(
+            pattern=default_dhcp_server,
+            replacement="dhcp_proxy: true",
+            paths=[
+                "metal/roles/pxe_server/defaults/main.yml"
             ]
         )
 
