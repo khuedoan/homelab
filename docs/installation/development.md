@@ -15,10 +15,11 @@ Please keep in mind that the development cluster may be unstable and things may 
 
 Host machine:
 
-- OS: Linux (Windows and macOS will not work due to networking limitations, you can use a Linux VM)
 - Recommended hardware specifications:
     - CPU: 4 cores
     - RAM: 16 GiB
+- OS: Linux (Windows and macOS are untested, please let me know if it works)
+- Available ports: `80` and `443`
 
 Install the following packages:
 
@@ -46,7 +47,13 @@ Build a development cluster and bootstrap it:
 make
 ```
 
-Look for the dashboard URL in the command output.
+!!! note
+
+    It will take about 15 to 30 minutes to build depending on your internet connection
+
+## Explore
+
+The homepage should be available at <https://home.127-0-0-1.nip.io> (ignore the security warning because we don't have valid certificates).
 
 ## Clean up
 
