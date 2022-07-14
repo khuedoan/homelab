@@ -5,9 +5,7 @@
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal bootstrap wait
-
-all: metal bootstrap external wait
+default: metal bootstrap external wait
 
 configure:
 	./scripts/configure

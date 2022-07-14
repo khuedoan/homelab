@@ -1,6 +1,6 @@
 # Configuration
 
-Open the tools container if you haven't already:
+Open the tools container, which includes all the tools needed:
 
 ```sh
 make tools

@@ -1,6 +1,6 @@
 # Deployment
 
-Open the tools container, which includes all the tools needed:
+Open the tools container if you haven't already:
 
 ```sh
 make tools

@@ -15,11 +15,6 @@ Below is a list of external resources and why we need them (also see some [alter
 <!-- | Minio           | Bucket     | Onsite backup                                                                                               | -->
 <!-- | AWS             | S3 Glacier | Offsite backup                                                                                              | -->
 
-This layer will:
-
-- Create external resources
-- Add external secrets to namespaces
-
 ## Create credentials
 
 You'll be asked to provide these credentials on first build.
