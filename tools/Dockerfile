@@ -18,6 +18,7 @@ RUN pacman --sync --refresh --noconfirm \
     git \
     graphviz \
     helm \
+    k9s \
     kubectl \
     kustomize \
     libisoburn \
