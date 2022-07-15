@@ -42,6 +42,11 @@ nav:
       - installation/production/configuration.md
       - installation/production/deployment.md
       - installation/production/post-installation.md
+  - Architecture:
+    - architecture/overview.md
+    - architecture/bare-metal-provisioning.md
+    - architecture/secrets-management.md
+    - architecture/networking.md
   - Tutorials:
     - tutorials/manual-dns-setup.md
     - tutorials/create-a-new-user-account.md
@@ -53,6 +58,7 @@ nav:
   - Runbooks:
     - runbooks/argocd.md
     - runbooks/cert-manager.md
+    - runbooks/documentation.md
     - runbooks/gitea.md
     - runbooks/longhorn.md
     - runbooks/vault.md
@@ -60,7 +66,6 @@ nav:
   - User guide:
     - user-guide/onboarding.md
   - Reference:
-    - reference/architecture.md
     - reference/license.md
     - reference/changelog.md
     - reference/roadmap.md
