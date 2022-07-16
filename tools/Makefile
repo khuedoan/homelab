@@ -15,6 +15,7 @@ run:
 		--network host \
 		--env "TERM=${TERM}" \
 		--env "HOME=${HOME}" \
+		--env "KUBECONFIG=${KUBECONFIG}" \
 		--volume "${HOME}:${HOME}" \
 		--volume "/var/run/docker.sock:/var/run/docker.sock" \
 		--volume "/etc/passwd:/etc/passwd" \
