@@ -58,6 +58,7 @@ nav:
   - Runbooks:
     - runbooks/argocd.md
     - runbooks/cert-manager.md
+    - runbooks/dnsmasq.md
     - runbooks/documentation.md
     - runbooks/gitea.md
     - runbooks/longhorn.md
