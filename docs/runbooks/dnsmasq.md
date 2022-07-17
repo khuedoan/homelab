@@ -7,4 +7,4 @@ Proxy mode is enabled by default allowing the use of existing DHCP servers on th
 
 ## Disabling Proxy Mode
 
-Certain scenarios will require this project to use a DHCP server, such as an air-gap deployment or dedicated VLAN. To disable proxy mode thereby using Dnsmasq as a DHCP server, modify `metal/roles/pxe_server/defaults/main.yml` and set `dhcp_proxy` to `false`
+Certain scenarios will require this project to use a DHCP server, such as an air-gap deployment or dedicated VLAN. To disable proxy mode thereby using dnsmasq as a DHCP server, modify `metal/roles/pxe_server/defaults/main.yml` and set `dhcp_proxy` to `false`
