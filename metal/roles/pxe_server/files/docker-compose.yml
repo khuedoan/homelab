@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  dhcp:
+  dnsmasq:
     build: ./dnsmasq
     volumes:
       - ./data/pxe-config/dnsmasq.conf:/etc/dnsmasq.conf
