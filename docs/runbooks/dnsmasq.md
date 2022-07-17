@@ -1,10 +1,10 @@
 # Dnsmasq
 
 ## Overview
-Dnsmasq is used as either a DHCP server or DHCP proxy server for PXE metal provisioning. Proxy mode can be opted-in through `make configure` or the `metal/roles/pxe_server/defaults/main.yml` file
+Dnsmasq is used as either a DHCP server or DHCP proxy server for PXE metal provisioning. 
 
-## When to use Proxy Mode
+Proxy mode is enabled by default allowing the use of existing DHCP servers on the network. A good description on how DHCP Proxy works can be found on the related [FOG project wiki page](https://wiki.fogproject.org/wiki/index.php?title=ProxyDHCP_with_dnsmasq)
 
-Proxy mode allows for the project to be deployed to a standard home network where an DHCP server exists, but may not be configurable for next-server or bootfile definitions. The feature can be enabmed through `make confiugure` or modifying the `metal/roles/pxe_server/defaults/main.yml` file. 
+## Disabling Proxy Mode
 
-It is recommended to set the homelab hosts and their defined IP Addesses (as defined in `metal/inventory/prod.yml`) accordingly on the DHCP server. This will prevent any IP conflicts which may prevent network disruption on your home network. 
+Certain scenarios will require this project to use a DHCP server, such as an air-gap deployment or dedicated VLAN. To disable proxy mode thereby using Dnsmasq as a DHCP server, modify `metal/roles/pxe_server/defaults/main.yml` and set `dhcp_proxy` to `false`
