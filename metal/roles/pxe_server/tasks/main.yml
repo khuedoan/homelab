@@ -11,10 +11,10 @@
     cmd: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/files/data/os"
     creates: "{{ role_path }}/files/data/os/.treeinfo"
 
-- name: Generate DHCP config
+- name: Generate dnsmasq config
   ansible.builtin.template:
-    src: dhcpd.conf.j2
-    dest: "{{ role_path }}/files/data/pxe-config/dhcpd.conf"
+    src: dnsmasq.conf.j2
+    dest: "{{ role_path }}/files/data/pxe-config/dnsmasq.conf"
     mode: 0644
 
 - name: Generate GRUB config

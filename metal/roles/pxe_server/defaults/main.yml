@@ -1,3 +1,4 @@
 iso_url: "https://download.rockylinux.org/pub/rocky/8.6/isos/x86_64/Rocky-8.6-x86_64-minimal.iso"
 iso_checksum: "sha256:a9ece0e810275e881abfd66bb0e59ac05d567a5ec0bc2f108b9a3e90bef5bf94"
 timezone: Asia/Ho_Chi_Minh
+dhcp_proxy: true

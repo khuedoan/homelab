@@ -1,19 +1,17 @@
 version: "3"
 
 services:
-  dhcp:
-    build: ./dhcp
+  dnsmasq:
+    build: ./dnsmasq
     volumes:
-      - ./data/pxe-config/dhcpd.conf:/etc/dhcp/dhcpd.conf
+      - ./data/pxe-config/dnsmasq.conf:/etc/dnsmasq.conf
+      - ./data/pxe-config/grub.cfg:/tftp/grub.cfg
+      - ./data/os/EFI/BOOT/grubx64.efi:/tftp/grubx64.efi
+      - ./data/os/images/pxeboot/initrd.img:/tftp/initrd.img
+      - ./data/os/images/pxeboot/vmlinuz:/tftp/vmlinuz
     network_mode: host
-  tftp:
-    build: ./tftp
-    network_mode: host
-    volumes:
-      - ./data/pxe-config/grub.cfg:/var/lib/tftpboot/grub.cfg
-      - ./data/os/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
-      - ./data/os/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
-      - ./data/os/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
+    cap_add:
+      - NET_ADMIN
   http:
     build: ./http
     network_mode: host

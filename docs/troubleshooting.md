@@ -13,8 +13,8 @@ To view PXE server (includes DHCP, TFTP and HTTP server) logs:
     You can view the logs of one or more containers selectively, for example:
 
     ```sh
-    ./scripts/pxe-logs dhcp
-    ./scripts/pxe-logs tftp http
+    ./scripts/pxe-logs dnsmasq
+    ./scripts/pxe-logs http
     ```
 
 ## Nodes not booting from the network
