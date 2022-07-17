@@ -18,6 +18,7 @@ default_domain = "khuedoan.com"
 default_timezone = "Asia/Ho_Chi_Minh"
 default_terraform_workspace = "khuedoan"
 
+
 def check_python_version(required_version: str) -> None:
     if sys.version_info < tuple(map(int, required_version.split('.'))):
         raise Exception(f"Must be using Python >= {required_version}")
