@@ -1,4 +1,4 @@
-# Vault
+# Dnsmasq
 
 ## Overview
 dnsmasq is used as either a DHCP server or DHCP proxy server for PXE metal provisioning. Proxy mode can be opted-in through `make configure` or the `metal/roles/pxe_server/defaults/main.yml` file
