@@ -32,7 +32,9 @@ RUN pacman --sync --refresh --noconfirm \
     python-kubernetes \
     python-netaddr \
     python-pip \
+    python-pre-commit \
     python-rich \
+    shellcheck \
     sudo \
     terraform \
     yamllint

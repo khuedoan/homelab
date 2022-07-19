@@ -26,9 +26,6 @@ wait:
 tools:
 	make -C tools
 
-docs:
-	make -C docs
-
 dev:
 	make -C metal cluster env=dev
 	make -C bootstrap
@@ -41,3 +38,6 @@ docs:
 		--publish 8000:8000 \
 		--volume $(shell pwd):/docs \
 		squidfunk/mkdocs-material
+
+git-hooks:
+	pre-commit install
