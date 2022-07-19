@@ -1,4 +1,4 @@
-iso_url: "https://download.rockylinux.org/pub/rocky/8.6/isos/x86_64/Rocky-8.6-x86_64-minimal.iso"
-iso_checksum: "sha256:a9ece0e810275e881abfd66bb0e59ac05d567a5ec0bc2f108b9a3e90bef5bf94"
+iso_url: "https://download.fedoraproject.org/pub/fedora/linux/releases/36/Server/x86_64/iso/Fedora-Server-dvd-x86_64-36-1.5.iso"
+iso_checksum: "sha256:5edaf708a52687b09f9810c2b6d2a3432edac1b18f4d8c908c0da6bde0379148"
 timezone: Asia/Ho_Chi_Minh
 dhcp_proxy: true

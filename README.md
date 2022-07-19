@@ -121,6 +121,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Synchronizes exposed Kubernetes Services and Ingresses with DNS providers</td>
     </tr>
     <tr>
+        <td><img width="32" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/267px-Fedora_logo.svg.png"></td>
+        <td><a href="https://getfedora.org/en/server">Fedora Server</a></td>
+        <td>Base OS for Kubernetes nodes</td>
+    </tr>
+    <tr>
         <td><img width="32" src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Gitea_Logo.svg"></td>
         <td><a href="https://gitea.com">Gitea</a></td>
         <td>Self-hosted Git service</td>
@@ -174,11 +179,6 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://docs.renovatebot.com/assets/images/logo.png"></td>
         <td><a href="https://www.whitesourcesoftware.com/free-developer-tools/renovate">Renovate</a></td>
         <td>Automatically update dependencies</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/75713131?s=200&v=4"></td>
-        <td><a href="https://rockylinux.org">Rocky Linux</a></td>
-        <td>Base OS for Kubernetes nodes</td>
     </tr>
     <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/47602533?s=200&v=4"></td>
