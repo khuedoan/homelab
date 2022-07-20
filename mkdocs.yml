@@ -35,7 +35,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Installation:
-    - installation/development.md
+    - installation/sandbox.md
     - Production:
       - installation/production/prerequisites.md
       - installation/production/external-resources.md

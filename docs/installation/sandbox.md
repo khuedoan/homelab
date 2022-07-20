@@ -1,4 +1,6 @@
-# Development environment
+# Development sandbox
+
+The sandbox is intended for trying out the homelab without any hardware or testing changes before applying them to the production environment.
 
 ## Caveats compare to production environment
 
