@@ -19,7 +19,7 @@ partition / --fstype=ext4 --grow
 network --bootproto=static --device={{ hostvars[item]['network_interface'] }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
 
 # Use network installation
-repo --name="Minimal" --baseurl=http://{{ ansible_default_ipv4.address }}/os/Minimal
+repo --name="Repository" --baseurl=http://{{ ansible_default_ipv4.address }}/os
 url --url="http://{{ ansible_default_ipv4.address }}/os"
 # Disable Setup Agent on first boot
 firstboot --disable
@@ -28,7 +28,7 @@ skipx
 # Enable NTP
 services --enabled="chronyd"
 # System timezone
-timezone {{ timezone }} --isUtc
+timezone {{ timezone }} --utc
 
 # Create user (locked by default)
 user --groups=wheel --name=admin
@@ -44,7 +44,8 @@ selinux --disabled
 firewall --disabled
 
 %packages
-@^minimal-environment
+@^custom-environment
+@headless-management
 iscsi-initiator-utils
 %end
 
