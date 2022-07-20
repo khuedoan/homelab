@@ -2,4 +2,4 @@
 
 # Get Vault root token
 export KUBECONFIG=./metal/kubeconfig.yaml
-kubectl get secrets vault-unseal-keys -n vault -o jsonpath={.data.vault-root} | base64 --decode
+kubectl get secrets vault-unseal-keys -n vault -o jsonpath='{.data.vault-root}' | base64 --decode
