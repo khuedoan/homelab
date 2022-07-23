@@ -3,41 +3,35 @@
 """
 Quick and dirty script for things that I can't/don't have time to do properly yet
 TODO: retire this script
-
-export DOMAIN=khuedoan.com
-export GITEA_USER=gitea_admin
-export GITEA_PASSWORD='xxx'
-export GITEA_HOST='git.khuedoan.com'
-export VAULT_HOST='https://vault.khuedoan.com'
-export VAULT_TOKEN='s.xxx'
-./scripts/hacks
 """
 
+import base64
 import json
-import os
-import sys
 import requests
-import urllib.parse
-from rich.console import Console
+import sys
 
+from rich.console import Console
+from kubernetes import client, config
 
 # https://git.khuedoan.com/user/settings/applications
 # Doing this properly inside the cluster requires:
 # - Kubernetes service account
 # - Vault Kubernetes auth
-domain = os.environ['DOMAIN']
-vault_host = os.environ['VAULT_HOST']
-vault_token = os.environ['VAULT_TOKEN']
+config.load_kube_config(config_file='./metal/kubeconfig.yaml')
 
-gitea_host = os.getenv('GITEA_HOST', "gitea-http:3000")
-gitea_user = os.environ['GITEA_USER']
-gitea_pass = urllib.parse.quote_plus(os.environ['GITEA_PASSWORD'])
+gitea_host = client.NetworkingV1Api().read_namespaced_ingress('gitea', 'gitea').spec.rules[0].host
+gitea_user = base64.b64decode(client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea').data['username']).decode("utf-8")
+gitea_pass = base64.b64decode(client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea').data['password']).decode("utf-8")
 gitea_url = f"http://{gitea_user}:{gitea_pass}@{gitea_host}"
+
+vault_host = client.NetworkingV1Api().read_namespaced_ingress('vault', 'vault').spec.rules[0].host
+vault_token = base64.b64decode(client.CoreV1Api().read_namespaced_secret('vault-unseal-keys', 'vault').data['vault-root']).decode("utf-8")
+vault_url = f"https://{vault_host}"
 
 
 def create_vault_secret(path: str, data) -> None:
     requests.post(
-        url=f"{vault_host}/v1/secret/data/{path}",
+        url=f"{vault_url}/v1/secret/data/{path}",
         headers={
             'X-Vault-Token': vault_token
         },
@@ -108,13 +102,14 @@ def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
 
 
 def main() -> None:
+
     with Console().status("Completing the remaining sorcery"):
         gitea_access_tokens = [
             'renovate'
         ]
 
         gitea_oauth_apps = [
-            {'name': 'dex', 'redirect_uri': f"https://dex.{domain}/callback"}
+            {'name': 'dex', 'redirect_uri': f"https://{client.NetworkingV1Api().read_namespaced_ingress('dex', 'dex').spec.rules[0].host}/callback"}
         ]
 
         for token_name in gitea_access_tokens:
