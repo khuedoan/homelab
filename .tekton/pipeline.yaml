@@ -39,7 +39,7 @@ spec:
           value:
             - --cache=true
 
-    - name: lint
+    - name: pre-commit
       runAfter:
         - tools
       workspaces:
@@ -50,83 +50,19 @@ spec:
           - name: source
         stepTemplate:
           image: registry.khuedoan.com/tools:latest
+          workingDir: /workspace/source
         steps:
-          - name: ansible
-            workingDir: /workspace/source/metal
+          - name: run
             command:
-              - ansible-lint
+              - pre-commit
             args:
-              - -v
-              - --force-color
-          - name: yaml
-            workingDir: /workspace/source
-            command:
-              - yamllint
-            args:
-              - .
-          - name: terraform
-            workingDir: /workspace/source/external
-            command:
-              - terraform
-            args:
-              - fmt
-              - -recursive
-              - -check
-              - -diff
-
-    - name: metal
-      runAfter:
-        - lint
-      workspaces:
-        - name: source
-          workspace: shared-data
-      taskSpec:
-        workspaces:
-          - name: source
-        volumes:
-          - name: ansible-secrets
-            secret:
-              secretName: ansible-secrets
-              defaultMode: 0400
-        stepTemplate:
-          image: registry.khuedoan.com/tools:latest
-          workingDir: /workspace/source/metal
-          volumeMounts:
-            - name: ansible-secrets
-              mountPath: /root/.ssh/id_ed25519
-              subPath: id_ed25519
-          command:
-            - make
-        steps:
-          - name: cluster
-            args:
-              - cluster
-
-    - name: bootstrap
-      runAfter:
-        - lint
-      workspaces:
-        - name: source
-          workspace: shared-data
-      taskSpec:
-        workspaces:
-          - name: source
-        stepTemplate:
-          image: registry.khuedoan.com/tools:latest
-          workingDir: /workspace/source/bootstrap
-          command:
-            - make
-        steps:
-          - name: argocd
-            args:
-              - argocd
-          - name: root
-            args:
-              - root
+              - run
+              # - --all-files
+              - --color=always
 
     - name: external
       runAfter:
-        - lint
+        - pre-commit
       workspaces:
         - name: source
           workspace: shared-data
