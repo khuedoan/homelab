@@ -26,4 +26,66 @@ flowchart TD
   ClusterSecretStore --> ExternalSecret
 ```
 
-TODO: more details on how to use secrets
+## Generate random secret
+
+This is useful when you want to generate random secrets like admin password and store in Vault.
+
+```yaml title="./platform/vault/files/generate-secrets/config.yaml" hl_lines="2-6"
+--8<--
+./platform/vault/files/generate-secrets/config.yaml
+--8<--
+```
+
+## Pulling secrets from Vault to Kubernetes
+
+Commit and push an `ExternalSecret` object, for example:
+
+```yaml hl_lines="4 21-23"
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: gitea-admin-secret
+  namespace: gitea
+spec:
+  data:
+  - remoteRef:
+      conversionStrategy: Default
+      key: /gitea/admin
+      property: password
+    secretKey: password
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  target:
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      data:
+        password: '{{ .password }}'
+        username: gitea_admin
+      engineVersion: v2
+```
+
+This will create a corresponding Kubernetes secret:
+
+`kubectl describe secrets -n gitea gitea-admin-secret`
+
+```yaml hl_lines="1 8-11"
+Name:         gitea-admin-secret
+Namespace:    gitea
+Labels:       <none>
+Annotations:  reconcile.external-secrets.io/data-hash: <REDACTED>
+
+Type:  Opaque
+
+Data
+====
+password:  32 bytes
+username:  11 bytes
+```
+
+Please see the official documentation for more information:
+
+- [External Secrets Operator](https://external-secrets.io)
+- [API specification](https://external-secrets.io/latest/spec)
