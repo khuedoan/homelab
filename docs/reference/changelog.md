@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.0.8
+
+Notable changes:
+
+- **build:** run post install scripts by default
+- **build:** set `KUBECONFIG` from global Makefile
+- **feat(external-dns)!:** add cluster name as owner ID
+- **feat(tools):** install `yamllint`, `ansible-lint` and `k9s`
+- **feat(tools):** set `KUBECONFIG` by default
+- **feat:** add pre-commit hooks
+- **feat:** add script to setup Gitea tokens and OAuth apps
+- **perf(argocd):** turning on selective sync
+- **refactor(docs):** migrate to [mkdocs](https://squidfunk.github.io/mkdocs-material)
+- **refactor(metal):** migrate to Fedora 36 for newer packages
+- **refactor(pxe)!:** combine dhcpd and tftpd to dnsmasq
+- Many bug fixes
+
+Please see git log for full change log.
+
 ## 0.0.7-alpha
 
 - Replace standard Vault with Vault Operator
