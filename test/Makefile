@@ -3,4 +3,4 @@
 default: test
 
 test:
-	go test -v -timeout 30m
+	grc go test -v -timeout 30m
