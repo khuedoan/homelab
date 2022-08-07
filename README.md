@@ -245,6 +245,7 @@ Big shout-out to them!
 - ![](https://github.com/Crimrose.png?size=24) [@Crimrose](https://github.com/Crimrose)
 - ![](https://github.com/eventi.png?size=24) [@eventi](https://github.com/eventi)
 - ![](https://github.com/Bourne-ID.png?size=24) [@Bourne-ID](https://github.com/Bourne-ID)
+- ![](https://github.com/akwan.png?size=24) [@akwan](https://github.com/akwan)
 
 If you feel you're missing from this list, feel free to add yourself in a PR.
 
