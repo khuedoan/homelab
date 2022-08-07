@@ -6,7 +6,7 @@ RUN pacman --sync --refresh --noconfirm \
     && reflector \
     --save /etc/pacman.d/mirrorlist \
     --protocol https \
-    --latest 5 \
+    --latest 20 \
     --sort rate
 
 RUN pacman --sync --refresh --noconfirm \
