@@ -36,4 +36,5 @@ spec:
             maxDuration: 16m
         syncOptions:
           - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
 {{- end }}
