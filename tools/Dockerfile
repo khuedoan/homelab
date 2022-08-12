@@ -16,8 +16,11 @@ RUN pacman --sync --refresh --noconfirm \
     docker \
     docker-compose \
     git \
+    go \
     graphviz \
+    grc \
     helm \
+    k9s \
     kubectl \
     kustomize \
     libisoburn \
@@ -29,7 +32,9 @@ RUN pacman --sync --refresh --noconfirm \
     python \
     python-kubernetes \
     python-pip \
+    python-pre-commit \
     python-rich \
+    shellcheck \
     sudo \
     terraform \
     yamllint

@@ -29,4 +29,3 @@ cert-manager:
       requests:
         cpu: 10m
         memory: 32Mi
-
