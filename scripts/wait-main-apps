@@ -17,6 +17,16 @@ ingresses = [
         'name': 'hajimari',
         'fullname': 'Homepage',
         'namespace': 'hajimari'
+    },
+    {
+        'name': 'vault',
+        'fullname': 'Vault',
+        'namespace': 'vault'
+    },
+    {
+        'name': 'gitea',
+        'fullname': 'Gitea',
+        'namespace': 'gitea'
     }
 ]
 
