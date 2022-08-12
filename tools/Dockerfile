@@ -41,9 +41,8 @@ RUN pacman --sync --refresh --noconfirm \
     terraform \
     yamllint
 
-ARG K3D_PATH=/usr/local/bin/k3d
-RUN curl -L https://github.com/k3d-io/k3d/releases/latest/download/k3d-linux-amd64 -o $K3D_PATH -s \
-    && chmod +x $K3D_PATH
+RUN curl -L https://github.com/k3d-io/k3d/releases/latest/download/k3d-linux-amd64 -o /usr/local/bin/k3d -s \
+    && chmod +x /usr/local/bin/k3d
 
 # TODO https://github.com/ansible-collections/community.docker/issues/216
 RUN pip install docker-compose
