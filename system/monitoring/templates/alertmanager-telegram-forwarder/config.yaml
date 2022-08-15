@@ -2,6 +2,7 @@
 apiVersion: v1
 data:
   message.j2: |
+    {{`
     {%- set
       emojis = {
         'resolved' : '✅',
@@ -25,7 +26,7 @@ data:
     [Prometheus]({{ alert.generatorURL }})
     {% if 'runbook_url' in alert.annotations -%}
     [Runbook URL]({{ alert.annotations.runbook_url }})
-    {%- endif -%}
+    {%- endif -%}`}}
 kind: ConfigMap
 metadata:
   name: alertmanager-forwarder-template

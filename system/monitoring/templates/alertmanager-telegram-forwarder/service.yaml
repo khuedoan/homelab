@@ -15,4 +15,3 @@ spec:
   selector:
     app: alertmanager-telegram-forwarder
   type: ClusterIP
-
