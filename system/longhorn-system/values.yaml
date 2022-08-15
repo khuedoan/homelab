@@ -9,11 +9,11 @@ longhorn:
 
   resources:
     limits:
-     cpu: 100m
-     memory: 128Mi
+      cpu: 100m
+      memory: 128Mi
     requests:
-     cpu: 100m
-     memory: 128Mi
+      cpu: 100m
+      memory: 128Mi
 
   ingress:
     enabled: true
@@ -25,11 +25,11 @@ longhorn:
     hosts:
       - &host longhorn.k8s.grigri
     paths:
-    - /
+      - /
     tls:
-    - secretName: grafana-general-tls
-      hosts:
-      - *host
+      - secretName: grafana-general-tls
+        hosts:
+          - *host
 
   longhornManager:
     nodeSelector:
