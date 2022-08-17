@@ -3,12 +3,9 @@ ingress-nginx:
     admissionWebhooks:
       timeoutSeconds: 30
 
-    image:
-      # www-data -> 33 but if not 101 I get permission deny in: /etc/ingress-controller/ssl/default-fake-certificate.pem
-      runAsUser: 101
+    replicaCount: 2
 
     config:
-      replicaCount: 2
       http-snippet: |
         proxy_cache_path /dev/shm levels=1:2 keys_zone=static-cache:2m max_size=300m inactive=7d use_temp_path=off;
         proxy_cache_key $scheme$proxy_host$request_uri;
@@ -30,7 +27,15 @@ ingress-nginx:
       maxReplicas: 11
       targetCPUUtilizationPercentage: 50
       targetMemoryUtilizationPercentage: 50
-
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: controller
+            app.kubernetes.io/instance: ingress-nginx
+            app.kubernetes.io/name: ingress-nginx
     service:
       enabled: true
 
@@ -42,7 +47,7 @@ ingress-nginx:
       ##
       externalIPs: []
 
-      loadBalancerIP: "192.168.2.1"
+      loadBalancerIP: "192.168.193.1"
 
       enableHttp: true
       enableHttps: true
