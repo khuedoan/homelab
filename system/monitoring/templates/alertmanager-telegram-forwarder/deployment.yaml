@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: alertmanager-telegram-forwarder
+  namespace: {{ .Release.Namespace }}
 spec:
   selector:
     matchLabels:
