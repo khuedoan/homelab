@@ -17,7 +17,7 @@ longhorn:
 
   ingress:
     enabled: true
-    ingressClassName: nginx-internal-internal
+    ingressClassName: nginx-internal
     annotations:
       cert-manager.io/cluster-issuer: internal
       hajimari.io/appName: Longhorn

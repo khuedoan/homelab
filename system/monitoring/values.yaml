@@ -9,23 +9,23 @@ kube-prometheus-stack:
         resolve_timeout: 5m
       route:
         group_by:
-        - job
+          - job
         group_interval: 5m
         group_wait: 30s
         receiver: telegram
         repeat_interval: 12h
         routes:
-        - receiver: 'null'
-          match:
-            alertname: Watchdog
-        - receiver: 'null'
-          match:
-            severity: info
+          - receiver: 'null'
+            match:
+              alertname: Watchdog
+          - receiver: 'null'
+            match:
+              severity: info
       receivers:
         - name: telegram
           webhook_configs:
-          - send_resolved: True
-            url: http://alertmanager-telegram-forwarder:8080/v1/alerts/7055881
+            - send_resolved: true
+              url: http://alertmanager-telegram-forwarder:8080/v1/alerts/7055881
         - name: 'null'
     alertmanagerSpec:
       storage:
@@ -39,17 +39,17 @@ kube-prometheus-stack:
 
     ingress:
       enabled: true
-      ingressClassName: nginx-internal-internal
+      ingressClassName: nginx-internal
       annotations:
         cert-manager.io/cluster-issuer: internal
       hosts:
         - alertmanager.k8s.grigri
       paths:
-      - /
+        - /
       tls:
-      - secretName: alertmanager-general-tls
-        hosts:
-        - alertmanager.k8s.grigri
+        - secretName: alertmanager-general-tls
+          hosts:
+            - alertmanager.k8s.grigri
 
 
   grafana:
@@ -60,7 +60,7 @@ kube-prometheus-stack:
       passwordKey: password
     ingress:
       enabled: true
-      ingressClassName: nginx-internal-internal
+      ingressClassName: nginx-internal
       annotations:
         cert-manager.io/cluster-issuer: internal
         hajimari.io/appName: Grafana
@@ -68,9 +68,9 @@ kube-prometheus-stack:
       hosts:
         - &host grafana.k8s.grigri
       tls:
-      - secretName: grafana-general-tls
-        hosts:
-        - *host
+        - secretName: grafana-general-tls
+          hosts:
+            - *host
     plugins:
       - grafana-piechart-panel
     persistence:
@@ -83,12 +83,12 @@ kube-prometheus-stack:
       ##
       sizeLimit: 256Mi
     additionalDataSources:
-    - name: Loki
-      type: loki
-      url: http://loki-stack:3100
-      access: proxy
-      isDefault: false
-      version: 1
+      - name: Loki
+        type: loki
+        url: http://loki-stack:3100
+        access: proxy
+        isDefault: false
+        version: 1
 
     sidecar:
       resources:
@@ -172,7 +172,7 @@ kube-prometheus-stack:
             module: [http_2xx_ipv4]
           static_configs:
             - targets:
-              - http://monitoring-grafana/login
+                - http://monitoring-grafana/login
           relabel_configs:
             - source_labels: [__address__]
               target_label: __param_target
@@ -181,18 +181,18 @@ kube-prometheus-stack:
               target_label: instance
             # Actually talk to the blackblacx exporter though
             - target_label: __address__
-              replacement: blackbox-exporter:9115 # Blackbox exporter's real name
+              replacement: blackbox-exporter:9115  # Blackbox exporter's real name
 
     ingress:
       enabled: true
-      ingressClassName: nginx-internal-internal
+      ingressClassName: nginx-internal
       annotations:
         cert-manager.io/cluster-issuer: internal
       hosts:
         - prometheus.k8s.grigri
       paths:
-      - /
+        - /
       tls:
-      - secretName: prometheus-general-tls
-        hosts:
-        - prometheus.k8s.grigri
+        - secretName: prometheus-general-tls
+          hosts:
+            - prometheus.k8s.grigri
