@@ -3,7 +3,6 @@
   data:
     - key: password
       length: 32
-      special: true
 # TODO create tokens and put to Vault automatically
 # - gitea/renovate:
 #   - id
@@ -16,15 +15,17 @@
 #   - private_key  # needs ending new line https://github.com/ansible/awx/issues/9082
 
 # Dex
-- path: dex/grafana
+- path: grafana/admin
   data:
-    - key: client_secret
+    - key: user
+      value: admin
+    - key: password
       length: 32
-      special: false
 
 # Trow
 - path: trow/admin
   data:
+    - key: user
+      value: admin
     - key: password
       length: 32
-      special: true

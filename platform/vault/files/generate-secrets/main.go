@@ -15,13 +15,14 @@ import (
 type RandomPassword struct {
 	Path string
 	Data []struct {
-		Key     string
-		Length  int
-		Special bool
+		Key    string
+		Length int
+		Value  string
 	}
 }
 
 func main() {
+	log.Print("Reading config file...")
 	data, err := os.ReadFile("./config.yaml")
 
 	if err != nil {
@@ -36,6 +37,7 @@ func main() {
 	}
 	config := vault.DefaultConfig()
 
+	log.Println("Initializing vault client...")
 	client, err := vault.NewClient(config)
 	if err != nil {
 		log.Fatalf("unable to initialize Vault client: %v", err)
@@ -44,20 +46,30 @@ func main() {
 	for _, randomPassword := range randomPasswords {
 		path := fmt.Sprintf("/secret/data/%s", randomPassword.Path)
 
+		log.Printf("Checking secret: /secret/%s", randomPassword.Path)
 		secret, _ := client.Logical().Read(path)
 
 		if secret == nil {
+			log.Println("Creating secret...")
+
 			secretData := map[string]interface{}{
 				"data": map[string]interface{}{},
 			}
-
-			for _, randomKey := range randomPassword.Data {
-				res, err := password.Generate(32, 3, 3, false, true)
-				if err != nil {
-					log.Fatal(err)
+			for _, data := range randomPassword.Data {
+				var value = ""
+				if data.Value == "" {
+					log.Printf("Creating random key %s...", data.Key)
+					res, err := password.Generate(data.Length, 3, 3, false, true)
+					if err != nil {
+						log.Fatal(err)
+					}
+					value = res
+				} else {
+					log.Printf("Creating key %s...", data.Key)
+					value = data.Value
 				}
 
-				secretData["data"].(map[string]interface{})[randomKey.Key] = res
+				secretData["data"].(map[string]interface{})[data.Key] = value
 			}
 
 			_, err = client.Logical().Write(path, secretData)
@@ -68,7 +80,7 @@ func main() {
 				log.Println("Secret written successfully.")
 			}
 		} else {
-			log.Println("Key abc in secret already existed.")
+			log.Println("Secret already exists.")
 		}
 	}
 }
