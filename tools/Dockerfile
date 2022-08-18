@@ -39,7 +39,7 @@ RUN pacman --sync --refresh --noconfirm \
     terraform \
     yamllint
 
-RUN curl -L https://raw.githubusercontent.com/pando85/homelab/master/metal/k3d-dev.yaml \
+RUN curl -L https://raw.githubusercontent.com/pando85/homelab/master/metal/requirements.txt \
     > /tmp/requirements.txt \
     && pip install -r /tmp/requirements.txt \
     && rm /tmp/requirements.txt

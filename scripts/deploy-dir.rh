@@ -1,0 +1,37 @@
+#!/usr/bin/env rash
+#
+# Deploy directory into cluster using helm and kubectl
+#
+# Usage:
+#   deploy-dir.rh [options] <directory>
+#
+# Options:
+#   -h --help    show this help message and exit
+#   --dry-run    not run kubectl apply
+
+- set_vars:
+    app_name: "{{ directory | split(pat='/') | last }}"
+
+- command: kubectl create namespace {{ app_name }} --dry-run=client --output=yaml
+  register: namespace_output
+
+- name: Create namespace {{ app_name }}
+  command: echo '{{ namespace_output.output }}' | kubectl apply -f -
+  when: not options.dry_run
+
+- name: Apply helm
+  command: |
+    cd {{ directory }} && \
+    [ ! -d "charts" ] && helm dependency build; \
+    helm template \
+      --include-crds \
+      --kube-version v1.23.6 \
+      --api-versions networking.k8s.io/v1/Ingress \
+      --namespace {{ app_name }} \
+      {{ app_name }} . \
+      | kubectl apply \
+        {%- if app_name not in ['monitoring', 'cert-manager'] %}
+        -n {{ app_name }} \
+        {%- endif %}
+        -f -
+  when: not options.dry_run

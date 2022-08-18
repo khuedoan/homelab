@@ -26,7 +26,7 @@ TODO
 Project status: **Alpha** (see [roadmap](#roadmap) below)
 
 - [x] Common applications: Gitea...
-- [x] Automated Kubernetes installation and management
+- [ ] Automated Kubernetes installation and management
 - [x] Installing and managing applications using GitOps
 - [x] Automatic rolling upgrade for OS and Kubernetes
 - [x] Automatically update apps (with approval)
@@ -35,7 +35,6 @@ Project status: **Alpha** (see [roadmap](#roadmap) below)
 - [x] CI/CD platform
 - [x] Private container registry
 - [x] Distributed storage
-- [x] Support multiple environments (dev, master)
 - [ ] Automatically update DNS records for exposed services
 - [ ] Monitoring and alerting 🚧
 - [ ] Automated offsite backups 🚧

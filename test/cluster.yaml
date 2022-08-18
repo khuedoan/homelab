@@ -1,0 +1,31 @@
+apiVersion: k3d.io/v1alpha4
+kind: Simple
+metadata:
+  name: homelab-dev
+image: docker.io/rancher/k3s:v1.24.3-k3s1
+servers: 1
+agents: 3
+options:
+  k3s:
+    nodeLabels:
+      - label: storage-node=true
+        nodeFilters:
+          - agent:*
+    extraArgs:
+      # add when longhorn is available
+      #- arg: --disable=local-storage
+      #  nodeFilters:
+      #    - server:*
+      - arg: --disable=traefik
+        nodeFilters:
+          - server:*
+      - arg: --disable-cloud-controller
+        nodeFilters:
+          - server:*
+      - arg: "--kubelet-arg=eviction-hard=imagefs.available<1%,nodefs.available<1%"
+        nodeFilters:
+          - agent:*
+      - arg: "--kubelet-arg=eviction-minimum-reclaim=imagefs.available=1%,nodefs.available=1%"
+        nodeFilters:
+          - agent:*
+subnet: 172.28.0.0/16

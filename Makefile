@@ -29,9 +29,6 @@ post-install:
 tools:
 	make -C tools
 
-test:
-	make -C test
-
 dev:
 	make -C metal cluster env=dev
 	make -C bootstrap
