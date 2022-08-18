@@ -25,6 +25,8 @@ prepare_basic_packages:
   #- linux-tools-{{ ansible_kernel }}
   - sysstat
   - lsof
+  - apparmor
+  - apparmor-utils
 
 prepare_unnecesary_packages:
   - snapd

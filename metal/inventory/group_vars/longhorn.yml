@@ -10,4 +10,6 @@ prepare_additional_disks:
 node_labels:
   storage-node: "true"
   node.longhorn.io/create-default-disk: 'config'
-  node.longhorn.io/default-disks-config: '{{ prepare_additional_disks | to_json }}'
+
+node_annotations:
+  node.longhorn.io/default-disks-config: "'{{ prepare_additional_disks | to_json }}'"

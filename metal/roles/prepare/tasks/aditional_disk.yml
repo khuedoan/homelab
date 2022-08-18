@@ -14,8 +14,6 @@
     label: gpt
     number: 1
     state: present
-    resize: true
-    fs_type: ext4
   tags:
     - aditional-disk
 
@@ -44,4 +42,3 @@
     state: mounted
   tags:
     - aditional-disk
-
