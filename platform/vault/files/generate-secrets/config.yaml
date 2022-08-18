@@ -22,6 +22,11 @@
     - key: password
       length: 32
 
+- path: grafana/dex
+  data:
+    - key: client_secret
+      length: 32
+
 # Trow
 - path: trow/admin
   data:

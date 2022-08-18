@@ -54,10 +54,8 @@ kube-prometheus-stack:
 
   grafana:
     enabled: true
-    admin:
-      existingSecret: grafana-admin
-      userKey: user
-      passwordKey: password
+    adminPassword: null
+
     ingress:
       enabled: true
       ingressClassName: nginx-internal
@@ -109,9 +107,21 @@ kube-prometheus-stack:
           k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
         searchNamespace: ALL
 
+    envFromSecret: grafana-secret
     grafana.ini:
       server:
         root_url: https://grafana.k8s.grigri
+
+      auth.generic_oauth:
+        enabled: true
+        allow_sign_up: true
+        name: Dex
+        client_id: grafana-sso
+        client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
+        scopes: openid profile email groups
+        auth_url: https://argocd.k8s.grigri/api/dex/auth
+        token_url: https://argocd.k8s.grigri/api/dex/token
+        api_url: https://argocd.k8s.grigri/api/dex/userinfo
 
   coreDns:
     enabled: true
