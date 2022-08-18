@@ -1,0 +1,20 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: dex-ldap-user
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  target:
+    name: dex-ldap-user
+  data:
+    - secretKey: dn
+      remoteRef:
+        key: /dex/ldap
+        property: dn
+    - secretKey: password
+      remoteRef:
+        key: /dex/ldap
+        property: password

@@ -3,6 +3,133 @@ argo-cd:
     extraArgs:
       - --insecure
     config:
+
+      dex.config: |
+        # Uncomment this block to enable configuration for the expiration time durations.
+        # expiry:
+        #   signingKeys: "6h"
+        #   idTokens: "24h"
+
+        # Options for controlling the logger.
+        logger:
+          level: "info"
+          format: "text" # can also be "json"
+
+        # Uncomment this block to control which response types dex supports. For example
+        # the following response types enable the implicit flow for web-only clients.
+        # Defaults to ["code"], the code flow.
+        # oauth2:
+        #   responseTypes: ["code", "token", "id_token"]
+
+        # Instead of reading from an external storage, use this list of clients.
+        #
+        # If this option isn't chosen clients may be added through the gRPC API.
+        staticClients:
+          - id: grafana-sso
+            name: Grafana
+            redirectURIs:
+              - 'https://grafana.k8s.grigri/login/generic_oauth'
+            secretEnv: GRAFANA_SSO_CLIENT_SECRET
+
+        #   - id: oauth2-proxy
+        #     redirectURIs:
+        #     - 'https://beets.grigri.cloud/oauth2/callback'
+        #     - 'https://netdata.grigri.cloud/oauth2/callback'
+        #     - 'https://sonarr.grigri.cloud/oauth2/callback'
+        #     - 'https://couchpotato.grigri.cloud/oauth2/callback'
+        #     - 'https://freshrss.grigri.cloud/oauth2/callback'
+        #     - 'https://bazarr.grigri.cloud/oauth2/callback'
+        #     - 'https://radarr.grigri.cloud/oauth2/callback'
+        #     - 'https://jackett.grigri.cloud/oauth2/callback'
+        #     - 'https://music.grigri.cloud/oauth2/callback'
+        #     name: 'oauth2-proxy'
+        #     secret: XXXXX
+
+        connectors:
+        - type: ldap
+          # Required field for connector id.
+          id: ldap
+          # Required field for connector name.
+          name: LDAP
+          config:
+            # Host and optional port of the LDAP server in the form "host:port".
+            # If the port is not supplied, it will be guessed based on "insecureNoSSL",
+            # and "startTLS" flags. 389 for insecure or StartTLS connections, 636
+            # otherwise.
+            host: ldap.grigri:389
+
+            # Following field is required if the LDAP host is not using TLS (port 389).
+            # Because this option inherently leaks passwords to anyone on the same network
+            # as dex, THIS OPTION MAY BE REMOVED WITHOUT WARNING IN A FUTURE RELEASE.
+            #
+            # insecureNoSSL: true
+
+            # If a custom certificate isn't provide, this option can be used to turn on
+            # TLS certificate checks. As noted, it is insecure and shouldn't be used outside
+            # of explorative phases.
+            #
+            # insecureSkipVerify: true
+
+            # When connecting to the server, connect using the ldap:// protocol then issue
+            # a StartTLS command. If unspecified, connections will use the ldaps:// protocol
+            #
+            startTLS: true
+
+            # Path to a trusted root certificate file. Default: use the host's root CA.
+            #rootCA: /etc/dex/ldap.ca
+
+            # A raw certificate file can also be provided inline.
+            # rootCAData: ( base64 encoded PEM file )
+
+            # The DN and password for an application service account. The connector uses
+            # these credentials to search for users and groups. Not required if the LDAP
+            # server provides access for anonymous auth.
+            # Please note that if the bind password contains a `$`, it has to be saved in an
+            # environment variable which should be given as the value to `bindPW`.
+            bindDN: "$LDAP_BINDDN"
+            bindPW: "$LDAP_BINDPW"
+
+            # The attribute to display in the provided password prompt. If unset, will
+            # display "Username"
+            usernamePrompt: Username
+
+            # User search maps a username and password entered by a user to a LDAP entry.
+            userSearch:
+              # BaseDN to start the search from. It will translate to the query
+              # "(&(objectClass=person)(uid=<username>))".
+              baseDN: "ou=People,dc=grigri,dc=cloud"
+              # Optional filter to apply when searching the directory.
+              #filter: "(objectClass=inetOrgPerson)"
+              # only allow wheel users
+              filter: "(&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))"
+
+              # username attribute used for comparing user entries. This will be translated
+              # and combined with the other filter as "(<attr>=<username>)".
+              username: uid
+              # The following three fields are direct mappings of attributes on the user entry.
+              # String representation of the user.
+              idAttr: uid
+              # Required. Attribute to map to Email.
+              emailAttr: mail
+              # Maps to display name of users. No default value.
+              nameAttr: cn
+              preferredUsernameAttr: cn
+
+            # Group search queries for groups given a user entry.
+            groupSearch:
+              # The directory directly above the group entry.
+              baseDN: "ou=Groups,dc=grigri,dc=cloud"
+              # Optional filter to apply when searching the directory.
+              filter: "(objectClass=posixGroup)"
+
+              userMatchers:
+              - userAttr: memberOf
+                # dn cannot be used as LDAP attribute, we have RFC2307bis schema and this is
+                # not working.
+                # fixed in: https://github.com/dexidp/dex/pull/1202
+                groupAttr: dn
+              nameAttr: cn
+
       statusbadge.enabled: 'true'
       # The health assessement of argoproj.io/Application CRD has been removed in argocd 1.8
       # (see https://github.com/argoproj/argo-cd/issues/3781 for more information)
@@ -39,15 +166,40 @@ argo-cd:
       serviceMonitor:
         enabled: true
   dex:
-    enabled: false
-  controller:
+    enabled: true
+
+    metrics: *metrics
+
+    env:
+      - name: LDAP_BINDDN
+        valueFrom:
+          secretKeyRef:
+            name: dex-ldap-user
+            key: dn
+      - name: LDAP_BINDPW
+        valueFrom:
+          secretKeyRef:
+            name: dex-ldap-user
+            key: password
+    envFrom:
+      - secretRef:
+          name: grafana-secret
     resources:
       limits:
-        cpu: 1
-        memory: 512Mi
+        cpu: 50m
+        memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
+
+  controller:
+    resources:
       requests:
         cpu: 250m
         memory: 256Mi
+      limits:
+        cpu: 1
+        memory: 512Mi
 
     metrics: *metrics
 
@@ -104,4 +256,3 @@ argo-cd:
       requests:
         cpu: 100m
         memory: 128Mi
-
