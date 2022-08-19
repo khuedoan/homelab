@@ -60,6 +60,20 @@ cluster: $(SSH_KEY_FILE) requirements-ansible
 		$(ANSIBLE_EXTRA_ARGS) \
 		playbooks/install/cluster.yml
 
+.PHONY: uninstall-k3s
+uninstall-k3s:
+uninstall-k3s: $(SSH_KEY_FILE) requirements-ansible
+	${PYTHON_BIN_DIR}/ansible-playbook \
+		$(ANSIBLE_EXTRA_ARGS) \
+		playbooks/uninstall/k3s.yml
+
+.PHONY: uninstall-longhorn
+uninstall-longhorn:
+uninstall-longhorn: $(SSH_KEY_FILE) requirements-ansible
+	${PYTHON_BIN_DIR}/ansible-playbook \
+		$(ANSIBLE_EXTRA_ARGS) \
+		playbooks/uninstall/longhorn.yml
+
 .PHONY: console
 console:
 console: $(SSH_KEY_FILE) requirements

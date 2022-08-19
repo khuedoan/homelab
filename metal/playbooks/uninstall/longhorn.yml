@@ -1,0 +1,10 @@
+- name: Remove longhorn
+  hosts: longhorn
+  tasks:
+  - name: Remove all directories
+    file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - /var/lib/longhorn
+      - /etc/machine-id-new

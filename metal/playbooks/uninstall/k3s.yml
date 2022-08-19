@@ -1,0 +1,26 @@
+- name: Remove k3s
+  hosts: all
+  tasks:
+  - name: Disable k3s
+    systemd:
+      name: k3s
+      enabled: false
+      state: stopped
+
+  - name: Clean all running processes
+    shell: |
+      if [ -e /sys/fs/cgroup/systemd/system.slice/k3s.service/cgroup.procs ]; then
+        kill -9 `cat /sys/fs/cgroup/systemd/system.slice/k3s.service/cgroup.procs`
+      fi
+      umount `cat /proc/self/mounts | awk '{print $2}' | grep '^/run/k3s'`
+      umount `cat /proc/self/mounts | awk '{print $2}' | grep '^/var/lib/rancher/k3s'`
+
+  - name: Remove all directories
+    file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - /etc/systemd/system/k3s.service
+      - /usr/local/bin/k3s
+      - /var/lib/rancher/k3s
+      - /etc/rancher/k3s
