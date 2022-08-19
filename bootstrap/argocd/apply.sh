@@ -4,7 +4,7 @@ helm template \
     --include-crds \
     --namespace argocd \
     argocd . \
-    | kubectl apply -f -
+    | kubectl -n argocd apply -f -
 
 kubectl -n argocd wait --timeout=60s --for condition=Established \
         crd/applications.argoproj.io \
