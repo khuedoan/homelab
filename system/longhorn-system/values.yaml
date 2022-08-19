@@ -31,13 +31,3 @@ longhorn:
       - secretName: grafana-general-tls
         hosts:
           - *host
-
-  longhornManager:
-    nodeSelector:
-      storage-node: "true"
-  longhornDriver:
-    nodeSelector:
-      storage-node: "true"
-  longhornUI:
-    nodeSelector:
-      storage-node: "true"
