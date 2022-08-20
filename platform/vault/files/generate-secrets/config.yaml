@@ -1,25 +1,6 @@
-# Gitea
 - path: gitea/admin
   data:
-    - key: user
-      value: admin
-    - key: password
-      length: 32
-# TODO create tokens and put to Vault automatically
-# - gitea/renovate:
-#   - id
-#   - token
-# - gitea/dex:
-#   - client_id
-#   - client_secret
-# TODO import to vault?
-# - metal/ssh:
-#   - private_key  # needs ending new line https://github.com/ansible/awx/issues/9082
-
-# Dex
-- path: grafana/admin
-  data:
-    - key: user
+    - key: username
       value: admin
     - key: password
       length: 32
@@ -27,12 +8,4 @@
 - path: grafana/dex
   data:
     - key: client_secret
-      length: 32
-
-# Trow
-- path: trow/admin
-  data:
-    - key: user
-      value: admin
-    - key: password
       length: 32
