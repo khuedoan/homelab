@@ -1,0 +1,104 @@
+gitea:
+  image:
+    repository: gitea/gitea
+    rootless: true
+
+  ingress:
+    enabled: true
+    className: nginx-internal
+    annotations:
+      cert-manager.io/cluster-issuer: internal
+      hajimari.io/appName: Gitea
+      hajimari.io/icon: git
+    hosts:
+      - host: &host git.k8s.grigri
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: gitea-tls-certificate
+        hosts:
+          - *host
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  persistence:
+    storageClass: longhorn
+    size: 10Gi
+
+  gitea:
+    admin:
+      existingSecret: gitea-admin
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+    config:
+      server:
+        LANDING_PAGE: explore
+        ROOT_URL: https://git.k8s.grigri
+      database:
+        DB_TYPE: postgres
+        HOST: gitea-postgres:5432
+        NAME: gitea
+        SSL_MODE: skip-verify
+
+    additionalConfigSources:
+      - secret:
+          secretName: gitea-app-ini-database
+
+    ldap:
+      - name: ldap.grigri
+        existingSecret: gitea-ldap-user
+        securityProtocol: starttls
+        host: ldap.grigri
+        port: 389
+        userSearchBase: dc=grigri,dc=cloud
+        userFilter: (&(objectClass=inetOrgPerson)(memberof=cn=gitea,ou=Groups,dc=grigri,dc=cloud)(uid=%s))
+        adminFilter: (&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))
+        emailAttribute: mail
+        usernameAttribute: cn
+        # publicSSHKeyAttribute:
+        synchronize-users:
+
+    oauth: []
+      # - name: 'OAuth 1'
+      #   provider:
+      #   key:
+      #   secret:
+      #   existingSecret:
+      #   autoDiscoverUrl:
+      #   useCustomUrls:
+      #   customAuthUrl:
+      #   customTokenUrl:
+      #   customProfileUrl:
+      #   customEmailUrl:
+
+    extraVolumeMounts:
+      - name: ca-bundle
+        mountPath: /etc/ssl/certs/ca-certificates.crt
+        readOnly: true
+
+    extraVolumes:
+      - name: ca-bundle
+        hostPath:
+          path: /etc/ssl/certs/ca-certificates.crt
+          type: File
+
+  memcached:
+    image:
+      repository: memcached
+      tag: 1.6.6
+      pullPolicy: IfNotPresent
+    arguments: []
+
+  postgresql:
+    enabled: false
