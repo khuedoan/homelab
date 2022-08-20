@@ -1,0 +1,44 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: gitea-postgres
+spec:
+  teamId: gitea
+
+  numberOfInstances: 2
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+  volume:
+    size: 200Mi
+
+  users:
+    gitea:
+    - superuser
+    - createdb
+  databases:
+    gitea: gitea
+
+  dockerImage: registry.opensource.zalan.do/acid/spilo-cdp-arm64-14:2.1-p232
+
+  postgresql:
+    version: "14"
+    parameters:
+      log_statement: all
+      max_connections: "4"
+      shared_buffers: 32MB
+
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/arch
+            operator: In
+            values:
+            - arm64
