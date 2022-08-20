@@ -14,3 +14,15 @@ postgres-operator:
   # configDebug:
   #   # toggles verbose debug logs from the operator
   #   debug_logging: false
+
+  # arm64 not supported
+  nodeSelector:
+    kubernetes.io/arch: amd64
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 250Mi
