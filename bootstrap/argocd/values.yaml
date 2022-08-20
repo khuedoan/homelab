@@ -164,7 +164,7 @@ argo-cd:
           # workaround until fix DN in dex (see LDAP config part)
           g, *, role:admin
 
-      scopes: '[groups]'
+      scopes: '[groups, email]'
 
     ingress:
       enabled: true
