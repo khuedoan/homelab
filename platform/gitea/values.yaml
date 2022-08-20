@@ -82,16 +82,16 @@ gitea:
       #   customProfileUrl:
       #   customEmailUrl:
 
-    extraVolumeMounts:
-      - name: ca-bundle
-        mountPath: /etc/ssl/certs/ca-certificates.crt
-        readOnly: true
+  extraVolumeMounts:
+    - name: ca-bundle
+      mountPath: /etc/ssl/certs/ca-certificates.crt
+      readOnly: true
 
-    extraVolumes:
-      - name: ca-bundle
-        hostPath:
-          path: /etc/ssl/certs/ca-certificates.crt
-          type: File
+  extraVolumes:
+    - name: ca-bundle
+      hostPath:
+        path: /etc/ssl/certs/ca-certificates.crt
+        type: File
 
   memcached:
     image:
