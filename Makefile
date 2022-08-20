@@ -27,7 +27,18 @@ post-install:
 	@./scripts/hacks
 
 tools:
-	make -C tools
+	@docker start \
+		--attach \
+		--interactive \
+		homelab-tools \
+	|| docker run \
+		--interactive \
+		--tty \
+		--network host \
+		--volume $(shell pwd):$(shell pwd) \
+		--workdir $(shell pwd) \
+		--name homelab-tools \
+		nixos/nix nix-shell
 
 test:
 	make -C test
