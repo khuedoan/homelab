@@ -155,8 +155,16 @@ kube-prometheus-stack:
         cpu: 100m
         memory: 100Mi
 
+  prometheus-node-exporter:
+    prometheus:
+      monitor:
+        enabled: true
+
+        relabelings:
+          - sourceLabels: [__meta_kubernetes_pod_node_name]
+            action: replace
+            targetLabel: instance
   ## smart disk data metrics
-  #prometheus-node-exporter:
   #  extraArgs:
   #    - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
   #    - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
