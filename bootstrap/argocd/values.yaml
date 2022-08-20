@@ -162,7 +162,7 @@ argo-cd:
           p, role:none, *, *, */*, deny
           #g, wheel, role:admin
           # workaround until fix DN in dex (see LDAP config part)
-          g, *, role:admin
+          g, pando855@gmail.com, role:admin
 
       scopes: '[groups, email]'
 
