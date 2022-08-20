@@ -32,28 +32,28 @@
 - name: First execution
   when: first_execution.changed
   block:
-  - name: Change user password
-    user:
-      name: "{{ prepare_username }}"
-      password: "{{ prepare_password }}"
-      update_password: always
-    when: prepare_password is defined
+    - name: Change user password
+      user:
+        name: "{{ prepare_username }}"
+        password: "{{ prepare_password }}"
+        update_password: always
+      when: prepare_password is defined
 
-  - name: Upgrade all packages to the latest version
-    apt:
-      name: "*"
-      state: latest
-      force_apt_get: true
-      update_cache: true
-    notify: restart server
+    - name: Upgrade all packages to the latest version
+      apt:
+        name: "*"
+        state: latest
+        force_apt_get: true
+        update_cache: true
+      notify: restart server
 
-  - debug: var=prepare_additional_disks
+    - debug: var=prepare_additional_disks
 
-  - name: Additional storage
-    include_tasks: aditional_disk.yml
-    loop: "{{ prepare_additional_disks }}"
-    tags:
-      - aditional-disk
+    - name: Additional storage
+      include_tasks: aditional_disk.yml
+      loop: "{{ prepare_additional_disks }}"
+      tags:
+        - aditional-disk
 
 - name: Disable unused services
   systemd:
@@ -144,3 +144,12 @@
   tags:
     - hostname
 
+- name: Configure journal log
+  file:
+    src: journald.conf
+    dest: /etc/systemd/journald.conf
+    mode: 0644
+  tags:
+    - journald
+    - logs
+  notify: restart systemd-journald

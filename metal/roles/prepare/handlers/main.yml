@@ -22,6 +22,12 @@
     daemon_reload: true
     state: restarted
 
+- name: restart systemd-journald
+  systemd:
+    name: systemd-journald
+    daemon_reload: true
+    state: restarted
+
 - name: apply network interface
   command: netplan apply
 
