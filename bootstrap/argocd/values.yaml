@@ -162,6 +162,31 @@ argo-cd:
           p, role:none, *, *, */*, deny
           g, wheel, role:admin
 
+          # default values from:
+          # https://github.com/argoproj/argo-cd/blob/506bd3b2827c4502d1f468a0c52e04a86ea6b83e/assets/builtin-policy.csv#L18
+          p, role:admin, applications, create, */*, allow
+          p, role:admin, applications, update, */*, allow
+          p, role:admin, applications, delete, */*, allow
+          p, role:admin, applications, sync, */*, allow
+          p, role:admin, applications, override, */*, allow
+          p, role:admin, applications, action/*, */*, allow
+          p, role:admin, certificates, create, *, allow
+          p, role:admin, certificates, update, *, allow
+          p, role:admin, certificates, delete, *, allow
+          p, role:admin, clusters, create, *, allow
+          p, role:admin, clusters, update, *, allow
+          p, role:admin, clusters, delete, *, allow
+          p, role:admin, repositories, create, *, allow
+          p, role:admin, repositories, update, *, allow
+          p, role:admin, repositories, delete, *, allow
+          p, role:admin, projects, create, *, allow
+          p, role:admin, projects, update, *, allow
+          p, role:admin, projects, delete, *, allow
+          p, role:admin, accounts, update, *, allow
+          p, role:admin, gpgkeys, create, *, allow
+          p, role:admin, gpgkeys, delete, *, allow
+          p, role:admin, exec, create, */*, allow
+
       scopes: '[groups]'
 
     ingress:
@@ -211,7 +236,7 @@ argo-cd:
           type: File
     resources:
       limits:
-        cpu: 50m
+        cpu: 200m
         memory: 64Mi
       requests:
         cpu: 10m
