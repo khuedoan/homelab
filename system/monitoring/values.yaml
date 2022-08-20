@@ -165,10 +165,10 @@ kube-prometheus-stack:
     prometheus:
       monitor:
         enabled: true
-
         relabelings:
-          - sourceLabels: [__meta_kubernetes_pod_node_name]
-            action: replace
+          - action: replace
+            sourceLabels:
+              - __meta_kubernetes_pod_node_name
             targetLabel: instance
   ## smart disk data metrics
   #  extraArgs:
