@@ -2,6 +2,8 @@ kube-prometheus-stack:
   defaultRules:
     rules:
       etcd: false
+      # Disable until fixing: https://github.com/prometheus-community/helm-charts/issues/1283
+      kubeApiserve: false
 
   alertmanager:
     config:
