@@ -1,0 +1,16 @@
+postgres-operator:
+  configGeneral:
+    enable_shm_volume: false
+
+  configMajorVersionUpgrade:
+    # "off": no upgrade, "manual": manifest triggers action, "full": minimal version violation triggers too
+    major_version_upgrade_mode: "full"
+    minimal_major_version: "14"
+
+  configKubernetes:
+    enable_pod_antiaffinity: true
+
+  configLoadBalancer:
+  # configDebug:
+  #   # toggles verbose debug logs from the operator
+  #   debug_logging: false
