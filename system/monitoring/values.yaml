@@ -125,6 +125,12 @@ kube-prometheus-stack:
         token_url: https://argocd.k8s.grigri/api/dex/token
         api_url: https://argocd.k8s.grigri/api/dex/userinfo
 
+    extraVolumeMounts:
+      - name: ca-bundle
+        mountPath: /etc/ssl/certs/ca-certificates.crt
+        readOnly: true
+        hostPath: /etc/ssl/certs/ca-certificates.crt
+
   coreDns:
     enabled: true
     service:
