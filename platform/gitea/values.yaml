@@ -49,7 +49,7 @@ gitea:
         DB_TYPE: postgres
         HOST: gitea-postgres:5432
         NAME: gitea
-        SSL_MODE: skip-verify
+        SSL_MODE: require
 
     additionalConfigSources:
       - secret:
