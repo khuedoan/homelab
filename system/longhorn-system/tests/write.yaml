@@ -1,0 +1,34 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: test-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5G
+  storageClassName: longhorn
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: write
+spec:
+  template:
+    metadata:
+      name: write
+    spec:
+      containers:
+      - name: write
+        image: debian:10.9-slim
+        command: ["dd","if=/dev/zero","of=/mnt/pv/test.img","bs=1G","count=1","oflag=dsync"]
+        volumeMounts:
+        - mountPath: "/mnt/pv"
+          name: test-volume
+      volumes:
+      - name: test-volume
+        persistentVolumeClaim:
+          claimName: test-claim
+      restartPolicy: Never
