@@ -100,9 +100,9 @@ argo-cd:
               # "(&(objectClass=person)(uid=<username>))".
               baseDN: "ou=People,dc=grigri,dc=cloud"
               # Optional filter to apply when searching the directory.
-              filter: "(objectClass=inetOrgPerson)"
+              #filter: "(objectClass=inetOrgPerson)"
               # only allow wheel users
-              #filter: "(&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))"
+              filter: "(&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))"
 
               # username attribute used for comparing user entries. This will be translated
               # and combined with the other filter as "(<attr>=<username>)".
@@ -160,7 +160,9 @@ argo-cd:
       policy.csv: |
           # Grant all members of each LDAP group
           p, role:none, *, *, */*, deny
-          g, wheel, role:admin
+          #g, wheel, role:admin
+          # workaround until fix DN in dex (see LDAP config part)
+          g, *, role:admin
 
       scopes: '[groups]'
 
