@@ -223,7 +223,7 @@ argo-cd:
         cpu: 250m
         memory: 256Mi
       limits:
-        cpu: 1
+        cpu: 2
         memory: 512Mi
 
     metrics: *metrics
