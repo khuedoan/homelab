@@ -200,11 +200,11 @@ argo-cd:
     envFrom:
       - secretRef:
           name: grafana-secret
-    volumeMounts:
+    extraVolumeMounts:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
-    volumes:
+    extraVolumes:
       - name: ca-bundle
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
