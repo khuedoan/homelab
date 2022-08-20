@@ -1,7 +1,7 @@
 - path: gitea/admin
   data:
     - key: username
-      value: admin
+      value: admin_gitea
     - key: password
       length: 32
 
