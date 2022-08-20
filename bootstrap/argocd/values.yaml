@@ -101,7 +101,7 @@ argo-cd:
               # Optional filter to apply when searching the directory.
               #filter: "(objectClass=inetOrgPerson)"
               # only allow wheel users
-              filter: "(&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))"
+              #filter: "(&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))"
 
               # username attribute used for comparing user entries. This will be translated
               # and combined with the other filter as "(<attr>=<username>)".
