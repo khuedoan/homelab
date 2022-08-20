@@ -67,7 +67,7 @@ gitea:
         emailAttribute: mail
         usernameAttribute: cn
         # publicSSHKeyAttribute:
-        synchronize-users:
+        synchronizeUsers:
 
     oauth: []
       # - name: 'OAuth 1'
