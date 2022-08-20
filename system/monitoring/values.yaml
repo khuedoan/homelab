@@ -120,12 +120,11 @@ kube-prometheus-stack:
         name: Dex
         client_id: grafana-sso
         client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
-        scopes: groups email
+        scopes: openid profile email groups
         auth_url: https://argocd.k8s.grigri/api/dex/auth
         token_url: https://argocd.k8s.grigri/api/dex/token
         api_url: https://argocd.k8s.grigri/api/dex/userinfo
-        # TODO
-        #use_pkce: true
+        use_pkce: true
         role_attribute_path: contains(info.roles[*], 'pando855@gmail.com') && 'Admin' ||
 
     extraVolumeMounts:
