@@ -44,12 +44,14 @@ gitea:
     config:
       server:
         LANDING_PAGE: explore
-        ROOT_URL: https://git.k8s.grigri
+        ROOT_URL: https://gitea.grigri.cloud
       database:
         DB_TYPE: postgres
         HOST: gitea-postgres:5432
         NAME: gitea
         SSL_MODE: require
+      service:
+        DISABLE_REGISTRATION: true
 
     additionalConfigSources:
       - secret:
