@@ -1,7 +1,7 @@
 gitea:
   ingress:
     enabled: true
-    className: nginx
+    className: nginx-internal
     annotations:
       cert-manager.io/cluster-issuer: internal
       hajimari.io/appName: Gitea
