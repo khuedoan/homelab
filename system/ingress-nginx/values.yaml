@@ -12,6 +12,12 @@ ingress-nginx:
         proxy_cache_lock on;
         proxy_cache_use_stale updating;
 
+    ingressClassResource:
+      name: nginx-internal
+      enabled: true
+      default: true
+      controllerValue: "k8s.io/ingress-nginx"
+
     ingressClass: nginx-internal
 
     resources:
