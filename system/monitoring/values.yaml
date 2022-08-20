@@ -140,6 +140,12 @@ kube-prometheus-stack:
   kubeEtcd:
     enabled: false
 
+  kubeScheduler:
+    enabled: false
+
+  kubeControllerManager:
+    enabled: false
+
   prometheusOperator:
     # https://github.com/helm/charts/issues/19147
     admissionWebhooks:
