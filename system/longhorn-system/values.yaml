@@ -23,11 +23,6 @@ longhorn:
       cert-manager.io/cluster-issuer: internal
       hajimari.io/appName: Longhorn
       hajimari.io/icon: chart-bar
-    hosts:
-      - &host longhorn.k8s.grigri
-    paths:
-      - /
-    tls:
-      - secretName: grafana-general-tls
-        hosts:
-          - *host
+    host: longhorn.k8s.grigri
+    path: /
+    tls: true
