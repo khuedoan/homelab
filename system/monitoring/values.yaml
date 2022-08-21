@@ -116,7 +116,7 @@ kube-prometheus-stack:
         root_url: https://grafana.k8s.grigri
 
       log:
-        level: debug
+        level: info
 
       auth.generic_oauth:
         enabled: true
@@ -129,7 +129,7 @@ kube-prometheus-stack:
         token_url: https://argocd.k8s.grigri/api/dex/token
         api_url: https://argocd.k8s.grigri/api/dex/userinfo
         use_pkce: true
-        role_attribute_path: contains(info.email[*], 'pando855@gmail.com') && 'Admin'
+        role_attribute_path: info.email == 'pando855@gmail.com' && 'Admin'
 
     extraVolumeMounts:
       - name: ca-bundle
