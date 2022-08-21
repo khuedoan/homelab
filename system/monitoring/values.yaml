@@ -203,23 +203,6 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 35Gi
-      additionalScrapeConfigs:
-        - job_name: 'blackboxhttp'
-          metrics_path: /probe
-          params:
-            module: [http_2xx_ipv4]
-          static_configs:
-            - targets:
-                - http://monitoring-grafana/login
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            # Make instance label the target
-            - source_labels: [__param_target]
-              target_label: instance
-            # Actually talk to the blackblacx exporter though
-            - target_label: __address__
-              replacement: blackbox-exporter:9115  # Blackbox exporter's real name
 
     ingress:
       enabled: true
