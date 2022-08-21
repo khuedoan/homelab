@@ -54,6 +54,8 @@ gitea:
         CONN_MAX_LIFE_TIME: 300s
       service:
         DISABLE_REGISTRATION: true
+      log:
+        LEVEL: debug
 
     additionalConfigSources:
       - secret:
