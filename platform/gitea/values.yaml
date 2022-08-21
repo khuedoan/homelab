@@ -50,6 +50,8 @@ gitea:
         HOST: gitea-postgres:5432
         NAME: gitea
         SSL_MODE: require
+        MAX_OPEN_CONNS: 4
+        CONN_MAX_LIFE_TIME: 300s
       service:
         DISABLE_REGISTRATION: true
 
