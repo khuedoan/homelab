@@ -9,29 +9,30 @@ let
   ]);
 in
 pkgs.mkShell {
-  buildInputs = [
-    pkgs.ansible
-    pkgs.ansible-lint
-    pkgs.bmake
-    pkgs.diffutils
-    pkgs.docker
-    pkgs.docker-compose
-    pkgs.git
-    pkgs.go
-    pkgs.grc
-    pkgs.k9s
-    pkgs.kube3d
-    pkgs.kubectl
-    pkgs.kubernetes-helm
-    pkgs.kustomize
-    pkgs.libisoburn
-    pkgs.neovim
-    pkgs.openssh
-    pkgs.p7zip
-    pkgs.pre-commit
-    pkgs.shellcheck
-    pkgs.terraform
-    pkgs.yamllint
+  buildInputs = with pkgs; [
+    ansible
+    ansible-lint
+    bmake
+    diffutils
+    docker
+    docker-compose
+    git
+    go
+    grc
+    iproute2
+    k9s
+    kube3d
+    kubectl
+    kubernetes-helm
+    kustomize
+    libisoburn
+    neovim
+    openssh
+    p7zip
+    pre-commit
+    shellcheck
+    terraform
+    yamllint
 
     python-packages
   ];
