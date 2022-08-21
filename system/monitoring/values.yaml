@@ -111,11 +111,12 @@ kube-prometheus-stack:
 
     envFromSecret: grafana-secret
 
-    logLevel: DEBUG
-
     grafana.ini:
       server:
         root_url: https://grafana.k8s.grigri
+
+      log:
+        level: debug
 
       auth.generic_oauth:
         enabled: true
