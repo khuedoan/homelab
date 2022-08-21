@@ -35,6 +35,4 @@ pkgs.mkShell {
 
     python-packages
   ];
-
-  KUBECONFIG = builtins.toString ./metal/kubeconfig.yaml;
 }
