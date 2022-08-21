@@ -244,7 +244,7 @@ argo-cd:
       minReplicas: 1
       maxReplicas: 5
       targetCPUUtilizationPercentage: 150
-      targetMemoryUtilizationPercentage: null
+      targetMemoryUtilizationPercentage: 150
     resources:
       limits:
         cpu: 2
