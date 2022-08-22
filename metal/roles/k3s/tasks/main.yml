@@ -66,6 +66,7 @@
       dest: "{{ k3s_config_file }}"
     - src: k3s.service.j2
       dest: "{{ k3s_service_file }}"
+  notify: restart k3s
 
 - name: Enable k3s service
   systemd:
