@@ -24,6 +24,9 @@ kube-prometheus-stack:
           - receiver: 'null'
             match:
               severity: info
+          - receiver: 'null'
+            match:
+              alertname: InfoInhibitor
       receivers:
         - name: telegram
           webhook_configs:
