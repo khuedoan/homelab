@@ -5,7 +5,7 @@ metadata:
 spec:
   teamId: gitea
 
-  numberOfInstances: 1
+  numberOfInstances: 2
 
   resources:
     requests:
