@@ -47,6 +47,9 @@
         update_cache: true
       notify: restart server
 
+    - name: Restart node if necessary after first upgrade
+      meta: flush_handlers
+
     - debug: var=prepare_additional_disks
 
     - name: Additional storage
