@@ -4,6 +4,7 @@ kube-prometheus-stack:
       etcd: false
       # Disable until fixing: https://github.com/prometheus-community/helm-charts/issues/1283
       kubeApiserve: false
+      kubeProxy: false
 
   alertmanager:
     config:
