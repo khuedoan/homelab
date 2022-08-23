@@ -6,7 +6,7 @@ TODO
 
 Add SSH key to `System->Network Device SSH Authentication->SSH Keys`
 
-```
+```bash
 ssh -oPubkeyAcceptedKeyTypes=+ssh-rsa -oHostkeyAlgorithms=+ssh-rsa -oKexAlgorithms=+diffie-hellman-group1-sha1 pando85@{{ hostname }}
 ```
 
@@ -15,7 +15,8 @@ ssh -oPubkeyAcceptedKeyTypes=+ssh-rsa -oHostkeyAlgorithms=+ssh-rsa -oKexAlgorith
 From this [doc][layer_3_adoption], using SSH to adopt devices from the DMZ network.
 
 After SSH into the device:
-```
+
+```bash
 set-inform http://{{ unifi_host }}:8080/inform
 ```
 

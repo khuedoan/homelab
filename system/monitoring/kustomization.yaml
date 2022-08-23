@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+
+helmCharts:
+  - includeCRDs: true
+    name: kube-prometheus-stack
+    releaseName: monitoring
+    repo: https://prometheus-community.github.io/helm-charts
+    valuesFile: values.yaml
+    version: 39.3.0
+
+resources:
+  - resources/grafana-secret.yaml
+  - resources/alertmanager-telegram-forwarder/config.yaml
+  - resources/alertmanager-telegram-forwarder/deployment.yaml
+  - resources/alertmanager-telegram-forwarder/external-secret.yaml
+  - resources/alertmanager-telegram-forwarder/service.yaml
+
+patchesJson6902:
+  - patch: |-
+      - op: add
+        path: "/metadata/annotations/argocd.argoproj.io~1sync-options"
+        value: "Replace=true"
+    target:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      name: prometheuses.monitoring.coreos.com
+      version: v1

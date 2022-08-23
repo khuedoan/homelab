@@ -37,7 +37,4 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ApplyOutOfSyncOnly=true
-          {{- if $stack.syncOptions }}
-          {{- toYaml $stack.syncOptions | nindent 10 }}
-          {{- end }}
 {{- end }}

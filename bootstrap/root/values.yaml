@@ -3,9 +3,7 @@ gitops:
   revision: master
 stacks:
   - name: bootstrap
-    namespace: argocd  # Override default value
+    namespace: argocd
   - name: system
-    syncOptions:
-      - ServerSideApply=true
   - name: platform
   - name: apps

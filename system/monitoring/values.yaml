@@ -1,223 +1,222 @@
-kube-prometheus-stack:
-  defaultRules:
-    rules:
-      etcd: false
-      # Disable until fixing: https://github.com/prometheus-community/helm-charts/issues/1283
-      kubeApiserve: false
-      kubeProxy: false
+defaultRules:
+  rules:
+    etcd: false
+    # Disable until fixing: https://github.com/prometheus-community/helm-charts/issues/1283
+    kubeApiserve: false
+    kubeProxy: false
 
-  alertmanager:
-    config:
-      global:
-        resolve_timeout: 5m
-      route:
-        group_by:
-          - job
-        group_interval: 5m
-        group_wait: 30s
-        receiver: telegram
-        repeat_interval: 12h
-        routes:
-          - receiver: 'null'
-            match:
-              alertname: Watchdog
-          - receiver: 'null'
-            match:
-              severity: info
-          - receiver: 'null'
-            match:
-              alertname: InfoInhibitor
-      receivers:
-        - name: telegram
-          webhook_configs:
-            - send_resolved: true
-              url: http://alertmanager-telegram-forwarder:8080/v1/alerts/7055881
-        - name: 'null'
-    alertmanagerSpec:
-      storage:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: longhorn
-            accessModes: ["ReadWriteOnce"]
-            resources:
-              requests:
-                storage: 100Mi
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by:
+        - job
+      group_interval: 5m
+      group_wait: 30s
+      receiver: telegram
+      repeat_interval: 12h
+      routes:
+        - receiver: 'null'
+          match:
+            alertname: Watchdog
+        - receiver: 'null'
+          match:
+            severity: info
+        - receiver: 'null'
+          match:
+            alertname: InfoInhibitor
+    receivers:
+      - name: telegram
+        webhook_configs:
+          - send_resolved: true
+            url: http://alertmanager-telegram-forwarder:8080/v1/alerts/7055881
+      - name: 'null'
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 100Mi
 
-    ingress:
-      enabled: true
-      ingressClassName: nginx-internal
-      annotations:
-        cert-manager.io/cluster-issuer: internal
-      hosts:
-        - alertmanager.k8s.grigri
-      paths:
-        - /
-      tls:
-        - secretName: alertmanager-general-tls
-          hosts:
-            - alertmanager.k8s.grigri
-
-
-  grafana:
+  ingress:
     enabled: true
-    adminPassword: null
-
-    ingress:
-      enabled: true
-      ingressClassName: nginx-internal
-      annotations:
-        cert-manager.io/cluster-issuer: internal
-        hajimari.io/appName: Grafana
-        hajimari.io/icon: chart-bar
-      hosts:
-        - &host grafana.k8s.grigri
-      tls:
-        - secretName: grafana-general-tls
-          hosts:
-            - *host
-    plugins:
-      - grafana-piechart-panel
-    persistence:
-      enabled: false
-    inMemory:
-      enabled: true
-      ## The maximum usage on memory medium EmptyDir would be
-      ## the minimum value between the SizeLimit specified
-      ## here and the sum of memory limits of all containers in a pod
-      ##
-      sizeLimit: 256Mi
-    additionalDataSources:
-      - name: Loki
-        type: loki
-        url: http://loki-stack:3100
-        access: proxy
-        isDefault: false
-        version: 1
-
-    sidecar:
-      resources:
-        limits:
-          cpu: 100m
-          memory: 128Mi
-        requests:
-          cpu: 100m
-          memory: 64Mi
-      dashboards:
-        enabled: true
-        label: grafana_dashboard
-        resource: configmap
-        folderAnnotation: k8s-sidecar-target-directory
-        provider:
-          foldersFromFilesStructure: true
-        annotations:
-          k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
-        searchNamespace: ALL
-
-    envFromSecret: grafana-secret
-
-    grafana.ini:
-      server:
-        root_url: https://grafana.k8s.grigri
-
-      log:
-        level: info
-
-      auth.generic_oauth:
-        enabled: true
-        allow_sign_up: true
-        name: Dex
-        client_id: grafana-sso
-        client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
-        scopes: openid profile email groups
-        auth_url: https://argocd.k8s.grigri/api/dex/auth
-        token_url: https://argocd.k8s.grigri/api/dex/token
-        api_url: https://argocd.k8s.grigri/api/dex/userinfo
-        use_pkce: true
-        role_attribute_path: email == 'pando855@gmail.com' && 'Admin'
-
-    extraVolumeMounts:
-      - name: ca-bundle
-        mountPath: /etc/ssl/certs/ca-certificates.crt
-        readOnly: true
-        hostPath: /etc/ssl/certs/ca-certificates.crt
-
-  coreDns:
-    enabled: true
-    service:
-      selector:
-        k8s-app: kube-dns
-
-  kubeEtcd:
-    enabled: false
-
-  kubeScheduler:
-    enabled: false
-
-  kubeControllerManager:
-    enabled: false
-
-  prometheusOperator:
-    # https://github.com/helm/charts/issues/19147
-    admissionWebhooks:
-      enabled: false
+    ingressClassName: nginx-internal
+    annotations:
+      cert-manager.io/cluster-issuer: internal
+    hosts:
+      - alertmanager.k8s.grigri
+    paths:
+      - /
     tls:
-      enabled: false
+      - secretName: alertmanager-general-tls
+        hosts:
+          - alertmanager.k8s.grigri
 
+
+grafana:
+  enabled: true
+  adminPassword: null
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx-internal
+    annotations:
+      cert-manager.io/cluster-issuer: internal
+      hajimari.io/appName: Grafana
+      hajimari.io/icon: chart-bar
+    hosts:
+      - &host grafana.k8s.grigri
+    tls:
+      - secretName: grafana-general-tls
+        hosts:
+          - *host
+  plugins:
+    - grafana-piechart-panel
+  persistence:
+    enabled: false
+  inMemory:
+    enabled: true
+    ## The maximum usage on memory medium EmptyDir would be
+    ## the minimum value between the SizeLimit specified
+    ## here and the sum of memory limits of all containers in a pod
+    ##
+    sizeLimit: 256Mi
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      url: http://loki-stack:3100
+      access: proxy
+      isDefault: false
+      version: 1
+
+  sidecar:
     resources:
       limits:
-        cpu: 200m
-        memory: 200Mi
+        cpu: 100m
+        memory: 128Mi
       requests:
         cpu: 100m
-        memory: 100Mi
-
-  prometheus-node-exporter:
-    prometheus:
-      monitor:
-        enabled: true
-        relabelings:
-          - action: replace
-            sourceLabels:
-              - __meta_kubernetes_pod_node_name
-            targetLabel: instance
-  ## smart disk data metrics
-  #  extraArgs:
-  #    - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
-  #    - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
-  #    # this is the new line
-  #    - --collector.textfile.directory=/host/root/var/log/prometheus
-
-  prometheus:
-    prometheusSpec:
-      replicas: 1
-      retentionSize: 30GB
-      retention: 30d
-      resources:
-        requests:
-          cpu: 1
-          memory: 1.14Gi
-        limits:
-          cpu: 3
-          memory: 2Gi
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: longhorn
-            accessModes: ["ReadWriteOnce"]
-            resources:
-              requests:
-                storage: 35Gi
-
-    ingress:
+        memory: 64Mi
+    dashboards:
       enabled: true
-      ingressClassName: nginx-internal
+      label: grafana_dashboard
+      resource: configmap
+      folderAnnotation: k8s-sidecar-target-directory
+      provider:
+        foldersFromFilesStructure: true
       annotations:
-        cert-manager.io/cluster-issuer: internal
-      hosts:
-        - prometheus.k8s.grigri
-      paths:
-        - /
-      tls:
-        - secretName: prometheus-general-tls
-          hosts:
-            - prometheus.k8s.grigri
+        k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
+      searchNamespace: ALL
+
+  envFromSecret: grafana-secret
+
+  grafana.ini:
+    server:
+      root_url: https://grafana.k8s.grigri
+
+    log:
+      level: info
+
+    auth.generic_oauth:
+      enabled: true
+      allow_sign_up: true
+      name: Dex
+      client_id: grafana-sso
+      client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
+      scopes: openid profile email groups
+      auth_url: https://argocd.k8s.grigri/api/dex/auth
+      token_url: https://argocd.k8s.grigri/api/dex/token
+      api_url: https://argocd.k8s.grigri/api/dex/userinfo
+      use_pkce: true
+      role_attribute_path: email == 'pando855@gmail.com' && 'Admin'
+
+  extraVolumeMounts:
+    - name: ca-bundle
+      mountPath: /etc/ssl/certs/ca-certificates.crt
+      readOnly: true
+      hostPath: /etc/ssl/certs/ca-certificates.crt
+
+coreDns:
+  enabled: true
+  service:
+    selector:
+      k8s-app: kube-dns
+
+kubeEtcd:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+prometheusOperator:
+  # https://github.com/helm/charts/issues/19147
+  admissionWebhooks:
+    enabled: false
+  tls:
+    enabled: false
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      enabled: true
+      relabelings:
+        - action: replace
+          sourceLabels:
+            - __meta_kubernetes_pod_node_name
+          targetLabel: instance
+## smart disk data metrics
+#  extraArgs:
+#    - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+#    - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+#    # this is the new line
+#    - --collector.textfile.directory=/host/root/var/log/prometheus
+
+prometheus:
+  prometheusSpec:
+    replicas: 1
+    retentionSize: 30GB
+    retention: 30d
+    resources:
+      requests:
+        cpu: 1
+        memory: 1.14Gi
+      limits:
+        cpu: 3
+        memory: 2Gi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 35Gi
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx-internal
+    annotations:
+      cert-manager.io/cluster-issuer: internal
+    hosts:
+      - prometheus.k8s.grigri
+    paths:
+      - /
+    tls:
+      - secretName: prometheus-general-tls
+        hosts:
+          - prometheus.k8s.grigri
