@@ -5,6 +5,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.6.2
+    argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-options: Replace=true
   creationTimestamp: null
   name: prometheuses.monitoring.coreos.com
