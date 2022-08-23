@@ -5,5 +5,7 @@ stacks:
   - name: bootstrap
     namespace: argocd  # Override default value
   - name: system
+    syncOptions:
+      - ServerSideApply=true
   - name: platform
   - name: apps
