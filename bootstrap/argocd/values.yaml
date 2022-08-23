@@ -150,6 +150,8 @@ argo-cd:
         end
         return hs
 
+      kustomize.buildOptions: --enable-helm
+
     rbacConfig:
       # policy.csv is an file containing user-defined RBAC policies and role definitions (optional).
       # Policy rules are in the form:
