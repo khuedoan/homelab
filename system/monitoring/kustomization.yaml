@@ -5,6 +5,7 @@ namespace: monitoring
 helmCharts:
   - includeCRDs: true
     name: kube-prometheus-stack
+    namespace: monitoring
     releaseName: monitoring
     repo: https://prometheus-community.github.io/helm-charts
     valuesFile: values.yaml
