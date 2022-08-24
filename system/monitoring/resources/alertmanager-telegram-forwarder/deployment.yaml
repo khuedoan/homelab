@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager-telegram-forwarder
+spec:
+  selector:
+    matchLabels:
+      app: alertmanager-telegram-forwarder
+  replicas: 2
+  template:
+    metadata:
+      name: alertmanager-telegram-forwarder
+      labels:
+        app: alertmanager-telegram-forwarder
+    spec:
+      containers:
+        - name: alertmanager-telegram-forwarder
+          image: pando85/alertmanager-telegram-forwarder:1.1.0
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-bot
+                  key: token
+            - name: TEMPLATE_PATH
+              value: "/etc/forwarder/message.j2"
+          resources:
+            limits:
+              cpu: 600m
+              memory: 128M
+            requests:
+              cpu: 100m
+              memory: 40M
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /v1/ping
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          volumeMounts:
+            - mountPath: /etc/forwarder
+              name: alertmanager-forwarder-template
+      volumes:
+        - name: alertmanager-forwarder-template
+          configMap:
+            name: alertmanager-forwarder-template

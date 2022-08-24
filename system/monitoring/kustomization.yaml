@@ -12,9 +12,11 @@ helmCharts:
     version: 39.3.0
 
 resources:
-  - resources/alertmanager-secret.yaml
-  - resources/alertmanager-telegram-template.yaml
   - resources/grafana-secret.yaml
+  - resources/alertmanager-telegram-forwarder/config.yaml
+  - resources/alertmanager-telegram-forwarder/deployment.yaml
+  - resources/alertmanager-telegram-forwarder/external-secret.yaml
+  - resources/alertmanager-telegram-forwarder/service.yaml
 
 patchesJson6902:
   - patch: |-

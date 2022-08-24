@@ -6,15 +6,34 @@ defaultRules:
     kubeProxy: false
 
 alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by:
+        - job
+      group_interval: 5m
+      group_wait: 30s
+      receiver: telegram
+      repeat_interval: 12h
+      routes:
+        - receiver: 'null'
+          match:
+            alertname: Watchdog
+        - receiver: 'null'
+          match:
+            severity: info
+        - receiver: 'null'
+          match:
+            alertname: InfoInhibitor
+    receivers:
+      - name: telegram
+        webhook_configs:
+          - send_resolved: true
+            url: http://alertmanager-telegram-forwarder:8080/v1/alerts/7055881
+      - name: 'null'
   alertmanagerSpec:
     replicas: 2
-
-    useExistingSecret: true
-
-    configMaps:
-      - alertmanager-telegram-template
-
-    configSecret: alertmanager-secret
 
     topologySpreadConstraints:
       - maxSkew: 1
