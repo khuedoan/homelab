@@ -10,11 +10,11 @@ alertmanager:
     replicas: 2
 
     useExistingSecret: true
-    secrets:
-      - alertmanager-secret
 
     configMaps:
       - alertmanager-telegram-template
+
+    configSecret: alertmanager-secret
 
     topologySpreadConstraints:
       - maxSkew: 1
