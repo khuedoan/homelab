@@ -33,6 +33,16 @@ alertmanager:
             url: http://alertmanager-telegram-forwarder:8080/v1/alerts/7055881
       - name: 'null'
   alertmanagerSpec:
+    replicas: 2
+
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: alertmanager
+
     storage:
       volumeClaimTemplate:
         spec:
