@@ -41,7 +41,7 @@ data:
         {{- end }}
     {{- end }}
 
-    {{ define "telegram.default.message" -}}
+    {{ define "telegram.custom.message" -}}
     {{ template "__alert_severity_title" . }}
     {{ template "__alert_severity_text" . }}
     {{- end }}
