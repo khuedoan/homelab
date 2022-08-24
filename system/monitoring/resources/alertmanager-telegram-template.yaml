@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-telegram-template
+data:
+  telegram.tmpl: |
+    {{ define "__alert_severity_prefix_title" -}}
+      {{ if eq .Status "firing" -}}
+        {{ if eq .CommonLabels.severity "warning" -}}
+            ⚠️
+        {{- else if has .CommonLabels.severity (list "critical" "severe") -}}
+            🔴
+        {{- else if eq .CommonLabels.severity "info" -}}
+        ℹ️
+        {{- else }}
+            ⚪️
+        {{- end -}}
+      {{ else -}}
+      ✅
+      {{- end }}
+    {{- end }}
+
+    {{ define "__alert_severity_title" -}}
+      *[{{ .Status | toUpper -}}
+      {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+      ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}*
+    {{- end }}
+
+    {{ define "__alert_severity_text" -}}
+        {{ range .Alerts }}
+            {{- if .Annotations.description }}
+    _{{ .Annotations.description }}_
+            {{- end }}
+            {{- if .Annotations.message }}
+    _{{ .Annotations.message }}_
+            {{- end }}
+    [Prometheus]({{ .GeneratorURL }})
+            {{- if .Annotations.runbook_url }}
+    [Runbook URL]({{ .Annotations.runbook_url }})
+            {{- end }}
+        {{- end }}
+    {{- end }}
+
+    {{ define "telegram.default.message" -}}
+    {{ template "__alert_severity_title" . }}
+    {{ template "__alert_severity_text" . }}
+    {{- end }}
