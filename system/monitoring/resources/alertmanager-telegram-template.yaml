@@ -8,7 +8,7 @@ data:
       {{ if eq .Status "firing" -}}
         {{ if eq .CommonLabels.severity "warning" -}}
             ⚠️
-        {{- else if has .CommonLabels.severity (list "critical" "severe") -}}
+        {{- else if eq .CommonLabels.severity "critical" -}}
             🔴
         {{- else if eq .CommonLabels.severity "info" -}}
         ℹ️
