@@ -3,5 +3,5 @@ name: kured
 version: 0.0.0
 dependencies:
   - name: kured
-    version: 2.15.0
+    version: 3.0.1
     repository: https://weaveworks.github.io/kured
