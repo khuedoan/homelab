@@ -10,17 +10,5 @@
   repositories: ["pando85/homelab"],
   gitAuthor: "Renovate <4646670+renovate85-bot[bot]@users.noreply.github.com>",
   includeForks: true,
-  packageRules: [
-    {
-      "matchPackagePatterns": [
-        "*"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch"
-    }
-  ]
+  rebaseWhen: "conflicted"
 }
