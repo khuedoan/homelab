@@ -10,5 +10,13 @@
   repositories: ["pando85/homelab"],
   gitAuthor: "Renovate <4646670+renovate85-bot[bot]@users.noreply.github.com>",
   includeForks: true,
-  rebaseWhen: "conflicted"
+  rebaseWhen: "conflicted",
+  enabledManagers: [
+    "argocd",
+    "docker",
+    "github-actions",
+    "helm",
+    "kustomize",
+    "pre-commit",
+  ]
 }
