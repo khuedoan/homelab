@@ -23,6 +23,7 @@
     {
       matchPackagePatterns: ".*",
       additionalBranchPrefix: "{{parentDir}}-",
+      addLabels: ["renovate/{{parentDir}}"],
     }
   ]
 }
