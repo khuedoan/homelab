@@ -1,7 +1,7 @@
 // TODO switch to YAML https://github.com/renovatebot/renovate/issues/7031
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
+  extends: [
     "config:base",
     ":preserveSemverRanges"
   ],
@@ -18,5 +18,10 @@
     "helmv3",
     "kustomize",
     "pre-commit",
+  ],
+  packageRules: [
+    {
+      "additionalBranchPrefix": "{{parentDir}}-"
+    }
   ]
 }
