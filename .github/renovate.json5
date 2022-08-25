@@ -21,7 +21,8 @@
   ],
   packageRules: [
     {
-      "additionalBranchPrefix": "{{parentDir}}-"
+      matchPackagePatterns: ".*",
+      additionalBranchPrefix: "{{parentDir}}-",
     }
   ]
 }

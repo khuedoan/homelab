@@ -25,3 +25,7 @@ repos:
       - id: shellcheck
       - id: terraform-fmt
       - id: terraform-validate
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 32.177.0
+    hooks:
+      - id: renovate-config-validator
