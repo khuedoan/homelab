@@ -38,7 +38,7 @@ data:
             {{- if .Annotations.runbook_url }}
     [Runbook URL]({{ .Annotations.runbook_url }})
             {{- end }}
-        {{- end }}
+        {{ end }}
     {{- end }}
 
     {{ define "telegram.custom.message" -}}
