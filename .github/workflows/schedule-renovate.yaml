@@ -1,0 +1,54 @@
+---
+name: Schedule - Renovate
+
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: "Dry-Run"
+        default: "true"
+        required: false
+      logLevel:
+        description: "Log-Level"
+        default: "debug"
+        required: false
+  schedule:
+    - cron: "0/15 * * * *"
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/renovate.json5"
+
+env:
+  LOG_LEVEL: info
+  DRY_RUN: false
+
+jobs:
+  renovate:
+    name: Renovate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Verify Renovate Configuration
+        uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.2
+
+      - name: Generate Token
+        uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Override default config from dispatch variables
+        run: |
+          echo "DRY_RUN=${{ github.event.inputs.dryRun || env.DRY_RUN }}" >> "$GITHUB_ENV"
+          echo "LOG_LEVEL=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" >> "$GITHUB_ENV"
+
+      - name: Renovate
+        uses: renovatebot/github-action@v32.173.0
+        with:
+          configurationFile: .github/renovate.json5
+          token: "x-access-token:${{ steps.generate-token.outputs.token }}"
