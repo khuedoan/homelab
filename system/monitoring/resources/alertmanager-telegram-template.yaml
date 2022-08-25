@@ -5,17 +5,17 @@ metadata:
 data:
   telegram.tmpl: |
     {{ define "__alert_severity_prefix_title" -}}
-      {{ if eq .Status "firing" -}}
-        {{ if eq .CommonLabels.severity "warning" -}}
-            ⚠️
+      {{- if eq .Status "firing" -}}
+        {{- if eq .CommonLabels.severity "info" -}}
+          ℹ️
+        {{- else if eq .CommonLabels.severity "warning" -}}
+          ⚠️
         {{- else if eq .CommonLabels.severity "critical" -}}
-            🔴
-        {{- else if eq .CommonLabels.severity "info" -}}
-        ℹ️
-        {{- else }}
-            ⚪️
+          🔴
+        {{- else -}}
+          🔴
         {{- end -}}
-      {{ else -}}
+      {{- else -}}
       ✅
       {{- end }}
     {{- end }}
@@ -23,11 +23,11 @@ data:
     {{ define "__alert_severity_title" -}}
       *[{{ .Status | toUpper -}}
       {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
-      ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}*
+      ]{{- template "__alert_severity_prefix_title" . -}}{{ .CommonLabels.alertname }}*
     {{- end }}
-
     {{ define "__alert_severity_text" -}}
         {{ range .Alerts }}
+
             {{- if .Annotations.description }}
     _{{ .Annotations.description }}_
             {{- end }}
