@@ -51,4 +51,4 @@ jobs:
         uses: renovatebot/github-action@v32.173.0
         with:
           configurationFile: .github/renovate.json5
-          token: "x-access-token:${{ steps.get_token.outputs.app_token }}"
+          token: "${{ steps.get_token.outputs.app_token }}"
