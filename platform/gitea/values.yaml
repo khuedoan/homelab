@@ -88,7 +88,7 @@ gitea:
       #   customProfileUrl:
       #   customEmailUrl:
 
-  extraVolumeMounts:
+  extraContainerVolumeMounts:
     - name: ca-bundle
       mountPath: /etc/ssl/certs/ca-certificates.crt
       readOnly: true
