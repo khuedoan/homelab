@@ -35,12 +35,12 @@ jobs:
       - name: Verify Renovate Configuration
         uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.2
 
-      - name: Generate Token
-        uses: tibdex/github-app-token@v1
-        id: generate-token
+      - name: Get token
+        id: get_token
+        uses: machine-learning-apps/actions-app-token@master
         with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_PEM: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Override default config from dispatch variables
         run: |
@@ -51,4 +51,4 @@ jobs:
         uses: renovatebot/github-action@v32.173.0
         with:
           configurationFile: .github/renovate.json5
-          token: "x-access-token:${{ steps.generate-token.outputs.token }}"
+          token: "x-access-token:${{ steps.get_token.outputs.app_token }}"
