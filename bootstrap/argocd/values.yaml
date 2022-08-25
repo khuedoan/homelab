@@ -254,6 +254,9 @@ argo-cd:
       requests:
         cpu: 500m
         memory: 64Mi
+    env:
+      - name: ARGOCD_EXEC_TIMEOUT
+        value: "300s"
 
     metrics: *metrics
 
