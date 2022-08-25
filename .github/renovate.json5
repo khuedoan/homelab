@@ -2,7 +2,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:base",
+    ":preserveSemverRanges"
   ],
   platform: "github",
   username: "renovate85-bot[bot]",
