@@ -1,0 +1,8 @@
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: bgpadvertisement1
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - default
