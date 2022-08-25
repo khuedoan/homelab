@@ -11,6 +11,8 @@
   gitAuthor: "Renovate <4646670+renovate85-bot[bot]@users.noreply.github.com>",
   includeForks: true,
   rebaseWhen: "conflicted",
+  branchConcurrentLimit: 5,
+  commitMessagePrefix: "{{parentDir}}: ",
   enabledManagers: [
     "argocd",
     "github-actions",
