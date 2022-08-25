@@ -39,9 +39,17 @@ git checkout dev
 
 Open the tools container, which includes all the tools needed:
 
-```sh
-make tools
-```
+=== "Docker"
+
+    ```sh
+    make tools
+    ```
+
+=== "Nix"
+
+    ```sh
+    nix-shell
+    ```
 
 Build a development cluster and bootstrap it:
 
