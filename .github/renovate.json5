@@ -13,9 +13,9 @@
   rebaseWhen: "conflicted",
   enabledManagers: [
     "argocd",
-    "docker",
     "github-actions",
-    "helm",
+    "helm-values",
+    "helmv3",
     "kustomize",
     "pre-commit",
   ]
