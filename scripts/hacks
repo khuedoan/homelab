@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python
 
 """
 Quick and dirty script for things that I can't/don't have time to do properly yet

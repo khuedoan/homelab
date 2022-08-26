@@ -2,9 +2,17 @@
 
 Open the tools container if you haven't already:
 
-```sh
-make tools
-```
+=== "Docker"
+
+    ```sh
+    make tools
+    ```
+
+=== "Nix"
+
+    ```sh
+    nix-shell
+    ```
 
 Build the lab:
 
