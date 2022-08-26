@@ -6,4 +6,4 @@ resources:
   - crd/snapshot.storage.k8s.io_volumesnapshots.yaml
   - controller/rbac-snapshot-controller.yaml
   - controller/setup-snapshot-controller.yaml
-
+  - snapshot-class.yaml
