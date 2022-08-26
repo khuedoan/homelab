@@ -49,8 +49,12 @@ alertmanager:
 
 
 grafana:
+  image:
+    repository: grafana/grafana
+    tag: "9.1.1"
   enabled: true
   adminPassword: null
+  defaultDashboardsTimezone: cet
 
   ingress:
     enabled: true
