@@ -64,6 +64,7 @@ nav:
     - runbooks/documentation.md
     - runbooks/gitea.md
     - runbooks/longhorn.md
+    - runbooks/tools-container.md
     - runbooks/vault.md
   - troubleshooting.md
   - User guide:
