@@ -21,8 +21,3 @@ provider "cloudflare" {
   email   = var.cloudflare_email
   api_key = var.cloudflare_api_key
 }
-
-provider "kubernetes" {
-  # Use KUBE_CONFIG_PATH environment variables
-  # Or in cluster service account
-}
