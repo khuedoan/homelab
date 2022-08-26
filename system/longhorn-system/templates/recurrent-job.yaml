@@ -1,0 +1,14 @@
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: base
+spec:
+  cron: "0 4 * * *"
+  task: snapshot
+  groups:
+    - base
+  retain: 7
+  concurrency: 3
+  labels:
+    recurring-job-group.longhorn.io/base/retain: one-week
+    recurring-job-group.longhorn.io/base/frecuency: daily
