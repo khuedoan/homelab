@@ -50,7 +50,7 @@ alertmanager:
 
 grafana:
   enabled: true
-  adminPassword: null
+
   defaultDashboardsTimezone: cet
 
   ingress:
@@ -104,6 +104,9 @@ grafana:
         k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
       searchNamespace: ALL
 
+  env:
+    GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+
   envFromSecret: grafana-secret
 
   grafana.ini:
@@ -131,6 +134,8 @@ grafana:
       mountPath: /etc/ssl/certs/ca-certificates.crt
       readOnly: true
       hostPath: /etc/ssl/certs/ca-certificates.crt
+
+  revisionHistoryLimit: 2
 
 coreDns:
   enabled: true
