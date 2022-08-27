@@ -53,6 +53,12 @@ grafana:
 
   defaultDashboardsTimezone: cet
 
+  # needed for loading initial datasources
+  admin:
+    existingSecret: grafana-admin-secret
+    userKey: username
+    passwordKey: password
+
   ingress:
     enabled: true
     ingressClassName: nginx-internal
@@ -103,9 +109,6 @@ grafana:
       annotations:
         k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
       searchNamespace: ALL
-
-  env:
-    GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
 
   envFromSecret: grafana-secret
 

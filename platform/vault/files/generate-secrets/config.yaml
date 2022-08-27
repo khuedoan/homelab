@@ -9,3 +9,10 @@
   data:
     - key: client_secret
       length: 32
+
+- path: grafana/admin
+  data:
+    - key: username
+      value: admin
+    - key: password
+      length: 32
