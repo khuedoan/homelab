@@ -12,7 +12,7 @@ metadata:
   name: snapshot-controller
   namespace: kube-system
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: snapshot-controller
@@ -20,11 +20,6 @@ spec:
   # in #504 the snapshot-controller will exit after around 7.5 seconds if it
   # can't find the v1 CRDs so this value should be greater than that
   minReadySeconds: 15
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-    type: RollingUpdate
   template:
     metadata:
       labels:
