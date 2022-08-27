@@ -45,6 +45,8 @@ gitea:
       server:
         LANDING_PAGE: explore
         ROOT_URL: https://gitea.grigri.cloud
+        SSH_DOMAIN: gitea.grigri.cloud
+        SSH_PORT: 29518
       database:
         DB_TYPE: postgres
         HOST: gitea-postgres:5432
