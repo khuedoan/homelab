@@ -1,6 +1,18 @@
 longhorn:
   image:
     csi:
+      attacher:
+        repository: longhornio/csi-attacher
+        tag: v3.4.0
+      provisioner:
+        repository: longhornio/csi-provisioner
+        tag: v2.1.2
+      nodeDriverRegistrar:
+        repository: longhornio/csi-node-driver-registrar
+        tag: v2.5.0
+      resizer:
+        repository: longhornio/csi-resizer
+        tag: v1.2.0
       snapshotter:
         repository: longhornio/csi-snapshotter
         tag: v4.2.1
