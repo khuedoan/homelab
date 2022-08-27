@@ -31,8 +31,6 @@ gitea:
   persistence:
     storageClass: longhorn
     size: 10Gi
-    labels:
-      recurring-job-group.longhorn.io/base: enabled
 
   gitea:
     admin:

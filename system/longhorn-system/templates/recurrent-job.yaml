@@ -1,12 +1,13 @@
 apiVersion: longhorn.io/v1beta1
 kind: RecurringJob
 metadata:
-  name: base
+  name: default
 spec:
   cron: "0 4 * * *"
   task: snapshot
   groups:
-    - base
+    # if not default you have to label VOLUMES (not pvc)
+    - default
   retain: 7
   concurrency: 3
   labels:
