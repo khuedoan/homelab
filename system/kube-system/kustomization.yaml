@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kube-system
 resources:
-  - snapahot-controller/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
-  - snapahot-controller/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
-  - snapahot-controller/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
-  - snapahot-controller/controller/rbac-snapshot-controller.yaml
-  - snapahot-controller/controller/setup-snapshot-controller.yaml
-  - snapahot-controller/snapshot-class.yaml
+  - snapshot-controller/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
+  - snapshot-controller/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
+  - snapshot-controller/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
+  - snapshot-controller/controller/rbac-snapshot-controller.yaml
+  - snapshot-controller/controller/setup-snapshot-controller.yaml
+  - snapshot-controller/snapshot-class.yaml
