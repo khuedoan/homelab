@@ -89,15 +89,19 @@ spec:
             - *host
           secretName: vault-tls-certificate
 
-  # Use local disk to store Vault file data, see config section.
-  volumes:
-    - name: vault-file
-      persistentVolumeClaim:
-        claimName: vault-file
-
   volumeMounts:
     - name: vault-file
       mountPath: /vault/file
+
+  volumeClaimTemplates:
+    - metadata:
+        name: vault-file
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
 
   # Support for distributing the generated CA certificate Secret to other namespaces.
   # Define a list of namespaces or use ["*"] for all namespaces.
@@ -207,15 +211,3 @@ spec:
 
   # Marks presence of Istio, which influences things like port namings
   istioEnabled: false
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: vault-file
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
