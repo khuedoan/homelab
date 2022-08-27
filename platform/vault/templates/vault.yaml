@@ -211,3 +211,39 @@ spec:
 
   # Marks presence of Istio, which influences things like port namings
   istioEnabled: false
+  externalConfig:
+    secrets:
+      # https://learn.hashicorp.com/tutorials/vault/pki-engine
+      - type: pki
+        path: pki/grigri
+        description: Grigri root CA
+        config:
+          default_lease_ttl: "9528h"  # 397 days -> max certificate validity
+          max_lease_ttl: "87600h"  # 10 years
+        configuration:
+          config:
+            - name: urls
+              issuing_certificates:
+                - https://vault.k8s.grigri/v1/pki/grigri/ca
+              crl_distribution_points:
+                - https://vault.k8s.grigri/v1/pki/grigri/crl
+          roles:
+            - name: internal-certificates-grigri
+              allow_localhost: false
+              ttl: "9528h"
+              max_ttl: "9528h"
+              allow_glob_domains: true
+              allowed_domains:
+                - "*.grigri"
+              allow_subdomains: true
+              server_flag: true
+              client_flag: false
+              key_type: "rsa"
+              key_bits: 4096
+              signature_bits: 256
+              organization: "grigri"
+              country: "ES"
+              locality: "Madrid"
+              province: "Madrid"
+              allowed_domains_template: false
+              issuer_ref: "default"
