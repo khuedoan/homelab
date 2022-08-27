@@ -12,3 +12,4 @@
         - external-dns
         - k8up-operator
         - tekton-pipelines
+        - zerotier

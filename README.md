@@ -47,6 +47,7 @@ More information can be found in [the roadmap](#roadmap) below.
 - [x] Modular architecture, easy to add or remove features/components
 - [x] Automated certificate management
 - [x] Automatically update DNS records for exposed services
+- [x] VPN
 - [x] Expose services to the internet securely with [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
 - [x] CI/CD platform
 - [x] Private container registry
@@ -194,6 +195,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://simpleicons.org/icons/vault.svg"></td>
         <td><a href="https://www.vaultproject.io">Vault</a></td>
         <td>Secrets and encryption management system</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png"></td>
+        <td><a href="https://zerotier.com">ZeroTier</a></td>
+        <td>VPN without port-forwarding</td>
     </tr>
 </table>
 
