@@ -11,5 +11,5 @@ spec:
   retain: 7
   concurrency: 3
   labels:
-    recurring-job-group.longhorn.io/default/retain: one-week
-    recurring-job-group.longhorn.io/default/frecuency: daily
+    recurring-job-group.longhorn.io/default-retain: one-week
+    recurring-job-group.longhorn.io/default-frecuency: daily
