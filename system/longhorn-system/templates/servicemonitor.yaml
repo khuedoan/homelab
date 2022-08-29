@@ -1,4 +1,3 @@
-# TODO alert rules following https://longhorn.io/docs/1.1.0/monitoring/prometheus_and_grafana_setup/
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
