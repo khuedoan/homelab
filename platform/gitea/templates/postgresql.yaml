@@ -16,7 +16,7 @@ spec:
       memory: 256Mi
 
   volume:
-    size: 500Mi
+    size: 1Gi
 
   users:
     gitea:
