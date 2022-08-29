@@ -4,6 +4,8 @@ metadata:
   name: {{ .Release.Name }}
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  labels:
+    release: monitoring
 spec:
   selector:
     matchLabels:

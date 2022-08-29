@@ -40,6 +40,8 @@ gitea:
       enabled: true
       serviceMonitor:
         enabled: true
+        additionalLabels:
+          release: monitoring
 
     config:
       server:

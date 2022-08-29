@@ -193,6 +193,8 @@ argo-cd:
       enabled: true
       serviceMonitor:
         enabled: true
+        additionalLabels:
+          release: monitoring
   dex:
     enabled: true
 

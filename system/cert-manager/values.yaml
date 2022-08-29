@@ -18,6 +18,8 @@ cert-manager:
     enabled: true
     servicemonitor:
       enabled: true
+      labels:
+        release: monitoring
 
   webhook:
     resources:
