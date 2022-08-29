@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    role: alert-rules
+    release: monitoring
   name: prometheus-longhorn-rules
 spec:
   groups:
