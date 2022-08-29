@@ -11,7 +11,7 @@ Below is a list of external resources and why we need them (also see some [alter
 | --------        | --------        | -------                                                                                                                     |
 | Terraform Cloud | Workspace       | Terraform state backend                                                                                                     |
 | Cloudflare      | DNS             | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates                 |
-| Cloudflare      | Tunnel          | Public services to the internet without port-forwarding                                                                     |
+| Cloudflare      | Tunnel          | Public services to the internet without port forwarding                                                                     |
 | ZeroTier        | Virtual network | Use as VPN to access home network from anywhere (with [UDP hole punching](https://en.wikipedia.org/wiki/UDP_hole_punching)) |
 <!-- | Minio           | Bucket     | Onsite backup                                                                                               | -->
 <!-- | AWS             | S3 Glacier | Offsite backup                                                                                              | -->
@@ -73,7 +73,7 @@ To avoid vendor lock-in, each external provider must have an equivalent alternat
     - Update cert-manager and external-dns to use a different provider
     - [Manual DNS setup](../../tutorials/manual-dns-setup.md)
 - Cloudflare Tunnel:
-    - Use port-forwarding if it's available
+    - Use port forwarding if it's available
     - Create a small VPS in the cloud and utilize Wireguard and HAProxy to route traffic via it
     - Access everything via VPN
     - See also [awesome tunneling](https://github.com/anderspitman/awesome-tunneling)
@@ -81,5 +81,5 @@ To avoid vendor lock-in, each external provider must have an equivalent alternat
     - [Host your own ZeroTier](https://docs.zerotier.com/self-hosting/introduction)
     - [Tailscale](https://tailscale.com) (closed source, but you can use [Headscale](https://github.com/juanfont/headscale) to host your own Tailscale control server)
     - [Netmaker](https://www.netmaker.org) (there's no hosted version, you'll need to host your own server)
-    - Wireguard server (requires port-forwarding)
+    - Wireguard server (requires port forwarding)
 <!-- - Minio and S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio... -->
