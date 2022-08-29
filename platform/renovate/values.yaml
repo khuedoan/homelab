@@ -1,6 +1,6 @@
 renovate:
   cronjob:
-    schedule: '0 9 1 * *'  # At 09:00 every month
+    schedule: '0 9 * * *'  # Everyday at 09:00
   renovate:
     config: |
       {
