@@ -265,6 +265,10 @@ argo-cd:
 
     metrics: *metrics
 
+  configs:
+    secret:
+      createSecret: false
+
   redis:
     resources:
       limits:
