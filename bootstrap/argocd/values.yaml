@@ -334,7 +334,7 @@ argo-cd:
 
     subscriptions:
       - recipients:
-          - telegram:7055881
+          - telegram:-7055881
         triggers:
           - on-deployed
           - on-health-degraded
