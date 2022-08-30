@@ -131,6 +131,9 @@ argo-cd:
                 groupAttr: dn
               nameAttr: cn
 
+      # Disable git polling
+      timeout.reconciliation: "0"
+
       statusbadge.enabled: 'true'
       # The health assessement of argoproj.io/Application CRD has been removed in argocd 1.8
       # (see https://github.com/argoproj/argo-cd/issues/3781 for more information)
