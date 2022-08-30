@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: alertmanager-telegram-template
+  namespace: monitoring
 data:
   telegram.tmpl: |
     {{ define "__alert_severity_prefix_title" -}}
