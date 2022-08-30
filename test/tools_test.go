@@ -10,7 +10,10 @@ import (
 
 func TestToolsContainer(t *testing.T) {
 	image := "nixos/nix"
-	projectRoot, _ := filepath.Abs("../")
+	projectRoot, err := filepath.Abs("../")
+	if err != nil {
+		t.FailNow()
+	}
 
 	options := &docker.RunOptions{
 		Remove: true,
