@@ -1,0 +1,15 @@
+prepare_additional_disks:
+  - name: hdd
+    dev_id: /dev/disk/by-id/ata-TOSHIBA_HDWQ140_Y8I5K0D2FAYG
+    path: "/var/lib/longhorn/TOSHIBA HDWQ140"
+    allowScheduling: true
+    force_format: false
+    tags:
+      - hdd
+  - name: ssd
+    dev_id: /dev/disk/by-id/ata-SanDisk_SD6SB1M-128G-1006_141924401021
+    path: /var/lib/longhorn/ata-SanDisk_SD6SB1M-128G-1006_141924401021
+    allowScheduling: true
+    force_format: false
+    tags:
+      - ssd

@@ -1,12 +1,4 @@
 ---
-prepare_additional_disks:
-  - name: hdd
-    dev: /dev/sda
-    path: "/var/lib/longhorn/{{ ansible_devices['sda'].model }}"
-    allowScheduling: true
-    tags:
-      - hdd
-
 node_labels:
   storage-node: "true"
   node.longhorn.io/create-default-disk: 'config'

@@ -50,13 +50,13 @@
     - name: Restart node if necessary after first upgrade
       meta: flush_handlers
 
-    - debug: var=prepare_additional_disks
+- debug: var=prepare_additional_disks
 
-    - name: Additional storage
-      include_tasks: aditional_disk.yml
-      loop: "{{ prepare_additional_disks }}"
-      tags:
-        - aditional-disk
+- name: Additional storage
+  include_tasks: aditional_disk.yml
+  loop: "{{ prepare_additional_disks }}"
+  tags:
+    - aditional-disk
 
 - name: Disable unused services
   systemd:
