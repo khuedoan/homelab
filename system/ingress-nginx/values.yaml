@@ -22,17 +22,17 @@ ingress-nginx:
 
     resources:
       limits:
-        memory: 256Mi
+        memory: 328Mi
       requests:
         cpu: 100m
-        memory: 256Mi
+        memory: 150Mi
 
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 2
       maxReplicas: 11
       targetCPUUtilizationPercentage: 50
-      targetMemoryUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 200
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
