@@ -35,9 +35,6 @@ data:
     _{{ .Annotations.message }}_
             {{- end }}
     [Prometheus]({{ .GeneratorURL }})
-            {{- if .Annotations.runbook_url }}
-    [Runbook URL]({{ .Annotations.runbook_url }})
-            {{- end }}
         {{ end }}
     {{- end }}
 
