@@ -313,6 +313,8 @@ notifications:
   metrics:
     enabled: false
 
+  logLevel: debug
+
   notifiers:
     service.telegram: |
       token: $telegram-token
