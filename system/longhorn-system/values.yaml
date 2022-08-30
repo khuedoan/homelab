@@ -1,47 +1,31 @@
-longhorn:
-  image:
-    csi:
-      attacher:
-        repository: longhornio/csi-attacher
-        tag: v3.4.0
-      provisioner:
-        repository: longhornio/csi-provisioner
-        tag: v2.1.2
-      nodeDriverRegistrar:
-        repository: longhornio/csi-node-driver-registrar
-        tag: v2.5.0
-      resizer:
-        repository: longhornio/csi-resizer
-        tag: v1.2.0
-      snapshotter:
-        repository: longhornio/csi-snapshotter
-        tag: v4.2.1
-  persistence:
-    # If you have three or more nodes for storage, use 3; otherwise use 2
-    defaultClassReplicaCount: 2  # TODO run DR test to see if we actually need 3
+image:
+  csi:
+    snapshotter:
+      repository: longhornio/csi-snapshotter
+      tag: v4.2.1
 
-  defaultSettings:
-    nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-    createDefaultDiskLabeledNodes: true
-    defaultDataPath: ""
-    backupTarget: s3://longhorn-backups@us-east-1/
-    backupTargetCredentialSecret: minio-secret
+defaultSettings:
+  nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+  createDefaultDiskLabeledNodes: true
+  defaultDataPath: ""
+  backupTarget: s3://longhorn-backups@us-east-1/
+  backupTargetCredentialSecret: minio-secret
 
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
-  ingress:
-    enabled: true
-    ingressClassName: nginx-internal
-    annotations:
-      cert-manager.io/cluster-issuer: internal
-      hajimari.io/appName: Longhorn
-      hajimari.io/icon: chart-bar
-    host: longhorn.k8s.grigri
-    path: /
-    tls: true
+ingress:
+  enabled: true
+  ingressClassName: nginx-internal
+  annotations:
+    cert-manager.io/cluster-issuer: internal
+    hajimari.io/appName: Longhorn
+    hajimari.io/icon: chart-bar
+  host: longhorn.k8s.grigri
+  path: /
+  tls: true

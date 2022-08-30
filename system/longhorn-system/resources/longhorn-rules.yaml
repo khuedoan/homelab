@@ -4,6 +4,7 @@ metadata:
   labels:
     release: monitoring
   name: prometheus-longhorn-rules
+  namespace: longhorn-system
 spec:
   groups:
   - name: longhorn.rules

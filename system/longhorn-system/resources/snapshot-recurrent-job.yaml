@@ -1,10 +1,11 @@
 apiVersion: longhorn.io/v1beta1
 kind: RecurringJob
 metadata:
-  name: default-backup
+  name: default
+  namespace: longhorn-system
 spec:
-  cron: "30 4 * * *"
-  task: backup
+  cron: "0 4 * * *"
+  task: snapshot
   groups:
     # if not default you have to label VOLUMES (not pvc)
     - default

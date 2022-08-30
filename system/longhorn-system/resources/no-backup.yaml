@@ -5,6 +5,7 @@ apiVersion: longhorn.io/v1beta1
 kind: RecurringJob
 metadata:
   name: no-backup
+  namespace: longhorn-system
 spec:
   # Monday at 05:00
   cron: "0 5 * * 1"

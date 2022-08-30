@@ -1,7 +1,8 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Release.Name }}
+  name: longhorn-system
+  namespace: longhorn-system
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   labels:
@@ -12,6 +13,6 @@ spec:
       app: longhorn-manager
   namespaceSelector:
     matchNames:
-      - {{ .Release.Namespace }}
+      - longhorn-system
   endpoints:
     - port: manager
