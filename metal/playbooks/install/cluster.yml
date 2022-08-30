@@ -20,8 +20,12 @@
       when:
         - node_labels is defined
         - node_labels is mapping
+      tags:
+        - node-tag
 
     - debug: var=inventory_node_labels
+      tags:
+        - node-tag
 
     - name: Set label to node
       command: >-
@@ -31,8 +35,10 @@
       become: false
       delegate_to: localhost
       changed_when: false
+      tags:
+        - node-tag
 
-    - name: Populate inventory node label
+    - name: Populate inventory node annotations
       vars:
         inventory_node_annotations: []
       set_fact:
@@ -41,10 +47,14 @@
       when:
         - node_annotations is defined
         - node_annotations is mapping
+      tags:
+        - node-annotations
 
     - debug: var=inventory_node_annotations
+      tags:
+        - node-annotations
 
-    - name: Set label to node
+    - name: Set annotations to node
       command: >-
           kubectl annotate node {{ kube_override_hostname | default(inventory_hostname) }} {{ item }} --overwrite=true
       loop: "{{ inventory_node_annotations }}"
@@ -52,3 +62,5 @@
       become: false
       delegate_to: localhost
       changed_when: false
+      tags:
+        - node-annotations
