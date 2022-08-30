@@ -9,14 +9,18 @@ spec:
       name: read
     spec:
       containers:
-      - name: read
-        image: ubuntu:xenial
-        command: ["dd","if=/mnt/pv/test.img","of=/dev/null","bs=8k"]
-        volumeMounts:
-        - mountPath: "/mnt/pv"
-          name: test-volume
+        - name: read
+          image: ubuntu:xenial
+          command:
+            - dd
+            - if=/mnt/pv/test.img
+            - of=/dev/null
+            - bs=8k
+          volumeMounts:
+            - mountPath: "/mnt/pv"
+              name: test-volume
       volumes:
-      - name: test-volume
-        persistentVolumeClaim:
-          claimName: test-claim
+        - name: test-volume
+          persistentVolumeClaim:
+            claimName: test-claim
       restartPolicy: Never
