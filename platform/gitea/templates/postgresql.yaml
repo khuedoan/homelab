@@ -36,7 +36,7 @@ spec:
       log_connections: 'off'
       log_disconnections: 'off'
       log_lock_waits: 'off'
-      log_min_duration_statement: -1
+      log_min_duration_statement: "-1"
       log_statement: none
 
   nodeAffinity:
