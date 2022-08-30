@@ -251,14 +251,14 @@ argo-cd:
       minReplicas: 1
       maxReplicas: 5
       targetCPUUtilizationPercentage: 150
-      targetMemoryUtilizationPercentage: 150
+      targetMemoryUtilizationPercentage: 90
     resources:
       limits:
-        cpu: 2
+        cpu: 2.5
         memory: 512Mi
       requests:
-        cpu: 500m
-        memory: 64Mi
+        cpu: 1
+        memory: 512Mi
     env:
       - name: ARGOCD_EXEC_TIMEOUT
         value: "300s"
