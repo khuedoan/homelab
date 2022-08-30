@@ -1,2 +1,21 @@
 metallb:
   existingConfigMap: metallb-config
+
+  controller:
+    enabled: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 54Mi
+      limits:
+        cpu: 100m
+        memory: 100Mi
+
+  speaker:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 24Mi
+      limits:
+        cpu: 100m
+        memory: 100Mi
