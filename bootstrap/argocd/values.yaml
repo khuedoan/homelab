@@ -336,7 +336,6 @@ argo-cd:
       - recipients:
           - telegram:-1001533258564
         triggers:
-          - on-deployed
           - on-health-degraded
           - on-sync-failed
 
