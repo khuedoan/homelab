@@ -13,6 +13,10 @@
   rebaseWhen: "conflicted",
   branchConcurrentLimit: 10,
   commitMessagePrefix: "{{parentDir}}: ",
+  timezone: "Europe/Madrid",
+  "schedule": [
+    "after 5am on Monday"
+    ],
   enabledManagers: [
     "argocd",
     "github-actions",
