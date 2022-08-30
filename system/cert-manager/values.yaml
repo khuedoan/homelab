@@ -1,6 +1,15 @@
 cert-manager:
   installCRDs: true
 
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 36Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
   extraArgs:
     # When this flag is enabled, secrets will be automatically removed when the certificate resource is deleted
     - --enable-certificate-owner-ref=true
@@ -8,11 +17,6 @@ cert-manager:
   global:
     leaderElection:
       namespace: cert-manager
-
-  resources:
-    requests:
-      cpu: 10m
-      memory: 32Mi
 
   prometheus:
     enabled: true
@@ -25,10 +29,16 @@ cert-manager:
     resources:
       requests:
         cpu: 10m
-        memory: 32Mi
+        memory: 18Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
 
   cainjector:
     resources:
       requests:
-        cpu: 10m
-        memory: 32Mi
+        cpu: 20m
+        memory: 72Mi
+      limits:
+        cpu: 100m
+        memory: 172Mi
