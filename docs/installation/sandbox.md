@@ -54,7 +54,7 @@ Open the tools container, which includes all the tools needed:
 Build a development cluster and bootstrap it:
 
 ```
-make
+make dev
 ```
 
 !!! note
