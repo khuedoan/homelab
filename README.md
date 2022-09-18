@@ -249,6 +249,7 @@ References:
 - [Initialize GitOps repository on Gitea and integrate with Tekton by RedHat](https://github.com/redhat-scholars/tekton-tutorial/tree/master/triggers)
 - [SSO configuration from xUnholy/k8s-gitops](https://github.com/xUnholy/k8s-gitops)
 - [Pre-commit config from k8s-at-home/flux-cluster-template](https://github.com/k8s-at-home/flux-cluster-template)
+- [Diátaxis technical documentation framework](https://diataxis.fr)
 
 Here is a list of the contributors who have helped to improve this project.
 Big shout-out to them!

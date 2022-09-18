@@ -2,15 +2,13 @@
 
 ## Backup secrets
 
-Save the following files to a safe location (like a password manager):
+Save the following files to a safe location like a password manager (if you're using the sandbox, you can skip this step):
 
 - `~/.ssh/id_ed25519`
 - `~/.ssh/id_ed25519.pub`
 - `./metal/kubeconfig.yaml`
 - `~/.terraform.d/credentials.tfrc.json`
 - `./external/terraform.tfvars`
-
-<!-- TODO - `./metal/root-password.txt` -->
 
 ## Admin credentials
 
@@ -25,7 +23,3 @@ Save the following files to a safe location (like a password manager):
 - Gitea:
     - Username: `gitea_admin`
     - Password: get from Vault
-
-## Next steps
-
-- [User onboarding](../../user-guide/onboarding.md)

@@ -4,7 +4,7 @@ The tools container makes it easy to get all of the dependencies needed to inter
 
 ## How to open it
 
-You can use the default Docker wrapper, or use Nix if you have Nix installed
+You can use the default Docker wrapper, or use Nix if you have Nix installed:
 
 === "Docker"
 

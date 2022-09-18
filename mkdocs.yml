@@ -43,33 +43,35 @@ nav:
       - installation/production/external-resources.md
       - installation/production/configuration.md
       - installation/production/deployment.md
-      - installation/production/post-installation.md
-  - Architecture:
-    - architecture/overview.md
-    - architecture/bare-metal-provisioning.md
-    - architecture/secrets-management.md
-    - architecture/networking.md
-  - Tutorials:
-    - tutorials/manual-dns-setup.md
-    - tutorials/create-a-new-user-account.md
-    - tutorials/expose-services-to-the-internet.md
-    - tutorials/use-both-github-and-gitea.md
-    - tutorials/add-or-remove-nodes.md
-    - tutorials/run-commands-on-multiple-nodes.md
-    - tutorials/single-node-cluster-adjustments.md
-  - Runbooks:
-    - runbooks/argocd.md
-    - runbooks/cert-manager.md
-    - runbooks/dnsmasq.md
-    - runbooks/documentation.md
-    - runbooks/gitea.md
-    - runbooks/longhorn.md
-    - runbooks/tools-container.md
-    - runbooks/vault.md
-  - troubleshooting.md
-  - User guide:
-    - user-guide/onboarding.md
+    - installation/post-installation.md
+  - Getting started:
+    - getting-started/user-onboarding.md
+    - getting-started/install-pre-commit-hooks.md
+  - Concepts:
+    - concepts/documentation.md
+    - concepts/pxe-boot.md
+    - concepts/secrets-management.md
+    - concepts/tools-container.md
+  - How-to guides:
+    - how-to-guides/alternate-dns-setup.md
+    - how-to-guides/expose-services-to-the-internet.md
+    - how-to-guides/use-both-github-and-gitea.md
+    - how-to-guides/add-or-remove-nodes.md
+    - how-to-guides/run-commands-on-multiple-nodes.md
+    - how-to-guides/single-node-cluster-adjustments.md
+    - how-to-guides/disable-dhcp-proxy-in-dnsmasq.md
+    - Troubleshooting:
+      - how-to-guides/troubleshooting/argocd.md
+      - how-to-guides/troubleshooting/cert-manager.md
+      - how-to-guides/troubleshooting/gitea.md
+      - how-to-guides/troubleshooting/longhorn.md
+      - how-to-guides/troubleshooting/pxe-boot.md
+      - how-to-guides/troubleshooting/vault.md
   - Reference:
+    - Architecture:
+      - reference/architecture/overview.md
+      - reference/architecture/networking.md
+      - reference/architecture/decision-records.md
     - reference/license.md
     - reference/changelog.md
     - reference/roadmap.md

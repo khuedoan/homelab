@@ -1,6 +1,7 @@
 # Documentation (this website)
 
-Documents can be viewed at <https://homelab.khuedoan.com>.
+The project uses the [Diátaxis](https://diataxis.fr) technical documentation framework.
+It can be viewed at <https://homelab.khuedoan.com>.
 
 ## Local development
 

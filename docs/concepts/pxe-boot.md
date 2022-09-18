@@ -1,4 +1,4 @@
-# Bare metal provisioning (PXE boot)
+# PXE boot
 
 ```mermaid
 flowchart TD

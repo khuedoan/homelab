@@ -71,7 +71,7 @@ To avoid vendor lock-in, each external provider must have an equivalent alternat
     - Any other [Terraform backends](https://www.terraform.io/language/settings/backends)
 - Cloudflare DNS:
     - Update cert-manager and external-dns to use a different provider
-    - [Manual DNS setup](../../tutorials/manual-dns-setup.md)
+    - [Alternate DNS setup](../../how-to-guides/alternate-dns-setup.md)
 - Cloudflare Tunnel:
     - Use port forwarding if it's available
     - Create a small VPS in the cloud and utilize Wireguard and HAProxy to route traffic via it

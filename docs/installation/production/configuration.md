@@ -1,6 +1,6 @@
 # Configuration
 
-Open the [tools container](../../runbooks/tools-container.md), which includes all the tools needed:
+Open the [tools container](../../concepts/tools-container.md), which includes all the tools needed:
 
 === "Docker"
 

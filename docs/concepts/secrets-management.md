@@ -1,5 +1,7 @@
 # Secrets management
 
+## Overview
+
 - Secrets are stored in [HashiCorp Vault](https://www.vaultproject.io)
 - Vault is managed with [Vault Operator (Bank Vaults)](https://banzaicloud.com/docs/bank-vaults/operator), automatically initialize and unseal
 - Secrets that can be generated are automatically generated and stored in Vault.
@@ -26,7 +28,7 @@ flowchart TD
   ClusterSecretStore --> ExternalSecret
 ```
 
-## Generate random secret
+## Randomly generated secrets
 
 This is useful when you want to generate random secrets like admin password and store in Vault.
 
@@ -36,9 +38,9 @@ This is useful when you want to generate random secrets like admin password and 
 --8<--
 ```
 
-## Pulling secrets from Vault to Kubernetes
+## How secrets are pulled from Vault to Kubernetes
 
-Commit and push an `ExternalSecret` object, for example:
+When you apply an `ExternalSecret` object, for example:
 
 ```yaml hl_lines="4 21-23"
 apiVersion: external-secrets.io/v1beta1

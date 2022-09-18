@@ -1,4 +1,4 @@
-# Manual DNS setup
+# Alternate DNS setup
 
 !!! info
 
