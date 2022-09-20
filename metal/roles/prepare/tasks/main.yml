@@ -159,8 +159,10 @@
 
 - name: Disable sysstat-collect
   systemd:
-    name: sysstat-collect
+    name: sysstat-collect.timer
     daemon_reload: true
     enabled: false
     state: stopped
   ignore_errors: true
+  tags:
+    - sysstat-collect
