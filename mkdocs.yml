@@ -11,7 +11,6 @@ theme:
     primary: black
   features:
     - navigation.indexes
-    - navigation.expand
     - search.highlight
     - search.share
 
@@ -37,22 +36,26 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Installation:
+    - installation/index.md
     - installation/sandbox.md
     - Production:
+      - installation/production/index.md
       - installation/production/prerequisites.md
       - installation/production/external-resources.md
       - installation/production/configuration.md
       - installation/production/deployment.md
     - installation/post-installation.md
   - Getting started:
+    - getting-started/index.md
     - getting-started/user-onboarding.md
     - getting-started/install-pre-commit-hooks.md
   - Concepts:
-    - concepts/documentation.md
+    - concepts/index.md
     - concepts/pxe-boot.md
     - concepts/secrets-management.md
     - concepts/tools-container.md
   - How-to guides:
+    - how-to-guides/index.md
     - how-to-guides/alternate-dns-setup.md
     - how-to-guides/expose-services-to-the-internet.md
     - how-to-guides/use-both-github-and-gitea.md
@@ -60,7 +63,9 @@ nav:
     - how-to-guides/run-commands-on-multiple-nodes.md
     - how-to-guides/single-node-cluster-adjustments.md
     - how-to-guides/disable-dhcp-proxy-in-dnsmasq.md
+    - how-to-guides/updating-documentation.md
     - Troubleshooting:
+      - how-to-guides/troubleshooting/index.md
       - how-to-guides/troubleshooting/argocd.md
       - how-to-guides/troubleshooting/cert-manager.md
       - how-to-guides/troubleshooting/gitea.md
@@ -68,7 +73,9 @@ nav:
       - how-to-guides/troubleshooting/pxe-boot.md
       - how-to-guides/troubleshooting/vault.md
   - Reference:
+    - reference/index.md
     - Architecture:
+      - reference/architecture/index.md
       - reference/architecture/overview.md
       - reference/architecture/networking.md
       - reference/architecture/decision-records.md

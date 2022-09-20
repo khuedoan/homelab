@@ -1,7 +1,14 @@
-# Documentation (this website)
+# Updating documentation (this website)
 
-The project uses the [Diátaxis](https://diataxis.fr) technical documentation framework.
-It can be viewed at <https://homelab.khuedoan.com>.
+This project uses the [Diátaxis](https://diataxis.fr) technical documentation framework.
+The website is generated using [Material for MkDocs](https://squidfunk.github.io/mkdocs-material) and can be viewed at [homelab.khuedoan.com](https://homelab.khuedoan.com).
+
+There are 4 main parts:
+
+- [Getting started (tutorials)](https://diataxis.fr/tutorials): learning-oriented
+- [Concepts (explanation)](https://diataxis.fr/explanation): understanding-oriented
+- [How-to guides](https://diataxis.fr/how-to-guides): goal-oriented
+- [Reference](https://diataxis.fr/reference): information-oriented
 
 ## Local development
 
