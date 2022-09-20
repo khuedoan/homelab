@@ -156,3 +156,10 @@
     - journald
     - logs
   notify: restart systemd-journald
+
+- name: Disable sysstat-collect
+  systemd:
+    name: sysstat-collect
+    daemon_reload: true
+    enabled: false
+    state: stopped
