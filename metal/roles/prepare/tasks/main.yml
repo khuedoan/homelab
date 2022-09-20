@@ -163,3 +163,4 @@
     daemon_reload: true
     enabled: false
     state: stopped
+  ignore_errors: true
