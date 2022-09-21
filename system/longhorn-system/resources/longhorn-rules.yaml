@@ -11,80 +11,80 @@ spec:
     rules:
     - alert: LonghornVolumeActualSpaceUsedWarning
       annotations:
-        description: The actual space used by Longhorn volume {{`{{$labels.volume}}`}} on {{`{{$labels.node}}`}} is at {{`{{$value}}`}}% capacity for
+        description: The actual space used by Longhorn volume {{$labels.volume}} on {{$labels.node}} is at {{$value}}% capacity for
           more than 5 minutes.
         summary: The actual used space of Longhorn volume is over 90% of the capacity.
       expr: (longhorn_volume_actual_size_bytes / longhorn_volume_capacity_bytes) * 100 > 90
       for: 5m
       labels:
-        issue: The actual used space of Longhorn volume {{`{{$labels.volume}}`}} on {{`{{$labels.node}}`}} is high.
+        issue: The actual used space of Longhorn volume {{$labels.volume}} on {{$labels.node}} is high.
         severity: warning
     - alert: LonghornVolumeStatusCritical
       annotations:
-        description: Longhorn volume {{`{{$labels.volume}}`}} on {{`{{$labels.node}}`}} is Fault for
+        description: Longhorn volume {{$labels.volume}} on {{$labels.node}} is Fault for
           more than 2 minutes.
-        summary: Longhorn volume {{`{{$labels.volume}}`}} is Fault
+        summary: Longhorn volume {{$labels.volume}} is Fault
       expr: longhorn_volume_robustness == 3
       for: 5m
       labels:
-        issue: Longhorn volume {{`{{$labels.volume}}`}} is Fault.
+        issue: Longhorn volume {{$labels.volume}} is Fault.
         severity: critical
     - alert: LonghornVolumeStatusWarning
       annotations:
-        description: Longhorn volume {{`{{$labels.volume}}`}} on {{`{{$labels.node}}`}} is Degraded for
+        description: Longhorn volume {{$labels.volume}} on {{$labels.node}} is Degraded for
           more than 5 minutes.
-        summary: Longhorn volume {{`{{$labels.volume}}`}} is Degraded
+        summary: Longhorn volume {{$labels.volume}} is Degraded
       expr: longhorn_volume_robustness == 2
       for: 5m
       labels:
-        issue: Longhorn volume {{`{{$labels.volume}}`}} is Degraded.
+        issue: Longhorn volume {{$labels.volume}} is Degraded.
         severity: warning
     - alert: LonghornNodeStorageWarning
       annotations:
-        description: The used storage of node {{`{{$labels.node}}`}} is at {{`{{$value}}`}}% capacity for
+        description: The used storage of node {{$labels.node}} is at {{$value}}% capacity for
           more than 5 minutes.
         summary:  The used storage of node is over 70% of the capacity.
       expr: (longhorn_node_storage_usage_bytes / longhorn_node_storage_capacity_bytes) * 100 > 70
       for: 5m
       labels:
-        issue: The used storage of node {{`{{$labels.node}}`}} is high.
+        issue: The used storage of node {{$labels.node}} is high.
         severity: warning
     - alert: LonghornDiskStorageWarning
       annotations:
-        description: The used storage of disk {{`{{$labels.disk}}`}} on node {{`{{$labels.node}}`}} is at {{`{{$value}}`}}% capacity for
+        description: The used storage of disk {{$labels.disk}} on node {{$labels.node}} is at {{$value}}% capacity for
           more than 5 minutes.
         summary:  The used storage of disk is over 70% of the capacity.
       expr: (longhorn_disk_usage_bytes / longhorn_disk_capacity_bytes) * 100 > 70
       for: 5m
       labels:
-        issue: The used storage of disk {{`{{$labels.disk}}`}} on node {{`{{$labels.node}}`}} is high.
+        issue: The used storage of disk {{$labels.disk}} on node {{$labels.node}} is high.
         severity: warning
     - alert: LonghornNodeDown
       annotations:
-        description: There are {{`{{$value}}`}} Longhorn nodes which have been offline for more than 5 minutes.
+        description: There are {{$value}} Longhorn nodes which have been offline for more than 5 minutes.
         summary: Longhorn nodes is offline
       expr: (avg(longhorn_node_count_total) or on() vector(0)) - (count(longhorn_node_status{condition="ready"} == 1) or on() vector(0)) > 0
       for: 5m
       labels:
-        issue: There are {{`{{$value}}`}} Longhorn nodes are offline
+        issue: There are {{$value}} Longhorn nodes are offline
         severity: critical
     - alert: LonghornIntanceManagerCPUUsageWarning
       annotations:
-        description: Longhorn instance manager {{`{{$labels.instance_manager}}`}} on {{`{{$labels.node}}`}} has CPU Usage / CPU request is {{`{{$value}}`}}% for
+        description: Longhorn instance manager {{$labels.instance_manager}} on {{$labels.node}} has CPU Usage / CPU request is {{$value}}% for
           more than 5 minutes.
-        summary: Longhorn instance manager {{`{{$labels.instance_manager}}`}} on {{`{{$labels.node}}`}} has CPU Usage / CPU request is over 300%.
+        summary: Longhorn instance manager {{$labels.instance_manager}} on {{$labels.node}} has CPU Usage / CPU request is over 300%.
       expr: (longhorn_instance_manager_cpu_usage_millicpu/longhorn_instance_manager_cpu_requests_millicpu) * 100 > 300
       for: 5m
       labels:
-        issue: Longhorn instance manager {{`{{$labels.instance_manager}}`}} on {{`{{$labels.node}}`}} consumes 3 times the CPU request.
+        issue: Longhorn instance manager {{$labels.instance_manager}} on {{$labels.node}} consumes 3 times the CPU request.
         severity: warning
     - alert: LonghornNodeCPUUsageWarning
       annotations:
-        description: Longhorn node {{`{{$labels.node}}`}} has CPU Usage / CPU capacity is {{`{{$value}}`}}% for
+        description: Longhorn node {{$labels.node}} has CPU Usage / CPU capacity is {{$value}}% for
           more than 5 minutes.
-        summary: Longhorn node {{`{{$labels.node}}`}} experiences high CPU pressure for more than 5m.
+        summary: Longhorn node {{$labels.node}} experiences high CPU pressure for more than 5m.
       expr: (longhorn_node_cpu_usage_millicpu / longhorn_node_cpu_capacity_millicpu) * 100 > 90
       for: 5m
       labels:
-        issue: Longhorn node {{`{{$labels.node}}`}} experiences high CPU pressure.
+        issue: Longhorn node {{$labels.node}} experiences high CPU pressure.
         severity: warning
