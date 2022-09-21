@@ -232,7 +232,7 @@ argo-cd:
         memory: 64Mi
       requests:
         cpu: 10m
-        memory: 32Mi
+        memory: 44Mi
 
   controller:
     resources:
