@@ -208,7 +208,7 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 35Gi
+              storage: 50Gi
 
   ingress:
     enabled: true
