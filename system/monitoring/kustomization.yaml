@@ -8,7 +8,7 @@ helmCharts:
     releaseName: monitoring
     repo: https://prometheus-community.github.io/helm-charts
     valuesFile: values.yaml
-    version: 39.13.3
+    version: 40.1.0
 
 resources:
   - resources/alertmanager-secret.yaml
