@@ -20,6 +20,7 @@
     owner: root
     group: root
     mode: 0755
+  notify: restart k3s
 
 - name: Ensure config directories exist
   file:
