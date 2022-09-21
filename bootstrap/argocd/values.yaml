@@ -301,10 +301,10 @@ argo-cd:
     resources:
       limits:
         cpu: 400m
-        memory: 128Mi
+        memory: 256Mi
       requests:
         cpu: 100m
-        memory: 29Mi
+        memory: 78Mi
 
   notifications:
     enabled: true
