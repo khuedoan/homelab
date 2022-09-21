@@ -110,5 +110,13 @@ gitea:
       pullPolicy: IfNotPresent
     arguments: []
 
+    resources:
+      limits:
+        memory: 64Mi
+        cpu: 250m
+      requests:
+        memory: 4Mi
+        cpu: 20m
+
   postgresql:
     enabled: false
