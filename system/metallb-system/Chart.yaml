@@ -3,5 +3,5 @@ name: metallb
 version: 0.0.0
 dependencies:
   - name: metallb
-    version: 0.13.4
+    version: 0.13.5
     repository: https://metallb.github.io/metallb
