@@ -1,5 +1,8 @@
 # Decision records
 
+These are the records of design decisions for future reference in order to understand why things are the way they are.
+They are not permanent, we can change them in the future if better alternatives become available.
+
 ??? Template
 
     ## Description of the the change
@@ -15,6 +18,38 @@
     **Consequences**
 
     - CHANGEME
+
+## Manage package versions in tools container
+
+**Context**
+
+While Nix is reproducible, we need a way to control the versions of the tools and keep them up-to-date.
+For example, if we update the nixpkgs hash (in `shell.nix`) from `abcd1234` to `defa5678`:
+
+- `ansible`: 2.12.1 -> 2.12.6
+- `terraform`: 1.2.0 -> 1.2.2
+- `foobar`: 1.8.0 -> 1.9.0
+
+That looks good. But when we update it from `defa5678` to `cdef9012`:
+
+- `ansible`: 2.12.6 -> 2.13.0
+- `terraform`: 1.2.2 -> 1.3.1
+- `foobar`: 1.9.0 -> 2.0.0
+
+This time it breaks `foobar` because the new major version contains a breaking change.
+
+We can pin the specific version of each dependency in `shell.nix`,
+however, the maintenance burden is too high (even with Renovate) because we need to update the version of each package regularly rather than just the nixpkgs hash.
+Instead, we can just bump the nixpkgs hash and run some tests to ensure there is no breaking change.
+
+**Decision**
+
+Update the tests to ensure that the versions remain within the desired range (i.e. no breaking change).
+
+**Consequences**
+
+We have the rail guard from the tests to ensure that we don't upgrade to a new major version with breaking changes,
+and we can make a conscious decision to take the necessary steps prior to upgrading to the new major version.
 
 ## Refactor the tools container from plain Dockerfile to [Nix](https://nixos.org)
 
