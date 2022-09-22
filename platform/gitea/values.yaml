@@ -56,6 +56,7 @@ gitea:
         SSL_MODE: require
         MAX_OPEN_CONNS: 4
         CONN_MAX_LIFE_TIME: 300s
+        LOG_SQL: false
       service:
         DISABLE_REGISTRATION: true
       log:
