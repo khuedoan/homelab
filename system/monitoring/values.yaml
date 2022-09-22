@@ -96,11 +96,11 @@ grafana:
       enabled: true
       label: grafana_dashboard
       resource: configmap
-      folderAnnotation: k8s-sidecar-target-directory
+      folderAnnotation: grafana.grafana.com/dashboards.target-directory
       provider:
         foldersFromFilesStructure: true
       annotations:
-        k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
+        grafana.grafana.com/dashboards.target-directory: "/tmp/dashboards/kubernetes"
       searchNamespace: ALL
     datasources:
       enabled: true
