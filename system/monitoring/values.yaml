@@ -83,13 +83,6 @@ grafana:
     ## here and the sum of memory limits of all containers in a pod
     ##
     sizeLimit: 256Mi
-  additionalDataSources:
-    - name: Loki
-      type: loki
-      url: http://loki-stack:3100
-      access: proxy
-      isDefault: false
-      version: 1
 
   sidecar:
     resources:
@@ -109,6 +102,11 @@ grafana:
       annotations:
         k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
       searchNamespace: ALL
+    datasources:
+      enabled: true
+      searchNamespace:
+        - monitoring
+        - loki
 
   envFromSecret: grafana-secret
 
