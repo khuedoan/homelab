@@ -1,9 +1,6 @@
 loki-stack:
   loki:
     enabled: true
-    # enable loading grafana datasource with loki-stack config map
-    isDefault: false
-
     ingress:
       enabled: false
 
@@ -100,3 +97,10 @@ loki-stack:
     # Enable CRIO log format
     pipelineStages:
       - cri: {}
+
+  # already enabled in additionalDatasources
+  grafana:
+    enabled: false
+    sidecar:
+      datasources:
+        enabled: false
