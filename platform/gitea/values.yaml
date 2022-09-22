@@ -59,7 +59,9 @@ gitea:
       service:
         DISABLE_REGISTRATION: true
       log:
-        LEVEL: debug
+        LEVEL: info
+      cron:
+        NOTICE_ON_SUCCESS: false
 
     additionalConfigSources:
       - secret:
