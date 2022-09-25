@@ -7,8 +7,7 @@ metadata:
   name: no-backup
   namespace: longhorn-system
 spec:
-  # Monday at 05:00
-  cron: "0 5 * * 1"
+  cron: "0 5 * * *"
   task: snapshot
   groups:
     - no-backup
