@@ -1,9 +1,8 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
-site_name: Khue's Homelab
-copyright: Copyright &copy; 2020 - 2022 Khue Doan
+site_name: Pando85's Homelab
 
-repo_url: https://github.com/khuedoan/homelab
+repo_url: https://github.com/pando85/homelab
 
 theme:
   name: material
@@ -34,41 +33,12 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Installation:
-    - installation/sandbox.md
-    - Production:
-      - installation/production/prerequisites.md
-      - installation/production/external-resources.md
-      - installation/production/configuration.md
-      - installation/production/deployment.md
-      - installation/production/post-installation.md
-  - Architecture:
-    - architecture/overview.md
-    - architecture/bare-metal-provisioning.md
-    - architecture/secrets-management.md
-    - architecture/networking.md
-  - Tutorials:
-    - tutorials/manual-dns-setup.md
-    - tutorials/create-a-new-user-account.md
-    - tutorials/expose-services-to-the-internet.md
-    - tutorials/use-both-github-and-gitea.md
-    - tutorials/add-or-remove-nodes.md
-    - tutorials/run-commands-on-multiple-nodes.md
-    - tutorials/single-node-cluster-adjustments.md
-  - Runbooks:
-    - runbooks/argocd.md
-    - runbooks/cert-manager.md
-    - runbooks/dnsmasq.md
-    - runbooks/documentation.md
-    - runbooks/gitea.md
-    - runbooks/longhorn.md
-    - runbooks/vault.md
-  - troubleshooting.md
-  - User guide:
-    - user-guide/onboarding.md
-  - Reference:
-    - reference/license.md
-    - reference/changelog.md
-    - reference/roadmap.md
-    - reference/contributing.md
-    - reference/faq.md
+  - Deployment:
+      - deployment/manual-setup.md
+      - deployment/metallb.md
+      - deployment/unifi.md
+  - User-guide:
+      - user-guide/add-or-remove-nodes.md
+      - user-guide/expand-longhorn-volume.md
+      - user-guide/install-pre-commit-hooks.md
+      - user-guide/run-commands-on-multiple-nodes.md
