@@ -1,0 +1,51 @@
+app-template:
+  image:
+    repository: ghcr.io/linuxserver/freshrss
+    pullPolicy: IfNotPresent
+    tag: 1.20.0-ls149
+  strategy:
+    type: Recreate
+  env:
+    TZ: Europe/Madrid
+
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+        hajimari.io/appName: FreshRSS
+        hajimari.io/icon: rss-box
+        hajimari.io/instance: internal
+        hajimari.io/group: News
+      hosts:
+        - host: &host freshrss.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - freshrss.k8s.grigri
+          secretName: freshrss-tls-certificate
+  persistence:
+    config:
+      enabled: true
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 5Gi
+      storageClass: longhorn
+      skipuninstall: true
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 50Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
