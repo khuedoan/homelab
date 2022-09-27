@@ -11,6 +11,7 @@ oauth2-proxy:
     tls:
       - hosts:
           - *host
+        secretName: oauth2-proxy-tls-certificate
 
   proxyVarsAsSecrets: true
 
