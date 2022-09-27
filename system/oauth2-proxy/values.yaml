@@ -25,7 +25,7 @@ oauth2-proxy:
     oidc-issuer-url: https://accounts.grigri.cloud
     skip-provider-button: true
     reverse-proxy: true
-    # pass-authorization-header:
+    pass-authorization-header: true
     email-domain: "*"
     cookie-domain: .grigri.cloud
     whitelist-domain: .grigri.cloud
