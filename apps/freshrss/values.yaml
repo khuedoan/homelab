@@ -20,9 +20,6 @@ app-template:
       ingressClassName: nginx-internal
       annotations:
         cert-manager.io/cluster-issuer: internal
-        nginx.ingress.kubernetes.io/auth-url: https://auth.k8s.grigri/oauth2/auth
-        nginx.ingress.kubernetes.io/auth-signin: https://auth.k8s.grigri/oauth2/start
-        nginx.ingress.kubernetes.io/configuration-snippet: 'proxy_set_header X-Auth-Request-Redirect  $request_uri;'
         hajimari.io/appName: FreshRSS
         hajimari.io/icon: rss-box
         hajimari.io/instance: internal
