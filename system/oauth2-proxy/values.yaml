@@ -1,0 +1,52 @@
+oauth2-proxy:
+  replicaCount: 2
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx-internal
+    path: /oauth2
+    hosts:
+      - host: &host auth.k8s.grigri
+    tls:
+      - hosts:
+          - *host
+
+  proxyVarsAsSecrets: true
+
+  config:
+    existingSecret: oauth2-proxy
+
+  extraArgs:
+    provider: oidc
+    provider-display-name: k8s OIDC provider
+    set-xauthrequest: true
+    oidc-issuer-url: https://accounts.grigri.cloud
+    # skip-provider-button:
+    # pass-authorization-header:
+    email-domain: "*"
+    cookie-domain: .grigri.cloud
+    whitelist-domain: .grigri.cloud
+    cookie-refresh: 24h
+    cookie-expire: 168h
+    cookie-secure: true
+    ## dex needs to support RFC2307bis
+    # allowed-groups: wheel
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 300Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 300Mi
+
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - oauth2-proxy
+          topologyKey: "kubernetes.io/hostname"
