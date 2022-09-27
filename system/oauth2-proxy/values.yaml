@@ -23,7 +23,7 @@ oauth2-proxy:
     provider-display-name: k8s OIDC provider
     set-xauthrequest: true
     oidc-issuer-url: https://accounts.grigri.cloud
-    # skip-provider-button:
+    skip-provider-button: true
     # pass-authorization-header:
     email-domain: "*"
     cookie-domain: .grigri.cloud
