@@ -6,7 +6,7 @@ oauth2-proxy:
       kubernetes.io/ingress.class: nginx-internal
     path: /oauth2
     hosts:
-      - host: &host auth.k8s.grigri
+      - &host auth.k8s.grigri
     tls:
       - hosts:
           - *host
