@@ -21,7 +21,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: internal
         nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=https://freshrss.grigri.cloud/$escaped_request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=https%3A%2F%2Ffreshrss.grigri.cloud$escaped_request_uri"
         hajimari.io/appName: FreshRSS
         hajimari.io/icon: rss-box
         hajimari.io/instance: internal
