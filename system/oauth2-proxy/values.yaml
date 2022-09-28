@@ -27,8 +27,8 @@ oauth2-proxy:
     reverse-proxy: true
     pass-authorization-header: true
     email-domain: "*"
-    cookie-domain: .grigri.cloud
-    whitelist-domain: .grigri.cloud
+    cookie-domain: .k8s.grigri
+    whitelist-domain: .k8s.grigri
     cookie-refresh: 24h
     cookie-expire: 168h
     cookie-secure: true
