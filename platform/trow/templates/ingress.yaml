@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: &host registry.khuedoan.com
+  - host: &host registry.tribz.cloud
     http:
       paths:
       - pathType: ImplementationSpecific

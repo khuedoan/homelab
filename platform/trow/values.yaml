@@ -1,6 +1,6 @@
 trow:
   trow:
-    domain: registry.khuedoan.com
+    domain: registry.tribz.cloud
     # user: user
     # password: password
     validation:
@@ -20,7 +20,7 @@ trow:
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
       hajimari.io/enable: 'false'
     hosts:
-      - host: &host registry.khuedoan.com
+      - host: &host registry.tribz.cloud
         paths:
           - /
     tls:

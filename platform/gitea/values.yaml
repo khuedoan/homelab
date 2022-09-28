@@ -7,7 +7,7 @@ gitea:
       hajimari.io/appName: Gitea
       hajimari.io/icon: git
     hosts:
-      - host: &host git.khuedoan.com
+      - host: &host git.tribz.cloud
         paths:
           - path: /
             pathType: Prefix
@@ -21,7 +21,7 @@ gitea:
     config:
       server:
         LANDING_PAGE: explore
-        ROOT_URL: https://git.khuedoan.com
+        ROOT_URL: https://git.tribz.cloud
   persistence:
     storageClass: longhorn
   postgresql:
