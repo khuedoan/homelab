@@ -11,6 +11,7 @@ theme:
     primary: black
   features:
     - navigation.indexes
+    - navigation.sections
     - search.highlight
     - search.share
 
