@@ -2,4 +2,4 @@ metal:
   children:
     masters:
       hosts:
-        metal0: {ansible_host: 192.168.1.90, mac: 'ec:b1:d7:72:9f:f9', disk: ad0, network_interface: em0}
+        metal0: {ansible_host: 192.168.1.13, mac: 'ec:b1:d7:72:9f:f9', disk: ad0, network_interface: em0}
