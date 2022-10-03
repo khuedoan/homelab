@@ -26,7 +26,7 @@ func TestToolsVersions(t *testing.T) {
 		// {"kubectl", ">= 2.37.1, < 3.0.0"},
 		// {"kustomize", ">= 2.37.1, < 3.0.0"},
 		{"pre-commit", ">= 2.20.0, < 3.0.0"},
-		{"terraform", ">= 1.2.7, < 2.0.0"},
+		{"terraform", ">= 1.3.1, < 1.4.0"},
 	}
 
 	for _, tool := range tools {
