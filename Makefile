@@ -5,7 +5,7 @@
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal bootstrap external wait post-install
+default: metal bootstrap external smoke-test post-install
 
 configure:
 	./scripts/configure
@@ -20,8 +20,8 @@ bootstrap:
 external:
 	make -C external
 
-wait:
-	./scripts/wait-main-apps
+smoke-test:
+	make -C test filter=Smoke
 
 post-install:
 	@./scripts/hacks

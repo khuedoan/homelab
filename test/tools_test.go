@@ -31,9 +31,9 @@ func TestToolsVersions(t *testing.T) {
 
 	for _, tool := range tools {
 		params := version_checker.CheckVersionParams{
-			BinaryPath: tool.binaryPath,
+			BinaryPath:        tool.binaryPath,
 			VersionConstraint: tool.versionConstraint,
-			WorkingDir: ".",
+			WorkingDir:        ".",
 		}
 
 		version_checker.CheckVersion(t, params)

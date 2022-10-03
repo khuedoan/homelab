@@ -56,6 +56,7 @@ More information can be found in [the roadmap](#roadmap) below.
 - [ ] Monitoring and alerting 🚧
 - [ ] Automated offsite backups 🚧
 - [ ] Single sign-on 🚧
+- [x] Infrastructure testing
 
 Some demo videos and screenshots are shown here.
 They can't capture all the project's features, but they are sufficient to get a concept of it.
