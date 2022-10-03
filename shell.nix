@@ -19,7 +19,7 @@ pkgs.mkShell {
     docker-compose_1 # TODO upgrade to version 2
     git
     go
-    grc
+    gotestsum
     iproute2
     k9s
     kube3d
