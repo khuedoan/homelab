@@ -61,6 +61,7 @@ func TestToolsContainer(t *testing.T) {
 		},
 		Command: []string{
 			"nix-shell",
+			"--pure",
 			"--command", "exit",
 		},
 	}
@@ -79,8 +80,8 @@ func TestToolsNixShell(t *testing.T) {
 	command := shell.Command{
 		Command: "nix-shell",
 		Args: []string{
-			"--command",
-			"exit",
+			"--pure",
+			"--command", "exit",
 		},
 		WorkingDir: projectRoot,
 	}
