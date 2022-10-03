@@ -26,17 +26,21 @@ func TestToolsVersions(t *testing.T) {
 		// {"kubectl", ">= 2.37.1, < 3.0.0"},
 		// {"kustomize", ">= 2.37.1, < 3.0.0"},
 		{"pre-commit", ">= 2.20.0, < 3.0.0"},
-		{"terraform", ">= 1.2.7, < 2.0.0"},
+		{"terraform", ">= 1.3.1, < 1.4.0"},
 	}
 
 	for _, tool := range tools {
-		params := version_checker.CheckVersionParams{
-			BinaryPath: tool.binaryPath,
-			VersionConstraint: tool.versionConstraint,
-			WorkingDir: ".",
-		}
+		tool := tool // https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables
+		t.Run(tool.binaryPath, func(t *testing.T) {
+			t.Parallel()
+			params := version_checker.CheckVersionParams{
+				BinaryPath:        tool.binaryPath,
+				VersionConstraint: tool.versionConstraint,
+				WorkingDir:        ".",
+			}
 
-		version_checker.CheckVersion(t, params)
+			version_checker.CheckVersion(t, params)
+		})
 	}
 }
 
@@ -61,6 +65,7 @@ func TestToolsContainer(t *testing.T) {
 		},
 		Command: []string{
 			"nix-shell",
+			"--pure",
 			"--command", "exit",
 		},
 	}
@@ -79,8 +84,8 @@ func TestToolsNixShell(t *testing.T) {
 	command := shell.Command{
 		Command: "nix-shell",
 		Args: []string{
-			"--command",
-			"exit",
+			"--pure",
+			"--command", "exit",
 		},
 		WorkingDir: projectRoot,
 	}

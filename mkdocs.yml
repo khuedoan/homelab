@@ -11,6 +11,7 @@ theme:
     primary: black
   features:
     - navigation.indexes
+    - navigation.sections
     - search.highlight
     - search.share
 
@@ -53,7 +54,9 @@ nav:
     - concepts/index.md
     - concepts/pxe-boot.md
     - concepts/secrets-management.md
+    - concepts/certificate-management.md
     - concepts/tools-container.md
+    - concepts/testing.md
   - How-to guides:
     - how-to-guides/index.md
     - how-to-guides/alternate-dns-setup.md

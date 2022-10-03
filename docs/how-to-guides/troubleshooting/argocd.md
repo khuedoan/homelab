@@ -1,3 +1,3 @@
 # ArgoCD
 
-TODO
+TODO (PR welcomed)
