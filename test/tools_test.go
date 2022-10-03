@@ -30,13 +30,17 @@ func TestToolsVersions(t *testing.T) {
 	}
 
 	for _, tool := range tools {
-		params := version_checker.CheckVersionParams{
-			BinaryPath:        tool.binaryPath,
-			VersionConstraint: tool.versionConstraint,
-			WorkingDir:        ".",
-		}
+		tool := tool // https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables
+		t.Run(tool.binaryPath, func(t *testing.T) {
+			t.Parallel()
+			params := version_checker.CheckVersionParams{
+				BinaryPath:        tool.binaryPath,
+				VersionConstraint: tool.versionConstraint,
+				WorkingDir:        ".",
+			}
 
-		version_checker.CheckVersion(t, params)
+			version_checker.CheckVersion(t, params)
+		})
 	}
 }
 
