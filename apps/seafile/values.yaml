@@ -9,6 +9,7 @@ seafile:
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hajimari.io/appName: Seafile
         hajimari.io/icon: google-drive
+        nginx.ingress.kubernetes.io/proxy-body-size: "50m"
       hosts:
         - host: &host seafile.tribz.cloud
           paths:
