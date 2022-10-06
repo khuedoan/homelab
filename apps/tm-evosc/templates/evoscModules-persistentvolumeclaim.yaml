@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: evoscModules
-  name: evoscModules
+  name: evoscmodules
 spec:
   accessModes:
     - ReadWriteOnce

@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: evoscCache
-  name: evoscCache
+  name: evosccache
 spec:
   accessModes:
     - ReadWriteOnce

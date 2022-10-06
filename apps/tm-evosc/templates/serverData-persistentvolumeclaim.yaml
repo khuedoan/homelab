@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: serverData
-  name: serverData
+  name: serverdata
 spec:
   accessModes:
     - ReadWriteOnce

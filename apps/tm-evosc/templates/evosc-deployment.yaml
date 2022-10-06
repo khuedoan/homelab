@@ -50,25 +50,25 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /server/UserData
-              name: serverData
+              name: serverdata
             - mountPath: /controller/config
-              name: evoscConfig
+              name: evoscconfig
             - mountPath: /controller/modules
-              name: evoscModules
+              name: evoscmodules
             - mountPath: /controller/cache
-              name: evoscCache
+              name: evosccache
       restartPolicy: Always
       volumes:
-        - name: serverData
+        - name: serverdata
           persistentVolumeClaim:
-            claimName: serverData
-        - name: evoscConfig
+            claimName: serverdata
+        - name: evoscconfig
           persistentVolumeClaim:
-            claimName: evoscConfig
-        - name: evoscModules
+            claimName: evoscconfig
+        - name: evoscmodules
           persistentVolumeClaim:
-            claimName: evoscModules
-        - name: evoscCache
+            claimName: evoscmodules
+        - name: evosccache
           persistentVolumeClaim:
-            claimName: evoscCache
+            claimName: evosccache
 status: {}
