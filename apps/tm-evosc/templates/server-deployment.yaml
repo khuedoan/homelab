@@ -27,12 +27,17 @@ spec:
       containers:
         - env:
             - name: DISABLE_REPLAY_RECORDING
+              value: false
             - name: MASTER_LOGIN
+              value: MasterLogin
             - name: MASTER_PASSWORD
+              value: MasterPassword
             - name: SAVE_ALL_INDIVIDUAL_RUNS
+              value: false
             - name: SERVER_NAME
+              value: Servername
             - name: XMLRPC_ALLOWREMOTE
-              value: "true"
+              value: true
           image: evotm/trackmania
           livenessProbe:
             exec:
@@ -45,8 +50,10 @@ spec:
           name: server
           ports:
             - containerPort: 2350
+              targetPort: 2350
               protocol: UDP
             - containerPort: 2350
+              targetPort: 2350
           resources: {}
           volumeMounts:
             - mountPath: /server/UserData
