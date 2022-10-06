@@ -27,12 +27,17 @@ spec:
       containers:
         - env:
             - name: DB_HOST
+              value: tm-evosc-mysql
             - name: DB_NAME
+              value: my_database
             - name: DB_PASSWORD
+              value: 'QU5uam90S2EwMA=='
             - name: DB_USER
+              value: root
             - name: MASTER_LOGIN
+              value: MASTERLOGIN
             - name: RPC_IP
-              value: server
+              value: tm-evosc-server
             - name: RPC_LOGIN
               value: SuperAdmin
             - name: RPC_PASSWORD
@@ -58,17 +63,17 @@ spec:
             - mountPath: /controller/cache
               name: evosccache
       restartPolicy: Always
-      volumes:
-        - name: serverdata
-          persistentVolumeClaim:
-            claimName: serverdata
-        - name: evoscconfig
-          persistentVolumeClaim:
-            claimName: evoscconfig
-        - name: evoscmodules
-          persistentVolumeClaim:
-            claimName: evoscmodules
-        - name: evosccache
-          persistentVolumeClaim:
-            claimName: evosccache
+      # volumes:
+      #   - name: serverdata
+      #     persistentVolumeClaim:
+      #       claimName: serverdata
+      #   - name: evoscconfig
+      #     persistentVolumeClaim:
+      #       claimName: evoscconfig
+      #   - name: evoscmodules
+      #     persistentVolumeClaim:
+      #       claimName: evoscmodules
+      #   - name: evosccache
+      #     persistentVolumeClaim:
+      #       claimName: evosccache
 status: {}
