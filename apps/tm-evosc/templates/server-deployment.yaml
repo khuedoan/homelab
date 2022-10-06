@@ -29,9 +29,9 @@ spec:
             - name: DISABLE_REPLAY_RECORDING
               value: "false"
             - name: MASTER_LOGIN
-              value: MasterLogin
+              value: Phorgasmic
             - name: MASTER_PASSWORD
-              value: MasterPassword
+              value: cg;vC[7V\ImAXCz
             - name: SAVE_ALL_INDIVIDUAL_RUNS
               value: "false"
             - name: SERVER_NAME
