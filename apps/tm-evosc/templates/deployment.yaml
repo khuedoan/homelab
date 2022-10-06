@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "tm-evosc-chart.fullname" . }}
+  name: {{ include "tm-evosc.fullname" . }}
   labels:
-    {{- include "tm-evosc-chart.labels" . | nindent 4 }}
+    {{- include "tm-evosc.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "tm-evosc-chart.selectorLabels" . | nindent 6 }}
+      {{- include "tm-evosc.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "tm-evosc-chart.selectorLabels" . | nindent 8 }}
+        {{- include "tm-evosc.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "tm-evosc-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "tm-evosc.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
