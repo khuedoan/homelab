@@ -53,15 +53,15 @@ spec:
             timeoutSeconds: 5
           name: evosc
           resources: {}
-          volumeMounts:
-            - mountPath: /server/UserData
-              name: serverdata
-            - mountPath: /controller/config
-              name: evoscconfig
-            - mountPath: /controller/modules
-              name: evoscmodules
-            - mountPath: /controller/cache
-              name: evosccache
+          # volumeMounts:
+          #   - mountPath: /server/UserData
+          #     name: serverdata
+          #   - mountPath: /controller/config
+          #     name: evoscconfig
+          #   - mountPath: /controller/modules
+          #     name: evoscmodules
+          #   - mountPath: /controller/cache
+          #     name: evosccache
       restartPolicy: Always
       # volumes:
       #   - name: serverdata
