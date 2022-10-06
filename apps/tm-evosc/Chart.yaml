@@ -4,5 +4,5 @@ version: 0.0.1
 apiVersion: v2
 dependencies:
   - name: mysql
-    version: ">= 8.3.0"
+    version: ">= 8.0.0"
     repository: https://charts.bitnami.com/bitnami
