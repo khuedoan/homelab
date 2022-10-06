@@ -31,11 +31,11 @@ spec:
             - name: MASTER_LOGIN
               value: Phorgasmic
             - name: MASTER_PASSWORD
-              value: cg;vC[7V\ImAXCz
+              value: "cg;vC[7V\ImAXCz"
             - name: SAVE_ALL_INDIVIDUAL_RUNS
               value: "false"
             - name: SERVER_NAME
-              value: Servername
+              value: Turicane
             - name: XMLRPC_ALLOWREMOTE
               value: "true"
           image: evotm/trackmania
