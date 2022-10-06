@@ -27,9 +27,9 @@ spec:
       containers:
         - env:
             - name: MYSQL_DATABASE
-            - value: evosc
+              value: evosc
             - name: MYSQL_ROOT_PASSWORD
-            - value: root
+              value: root
           image: mysql:latest
           name: db
           resources: {}
