@@ -36,6 +36,7 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: db-claim0
+              subPath: mysql
       restartPolicy: Always
       volumes:
         - name: db-claim0
