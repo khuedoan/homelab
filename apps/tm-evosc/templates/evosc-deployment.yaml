@@ -37,7 +37,7 @@ spec:
             - name: MASTER_LOGIN
               value: MASTERLOGIN
             - name: RPC_IP
-              value: tm-evosc-server
+              value: server
             - name: RPC_LOGIN
               value: SuperAdmin
             - name: RPC_PASSWORD
