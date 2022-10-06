@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\michi\Downloads\kompose-windows-amd64.exe convert -c
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: server
+  name: server
+spec:
+  ports:
+    - name: "2350"
+      port: 2350
+      protocol: UDP
+      targetPort: 2350
+    - name: 2350-tcp
+      port: 2350
+      targetPort: 2350
+  selector:
+    io.kompose.service: server
+status:
+  loadBalancer: {}

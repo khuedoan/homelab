@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\michi\Downloads\kompose-windows-amd64.exe convert -c
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: evosc
+  name: evosc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: evosc
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\michi\Downloads\kompose-windows-amd64.exe convert -c
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: evosc
+    spec:
+      containers:
+        - env:
+            - name: DB_HOST
+            - name: DB_NAME
+            - name: DB_PASSWORD
+            - name: DB_USER
+            - name: MASTER_LOGIN
+            - name: RPC_IP
+              value: server
+            - name: RPC_LOGIN
+              value: SuperAdmin
+            - name: RPC_PASSWORD
+              value: SuperAdmin
+          image: evotm/evosc
+          livenessProbe:
+            exec:
+              command:
+                - pgrep -x php || exit 1
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 5
+          name: evosc
+          resources: {}
+          volumeMounts:
+            - mountPath: /server/UserData
+              name: serverData
+            - mountPath: /controller/config
+              name: evoscConfig
+            - mountPath: /controller/modules
+              name: evoscModules
+            - mountPath: /controller/cache
+              name: evoscCache
+      restartPolicy: Always
+      volumes:
+        - name: serverData
+          persistentVolumeClaim:
+            claimName: serverData
+        - name: evoscConfig
+          persistentVolumeClaim:
+            claimName: evoscConfig
+        - name: evoscModules
+          persistentVolumeClaim:
+            claimName: evoscModules
+        - name: evoscCache
+          persistentVolumeClaim:
+            claimName: evoscCache
+status: {}
