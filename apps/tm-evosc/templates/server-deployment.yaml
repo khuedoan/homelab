@@ -53,12 +53,12 @@ spec:
               protocol: UDP
             - containerPort: 2350
           resources: {}
-          volumeMounts:
-            - mountPath: /server/UserData
-              name: serverdata
+          # volumeMounts:
+          #   - mountPath: /server/UserData
+          #     name: serverdata
       restartPolicy: Always
-      volumes:
-        - name: serverdata
-          persistentVolumeClaim:
-            claimName: serverdata
+      # volumes:
+      #   - name: serverdata
+      #     persistentVolumeClaim:
+      #       claimName: serverdata
 status: {}
