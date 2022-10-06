@@ -27,7 +27,7 @@ spec:
       containers:
         - env:
             - name: DB_HOST
-              value: '10.42.0.176'
+              value: '1.1.1.1'
             - name: DB_NAME
               value: my_database
             - name: DB_PASSWORD
