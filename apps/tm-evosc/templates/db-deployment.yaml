@@ -32,11 +32,12 @@ spec:
               value: root
           image: mysql:latest
           name: db
+          args:
+            - "--ignore-db-dir=lost+found"
           resources: {}
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: db-claim0
-              subPath: mysql
       restartPolicy: Always
       volumes:
         - name: db-claim0
