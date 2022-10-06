@@ -1,4 +1,8 @@
-name: docker-compose
+name: tm-evosc
 description: A generated Helm Chart for docker-compose from Skippbox Kompose
 version: 0.0.1
 apiVersion: v1
+dependencies:
+  - name: mysql
+    version: 8.0.30
+    repository: https://charts.bitnami.com/bitnami
