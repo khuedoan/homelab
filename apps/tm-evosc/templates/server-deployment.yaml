@@ -57,10 +57,10 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /server/UserData
-              name: serverData
+              name: serverdata
       restartPolicy: Always
       volumes:
-        - name: serverData
+        - name: serverdata
           persistentVolumeClaim:
             claimName: serverdata
 status: {}
