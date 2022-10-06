@@ -55,5 +55,5 @@ spec:
       volumes:
         - name: serverData
           persistentVolumeClaim:
-            claimName: serverData
+            claimName: serverdata
 status: {}
