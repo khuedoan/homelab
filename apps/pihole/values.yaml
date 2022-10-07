@@ -8,11 +8,12 @@ pihole:
         hajimari.io/icon: google-drive
     hosts:
      - &host pihole.tribz.cloud
+    path: ImplementationSpecific
     tls:
       - secretName: pihole-tls-certificate
         hosts:
           - *host
-        path: ImplementationSpecific
+        
   serviceDns:
     annotations:
       metallb.universe.tf/allow-shared-ip: pihole-svc
