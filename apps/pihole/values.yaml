@@ -12,6 +12,7 @@ pihole:
       - secretName: pihole-tls-certificate
         hosts:
           - *host
+        path: ImplementationSpecific
   serviceDns:
     annotations:
       metallb.universe.tf/allow-shared-ip: pihole-svc
@@ -23,3 +24,5 @@ pihole:
     ipFamilyPolicy: SingleStack
     allocateLoadBalancerNodePorts: true
     internalTrafficPolicy: Cluster
+  serviceDhcp:
+    enabled: false
