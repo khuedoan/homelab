@@ -2,3 +2,21 @@ pihole:
   ingress:
     enabled: true
     ingressClassName: nginx
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: PiHole
+        hajimari.io/icon: google-drive
+    hosts:
+      - host: &host pihole.tribz.cloud
+        paths:
+          - backend:
+              service:
+                name: pihole-web
+                port:
+                  name: http
+            path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: pihole-tls-certificate
+        hosts:
+          - *host
