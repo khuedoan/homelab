@@ -1,3 +1,4 @@
 pihole:
   ingress:
     enabled: true
+    ingressClassName: nginx
