@@ -8,7 +8,7 @@ pihole:
         hajimari.io/icon: google-drive
     hosts:
      - &host pihole.tribz.cloud
-    path: /admin.index.php
+    path: /
     tls:
       - secretName: pihole-tls-certificate
         hosts:
