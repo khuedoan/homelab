@@ -6,11 +6,7 @@ pihole:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: PiHole
         hajimari.io/icon: google-drive
-    hosts:
-      - host: &host pihole.tribz.cloud
-        paths:
-          - path: /
-            pathType: Prefix
+    hosts: &host pihole.tribz.cloud
     tls:
       - secretName: pihole-tls-certificate
         hosts:
