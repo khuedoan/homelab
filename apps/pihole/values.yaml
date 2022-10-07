@@ -7,7 +7,7 @@ pihole:
         hajimari.io/appName: PiHole
         hajimari.io/icon: google-drive
     hosts:
-      - host: &host pihole.tribz.cloud
+      - host: pihole.tribz.cloud
         paths:
           - backend:
               service:
@@ -19,4 +19,4 @@ pihole:
     tls:
       - secretName: pihole-tls-certificate
         hosts:
-          - *host
+          - pihole.tribz.cloud
