@@ -1,0 +1,15 @@
+qbittorrent:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: qBittorrent
+        hajimari.io/icon: google-drive
+    hosts:
+     - &host qbittorrent.tribz.cloud
+    path: /
+    tls:
+      - secretName: qbittorrent-tls-certificate
+        hosts:
+          - *host
