@@ -1,0 +1,18 @@
+prowlarr:
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: prowlarr
+        hajimari.io/icon: file-document
+      hosts:
+        - host: &host prowlarr.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: prowlarr-tls-certificate
+          hosts:
+            - *host
