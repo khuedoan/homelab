@@ -1,4 +1,6 @@
 qbittorrent:
+  settings:
+    automaticPortSetup: true
   ingress:
     main:
       enabled: true
@@ -16,5 +18,3 @@ qbittorrent:
         - secretName: qbittorrent-tls-certificate
           hosts:
             - *host
-  postgresql:
-    enabled: true
