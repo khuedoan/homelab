@@ -1,0 +1,18 @@
+lidarr:
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: lidarr
+        hajimari.io/icon: file-document
+      hosts:
+        - host: &host lidarr.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: lidarr-tls-certificate
+          hosts:
+            - *host
