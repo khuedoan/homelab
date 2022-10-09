@@ -24,4 +24,3 @@ repos:
       - id: helmlint
       - id: shellcheck
       - id: terraform-fmt
-      - id: terraform-validate
