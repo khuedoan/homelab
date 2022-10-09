@@ -6,7 +6,7 @@ sonarr:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: Sonarr
-        hajimari.io/icon: media-library
+        hajimari.io/icon: "carbon:media-library"
       hosts:
         - host: &host sonarr.tribz.cloud
           paths:
