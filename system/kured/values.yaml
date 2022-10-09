@@ -1,0 +1,5 @@
+kured:
+  configuration:
+    annotateNodes: true
+    rebootSentinelCommand: sh -c "! needs-restarting --reboothint"
+    timeZone: Asia/Ho_Chi_Minh
