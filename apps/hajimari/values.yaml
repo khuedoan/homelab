@@ -1,6 +1,4 @@
 hajimari:
-  image:  # TODO remove this https://github.com/toboshii/hajimari/blob/main/charts/hajimari/values.yaml
-    tag: v0.2.0
   env:
     TZ: Europe/Madrid
   ingress:
@@ -29,10 +27,4 @@ hajimari:
           - name: Documentation
             url: https://homelab.k8s.grigri
           - name: Public GitHub repository
-            url: https://github.com/khuedoan/homelab
-      - name: Managed services
-        links:
-          - name: Terraform Cloud
-            url: https://app.terraform.io
-          - name: Cloudflare
-            url: https://dash.cloudflare.com
+            url: https://github.com/pando85/homelab
