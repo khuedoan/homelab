@@ -191,7 +191,7 @@ prometheus-node-exporter:
 
 prometheus:
   prometheusSpec:
-    replicas: 1
+    replicas: 0
     retentionSize: 30GB
     retention: 30d
     resources:
@@ -208,7 +208,9 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 50Gi
+              # More than double size to avoid alerts:
+              # https://github.com/longhorn/longhorn/issues/836
+              storage: 100Gi
 
   ingress:
     enabled: true
