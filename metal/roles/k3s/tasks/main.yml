@@ -85,10 +85,17 @@
   delegate_to: localhost
   run_once: true
 
-# seafile needs more inotify watches (default seems 128 on fedora, pod cannot startup)
+# seafile needs more inotify watches
 - name: raise max_user_watches for seafile
   ansible.posix.sysctl:
     name: fs.inotify.max_user_watches
     value: "65536"
+    state: present
+
+# seafile needs more inotify instances (default seems 128 on fedora, pod cannot startup)
+- name: raise max_user_instances for seafile
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_instances
+    value: "512"
     state: present
   
