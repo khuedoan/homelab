@@ -1,5 +1,8 @@
+# Environment
 .env
+.envrc
 .venv/
+
 book/
 
 *.iso

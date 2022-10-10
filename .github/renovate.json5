@@ -14,8 +14,8 @@
   branchConcurrentLimit: 10,
   commitMessagePrefix: "{{parentDir}}: ",
   timezone: "Europe/Madrid",
-  "schedule": [
-    "after 5am on Monday"
+  schedule: [
+    "after 5am and before 9am on Monday"
     ],
   enabledManagers: [
     "argocd",
