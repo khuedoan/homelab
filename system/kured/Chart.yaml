@@ -3,5 +3,5 @@ name: kured
 version: 0.0.0
 dependencies:
   - name: kured
-    version: 3.0.1
-    repository: https://weaveworks.github.io/kured
+    version: 4.0.2
+    repository: https://kubereboot.github.io/charts

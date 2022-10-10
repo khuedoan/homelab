@@ -1,8 +1,6 @@
 kured:
-  image:
-    repository: quay.io/paulfantom/kured
-    tag: "1.9.2"
-
   configuration:
-    annotateNodes: true
+    startTime: "5:00"
+    endTime: "7:00"
     timeZone: Europe/Madrid
+    rebootCommand: "/usr/bin/systemctl reboot"
