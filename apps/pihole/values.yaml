@@ -1,4 +1,6 @@
 pihole:
+  persistentVolumeClaim:
+    enabled: true
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -8,12 +10,11 @@ pihole:
         hajimari.io/icon: google-drive
     hosts:
      - &host pihole.tribz.cloud
-    path: /
+    path: /admin/index.php
     tls:
       - secretName: pihole-tls-certificate
         hosts:
           - *host
-        
   serviceDns:
     annotations:
       metallb.universe.tf/allow-shared-ip: pihole-svc
