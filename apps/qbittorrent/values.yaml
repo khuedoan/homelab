@@ -9,9 +9,13 @@ qbittorrent:
     media:
       enabled: true
       mountPath: /media
+      accessModes:
+        - ReadWriteOnce
     downloads:
       enabled: true
       mountPath: /downloads
+      accessModes:
+        - ReadWriteOnce
   ingress:
     main:
       enabled: true
