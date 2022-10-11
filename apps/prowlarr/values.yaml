@@ -1,8 +1,4 @@
 prowlarr:
-  image:
-    tag: latest
-  securityContext:
-    fsGroup: 1000
   persistence:
     config:
       enabled: true
