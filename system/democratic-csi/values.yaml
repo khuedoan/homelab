@@ -53,8 +53,8 @@ democratic-csi:
         # if both are present, apiKey is preferred
         # apiKey is only available starting in TrueNAS-12
         apiKey: 1-wJ3l6nblddL0nfdGlb0B1pbz817GHA5g0pHUaW5jocz7eTN2yX6olmciakKSfeEV
-        username: root
-        password:
+        # username: root
+        # password:
         allowInsecure: true
         # use apiVersion 2 for TrueNAS-12 and up (will work on 11.x in some scenarios as well)
         # leave unset for auto-detection
@@ -65,7 +65,7 @@ democratic-csi:
         username: root
         # This is the SSH key that we generated for passwordless authentication
         privateKey: |
-          -----BEGIN RSA PRIVATE KEY-----
+          -----BEGIN OPENSSH PRIVATE KEY-----
           b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
           NhAAAAAwEAAQAAAYEAufNszlIfTH5AYDHb/Tb1rRYvyvsf5aOSxiZqRtfHqEH+3sP+oC0U
           sqaLL9ZPHOmwRsgttKXVUjDySRObo/UEYXZfWp/HoXv7CUQfrb9XZ8VrDvGyRxzirNJo4d
@@ -102,7 +102,7 @@ democratic-csi:
           sRhgIR8j3VXVRN3wPH28u01JNkf8QUwbl1Zr1kEuLhbIbyhvfReYSyTsxShoM/Gep9qFxT
           /Wf6djB1VYhIifR3P9L1nbfuXzXXeLc3fw/av1KFzCHYMSZbep2tQ3X+t1+Q6hyN+rMIZJ
           g7h/rWHJc+muUAAAAYcm9vdEB0cnVlbmFzLnRyaWJ6LmNsb3VkAQID
-          -----END RSA PRIVATE KEY-----
+          -----END OPENSSH PRIVATE KEY-----
       zfs:
         # can be used to override defaults if necessary
         # the example below is useful for TrueNAS 12
