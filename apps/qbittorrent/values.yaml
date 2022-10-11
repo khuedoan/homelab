@@ -3,6 +3,15 @@ qbittorrent:
     TZ: Europe/Zurich
   settings:
     automaticPortSetup: true
+  persistence:
+    config:
+      enabled: true
+    media:
+      enabled: true
+      mountPath: /media
+    downloads:
+      enabled: true
+      mountPath: /downloads
   ingress:
     main:
       enabled: true
