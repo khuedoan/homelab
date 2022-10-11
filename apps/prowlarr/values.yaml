@@ -1,4 +1,6 @@
 prowlarr:
+  securityContext:
+    runAsUser: 1000
   persistence:
     config:
       enabled: true
