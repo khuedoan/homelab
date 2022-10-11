@@ -3,9 +3,9 @@ qbittorrent:
     TZ: Europe/Zurich
   settings:
     automaticPortSetup: true
-  image:
-    repository: lscr.io/linuxserver/qbittorrent
-    tag: latest
+  # image:
+  #   repository: lscr.io/linuxserver/qbittorrent
+  #   tag: latest
   persistence:
     media:
       enabled: true
