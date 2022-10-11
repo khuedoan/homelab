@@ -98,4 +98,9 @@
     name: fs.inotify.max_user_instances
     value: "512"
     state: present
+
+- name: install nfs-utils for truenas nsf csi
+  ansible.builtin.yum:
+    name: nfs-utils
+    state: present
   
