@@ -1,0 +1,103 @@
+democratic-csi:
+  csiDriver:
+    # should be globally unique for a given cluster
+    name: "org.democratic-csi.nfs"
+  
+  # add note here about volume expansion requirements
+  storageClasses:
+  - name: freenas-nfs-csi
+    defaultClass: false
+    reclaimPolicy: Delete
+    volumeBindingMode: Immediate
+    allowVolumeExpansion: true
+    parameters:
+      # for block-based storage can be ext3, ext4, xfs
+      # for nfs should be nfs
+      fsType: nfs
+        
+      # if true, volumes created from other snapshots will be
+      # zfs send/received instead of zfs cloned
+      # detachedVolumesFromSnapshots: "false"
+      
+      # if true, volumes created from other volumes will be
+      # zfs send/received instead of zfs cloned
+      # detachedVolumesFromVolumes: "false"
+  
+    mountOptions:
+    - noatime
+    - nfsvers=3
+    secrets:
+      provisioner-secret:
+      controller-publish-secret:
+      node-stage-secret:
+      node-publish-secret:
+      controller-expand-secret:
+  
+  # if your cluster supports snapshots you may enable below
+  volumeSnapshotClasses: []
+  #- name: freenas-nfs-csi
+  #  parameters:
+  #  # if true, snapshots will be created with zfs send/receive
+  #  # detachedSnapshots: "false"
+  #  secrets:
+  #    snapshotter-secret:
+  driver: freenas-api-nfs
+  instance_id:
+  httpConnection:
+    protocol: http
+    host: 192.168.1.3
+    port: 80
+    # use only 1 of apiKey or username/password
+    # if both are present, apiKey is preferred
+    # apiKey is only available starting in TrueNAS-12
+    apiKey: 1-wJ3l6nblddL0nfdGlb0B1pbz817GHA5g0pHUaW5jocz7eTN2yX6olmciakKSfeEV
+    # username: root
+    # password:
+    allowInsecure: false
+    # use apiVersion 2 for TrueNAS-12 and up (will work on 11.x in some scenarios as well)
+    # leave unset for auto-detection
+    apiVersion: 2
+  zfs:
+    # can be used to override defaults if necessary
+    # the example below is useful for TrueNAS 12
+    #cli:
+    #  sudoEnabled: true
+    #
+    #  leave paths unset for auto-detection
+    #  paths:
+    #    zfs: /usr/local/sbin/zfs
+    #    zpool: /usr/local/sbin/zpool
+    #    sudo: /usr/local/bin/sudo
+    #    chroot: /usr/sbin/chroot
+    
+    # can be used to set arbitrary values on the dataset/zvol
+    # can use handlebars templates with the parameters from the storage class/CO
+    #datasetProperties:
+    #  "org.freenas:description": "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+    #  "org.freenas:test": "{{ parameters.foo }}"
+    #  "org.freenas:test2": "some value"
+  
+    datasetParentName: tank/k8s/nfs/vols
+    # do NOT make datasetParentName and detachedSnapshotsDatasetParentName overlap
+    # they may be siblings, but neither should be nested in the other
+    detachedSnapshotsDatasetParentName: tank/k8s/nfs/snaps
+    datasetEnableQuotas: true
+    datasetEnableReservation: false
+    datasetPermissionsMode: "0777"
+    datasetPermissionsUser: 0
+    datasetPermissionsGroup: 0
+  
+    # not supported yet
+    #datasetPermissionsAcls:
+    #- "-m everyone@:full_set:allow"
+    #- "-m u:kube:full_set:allow"
+  
+  nfs:
+    #shareCommentTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+    shareHost: 192.168.1.3
+    shareAlldirs: false
+    shareAllowedHosts: []
+    shareAllowedNetworks: []
+    shareMaprootUser: root
+    shareMaprootGroup: root
+    shareMapallUser: ""
