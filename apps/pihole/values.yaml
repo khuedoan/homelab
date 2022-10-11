@@ -1,4 +1,6 @@
 pihole:
+  env:
+    TZ: Europe/Zurich
   persistentVolumeClaim:
     enabled: true
   ingress:

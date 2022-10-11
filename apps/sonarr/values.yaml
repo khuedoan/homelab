@@ -1,4 +1,6 @@
 sonarr:
+  env:
+    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/sonarr
     tag: develop

@@ -1,4 +1,6 @@
 elementweb:
+  env:
+    TZ: Europe/Zurich
   ingress:
     enabled: true
     className: nginx
@@ -23,6 +25,8 @@ elementweb:
       server_name: tribz.cloud
 
 dendrite:
+  env:
+    TZ: Europe/Zurich
   polylith: false
   image:
     name: "locmai/dendrite-monolith:010922"  # TODO switch to official image

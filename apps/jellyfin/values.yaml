@@ -2,6 +2,8 @@ jellyfin:
   persistence:
     config:
       enabled: true
+  env:
+    TZ: Europe/Zurich
   ingress:
     main:
       enabled: true

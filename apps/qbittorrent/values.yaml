@@ -1,4 +1,6 @@
 qbittorrent:
+  env:
+    TZ: Europe/Zurich
   settings:
     automaticPortSetup: true
   ingress:

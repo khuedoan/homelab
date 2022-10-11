@@ -1,4 +1,6 @@
 radarr:
+  env:
+    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/radarr
     tag: develop

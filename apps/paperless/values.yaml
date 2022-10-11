@@ -1,4 +1,6 @@
 paperless:
+  env:
+    TZ: Europe/Zurich
   ingress:
     main:
       enabled: true

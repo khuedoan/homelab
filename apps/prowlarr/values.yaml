@@ -1,4 +1,6 @@
 prowlarr:
+  env:
+    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/prowlarr
     tag: develop

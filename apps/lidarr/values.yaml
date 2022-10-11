@@ -1,4 +1,9 @@
 lidarr:
+  env:
+    TZ: Europe/Zurich
+  image:
+    repository: lscr.io/linuxserver/lidarr
+    tag: develop
   ingress:
     main:
       enabled: true
