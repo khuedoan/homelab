@@ -1,4 +1,8 @@
 prowlarr:
+  image:
+    repository: lscr.io/linuxserver/prowlarr
+    tag: develop
+    pullPolicy: Always
   persistence:
     config:
       enabled: true
