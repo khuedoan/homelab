@@ -46,9 +46,9 @@ democratic-csi:
       driver: freenas-nfs
       instance_id:
       httpConnection:
-        protocol: http
-        host: 192.168.1.3
-        port: 80
+        protocol: https
+        host: truenas.tribz.cloud
+        port: 443
         # use only 1 of apiKey or username/password
         # if both are present, apiKey is preferred
         # apiKey is only available starting in TrueNAS-12
@@ -140,7 +140,7 @@ democratic-csi:
       
       nfs:
         #shareCommentTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
-        shareHost: 192.168.1.3
+        shareHost: truenas.tribz.cloud
         shareAlldirs: false
         shareAllowedHosts: []
         shareAllowedNetworks: []
