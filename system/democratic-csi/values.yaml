@@ -53,9 +53,9 @@ democratic-csi:
         # if both are present, apiKey is preferred
         # apiKey is only available starting in TrueNAS-12
         apiKey: 1-wJ3l6nblddL0nfdGlb0B1pbz817GHA5g0pHUaW5jocz7eTN2yX6olmciakKSfeEV
-          username: root
-          password:
-          allowInsecure: true
+        username: root
+        password:
+        allowInsecure: true
         # use apiVersion 2 for TrueNAS-12 and up (will work on 11.x in some scenarios as well)
         # leave unset for auto-detection
         # apiVersion: 2
