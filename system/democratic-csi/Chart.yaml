@@ -1,7 +1,7 @@
 apiVersion: v2
-name: cert-manager
+name: democratic-csi
 version: 0.0.0
 dependencies:
-  - name: cert-manager
-    version: v1.7.1
-    repository: https://charts.jetstack.io
+  - name: democratic-csi
+    version: "> 1.0.0"
+    repository: https://democratic-csi.github.io/charts/
