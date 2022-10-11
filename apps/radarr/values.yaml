@@ -1,4 +1,10 @@
 radarr:
+  image:
+    repository: lscr.io/linuxserver/radarr
+    tag: develop
+  persistence:
+    config:
+      enabled: true
   ingress:
     main:
       enabled: true

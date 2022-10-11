@@ -1,4 +1,10 @@
 sonarr:
+  image:
+    repository: lscr.io/linuxserver/sonarr
+    tag: develop
+  persistence:
+    config:
+      enabled: true
   ingress:
     main:
       enabled: true
