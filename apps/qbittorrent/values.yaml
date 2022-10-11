@@ -6,11 +6,7 @@ qbittorrent:
   image:
     repository: lscr.io/linuxserver/qbittorrent
     tag: latest
-  securityContext:
-    fsGroupChangePolicy: "Always"
   persistence:
-    config:
-      enabled: true
     media:
       enabled: true
       mountPath: /media
