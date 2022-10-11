@@ -10,10 +10,12 @@ qbittorrent:
       enabled: true
       mountPath: /media
       accessMode: ReadWriteOnce
+      size: 1Gi
     downloads:
       enabled: true
       mountPath: /downloads
       accessMode: ReadWriteOnce
+      size: 5Gi
   ingress:
     main:
       enabled: true
