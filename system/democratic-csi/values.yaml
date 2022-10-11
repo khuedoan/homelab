@@ -46,9 +46,9 @@ democratic-csi:
       driver: freenas-nfs
       instance_id:
       httpConnection:
-        protocol: https
+        protocol: http
         host: truenas.tribz.cloud
-        port: 443
+        port: 80
         # use only 1 of apiKey or username/password
         # if both are present, apiKey is preferred
         # apiKey is only available starting in TrueNAS-12
@@ -60,7 +60,7 @@ democratic-csi:
         # leave unset for auto-detection
         apiVersion: 2
       sshConnection:
-        host: 192.168.1.3
+        host: truenas.tribz.cloud
         port: 22
         username: root
         # This is the SSH key that we generated for passwordless authentication
