@@ -3,5 +3,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - github.com/k8up-io/k8up/tree/master/config/samples
+  - github.com/k8up-io/k8up/config/samples?ref=master
   #- schedule.yaml
