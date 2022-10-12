@@ -66,42 +66,13 @@ democratic-csi:
         # This is the SSH key that we generated for passwordless authentication
         privateKey: |
           -----BEGIN OPENSSH PRIVATE KEY-----
-          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
-          fGyin2VrAT1oVBdDSK4OsDnFZmdzQet133d+Ku8vIMkVGAE6S54o40G6DQTNEK6cT/Fvy6
-          uzF4BaUBNcBI5lgtcs07ep3gebGwNnAAAAwQDAZd6wUw8Qd4+chnL3eCYDSB/HxDN6FhDs
-          JyFK3duT8jYDQTCk2EmAeURLnc3NyGQeD1y2mNzrUAZb6N4puEC9hJeZa9WImtTK9mYeUr
-          sRhgIR8j3VXVRN3wPH28u01JNkf8QUwbl1Zr1kEuLhbIbyhvfReYSyTsxShoM/Gep9qFxT
-          /Wf6djB1VYhIifR3P9L1nbfuXzXXeLc3fw/av1KFzCHYMSZbep2tQ3X+t1+Q6hyN+rMIZJ
-          g7h/rWHJc+muUAAAAYcm9vdEB0cnVlbmFzLnRyaWJ6LmNsb3VkAQID
+          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS
+          1zaGEyLW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQSLr/x+zVaLrOB5rqp9RW4vwrGWTCum
+          sSItVxQ4PeZ4k/YPcnGxAruDck64wJifq1aeNR97/VMxegejWNBOMfdXAAAAqAouyVsKLs
+          lbAAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIuv/H7NVous4Hmu
+          qn1Fbi/CsZZMK6axIi1XFDg95niT9g9ycbECu4NyTrjAmJ+rVp41H3v9UzF6B6NY0E4x91
+          cAAAAgbxUo48mxmke4mjF/n3SUfpB52xzwyYgu288sau4b8LYAAAANbWljaGlAVFJJQlVU
+          RQECAw==
           -----END OPENSSH PRIVATE KEY-----
       zfs:
         # can be used to override defaults if necessary
