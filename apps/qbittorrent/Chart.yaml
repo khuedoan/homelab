@@ -3,5 +3,5 @@ name: qbittorrent
 version: 0.0.0
 dependencies:
   - name: qbittorrent
-    version: "> 1.0.0"
-    repository: https://k8s-at-home.com/charts/
+    version: "> 4.4.5"
+    repository: https://charts.truecharts.org
