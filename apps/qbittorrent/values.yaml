@@ -2,6 +2,11 @@ qbittorrent:
   env:
     TZ: Europe/Zurich
   persistence:
+    config:
+      enabled: true
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 1Gi
     media:
       enabled: true
       mountPath: /media
