@@ -1,0 +1,30 @@
+radarr:
+  env:
+    TZ: Europe/Zurich
+  image:
+    repository: lscr.io/linuxserver/radarr
+    tag: develop
+  persistence:
+    config:
+      enabled: true
+    downloads:
+      enabled: true
+      mountPath: /downloads
+      existingClaim: qbittorrent-downloads
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: radarr
+        hajimari.io/icon: file-document
+      hosts:
+        - host: &host radarr.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: radarr-tls-certificate
+          hosts:
+            - *host
