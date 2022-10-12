@@ -1,7 +1,10 @@
 apiVersion: v2
-name: radarr
+name: mediastack
 version: 0.0.0
 dependencies:
+  - name: qbittorrent
+    version: "> 4.4.5"
+    repository: https://charts.truecharts.org
   - name: radarr
     version: "> 1.0.0"
     repository: https://k8s-at-home.com/charts/
