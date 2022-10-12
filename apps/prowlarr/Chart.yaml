@@ -1,7 +1,0 @@
-apiVersion: v2
-name: prowlarr
-version: 0.0.0
-dependencies:
-  - name: prowlarr
-    version: "> 1.0.0"
-    repository: https://k8s-at-home.com/charts/

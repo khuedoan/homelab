@@ -70,6 +70,7 @@ jellyfin:
       enabled: true
     media:
       enabled: true
+      nameOverride: media
       mountPath: /media
       accessMode: ReadWriteOnce
       size: 5Gi
@@ -94,4 +95,78 @@ jellyfin:
         - secretName: jellyfin-tls-certificate
           hosts:
             - *host
-
+lidarr:
+  env:
+    TZ: Europe/Zurich
+  image:
+    repository: lscr.io/linuxserver/lidarr
+    tag: develop
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: lidarr
+        hajimari.io/icon: file-document
+      hosts:
+        - host: &host lidarr.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: lidarr-tls-certificate
+          hosts:
+            - *host
+sonarr:
+  env:
+    TZ: Europe/Zurich
+  image:
+    repository: lscr.io/linuxserver/sonarr
+    tag: develop
+  persistence:
+    config:
+      enabled: true
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: Sonarr
+        hajimari.io/icon: file-document
+      hosts:
+        - host: &host sonarr.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: sonarr-tls-certificate
+          hosts:
+            - *host
+prowlarr:
+  env:
+    TZ: Europe/Zurich
+  image:
+    repository: lscr.io/linuxserver/prowlarr
+    tag: develop
+  persistence:
+    config:
+      enabled: true
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: prowlarr
+        hajimari.io/icon: file-document
+      hosts:
+        - host: &host prowlarr.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: prowlarr-tls-certificate
+          hosts:
+            - *host
