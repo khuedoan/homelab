@@ -116,5 +116,5 @@ democratic-csi:
         shareAllowedHosts: []
         shareAllowedNetworks: []
         shareMaprootUser: root
-        shareMaprootGroup: root
+        shareMaprootGroup: wheel
         shareMapallUser: ""
