@@ -7,6 +7,10 @@ radarr:
   persistence:
     config:
       enabled: true
+    downloads:
+      enabled: true
+      mountPath: /downloads
+      existingClaim: qbittorrent-downloads
   ingress:
     main:
       enabled: true
