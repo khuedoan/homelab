@@ -48,7 +48,7 @@ radarr:
     downloads:
       enabled: true
       mountPath: /downloads
-      existingClaim: qbittorrent-downloads
+      existingClaim: mediastack-qbittorrent-downloads
   ingress:
     main:
       enabled: true
