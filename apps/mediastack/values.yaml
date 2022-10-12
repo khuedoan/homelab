@@ -74,6 +74,7 @@ jellyfin:
       accessMode: ReadWriteOnce
       size: 5Gi
       storageClass: freenas-nfs-csi
+      # retain: true needed eventually
   env:
     TZ: Europe/Zurich
   ingress:
