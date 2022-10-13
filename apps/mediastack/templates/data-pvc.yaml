@@ -1,3 +1,4 @@
+# Retainable storage for whole mediastack data
 apiVersion: v1
 kind: PersistentVolume
 metadata:
