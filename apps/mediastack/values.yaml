@@ -1,8 +1,9 @@
 global:
-  data:
-    enabled: true
-    mountPath: /data
-    existingClaim: data-mediastack
+  persistence:
+    data:
+      enabled: true
+      mountPath: /data
+      existingClaim: data-mediastack
 qbittorrent:
   env:
     TZ: Europe/Zurich
