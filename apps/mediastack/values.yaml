@@ -4,9 +4,9 @@ qbittorrent:
   persistence:
     config:
       enabled: true
-      mountPath: /config
-      accessMode: ReadWriteOnce
-      size: 1Gi
+      # mountPath: /config
+      # accessMode: ReadWriteOnce
+      # size: 1Gi
   ingress:
     main:
       enabled: true
@@ -33,10 +33,6 @@ radarr:
   persistence:
     config:
       enabled: true
-    # downloads:
-    #   enabled: true
-      # mountPath: /downloads
-      # existingClaim: mediastack-qbittorrent-downloads
     media:
       enabled: true
       mountPath: /media
@@ -64,14 +60,6 @@ jellyfin:
   persistence:
     config:
       enabled: true
-    media:
-      enabled: true
-      nameOverride: media
-      mountPath: /media
-      accessMode: ReadWriteOnce
-      size: 5Gi
-      storageClass: freenas-nfs-csi
-      # retain: true needed eventually
   env:
     TZ: Europe/Zurich
   ingress:
