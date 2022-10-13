@@ -11,6 +11,7 @@ spec:
   csi:
     driver: org.democratic-csi.nfs
     fsType: nfs
+    volumeHandle: pv-mediastack-data
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
