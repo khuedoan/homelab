@@ -2,7 +2,7 @@ qbittorrent:
   additionalVolumes:
     - name: qbittorrent-scripts
       configMap:
-        name: qbittorrent-scripts
+        name: mediastack-qbittorrent-scripts
         defaultMode: 511
   env:
     TZ: Europe/Zurich
