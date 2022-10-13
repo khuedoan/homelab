@@ -1,13 +1,24 @@
-#pv
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mediastack-data
+spec:
+  volumeMode: Filesystem
+  capacity:
+    storage: 5G
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: org.democratic-csi.nfs
+    fsType: nfs
+  persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: data
+  name: mediastack-data
 spec:
   accessModes:
   - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
   storageClassName: freenas-nfs-csi
+  volumeName: pv-mediastack-data
