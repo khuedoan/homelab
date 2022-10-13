@@ -1,4 +1,4 @@
-persistence:
+global:
   data:
     enabled: true
     mountPath: /data
