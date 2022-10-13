@@ -43,10 +43,10 @@ radarr:
     #   enabled: true
       # mountPath: /downloads
       # existingClaim: mediastack-qbittorrent-downloads
-    # media:
-    #   enabled: true
-      # mountPath: /media
-      # existingClaim: mediastack-jellyfin-media
+    media:
+      enabled: true
+      mountPath: /media
+      existingClaim: data-mediastack
   ingress:
     main:
       enabled: true

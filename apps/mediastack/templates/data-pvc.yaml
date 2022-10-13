@@ -14,27 +14,27 @@ spec:
     driver: org.democratic-csi.nfs
     fsType: nfs
     volumeHandle: pv-mediastack-data
-    volumeAttributes:
-      node_attach_driver: nfs
-      provisioner_driver: freenas-nfs
-      server: truenas.tribz.cloud
-      share: /mnt/tank/k8s/nfs/vols/pv-mediastack-data
-      storage.kubernetes.io/csiProvisionerIdentity: 1665587257410-8081-org.democratic-csi.nfs
-    controllerPublishSecretRef:
-      name: controller-publish-secret-freenas-nfs-csi-democratic-csi
-      namespace: democratic-csi
-    nodeStageSecretRef:
-      name: node-stage-secret-freenas-nfs-csi-democratic-csi
-      namespace: democratic-csi
-    nodePublishSecretRef:
-      name: node-publish-secret-freenas-nfs-csi-democratic-csi
-      namespace: democratic-csi
-    controllerExpandSecretRef:
-      name: controller-expand-secret-freenas-nfs-csi-democratic-csi
-      namespace: democratic-csi
-  mountOptions:
-    - noatime
-    - nfsvers=4
+  #   volumeAttributes:
+  #     node_attach_driver: nfs
+  #     provisioner_driver: freenas-nfs
+  #     server: truenas.tribz.cloud
+  #     share: /mnt/tank/k8s/nfs/vols/pv-mediastack-data
+  #     storage.kubernetes.io/csiProvisionerIdentity: 1665587257410-8081-org.democratic-csi.nfs
+  #   controllerPublishSecretRef:
+  #     name: controller-publish-secret-freenas-nfs-csi-democratic-csi
+  #     namespace: democratic-csi
+  #   nodeStageSecretRef:
+  #     name: node-stage-secret-freenas-nfs-csi-democratic-csi
+  #     namespace: democratic-csi
+  #   nodePublishSecretRef:
+  #     name: node-publish-secret-freenas-nfs-csi-democratic-csi
+  #     namespace: democratic-csi
+  #   controllerExpandSecretRef:
+  #     name: controller-expand-secret-freenas-nfs-csi-democratic-csi
+  #     namespace: democratic-csi
+  # mountOptions:
+  #   - noatime
+  #   - nfsvers=4
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
