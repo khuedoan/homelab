@@ -1,43 +1,5 @@
 # Retainable storage for whole mediastack data
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-mediastack-data
-spec:
-  volumeMode: Filesystem
-  capacity:
-    storage: 5Gi
-  storageClassName: freenas-nfs-csi
-  accessModes:
-    - ReadWriteOnce
-  # csi:
-  #   driver: org.democratic-csi.nfs
-  #   fsType: nfs
-  #   volumeHandle: pv-mediastack-data
-    # volumeAttributes:
-    #   node_attach_driver: nfs
-  #     provisioner_driver: freenas-nfs
-  #     server: truenas.tribz.cloud
-  #     share: /mnt/tank/k8s/nfs/vols/pv-mediastack-data
-  #     storage.kubernetes.io/csiProvisionerIdentity: 1665587257410-8081-org.democratic-csi.nfs
-  #   controllerPublishSecretRef:
-  #     name: controller-publish-secret-freenas-nfs-csi-democratic-csi
-  #     namespace: democratic-csi
-  #   nodeStageSecretRef:
-  #     name: node-stage-secret-freenas-nfs-csi-democratic-csi
-  #     namespace: democratic-csi
-  #   nodePublishSecretRef:
-  #     name: node-publish-secret-freenas-nfs-csi-democratic-csi
-  #     namespace: democratic-csi
-  #   controllerExpandSecretRef:
-  #     name: controller-expand-secret-freenas-nfs-csi-democratic-csi
-  #     namespace: democratic-csi
-  # mountOptions:
-  #   - noatime
-  #   - nfsvers=4
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: data-mediastack
@@ -48,4 +10,3 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  volumeName: pv-mediastack-data
