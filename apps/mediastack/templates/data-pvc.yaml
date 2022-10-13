@@ -9,4 +9,4 @@ spec:
   storageClassName: freenas-nfs-csi-retain
   resources:
     requests:
-      storage: 10Gi
+      storage: 500Gi
