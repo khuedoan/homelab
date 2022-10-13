@@ -10,12 +10,12 @@ spec:
   storageClassName: freenas-nfs-csi
   accessModes:
     - ReadWriteOnce
-  csi:
-    driver: org.democratic-csi.nfs
-    fsType: nfs
-    volumeHandle: pv-mediastack-data
-  #   volumeAttributes:
-  #     node_attach_driver: nfs
+  # csi:
+  #   driver: org.democratic-csi.nfs
+  #   fsType: nfs
+  #   volumeHandle: pv-mediastack-data
+    # volumeAttributes:
+    #   node_attach_driver: nfs
   #     provisioner_driver: freenas-nfs
   #     server: truenas.tribz.cloud
   #     share: /mnt/tank/k8s/nfs/vols/pv-mediastack-data
