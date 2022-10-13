@@ -7,7 +7,7 @@ dependencies:
     repository: https://charts.truecharts.org
   - name: radarr
     version: "> 1.0.0"
-    repository: lscr.io/linuxserver/radarr
+    repository: https://lscr.io/linuxserver/
   - name: jellyfin
     version: 9.5.3
     repository: https://k8s-at-home.com/charts/
