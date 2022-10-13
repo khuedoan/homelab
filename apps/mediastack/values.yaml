@@ -65,6 +65,8 @@ radarr:
           hosts:
             - *host
 jellyfin:
+  repository: lscr.io/linuxserver/jellyfin
+  tag: latest
   persistence:
     config:
       enabled: true
