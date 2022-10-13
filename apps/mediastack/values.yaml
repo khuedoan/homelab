@@ -1,12 +1,12 @@
 global:
+  env:
+      TZ: Europe/Zurich
   persistence:
     data:
       enabled: true
       mountPath: /data
       existingClaim: data-mediastack
 qbittorrent:
-  env:
-    TZ: Europe/Zurich
   persistence:
     config:
       enabled: true
@@ -31,18 +31,12 @@ qbittorrent:
           hosts:
             - *host
 radarr:
-  env:
-    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/radarr
     tag: develop
   persistence:
     config:
       enabled: true
-    # media:
-    #   enabled: true
-    #   mountPath: /media
-    #   existingClaim: data-mediastack
   ingress:
     main:
       enabled: true
@@ -66,8 +60,6 @@ jellyfin:
   persistence:
     config:
       enabled: true
-  env:
-    TZ: Europe/Zurich
   ingress:
     main:
       enabled: true
@@ -86,8 +78,6 @@ jellyfin:
           hosts:
             - *host
 lidarr:
-  env:
-    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/lidarr
     tag: develop
@@ -109,8 +99,6 @@ lidarr:
           hosts:
             - *host
 sonarr:
-  env:
-    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/sonarr
     tag: develop
@@ -135,8 +123,6 @@ sonarr:
           hosts:
             - *host
 prowlarr:
-  env:
-    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/prowlarr
     tag: develop
