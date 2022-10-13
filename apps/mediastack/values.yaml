@@ -11,7 +11,7 @@ qbittorrent:
       enabled: true
       mountPath: /data
       existingClaim: mediastack-data
-      subPath: torrents
+      subPath: torrents/
   ingress:
     main:
       enabled: true
