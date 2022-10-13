@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "nfs"
+spec:
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: mediastack-data
+  containers:
+  - name: nfs
+    env:
+      - name: TZ
+        value: Europe/Zurich
+    image: rockylinux:9.0.20220720-minimal
+    command: ["/bin/bash", "-c", "sleep infinity"]
+    volumeMounts:
+      - mountPath: /data
+        name: data
+    securityContext:
+      allowPrivilegeEscalation: true
