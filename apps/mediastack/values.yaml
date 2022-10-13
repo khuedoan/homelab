@@ -48,6 +48,8 @@ radarr:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hajimari.io/appName: radarr
         hajimari.io/icon: file-document
       hosts:
