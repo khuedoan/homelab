@@ -22,4 +22,7 @@ spec:
   accessModes:
   - ReadWriteOnce
   storageClassName: freenas-nfs-csi
+  resources:
+    requests:
+      storage: 5Gi
   volumeName: pv-mediastack-data
