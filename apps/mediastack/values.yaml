@@ -1,6 +1,6 @@
 global:
   env:
-      TZ: Europe/Zurich
+    TZ: Europe/Zurich
   persistence:
     data:
       enabled: true
