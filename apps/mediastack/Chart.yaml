@@ -1,6 +1,6 @@
 apiVersion: v2
 name: mediastack
-version: 0.0.0
+version: 0.1.0
 dependencies:
   - name: qbittorrent
     version: "> 4.4.5"
