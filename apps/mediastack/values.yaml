@@ -9,7 +9,7 @@ qbittorrent:
       size: 1Gi
     data:
       enabled: true
-      mountPath: /data
+      mountPath: /data/torrents
       existingClaim: mediastack-data
       subPath: torrents/
   ingress:
@@ -69,7 +69,7 @@ jellyfin:
       enabled: true
     data:
       enabled: true
-      mountPath: /data
+      mountPath: /data/media
       existingClaim: mediastack-data
       subPath: media/
   ingress:
