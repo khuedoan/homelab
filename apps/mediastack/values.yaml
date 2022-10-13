@@ -7,12 +7,6 @@ qbittorrent:
       mountPath: /config
       accessMode: ReadWriteOnce
       size: 1Gi
-    downloads:
-      enabled: true
-      mountPath: /downloads
-      accessMode: ReadWriteOnce
-      size: 5Gi
-      storageClass: freenas-nfs-csi
   ingress:
     main:
       enabled: true
