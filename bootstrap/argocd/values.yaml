@@ -40,7 +40,7 @@ argo-cd:
     metrics: *metrics
   repoServer:
     env:
-      - key: ARGOCD_EXEC_TIMEOUT
+      - name: ARGOCD_EXEC_TIMEOUT
         value: 240s
     metrics: *metrics
   redis:
