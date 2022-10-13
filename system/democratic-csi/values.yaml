@@ -5,9 +5,37 @@ democratic-csi:
   
   # add note here about volume expansion requirements
   storageClasses:
-  - name: freenas-nfs-csi
+  - name: freenas-nfs-csi-retain
     defaultClass: false
     reclaimPolicy: Retain
+    volumeBindingMode: Immediate
+    allowVolumeExpansion: true
+    parameters:
+      # for block-based storage can be ext3, ext4, xfs
+      # for nfs should be nfs
+      fsType: nfs
+        
+      # if true, volumes created from other snapshots will be
+      # zfs send/received instead of zfs cloned
+      # detachedVolumesFromSnapshots: "false"
+      
+      # if true, volumes created from other volumes will be
+      # zfs send/received instead of zfs cloned
+      # detachedVolumesFromVolumes: "false"
+  
+    mountOptions:
+    - noatime
+    - nfsvers=4
+    secrets:
+      provisioner-secret:
+      controller-publish-secret:
+      node-stage-secret:
+      node-publish-secret:
+      controller-expand-secret:
+    storageClasses:
+  - name: freenas-nfs-csi-delete
+    defaultClass: false
+    reclaimPolicy: Delete
     volumeBindingMode: Immediate
     allowVolumeExpansion: true
     parameters:
