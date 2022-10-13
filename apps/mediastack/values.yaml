@@ -1,10 +1,7 @@
 qbittorrent:
-  additionalVolumes:
-    - name: qbittorrent-scripts
-      emptyDir: {}
-      configMap:
-        name: qbittorrent-scripts
-        defaultMode: 511
+  configMap:
+    name: qbittorrent-scripts
+    defaultMode: 511
   env:
     TZ: Europe/Zurich
   persistence:
