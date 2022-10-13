@@ -10,7 +10,7 @@ qbittorrent:
     data:
       enabled: true
       mountPath: /data
-      existingClaim: data-mediastack
+      existingClaim: mediastack-data
       subPath: torrents
   ingress:
     main:
@@ -41,7 +41,7 @@ radarr:
     data:
       enabled: true
       mountPath: /data
-      existingClaim: data-mediastack
+      existingClaim: mediastack-data
       subPath: torrents
   ingress:
     main:
@@ -71,7 +71,7 @@ jellyfin:
     data:
       enabled: true
       mountPath: /data
-      existingClaim: data-mediastack
+      existingClaim: mediastack-data
       subPath: media
   ingress:
     main:
@@ -99,7 +99,7 @@ lidarr:
     data:
       enabled: true
       mountPath: /data
-      existingClaim: data-mediastack
+      existingClaim: mediastack-data
   image:
     repository: lscr.io/linuxserver/lidarr
     tag: develop
@@ -129,7 +129,7 @@ sonarr:
     data:
       enabled: true
       mountPath: /data
-      existingClaim: data-mediastack
+      existingClaim: mediastack-data
   image:
     repository: lscr.io/linuxserver/sonarr
     tag: develop
