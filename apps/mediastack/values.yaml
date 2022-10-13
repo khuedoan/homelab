@@ -42,7 +42,6 @@ radarr:
       enabled: true
       mountPath: /data
       existingClaim: mediastack-data
-      subPath: torrents
   ingress:
     main:
       enabled: true
@@ -72,7 +71,7 @@ jellyfin:
       enabled: true
       mountPath: /data
       existingClaim: mediastack-data
-      subPath: media
+      subPath: media/
   ingress:
     main:
       enabled: true
