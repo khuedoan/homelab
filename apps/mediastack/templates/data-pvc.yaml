@@ -6,7 +6,7 @@ metadata:
 spec:
   volumeMode: Filesystem
   capacity:
-    storage: 5G
+    storage: 5Gi
   accessModes:
     - ReadWriteOnce
   csi:
