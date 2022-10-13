@@ -7,6 +7,8 @@ global:
       mountPath: /data
       existingClaim: data-mediastack
 qbittorrent:
+  env:
+    TZ: Europe/Zurich
   persistence:
     config:
       enabled: true
@@ -14,7 +16,10 @@ qbittorrent:
       accessMode: ReadWriteOnce
       size: 1Gi
     data:
-      subpath: torrents
+      enabled: true
+      mountPath: /data
+      existingClaim: data-mediastack
+      subPath: torrents
   ingress:
     main:
       enabled: true
@@ -33,12 +38,19 @@ qbittorrent:
           hosts:
             - *host
 radarr:
+  env:
+    TZ: Europe/Zurich
   image:
     repository: lscr.io/linuxserver/radarr
     tag: develop
   persistence:
     config:
       enabled: true
+    data:
+      enabled: true
+      mountPath: /data
+      existingClaim: data-mediastack
+      subPath: torrents
   ingress:
     main:
       enabled: true
@@ -57,13 +69,18 @@ radarr:
           hosts:
             - *host
 jellyfin:
+  env:
+    TZ: Europe/Zurich
   repository: lscr.io/linuxserver/jellyfin
   tag: latest
   persistence:
     config:
       enabled: true
     data:
-      subpath: media
+      enabled: true
+      mountPath: /data
+      existingClaim: data-mediastack
+      subPath: media
   ingress:
     main:
       enabled: true
@@ -82,6 +99,15 @@ jellyfin:
           hosts:
             - *host
 lidarr:
+  env:
+    TZ: Europe/Zurich
+  persistence:
+    config:
+      enabled: true
+    data:
+      enabled: true
+      mountPath: /data
+      existingClaim: data-mediastack
   image:
     repository: lscr.io/linuxserver/lidarr
     tag: develop
@@ -103,12 +129,18 @@ lidarr:
           hosts:
             - *host
 sonarr:
-  image:
-    repository: lscr.io/linuxserver/sonarr
-    tag: develop
+  env:
+    TZ: Europe/Zurich
   persistence:
     config:
       enabled: true
+    data:
+      enabled: true
+      mountPath: /data
+      existingClaim: data-mediastack
+  image:
+    repository: lscr.io/linuxserver/sonarr
+    tag: develop
   ingress:
     main:
       enabled: true
@@ -127,12 +159,14 @@ sonarr:
           hosts:
             - *host
 prowlarr:
-  image:
-    repository: lscr.io/linuxserver/prowlarr
-    tag: develop
+  env:
+    TZ: Europe/Zurich
   persistence:
     config:
       enabled: true
+  image:
+    repository: lscr.io/linuxserver/prowlarr
+    tag: develop
   ingress:
     main:
       enabled: true
