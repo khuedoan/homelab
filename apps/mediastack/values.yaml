@@ -4,9 +4,9 @@ qbittorrent:
   persistence:
     config:
       enabled: true
-      # mountPath: /config
-      # accessMode: ReadWriteOnce
-      # size: 1Gi
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 1Gi
   ingress:
     main:
       enabled: true
