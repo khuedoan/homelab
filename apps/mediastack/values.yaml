@@ -62,7 +62,8 @@ radarr:
           hosts:
             - *host
 jellyfin:
-  replicas: 0
+  controller:
+    replicas: 0
   env:
     TZ: Europe/Zurich
   repository: lscr.io/linuxserver/jellyfin
