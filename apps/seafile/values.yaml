@@ -1,6 +1,13 @@
 seafile:
   env:
     TZ: Europe/Zurich
+    DB_HOST: db
+    DB_ROOT_PASSWD: db_dev
+    SEAFILE_ADMIN_EMAIL: me@example.com
+    SEAFILE_ADMIN_PASSWORD: asecret
+    SEAFILE_SERVER_HOSTNAME: &host seafile.tribz.cloud
+    SEAFILE_SERVER_LETSENCRYPT: "false"
+    TIME_ZONE: Etc/UTC
   ingress:
     main:
       enabled: true
@@ -13,7 +20,7 @@ seafile:
         hajimari.io/icon: google-drive
         nginx.ingress.kubernetes.io/proxy-body-size: "10g"
       hosts:
-        - host: &host seafile.tribz.cloud
+        - host: *host
           paths:
             - path: /
               pathType: Prefix

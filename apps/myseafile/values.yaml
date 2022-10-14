@@ -1,0 +1,33 @@
+myseafile:
+  env:
+    TZ: Europe/Zurich
+  repository: seafileltd/seafile-mc
+  tag: latest
+  persistence:
+    config:
+      enabled: true
+      size: 1Gi
+    data:
+      enabled: true
+      size: 1Gi
+      mountPath: /shared
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: MySeafile
+        hajimari.io/icon: google-drive
+        nginx.ingress.kubernetes.io/proxy-body-size: "10g"
+      hosts:
+        - host: &host myseafile.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: myseafile-tls-certificate
+          hosts:
+            - *host
+  mariadb:
+    enabled: true

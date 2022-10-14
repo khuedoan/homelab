@@ -1,0 +1,14 @@
+apiVersion: v2
+name: myseafile
+appVersion: "9.0.9"
+dependencies:
+  - name: mariadb
+    condition: enabled.true
+    repository: https://charts.bitnami.com/bitnami
+    version: "> 10.5.0"
+  - name: memcached
+    repository: https://charts.bitnami.com/bitnami
+    version: "> 1.6.0"
+  - name: common
+    repository: https://library-charts.truecharts.org
+    version: 10.7.0
