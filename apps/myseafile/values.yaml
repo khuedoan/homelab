@@ -15,10 +15,9 @@ persistence:
   config:
     enabled: true
     size: 1Gi
-  data:
+  shared:
     enabled: true
     size: 1Gi
-    mountPath: /shared
 ingress:
   main:
     enabled: true
