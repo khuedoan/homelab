@@ -45,6 +45,9 @@ tools:
 test:
 	make -C test
 
+clean:
+	docker compose --project-directory ./metal/roles/pxe_server/files down
+
 dev:
 	make -C metal cluster env=dev
 	make -C bootstrap

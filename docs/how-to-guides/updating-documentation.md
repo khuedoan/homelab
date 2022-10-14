@@ -14,7 +14,7 @@ There are 4 main parts:
 
 To edit and view locally, run:
 
-```
+```sh
 make docs
 ```
 

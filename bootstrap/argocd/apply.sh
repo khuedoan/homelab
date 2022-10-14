@@ -1,6 +1,7 @@
 #!/bin/sh
 
 helm template \
+    --dependency-update \
     --include-crds \
     --namespace argocd \
     argocd . \
