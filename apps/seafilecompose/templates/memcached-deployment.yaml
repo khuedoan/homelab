@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: F:\_VSCodeWorkspace\kompose\kompose.exe convert -c -f F:\_VSCodeWorkspace\kompose\seafilecompose.yaml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: memcached
+  name: memcached
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: memcached
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: F:\_VSCodeWorkspace\kompose\kompose.exe convert -c -f F:\_VSCodeWorkspace\kompose\seafilecompose.yaml
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/: "true"
+        io.kompose.service: memcached
+    spec:
+      containers:
+        - command:
+            - memcached
+            - -m
+            - "256"
+          image: memcached:1.6
+          name: seafile-memcached
+          resources: {}
+      restartPolicy: Always
+status: {}

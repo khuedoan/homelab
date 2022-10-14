@@ -1,0 +1,8 @@
+apiVersion: v2
+name: seafilecompose
+description: Free and open source, powerful network-wide ads & trackers blocking DNS server.
+appVersion: "9.0.9"
+dependencies:
+  - name: common
+    repository: https://library-charts.truecharts.org
+    version: 10.7.0

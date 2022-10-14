@@ -1,0 +1,4 @@
+image:
+  repository: seafileltd/seafile-mc
+  tag: latest
+  pullPolicy: IfNotPresent
