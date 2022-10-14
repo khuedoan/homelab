@@ -1,5 +1,6 @@
 apiVersion: v2
 name: myseafile
+version: 0.1.0
 appVersion: "9.0.9"
 dependencies:
   - name: mariadb
