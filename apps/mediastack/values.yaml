@@ -180,7 +180,7 @@ readarr:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: sonarr-tls-certificate
+        - secretName: readarr-tls-certificate
           hosts:
             - *host
 prowlarr:
