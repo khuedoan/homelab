@@ -1,37 +1,41 @@
-
-
-myseafile:
-  env:
+image:
+  repository: seafileltd/seafile-mc
+  tag: latest
+  pullPolicy: IfNotPresent
+env:
     TZ: Europe/Zurich
-  image:
-    repository: seafileltd/seafile-mc
-    tag: latest
-    pullPolicy: IfNotPresent
-  persistence:
-    config:
-      enabled: true
-      size: 1Gi
-    data:
-      enabled: true
-      size: 1Gi
-      mountPath: /shared
-  ingress:
-    main:
-      enabled: true
-      ingressClassName: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        hajimari.io/appName: MySeafile
-        hajimari.io/icon: google-drive
-        nginx.ingress.kubernetes.io/proxy-body-size: "10g"
-      hosts:
-        - host: &host myseafile.tribz.cloud
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - secretName: myseafile-tls-certificate
-          hosts:
-            - *host
-  mariadb:
+    DB_HOST: db
+    DB_ROOT_PASSWD: db_dev
+    SEAFILE_ADMIN_EMAIL: me@example.com
+    SEAFILE_ADMIN_PASSWORD: asecret
+    SEAFILE_SERVER_HOSTNAME: &host myseafile.tribz.cloud
+    SEAFILE_SERVER_LETSENCRYPT: "false"
+    TIME_ZONE: Etc/UTC
+persistence:
+  config:
     enabled: true
+    size: 1Gi
+  data:
+    enabled: true
+    size: 1Gi
+    mountPath: /shared
+ingress:
+  main:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      hajimari.io/appName: MySeafile
+      hajimari.io/icon: google-drive
+      nginx.ingress.kubernetes.io/proxy-body-size: "10g"
+    hosts:
+      - host: *host
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: myseafile-tls-certificate
+        hosts:
+          - *host
+mariadb:
+  enabled: true
