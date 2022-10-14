@@ -16,7 +16,7 @@ repositories:
     owner: ops
     private: false
     migrate:
-      source: https://github.com/khuedoan/homelab
+      source: http://192.168.1.24:8000/homelab.git # TODO
       mirror: false
     # TODO create webhook (use a global one?)
     # webhooks:

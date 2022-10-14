@@ -47,6 +47,7 @@ test:
 
 clean:
 	docker compose --project-directory ./metal/roles/pxe_server/files down
+	docker rm --force homelab-seed-repo
 
 dev:
 	make -C metal cluster env=dev
