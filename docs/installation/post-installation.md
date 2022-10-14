@@ -23,3 +23,23 @@ Save the following files to a safe location like a password manager (if you're u
 - Gitea:
     - Username: `gitea_admin`
     - Password: get from Vault
+
+## Run the full test suit
+
+After the homelab has been stabilized, you can run the full test suite to ensure that everything is working properly:
+
+```sh
+make test
+```
+
+!!! info
+
+    The "full" test suit is still in its early stages, so any contribution is greatly appreciated.
+
+## Clean up
+
+Turn off the ephemeral containers:
+
+```sh
+make clean
+```
