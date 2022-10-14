@@ -63,8 +63,9 @@ radarr:
           hosts:
             - *host
 jellyfin:
-  controller:
-    replicas: 0
+  # use this when expanding config disk, this frees the PVC from the pod
+  # controller:
+  #   replicas: 0
   env:
     TZ: Europe/Zurich
   repository: lscr.io/linuxserver/jellyfin
