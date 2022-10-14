@@ -21,6 +21,7 @@ pkgs.mkShell {
     go
     gotestsum
     iproute2
+    jq
     k9s
     kube3d
     kubectl
