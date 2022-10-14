@@ -1,0 +1,7 @@
+apiVersion: v2
+name: seafilecompose
+appVersion: "9.0.9"
+dependencies:
+  - name: common
+    repository: https://library-charts.truecharts.org
+    version: 10.7.0

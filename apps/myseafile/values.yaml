@@ -1,8 +1,12 @@
+
+
 myseafile:
   env:
     TZ: Europe/Zurich
-  repository: seafileltd/seafile-mc
-  tag: latest
+  image:
+    repository: seafileltd/seafile-mc
+    tag: latest
+    pullPolicy: IfNotPresent
   persistence:
     config:
       enabled: true

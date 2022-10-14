@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: F:\_VSCodeWorkspace\kompose\kompose.exe convert -c -f F:\_VSCodeWorkspace\kompose\seafilecompose.yaml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: seafile
+  name: seafile
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: seafile
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: F:\_VSCodeWorkspace\kompose\kompose.exe convert -c -f F:\_VSCodeWorkspace\kompose\seafilecompose.yaml
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/: "true"
+        io.kompose.service: seafile
+    spec:
+      containers:
+        - env:
+            - name: DB_HOST
+              value: db
+            - name: DB_ROOT_PASSWD
+              value: db_dev
+            - name: SEAFILE_ADMIN_EMAIL
+              value: me@example.com
+            - name: SEAFILE_ADMIN_PASSWORD
+              value: asecret
+            - name: SEAFILE_SERVER_HOSTNAME
+              value: docs.seafile.com
+            - name: SEAFILE_SERVER_LETSENCRYPT
+              value: "false"
+            - name: TIME_ZONE
+              value: Etc/UTC
+          image: seafileltd/seafile-mc:latest
+          name: seafile
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /shared
+              name: seafile-claim0
+      restartPolicy: Always
+      volumes:
+        - name: seafile-claim0
+          persistentVolumeClaim:
+            claimName: seafile-claim0
+status: {}
