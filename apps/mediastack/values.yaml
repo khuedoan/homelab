@@ -153,6 +153,36 @@ sonarr:
         - secretName: sonarr-tls-certificate
           hosts:
             - *host
+readarr:
+  env:
+    TZ: Europe/Zurich
+  persistence:
+    config:
+      enabled: true
+    data:
+      enabled: true
+      mountPath: /data
+      existingClaim: mediastack-data
+  image:
+    repository: lscr.io/linuxserver/readarr
+    tag: develop
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: Readarr
+        hajimari.io/icon: file-document
+      hosts:
+        - host: &host readarr.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: sonarr-tls-certificate
+          hosts:
+            - *host
 prowlarr:
   env:
     TZ: Europe/Zurich
