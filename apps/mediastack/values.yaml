@@ -18,8 +18,8 @@ qbittorrent:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        hajimari.io/appName: qbittorrent
-        hajimari.io/icon: file-document
+        hajimari.io/appName: qBittorrent
+        hajimari.io/icon: pirate
       hosts:
         - host: &host qbittorrent.tribz.cloud
           paths:
@@ -51,7 +51,7 @@ radarr:
         external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hajimari.io/appName: radarr
-        hajimari.io/icon: file-document
+        hajimari.io/icon: pirate
       hosts:
         - host: &host radarr.tribz.cloud
           paths:
@@ -83,7 +83,7 @@ jellyfin:
         external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hajimari.io/appName: Jellyfin
-        hajimari.io/icon: filmstrip
+        hajimari.io/icon: multimedia
       hosts:
         - host: &host jellyfin.tribz.cloud
           paths:
@@ -113,7 +113,7 @@ lidarr:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: lidarr
-        hajimari.io/icon: file-document
+        hajimari.io/icon: pirate
       hosts:
         - host: &host lidarr.tribz.cloud
           paths:
@@ -143,7 +143,7 @@ sonarr:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: Sonarr
-        hajimari.io/icon: file-document
+        hajimari.io/icon: pirate
       hosts:
         - host: &host sonarr.tribz.cloud
           paths:
@@ -173,7 +173,7 @@ readarr:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: Readarr
-        hajimari.io/icon: file-document
+        hajimari.io/icon: pirate
       hosts:
         - host: &host readarr.tribz.cloud
           paths:
@@ -199,7 +199,7 @@ prowlarr:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: prowlarr
-        hajimari.io/icon: file-document
+        hajimari.io/icon: sync
       hosts:
         - host: &host prowlarr.tribz.cloud
           paths:
