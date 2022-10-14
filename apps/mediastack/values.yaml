@@ -52,6 +52,7 @@ radarr:
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hajimari.io/appName: radarr
         hajimari.io/icon: pirate
+        hajimari.io/group: arr
       hosts:
         - host: &host radarr.tribz.cloud
           paths:
@@ -117,6 +118,7 @@ lidarr:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: lidarr
         hajimari.io/icon: pirate
+        hajimari.io/group: arr
       hosts:
         - host: &host lidarr.tribz.cloud
           paths:
@@ -147,6 +149,7 @@ sonarr:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: Sonarr
         hajimari.io/icon: pirate
+        hajimari.io/group: arr
       hosts:
         - host: &host sonarr.tribz.cloud
           paths:
@@ -177,6 +180,7 @@ readarr:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: Readarr
         hajimari.io/icon: pirate
+        hajimari.io/group: arr
       hosts:
         - host: &host readarr.tribz.cloud
           paths:
@@ -203,6 +207,7 @@ prowlarr:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: prowlarr
         hajimari.io/icon: sync
+        hajimari.io/group: arr
       hosts:
         - host: &host prowlarr.tribz.cloud
           paths:
