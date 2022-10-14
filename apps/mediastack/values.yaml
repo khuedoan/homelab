@@ -69,6 +69,7 @@ jellyfin:
   persistence:
     config:
       enabled: true
+      size: 5Gi
     data:
       enabled: true
       mountPath: /data/media
