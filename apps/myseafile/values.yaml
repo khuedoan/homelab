@@ -42,5 +42,5 @@ service:
       main:
         port: 80
         protocol: HTTP
-mariadb:
-  enabled: true
+# mariadb:
+#   enabled: true
