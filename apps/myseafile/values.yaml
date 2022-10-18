@@ -10,10 +10,11 @@ env:
   SEAFILE_SERVER_HOSTNAME: &host myseafile.tribz.cloud
   SEAFILE_SERVER_LETSENCRYPT: "false"
   TIME_ZONE: Etc/UTC
-  # DB_ROOT_PASSWD: 
-  #   secretKeyRef:
-  #     name: mariadb
-  #     key: mariadb-root-password
+  DB_ROOT_PASSWD:
+    valueFrom:
+      secretKeyRef:
+        name: mariadb
+        key: mariadb-root-password
 securityContext:
   readOnlyRootFilesystem: false
   allowPrivilegeEscalation: true
