@@ -103,15 +103,15 @@ jellyfin:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        hajimari.io/appName: JellyfinLocal
+        hajimari.io/appName: Jellyfin-Local
         hajimari.io/icon: multimedia
       hosts:
-        - host: &host jellyfinlocal.tribz.cloud
+        - host: &host jellyfin-local.tribz.cloud
           paths:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: jellyfin-tls-certificate
+        - secretName: jellyfin-local-tls-certificate
           hosts:
             - *host
 lidarr:
