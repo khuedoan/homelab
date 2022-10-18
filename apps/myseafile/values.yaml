@@ -11,6 +11,9 @@ securityContext:
   privileged: true
             #  readOnlyRootFilesystem: false
   runAsNonRoot: false
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
 env:
     TZ: Europe/Zurich
     DB_HOST: db
