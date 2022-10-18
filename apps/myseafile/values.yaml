@@ -16,7 +16,7 @@ podSecurityContext:
   runAsGroup: 0
 env:
     TZ: Europe/Zurich
-    DB_HOST: db
+    DB_HOST: mariadb
     DB_ROOT_PASSWD: db_dev
     SEAFILE_ADMIN_EMAIL: me@example.com
     SEAFILE_ADMIN_PASSWORD: asecret
