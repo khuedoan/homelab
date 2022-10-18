@@ -13,7 +13,7 @@ env:
   DB_ROOT_PASSWD:
     valueFrom:
       secretKeyRef:
-        name: mariadb
+        name: myseafile-mariadb
         key: mariadb-root-password
 securityContext:
   readOnlyRootFilesystem: false
