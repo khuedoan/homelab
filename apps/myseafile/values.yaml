@@ -5,8 +5,8 @@ image:
 env:
   TZ: Europe/Zurich
   DB_HOST: myseafile-mariadb
-  SEAFILE_ADMIN_EMAIL: me@example.com
-  SEAFILE_ADMIN_PASSWORD: asecret
+  SEAFILE_ADMIN_EMAIL: michi.zimmerli@gmail.com
+  SEAFILE_ADMIN_PASSWORD: admin
   SEAFILE_SERVER_HOSTNAME: &host myseafile.tribz.cloud
   SEAFILE_SERVER_LETSENCRYPT: "false"
   TIME_ZONE: Etc/UTC
@@ -54,5 +54,3 @@ service:
       main:
         port: 80
         protocol: HTTP
-# mariadb:
-#   enabled: true
