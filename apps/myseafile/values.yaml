@@ -4,6 +4,13 @@ image:
   pullPolicy: IfNotPresent
 securityContext:
   readOnlyRootFilesystem: false
+  allowPrivilegeEscalation: true
+            #  capabilities:
+            #    add: []
+            #    drop: []
+            #  privileged: false
+            #  readOnlyRootFilesystem: false
+            #  runAsNonRoot: true
 env:
     TZ: Europe/Zurich
     DB_HOST: db
