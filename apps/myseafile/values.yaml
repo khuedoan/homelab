@@ -8,9 +8,9 @@ securityContext:
             #  capabilities:
             #    add: []
             #    drop: []
-            #  privileged: false
+  privileged: true
             #  readOnlyRootFilesystem: false
-            #  runAsNonRoot: true
+  runAsNonRoot: false
 env:
     TZ: Europe/Zurich
     DB_HOST: db
