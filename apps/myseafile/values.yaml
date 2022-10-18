@@ -2,15 +2,11 @@ image:
   repository: seafileltd/seafile-mc
   tag: latest
   pullPolicy: IfNotPresent
-securityContext:
-  readOnlyRootFilesystem: false
-  allowPrivilegeEscalation: true
-            #  capabilities:
-            #    add: []
-            #    drop: []
-  privileged: true
-            #  readOnlyRootFilesystem: false
-  runAsNonRoot: false
+# securityContext:
+#   readOnlyRootFilesystem: false
+#   allowPrivilegeEscalation: true
+#   privileged: true
+#   runAsNonRoot: false
 podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
