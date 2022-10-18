@@ -62,3 +62,7 @@ mariadb:
   enabled: true
   mariadbUsername: root
   existingSecret: "mariadbcreds"
+  persistence:
+  data:
+    enabled: true
+    size: 1Gi
