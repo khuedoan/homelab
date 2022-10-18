@@ -2,6 +2,8 @@ image:
   repository: seafileltd/seafile-mc
   tag: latest
   pullPolicy: IfNotPresent
+securityContext:
+  readOnlyRootFilesystem: false
 env:
     TZ: Europe/Zurich
     DB_HOST: db
