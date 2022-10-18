@@ -17,10 +17,10 @@ podSecurityContext:
 env:
     TZ: Europe/Zurich
     DB_HOST: mariadb
-    DB_ROOT_PASSWD: 
-      secretKeyRef:
-        name: mariadb
-        key: mariadb-root-password
+    # DB_ROOT_PASSWD: 
+    #   secretKeyRef:
+    #     name: mariadb
+    #     key: mariadb-root-password
     SEAFILE_ADMIN_EMAIL: me@example.com
     SEAFILE_ADMIN_PASSWORD: asecret
     SEAFILE_SERVER_HOSTNAME: &host myseafile.tribz.cloud
