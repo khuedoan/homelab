@@ -15,17 +15,17 @@ podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
 env:
-#     TZ: Europe/Zurich
-#     DB_HOST: mariadb
-#     DB_ROOT_PASSWD: 
-#       secretKeyRef:
-#         name: mariadb
-#         key: mariadb-root-password
-#     SEAFILE_ADMIN_EMAIL: me@example.com
-#     SEAFILE_ADMIN_PASSWORD: asecret
+    TZ: Europe/Zurich
+    DB_HOST: mariadb
+    DB_ROOT_PASSWD: 
+      secretKeyRef:
+        name: mariadb
+        key: mariadb-root-password
+    SEAFILE_ADMIN_EMAIL: me@example.com
+    SEAFILE_ADMIN_PASSWORD: asecret
     SEAFILE_SERVER_HOSTNAME: &host myseafile.tribz.cloud
-#     SEAFILE_SERVER_LETSENCRYPT: "false"
-#     TIME_ZONE: Etc/UTC
+    SEAFILE_SERVER_LETSENCRYPT: "false"
+    TIME_ZONE: Etc/UTC
 persistence:
   config:
     enabled: true
