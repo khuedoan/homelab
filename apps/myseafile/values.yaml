@@ -62,7 +62,8 @@ mariadb:
   enabled: true
   mariadbUsername: root
   existingSecret: "mariadbcreds"
-  persistence:
+  volumeClaimTemplates:
     data:
       enabled: true
+      mountPath: "/bitnami/mariadb"
       size: 1Gi
