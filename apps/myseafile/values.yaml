@@ -4,17 +4,19 @@ image:
   pullPolicy: IfNotPresent
 env:
   TZ: Europe/Zurich
-  DB_HOST: myseafile-mariadb
+  DB_HOST:
+    secretKeyRef:
+      name: mariadbcreds
+      key: plainhost
   SEAFILE_ADMIN_EMAIL: me@example.com
   SEAFILE_ADMIN_PASSWORD: asecret
   SEAFILE_SERVER_HOSTNAME: &host myseafile.tribz.cloud
   SEAFILE_SERVER_LETSENCRYPT: "false"
   TIME_ZONE: Etc/UTC
   DB_ROOT_PASSWD:
-    valueFrom:
-      secretKeyRef:
-        name: mariadb
-        key: mariadb-root-password
+    secretKeyRef:
+      name: mariadbcreds
+      key: mariadb-password
 securityContext:
   readOnlyRootFilesystem: false
   allowPrivilegeEscalation: true
@@ -56,3 +58,7 @@ service:
         protocol: HTTP
 # mariadb:
 #   enabled: true
+mariadb:
+  enabled: true
+  mariadbUsername: root
+  existingSecret: "mariadbcreds"
