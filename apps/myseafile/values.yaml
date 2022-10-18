@@ -12,7 +12,7 @@ podSecurityContext:
   runAsGroup: 0
 env:
     TZ: Europe/Zurich
-    DB_HOST: mariadb
+    DB_HOST: myseafile-mariadb
     # DB_ROOT_PASSWD: 
     #   secretKeyRef:
     #     name: mariadb
