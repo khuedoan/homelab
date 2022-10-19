@@ -54,3 +54,27 @@ service:
       main:
         port: 80
         protocol: HTTP
+probes:
+  liveness:
+    custom: true
+    spec:
+      initialDelaySeconds: 25
+      httpGet:
+        path: /
+        port: 80
+
+  readiness:
+    custom: true
+    spec:
+      initialDelaySeconds: 25
+      httpGet:
+        path: /
+        port: 80
+
+  startup:
+    custom: true
+    spec:
+      initialDelaySeconds: 25
+      httpGet:
+        path: /
+        port: 80
