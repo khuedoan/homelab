@@ -18,10 +18,14 @@ spec:
       - name: botdarr
         image: shayaantx/botdarr:latest
         env:
-          # - name: DISCORD_TOKEN
-          #   value: "1234"
-          # - name: DISCORD_CHANNELS
-          #   value: test
+          - name: SONARR_URL
+            value: https://sonarr.tribz.cloud
+          - name: SONARR_TOKEN
+            value: "a97228fd3a8046499af2541eeb32be80"
+          - name: SONARR_DEFAULT_PROFILE
+            value: Any
+          - name: SONARR_PATH
+            value: /data/media/sonarr/
           - name: RADARR_URL
             value: https://radarr.tribz.cloud
           - name: RADARR_TOKEN
