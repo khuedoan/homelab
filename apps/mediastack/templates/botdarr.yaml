@@ -29,7 +29,7 @@ spec:
           - name: RADARR_DEFAULT_PROFILE
             value: Any
           - name: RADARR_PATH
-            value: /data
+            value: /data/media/radarr/
           - name: MATRIX_ROOM
             value: '!4yb4UHcz5HMrC711:matrix.tribz.cloud'
           - name: MATRIX_USERNAME
