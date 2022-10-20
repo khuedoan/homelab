@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: botdarr-deployment
+  name: mediastack-botdarr
   labels:
     app: botdarr
 spec:
@@ -17,5 +17,18 @@ spec:
       containers:
       - name: botdarr
         image: shayaantx/botdarr:latest
+        env:
+          - name: DISCORD_TOKEN
+            value: 1234
+          - name: DISCORD_CHANNELS
+            value: test
+          - name: RADARR_URL
+            value: http://172.168.1.196:8989
+          - name: RADARR_TOKEN
+            value: 1234
+          - name: RADARR_DEFAULT_PROFILE
+            value: Any
+          - name: RADARR_PATH
+            value: /data
         ports:
         - containerPort: 80
