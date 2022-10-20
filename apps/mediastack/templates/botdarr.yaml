@@ -18,10 +18,10 @@ spec:
       - name: botdarr
         image: shayaantx/botdarr:latest
         env:
-          - name: DISCORD_TOKEN
-            value: "1234"
-          - name: DISCORD_CHANNELS
-            value: test
+          # - name: DISCORD_TOKEN
+          #   value: "1234"
+          # - name: DISCORD_CHANNELS
+          #   value: test
           - name: RADARR_URL
             value: https://radarr.tribz.cloud
           - name: RADARR_TOKEN
@@ -30,5 +30,13 @@ spec:
             value: Any
           - name: RADARR_PATH
             value: /data
+          - name: MATRIX-ROOM
+            value: '!4yb4UHcz5HMrC711:matrix.tribz.cloud'
+          - name: MATRIX-USERNAME
+            value: botdarr
+          - name: MATRIX-PASSWORD
+            value: botdarrInvite123
+          - name: MATRIX-HOME-SERVER-URL
+            value: https://matrix.tribz.cloud
         ports:
         - containerPort: 80
