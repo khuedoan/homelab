@@ -31,7 +31,7 @@ spec:
           - name: RADARR_PATH
             value: /
           - name: MATRIX_ROOM
-            value: '!4yb4UHcz5HMrC711:matrix.tribz.cloud'
+            value: '!SJUyGAU028lzEpIb:matrix.tribz.cloud'
           - name: MATRIX_USERNAME
             value: botdarr
           - name: MATRIX_PASSWORD
