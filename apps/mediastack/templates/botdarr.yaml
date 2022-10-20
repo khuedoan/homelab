@@ -30,13 +30,13 @@ spec:
             value: Any
           - name: RADARR_PATH
             value: /data
-          - name: MATRIX-ROOM
+          - name: MATRIX_ROOM
             value: '!4yb4UHcz5HMrC711:matrix.tribz.cloud'
-          - name: MATRIX-USERNAME
+          - name: MATRIX_USERNAME
             value: botdarr
-          - name: MATRIX-PASSWORD
+          - name: MATRIX_PASSWORD
             value: botdarrInvite123
-          - name: MATRIX-HOME-SERVER-URL
+          - name: MATRIX_HOME_SERVER_URL
             value: https://matrix.tribz.cloud
         ports:
         - containerPort: 80
