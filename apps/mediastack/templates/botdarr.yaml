@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: botdarr-deployment
+  labels:
+    app: botdarr
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: botdarr
+  template:
+    metadata:
+      labels:
+        app: botdarr
+    spec:
+      containers:
+      - name: botdarr
+        image: shayaantx/botdarr:latest
+        ports:
+        - containerPort: 80
