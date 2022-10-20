@@ -23,9 +23,9 @@ spec:
           - name: DISCORD_CHANNELS
             value: test
           - name: RADARR_URL
-            value: http://172.168.1.196:8989
+            value: https://radarr.tribz.cloud
           - name: RADARR_TOKEN
-            value: "1234"
+            value: "80b58a9140a4425592dd1803f9434376"
           - name: RADARR_DEFAULT_PROFILE
             value: Any
           - name: RADARR_PATH
