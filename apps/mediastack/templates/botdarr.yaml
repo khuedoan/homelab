@@ -6,6 +6,7 @@ metadata:
     app: botdarr
 spec:
   replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: botdarr
