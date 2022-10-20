@@ -19,13 +19,13 @@ spec:
         image: shayaantx/botdarr:latest
         env:
           - name: DISCORD_TOKEN
-            value: 1234
+            value: "1234"
           - name: DISCORD_CHANNELS
             value: test
           - name: RADARR_URL
             value: http://172.168.1.196:8989
           - name: RADARR_TOKEN
-            value: 1234
+            value: "1234"
           - name: RADARR_DEFAULT_PROFILE
             value: Any
           - name: RADARR_PATH
