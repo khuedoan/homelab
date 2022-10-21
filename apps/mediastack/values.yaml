@@ -233,6 +233,8 @@ prowlarr:
           hosts:
             - *host
 bazarr:
+  securityContext:
+    runAsUser: 911
   env:
     TZ: Europe/Zurich
   persistence:
