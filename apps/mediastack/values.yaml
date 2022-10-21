@@ -235,6 +235,7 @@ prowlarr:
 bazarr:
   securityContext:
     readOnlyRootFilesystem: false
+    allowPrivilegeEscalation: true
     privileged: true
   env:
     TZ: Europe/Zurich
