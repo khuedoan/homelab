@@ -233,10 +233,9 @@ prowlarr:
           hosts:
             - *host
 bazarr:
-  security:
-    PUID: 911
   securityContext:
     readOnlyRootFilesystem: false
+    privileged: true
   env:
     TZ: Europe/Zurich
   persistence:
