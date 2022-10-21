@@ -233,6 +233,12 @@ prowlarr:
           hosts:
             - *host
 bazarr:
+  podSecurityContext:
+    runAsUser: 911
+    runAsGroup: 911
+    fsGroup: 911
+    supplementalGroups: []
+    fsGroupChangePolicy: OnRootMismatch
   securityContext:
     readOnlyRootFilesystem: false
     allowPrivilegeEscalation: true
