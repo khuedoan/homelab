@@ -66,8 +66,9 @@ jellyfin:
   #   replicas: 0
   env:
     TZ: Europe/Zurich
-  repository: lscr.io/linuxserver/jellyfin
-  tag: latest
+  image:
+    repository: lscr.io/linuxserver/jellyfin
+    tag: latest
   persistence:
     config:
       enabled: true
