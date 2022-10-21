@@ -1,4 +1,9 @@
-# Khue's Homelab
+# Tributes's Homelab
+
+## Thanks ❤️
+
+Special thanks to [Khue](https://github.com/khuedoan) for his awesome work at this homelab stack.
+This Readme is still based on his upstream, but will get updated with my own stuff over time.
 
 **[Features](#features) • [Get Started](#get-started) • [Documentation](https://homelab.khuedoan.com)**
 
