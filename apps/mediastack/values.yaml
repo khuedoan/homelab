@@ -238,6 +238,7 @@ bazarr:
   persistence:
     config:
       enabled: true
+      size: 1Gi
     data:
       enabled: true
       mountPath: /data
