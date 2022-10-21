@@ -233,7 +233,6 @@ prowlarr:
           hosts:
             - *host
 bazarr:
-  replicas: 0
   env:
     TZ: Europe/Zurich
   persistence:
