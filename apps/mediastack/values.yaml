@@ -235,8 +235,8 @@ prowlarr:
 bazarr:
   security:
     PUID: 911
-  # securityContext:
-  #   runAsUser: 911
+  securityContext:
+    readOnlyRootFilesystem: false
   env:
     TZ: Europe/Zurich
   persistence:
