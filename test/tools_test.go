@@ -15,18 +15,18 @@ func TestToolsVersions(t *testing.T) {
 
 	var tools = []struct {
 		binaryPath        string
+		versionArg        string
 		versionConstraint string
 	}{
-		{"ansible", ">= 2.12.6, < 3.0.0"},
-		{"docker", ">= 20.10.17, < 21.0.0"},
-		{"git", ">= 2.37.1, < 3.0.0"},
-		// TODO add more version checks
-		// {"go", ">= 2.37.1, < 3.0.0"},
-		// {"helm", ">= 2.37.1, < 3.0.0"},
-		// {"kubectl", ">= 2.37.1, < 3.0.0"},
-		// {"kustomize", ">= 2.37.1, < 3.0.0"},
-		{"pre-commit", ">= 2.20.0, < 3.0.0"},
-		{"terraform", ">= 1.3.1, < 1.4.0"},
+		{"ansible", "--version", ">= 2.12.6, < 3.0.0"},
+		{"docker", "--version", ">= 20.10.17, < 21.0.0"},
+		{"git", "--version", ">= 2.37.1, < 3.0.0"},
+		{"go", "version", ">= 1.18.5, < 1.19.0"},
+		{"helm", "version", ">= 3.9.4, < 4.0.0"},
+		// {"kubectl", "version", ">= 1.23.11, < 1.25.0"}, // https://kubernetes.io/releases/version-skew-policy/#kubectl
+		{"kustomize", "version", ">= 4.5.4, < 5.0.0"},
+		{"pre-commit", "--version", ">= 2.20.0, < 3.0.0"},
+		{"terraform", "--version", ">= 1.3.1, < 1.4.0"},
 	}
 
 	for _, tool := range tools {
@@ -36,6 +36,7 @@ func TestToolsVersions(t *testing.T) {
 			params := version_checker.CheckVersionParams{
 				BinaryPath:        tool.binaryPath,
 				VersionConstraint: tool.versionConstraint,
+				VersionArg:        tool.versionArg,
 				WorkingDir:        ".",
 			}
 
