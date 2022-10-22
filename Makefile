@@ -5,7 +5,7 @@
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal bootstrap external smoke-test post-install
+default: metal bootstrap external smoke-test post-install clean
 
 configure:
 	./scripts/configure
