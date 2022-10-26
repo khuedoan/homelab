@@ -26,6 +26,11 @@ By using this project you agree to [the license](/license).
     The initial controller is the machine used to bootstrap the cluster, we only need it once, you can use your laptop or desktop
 
 - A Linux machine that can run Docker (because the `host` networking driver used for PXE boot [only supports Linux](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows).
+- Many linux distributions, such as Fedora, deploy with SELinux enabled and enforced. Configure this appropriately on your own or simply set to permissive (at least it'll be logging):
+```
+sed -i s/^SELINUX=.*$/SELINUX=permissive/ /etc/selinux/config
+setenforce 0
+```
 
 ### Servers
 
