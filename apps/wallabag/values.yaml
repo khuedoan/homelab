@@ -40,7 +40,7 @@ app-template:
   ingress:
     main:
       enabled: true
-      ingressClassName: "nginx"
+      ingressClassName: nginx-internal
       annotations:
         cert-manager.io/cluster-issuer: internal
         hajimari.io/appName: Wallabag
