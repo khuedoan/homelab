@@ -1,0 +1,75 @@
+app-template:
+  controller:
+    replicas: 1
+    strategy: Recreate
+  image:
+    repository: wallabag/wallabag
+    tag: 2.5.2
+  env:
+    POSTGRES_USER:
+      valueFrom:
+        secretKeyRef:
+          name: wallabag.wallabag-postgres.credentials.postgresql.acid.zalan.do
+          key: username
+    SYMFONY__ENV__DATABASE_USER:
+      valueFrom:
+        secretKeyRef:
+          name: wallabag.wallabag-postgres.credentials.postgresql.acid.zalan.do
+          key: username
+    POSTGRES_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: wallabag.wallabag-postgres.credentials.postgresql.acid.zalan.do
+          key: password
+    SYMFONY__ENV__DATABASE_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: wallabag.wallabag-postgres.credentials.postgresql.acid.zalan.do
+          key: password
+    SYMFONY__ENV__DATABASE_DRIVER: pdo_pgsql
+    SYMFONY__ENV__DATABASE_HOST: wallabag-postgres
+    SYMFONY__ENV__DATABASE_PORT: 5432
+    SYMFONY__ENV__DATABASE_NAME: wallabag
+    SYMFONY__ENV__DOMAIN_NAME: https://wallabag.k8s.grigri
+  enableServiceLinks: false
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: "nginx"
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+        hajimari.io/appName: Wallabag
+        hajimari.io/icon: alpha-w-circle-outline
+        hajimari.io/instance: internal
+        hajimari.io/group: News
+      hosts:
+        - host: &host wallabag.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+
+  securityContext:
+    runAsUser: 0
+  persistence:
+    images:
+      enabled: true
+      mountPath: /var/www/wallabag/web/assets/images
+      accessMode: ReadWriteOnce
+      size: 4Gi
+      storageClass: longhorn
+      skipuninstall: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 250Mi
+    limits:
+      memory: 512Mi
