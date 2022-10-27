@@ -47,7 +47,7 @@ func TestSmoke(t *testing.T) {
 				fmt.Sprintf("https://%s", ingress.Spec.Rules[0].Host),
 				&tlsConfig,
 				30,
-				30*time.Second,
+				60*time.Second,
 				func(statusCode int, body string) bool {
 					return statusCode == 200
 				},
