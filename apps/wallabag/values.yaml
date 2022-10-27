@@ -55,6 +55,7 @@ app-template:
       tls:
         - hosts:
             - *host
+          secretName: wallabag-tls-certificate
 
   securityContext:
     runAsUser: 0
