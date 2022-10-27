@@ -57,6 +57,15 @@ app-template:
             - *host
           secretName: wallabag-tls-certificate
 
+  probes:
+    startup:
+      enabled: true
+      spec:
+        initialDelaySeconds: 30
+        failureThreshold: 30
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
   securityContext:
     runAsUser: 0
   persistence:
