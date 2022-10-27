@@ -7,8 +7,6 @@ argo-cd:
 
       exec.enabled: "true"
 
-      dexserver.disable.tls: true
-
       dex.config: |
         # Uncomment this block to enable configuration for the expiration time durations.
         # expiry:
