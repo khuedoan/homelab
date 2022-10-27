@@ -1,7 +1,7 @@
 .POSIX:
 
 WORKON_HOME ?= .venv
-VENV_BASE := $(WORKON_HOME)/homelab
+VENV_BASE ?= $(WORKON_HOME)/homelab
 PYTHON := ${VENV_BASE}/bin/python3
 PYTHON_BIN_DIR := ${VENV_BASE}/bin
 
