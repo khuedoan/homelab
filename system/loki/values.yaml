@@ -4,6 +4,10 @@ loki-stack:
     ingress:
       enabled: false
 
+    # podSecurityPolicy deprecated in k8s 1.25
+    rbac:
+      pspEnabled: false
+
     persistence:
       enabled: true
       size: 30Gi
