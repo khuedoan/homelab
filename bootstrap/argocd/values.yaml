@@ -1,9 +1,11 @@
 argo-cd:
-  server:
-    extraArgs:
-      - --insecure
-    config:
+  configs:
+    cm:
+      create: true
+
       url: https://argocd.k8s.grigri
+
+      exec.enabled: "true"
 
       dex.config: |
         # Uncomment this block to enable configuration for the expiration time durations.
@@ -130,7 +132,6 @@ argo-cd:
                 # fixed in: https://github.com/dexidp/dex/pull/1202
                 groupAttr: dn
               nameAttr: cn
-
       # Disable git polling
       timeout.reconciliation: "0"
 
@@ -155,7 +156,9 @@ argo-cd:
 
       kustomize.buildOptions: --enable-helm
 
-    rbacConfig:
+    rbac:
+      create: true
+
       # policy.csv is an file containing user-defined RBAC policies and role definitions (optional).
       # Policy rules are in the form:
       #   p, subject, resource, action, object, effect
@@ -170,6 +173,13 @@ argo-cd:
           g, pando855@gmail.com, role:admin
 
       scopes: '[groups, email]'
+
+    secret:
+      createSecret: false
+
+  server:
+    extraArgs:
+      - --insecure
 
     resources:
       limits:
@@ -264,10 +274,6 @@ argo-cd:
         value: "300s"
 
     metrics: *metrics
-
-  configs:
-    secret:
-      createSecret: false
 
   redis:
     resources:
