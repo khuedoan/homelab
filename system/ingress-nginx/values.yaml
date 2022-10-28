@@ -11,6 +11,7 @@ ingress-nginx:
         proxy_cache_key $scheme$proxy_host$request_uri;
         proxy_cache_lock on;
         proxy_cache_use_stale updating;
+      use-forwarded-headers: true
 
     ingressClassResource:
       name: nginx-internal
