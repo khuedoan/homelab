@@ -86,3 +86,12 @@ app-template:
       memory: 250Mi
     limits:
       memory: 512Mi
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: wallabag
+          app.kubernetes.io/name: wallabag
