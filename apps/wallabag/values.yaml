@@ -3,7 +3,6 @@ app-template:
     # HA is not supported
     replicas: 1
     strategy: Recreate
-    volumeMounts:
 
   image:
     repository: wallabag/wallabag
