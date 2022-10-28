@@ -34,7 +34,7 @@ app-template:
     SYMFONY__ENV__DATABASE_HOST: wallabag-postgres
     SYMFONY__ENV__DATABASE_PORT: 5432
     SYMFONY__ENV__DATABASE_NAME: wallabag
-    SYMFONY__ENV__DOMAIN_NAME: wallabag.grigri.cloud
+    SYMFONY__ENV__DOMAIN_NAME: https://wallabag.grigri.cloud
     SYMFONY__ENV__FOSUSER_REGISTRATION: false
   enableServiceLinks: false
   service:
