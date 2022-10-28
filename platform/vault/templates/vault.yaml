@@ -146,34 +146,16 @@ spec:
           capabilities = ["create", "read", "update", "delete", "list"]
           }
 
-    groups:
-      - name: admin1
-        policies:
-          - allow_secrets
-        metadata:
-          privileged: true
-        type: external
-      - name: admin2
-        policies:
-          - allow_secrets
-        metadata:
-          privileged: true
-        type: external
-
-    group-aliases:
-      - name: admin1
-        mountpath: token
-        group: admin1
-
-
     auth:
       - type: kubernetes
         roles:
-          # Allow every pod in the default namespace to use the secret kv store
-          - name: default
-            bound_service_account_names: ["default", "vault-secrets-webhook", "vault"]
-            bound_service_account_namespaces: ["default", "vswh"]
-            policies: ["allow_secrets", "allow_pki"]
+          - name: allow-secrets
+            bound_service_account_names:
+              - external-secrets
+            bound_service_account_namespaces:
+              - vault
+            policies:
+              - allow_secrets
             ttl: 1h
 
     secrets:
