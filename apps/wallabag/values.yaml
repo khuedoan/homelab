@@ -36,7 +36,7 @@ app-template:
     SYMFONY__ENV__DATABASE_NAME: wallabag
     SYMFONY__ENV__DOMAIN_NAME: https://wallabag.grigri.cloud
     SYMFONY__ENV__FOSUSER_REGISTRATION: false
-    TRUSTED_PROXIES: 0.0.0.0/0
+    TRUSTED_PROXIES: 10.0.0.0/8,192.168.0.0/16
   enableServiceLinks: false
   service:
     main:
