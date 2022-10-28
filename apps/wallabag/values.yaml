@@ -5,7 +5,8 @@ app-template:
     strategy: Recreate
   image:
     repository: wallabag/wallabag
-    tag: 2.5.2
+    # 2.5.2 has problems with https redirect behind reverse proxy
+    tag: latest
   envFrom:
     - secretRef:
         name: wallabag-secret
