@@ -57,7 +57,7 @@ app-template:
     data:
       enabled: true
       mountPath: /data
-      accessMode: ReadWriteOncePod
+      accessMode: ReadWriteOnce
       size: 1Gi
       storageClass: longhorn-ssd
       skipuninstall: true
