@@ -1,4 +1,9 @@
 app-template:
+  controller:
+    # HA is not supported
+    replicas: 0
+    strategy: Recreate
+
   image:
     repository: deluan/navidrome
     tag: 0.48.0
