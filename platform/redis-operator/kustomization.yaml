@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - includeCRDs: true
+    name: redis-operator
+    namespace: redis-operator
+    releaseName: redis-operator
+    repo: https://spotahome.github.io/redis-operator
+    valuesFile: values.yaml
+    version: 3.2.4
+
+patchesJson6902:
+  - patch: |-
+      - op: add
+        path: "/metadata/annotations/argocd.argoproj.io~1sync-options"
+        value: "Replace=true"
+    target:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      name: redisfailovers.databases.spotahome.com
+      version: v1
