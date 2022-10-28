@@ -1,0 +1,7 @@
+apiVersion: v2
+name: redis-operator
+version: 0.0.0
+dependencies:
+  - name: redis-operator
+    version: 1.2.2
+    repository: https://spotahome.github.io/redis-operator
