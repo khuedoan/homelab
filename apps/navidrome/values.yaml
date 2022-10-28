@@ -1,0 +1,70 @@
+app-template:
+  image:
+    repository: deluan/navidrome
+    tag: 0.48.0
+  env:
+    #ND_REVERSEPROXYUSERHEADER: "Remote-User"
+    #ND_REVERSEPROXYWHITELIST: "10.0.0.0/8"
+    ND_SCANSCHEDULE: 1h
+    ND_LOGLEVEL: info
+    ND_SESSIONTIMEOUT: 24h
+    ND_DATAFOLDER: /data
+    ND_MUSICFOLDER: /music
+    ND_AUTOIMPORTPLAYLISTS: "true"
+    ND_LASTFM_ENABLED: "true"
+    ND_LASTFM_LANGUAGE: es
+  envFrom:
+    - secretRef:
+        name: navidrome-secret
+  service:
+    main:
+      ports:
+        http:
+          port: 4533
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+        hajimari.io/appName: Navidrome
+        hajimari.io/icon: music-circle
+        hajimari.io/instance: internal
+        hajimari.io/group: Media
+      hosts:
+        - host: &host navidrome.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: navidrome-tls-certificate
+
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+
+  persistence:
+    music:
+      enabled: true
+      mountPath: /music
+      accessMode: ReadWriteMany
+      size: 200Gi
+      storageClass: longhorn
+      skipuninstall: true
+    data:
+      enabled: true
+      mountPath: /data
+      accessMode: ReadWriteOncePod
+      size: 1Gi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 256Mi
+    limits:
+      memory: 512Mi
