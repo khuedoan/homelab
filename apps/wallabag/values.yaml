@@ -1,7 +1,6 @@
 app-template:
   controller:
-    replicas: 1
-    strategy: Recreate
+    replicas: 2
   image:
     repository: wallabag/wallabag
     tag: 2.5.2
@@ -76,7 +75,7 @@ app-template:
     images:
       enabled: true
       mountPath: /var/www/wallabag/web/assets/images
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
       size: 4Gi
       storageClass: longhorn
       skipuninstall: true
