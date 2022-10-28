@@ -111,7 +111,7 @@ app-template:
       mountPath: /var/www/wallabag/web/app.php
       subPath: app.php
       type: configMap
-      name: wallabag-patch-avoid-redirect
+      name: wallabag-wallabag-patch-avoid-redirect
 
   resources:
     requests:
