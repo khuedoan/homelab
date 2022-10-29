@@ -148,6 +148,9 @@ spec:
 
     auth:
       - type: kubernetes
+        config:
+            # uses vault Service Account
+            kubernetes_host: https://kubernetes.default.svc.cluster.local
         roles:
           - name: allow-secrets
             bound_service_account_names:
