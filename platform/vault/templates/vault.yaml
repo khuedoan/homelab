@@ -137,37 +137,6 @@ spec:
       statsd_address: localhost:9125
     ui: true
 
-  # See: https://banzaicloud.com/docs/bank-vaults/cli-tool/#example-external-vault-configuration
-  # The repository also contains a lot examples in the deploy/ and operator/deploy directories.
-  externalConfig:
-    policies:
-      - name: allow_secrets
-        rules: path "secret/*" {
-          capabilities = ["create", "read", "update", "delete", "list"]
-          }
-
-    auth:
-      - type: kubernetes
-        config:
-            # uses vault Service Account
-            kubernetes_host: https://kubernetes.default.svc.cluster.local
-        roles:
-          - name: allow-secrets
-            bound_service_account_names:
-              - external-secrets
-            bound_service_account_namespaces:
-              - external-secrets
-            policies:
-              - allow_secrets
-            ttl: 1h
-
-    secrets:
-      - path: secret
-        type: kv
-        description: General secrets.
-        options:
-          version: 2
-
   vaultEnvsConfig:
     - name: VAULT_LOG_LEVEL
       value: info
@@ -196,8 +165,35 @@ spec:
 
   # Marks presence of Istio, which influences things like port namings
   istioEnabled: false
+
   externalConfig:
+    policies:
+      - name: allow_secrets
+        rules: path "secret/*" {
+          capabilities = ["create", "read", "update", "delete", "list"]
+          }
+
+    auth:
+      - type: kubernetes
+        config:
+            # uses vault Service Account
+            kubernetes_host: https://kubernetes.default.svc.cluster.local
+        roles:
+          - name: allow-secrets
+            bound_service_account_names:
+              - external-secrets
+            bound_service_account_namespaces:
+              - external-secrets
+            policies:
+              - allow_secrets
+            ttl: 1h
+
     secrets:
+      - path: secret
+        type: kv
+        description: General secrets.
+        options:
+          version: 2
       # https://learn.hashicorp.com/tutorials/vault/pki-engine
       - type: pki
         path: pki/grigri
