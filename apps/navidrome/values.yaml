@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
+    replicas: 1
     strategy: Recreate
 
   image:
@@ -47,9 +47,9 @@ app-template:
           secretName: navidrome-tls-certificate
 
   podSecurityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
+    runAsUser: 995
+    runAsGroup: 991
+    fsGroup: 991
 
   persistence:
     music:
