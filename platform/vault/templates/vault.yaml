@@ -154,9 +154,9 @@ spec:
         roles:
           - name: allow-secrets
             bound_service_account_names:
-              - vault
+              - external-secrets
             bound_service_account_namespaces:
-              - vault
+              - external-secrets
             policies:
               - allow_secrets
             ttl: 1h
