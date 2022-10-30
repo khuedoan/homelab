@@ -63,7 +63,7 @@ radarr:
 jellyfin:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   image:
