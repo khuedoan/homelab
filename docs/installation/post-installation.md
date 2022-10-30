@@ -35,11 +35,3 @@ make test
 !!! info
 
     The "full" test suit is still in its early stages, so any contribution is greatly appreciated.
-
-## Clean up
-
-Turn off the ephemeral containers:
-
-```sh
-make clean
-```

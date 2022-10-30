@@ -56,6 +56,17 @@ The homepage should be available at <https://home.127-0-0-1.nip.io> (ignore the 
 
 See [admin credentials](../post-installation/#admin-credentials) for default passwords.
 
+If you want to make some changes, simply commit to the local `dev` branch and push it to Gitea in the sandbox:
+
+```sh
+git remote add sandbox https://git.127-0-0-1.nip.io/ops/homelab
+git config http.https://git.127-0-0-1.nip.io.sslVerify false
+
+git add foobar.txt
+git commit -m "feat: harness the power of the sun"
+git push sandbox # you can use the gitea_admin account
+```
+
 ## Clean up
 
 Delete the cluster:

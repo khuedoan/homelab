@@ -87,3 +87,6 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.0.3 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
+
+// TODO https://github.com/gruntwork-io/terratest/pull/1182
+replace github.com/gruntwork-io/terratest v0.40.18 => github.com/khuedoan/terratest v0.0.0-20220921151310-016fe8e1536b

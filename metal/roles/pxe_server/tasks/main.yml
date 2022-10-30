@@ -1,3 +1,13 @@
+- name: Get Docker info
+  docker_host_info: {}
+  register: docker_info_result
+
+- name: Ensure Docker is running on a supported operating system
+  fail:
+    msg: Docker host networking driver only works on Linux hosts, and is not supported on Docker Desktop for Mac or Windows (you can use a Linux VM with bridged networking instead)
+  when:
+    - docker_info_result.host_info.OperatingSystem == "Docker Desktop"
+
 - name: Download boot image
   ansible.builtin.get_url:
     url: "{{ iso_url }}"
