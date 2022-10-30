@@ -21,6 +21,8 @@ spec:
         env:
           - name: MAX_DOWNLOADS_TO_SHOW
             value: "100"
+          - name: MAX_RESULTS_TO_SHOW
+            value: "100"
           - name: SONARR_URL
             value: https://sonarr.tribz.cloud
           - name: SONARR_TOKEN
