@@ -1,6 +1,6 @@
 apiVersion: v2
 name: kube-prometheus-stack
-version: 0.0.0
+version: 0.1.0
 dependencies:
   - name: kube-prometheus-stack
     version: 41.7.1  # TODO upgrade https://github.com/prometheus-community/helm-charts/issues/1500
