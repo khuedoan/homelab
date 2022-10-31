@@ -4,6 +4,7 @@ argo-cd:
       - --insecure
     config:
       statusbadge.enabled: 'true'
+      kustomize.buildOptions: '--enable-helm'
       resource.customizations.health.argoproj.io_Application: |
         hs = {}
         hs.status = "Progressing"
