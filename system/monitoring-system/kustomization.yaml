@@ -7,7 +7,7 @@ helmCharts:
   version: 41.7.1
   releaseName: monitoring-system
   namespace: monitoring-system
-  valuesFile: "values.yaml"
+  valuesFile: values.yaml
   includeCRDs: true
 
 patchesJson6902:
