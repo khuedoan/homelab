@@ -1,6 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+resources:
+- secret.yaml
+
 helmCharts:
 - name: kube-prometheus-stack
   repo: https://prometheus-community.github.io/helm-charts
@@ -9,9 +12,6 @@ helmCharts:
   namespace: monitoring-system
   valuesFile: values.yaml
   includeCRDs: true
-
-resources:
-- secret.yaml
 
 patchesJson6902:
   - target:
