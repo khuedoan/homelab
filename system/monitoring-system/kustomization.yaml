@@ -10,6 +10,9 @@ helmCharts:
   valuesFile: values.yaml
   includeCRDs: true
 
+resources:
+- secret.yaml
+
 patchesJson6902:
   - target:
       group: apiextensions.k8s.io
