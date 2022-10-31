@@ -6,7 +6,7 @@ helmCharts:
   repo: https://prometheus-community.github.io/helm-charts
   version: 41.7.1
   # releaseName: prom
-  namespace: monitoring-system
+  # namespace: monitoring-system
   valuesFile: "values.yaml"
   includeCRDs: true
 
