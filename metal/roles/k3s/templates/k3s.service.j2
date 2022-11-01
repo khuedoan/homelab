@@ -7,7 +7,7 @@ After=network-online.target
 Type=notify
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
-ExecStart=/usr/local/bin/k3s {{ 'server --kube-apiserver-arg=feature-gates=PodSecurity=true' if 'masters' in group_names else 'agent' }}
+ExecStart=/usr/local/bin/k3s {{ 'server' if 'masters' in group_names else 'agent' }}
 KillMode=process
 Delegate=yes
 # Having non-zero Limit*s causes performance problems due to accounting overhead
