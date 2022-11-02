@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: monitoring-system
-      mapp.kubernetes.io/name: alertmanager
+      app.kubernetes.io/name: alertmanager
   template:
     metadata:
       labels:
