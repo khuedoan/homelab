@@ -38,3 +38,11 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
+alertmanager:
+  config:
+    receivers:
+      - name: "null"  # Add this to your config as well
+      - name: 'matrix'
+        webhook_configs:
+        - url: 'https://alertmanager-operated:9093/alerts?secret=veryverysecretkeyhere'
+          send_resolved: true

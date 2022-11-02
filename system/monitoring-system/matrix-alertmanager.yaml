@@ -23,11 +23,11 @@ spec:
           - name: APP_PORT
             value: "80"
           - name: APP_ALERTMANAGER_SECRET
-            value: "Such a sweet sorrow"
+            value: veryverysecretkeyhere
           - name: MATRIX_HOMESERVER_URL
             value: https://matrix.tribz.cloud
           - name: MATRIX_ROOMS
-            value: 'receiver1/!SJUyGAU028lzEpIb:matrix.tribz.cloud'
+            value: 'matrix/!SJUyGAU028lzEpIb:matrix.tribz.cloud'
           - name: MATRIX_TOKEN
             value: botdarrInvite123
           - name: MATRIX_USER
