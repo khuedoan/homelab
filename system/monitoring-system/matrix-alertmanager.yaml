@@ -33,11 +33,11 @@ spec:
           - name: MATRIX_HOMESERVER_URL
             value: https://matrix.tribz.cloud
           - name: MATRIX_ROOMS
-            value: 'matrix/!SJUyGAU028lzEpIb:matrix.tribz.cloud'
+            value: 'matrix/!Q7iSV7EXDYsgrSsn:matrix.tribz.cloud'
           - name: MATRIX_TOKEN
-            value: 69jaaK87SJ4-PL6PSkrvXkD_XaW2EcRxj-Dc9JNfN2s
+            value: 0j9-eRla4cHCwLULwcrf_heM8gynEx8tykSc33QgkVE
           - name: MATRIX_USER
-            value: botdarr
+            value: botalertmanager
 ---
 apiVersion: v1
 kind: Service
