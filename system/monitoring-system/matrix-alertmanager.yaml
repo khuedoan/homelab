@@ -12,11 +12,13 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: matrix-alertmanager
+      app.kubernetes.io/instance: monitoring-system
+      app.kubernetes.io/name: matrix-alertmanager
   template:
     metadata:
       labels:
-        app: matrix-alertmanager
+        app.kubernetes.io/instance: monitoring-system
+        app.kubernetes.io/name: matrix-alertmanager
     spec:
       containers:
       - name: matrix-alertmanager
