@@ -40,6 +40,7 @@ metadata:
   name: monitoring-system-matrix-alertmanager
 spec:
   selector:
+    app.kubernetes.io/instance: monitoring-system
     app.kubernetes.io/name: matrix-alertmanager
   ports:
     - protocol: TCP
