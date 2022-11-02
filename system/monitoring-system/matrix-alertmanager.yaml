@@ -49,7 +49,6 @@ spec:
   selector:
     app.kubernetes.io/instance: monitoring-system
     app.kubernetes.io/name: matrix-alertmanager
-    app: matrix-alertmanager
   ports:
     - protocol: TCP
       name: http
