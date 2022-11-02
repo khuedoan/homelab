@@ -19,10 +19,10 @@ spec:
       - name: matrix-alertmanager
         image: jaywink/matrix-alertmanager:latest
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         env:
           - name: APP_PORT
-            value: "80"
+            value: "3000"
           - name: APP_ALERTMANAGER_SECRET
             value: veryverysecretkeyhere
           - name: MATRIX_HOMESERVER_URL
@@ -44,5 +44,6 @@ spec:
     app.kubernetes.io/name: matrix-alertmanager
   ports:
     - protocol: TCP
+      name: http
       port: 80
-      targetPort: 80
+      targetPort: 3000
