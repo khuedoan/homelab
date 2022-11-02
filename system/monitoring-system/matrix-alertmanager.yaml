@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: monitoring-system-matrix-alertmanager
   labels:
-    app: matrix-alertmanager
     app.kubernetes.io/instance: monitoring-system
     app.kubernetes.io/name: matrix-alertmanager
     argocd.argoproj.io/instance: monitoring-system
@@ -12,7 +11,8 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: matrix-alertmanager
+      app.kubernetes.io/instance: monitoring-system
+      mapp.kubernetes.io/name: alertmanager
   template:
     metadata:
       labels:
