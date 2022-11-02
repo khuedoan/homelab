@@ -3,8 +3,6 @@ cluster-init: true
 {% else %}
 server: https://{{ hostvars[groups['masters'][0]].ansible_host }}:6443
 {% endif %}
-kube-apiserver-arg:
-  'feature-gates=PodSecurity=true'
 token-file: {{ k3s_token_file }}
 {% if 'masters' in group_names %}
 {{ k3s_server_config | to_nice_yaml }}
