@@ -2,7 +2,6 @@ image:
   repository: seafileltd/seafile-mc
   tag: latest
   pullPolicy: IfNotPresent
-replicas: 0
 env:
   TZ: Europe/Zurich
   DB_HOST: myseafile-mariadb
