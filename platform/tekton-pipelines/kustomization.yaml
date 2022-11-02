@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   # Pipeline
   - https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+  # namespace
+  - namespace.yaml
   # Triggers
   - https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
   - https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
