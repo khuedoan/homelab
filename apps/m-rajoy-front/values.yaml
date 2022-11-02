@@ -1,0 +1,52 @@
+app-template:
+  controller:
+    replicas: 2
+
+  image:
+    repository: pando85/quotes-simple-web-front
+    tag: 1.0.0
+  env:
+    VUE_APP_API_URL: https://api.m.rajoy.grigri.cloud
+
+  enableServiceLinks: false
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+      hosts:
+        - host: &host m.rajoy.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: m-rajoy-front-tls-certificate
+
+  securityContext:
+    runAsUser: 0
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 4Mi
+    limits:
+      cpu: 500m
+      memory: 32Mi
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: m-rajoy-front
+          app.kubernetes.io/name: m-rajoy-front

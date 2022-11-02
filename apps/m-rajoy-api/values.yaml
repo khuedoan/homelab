@@ -1,0 +1,67 @@
+app-template:
+  controller:
+    replicas: 2
+
+  image:
+    repository: pando85/quotes-simple-web-api
+    tag: 1.0.0
+  env:
+    CORS_ALLOW_ORIGIN: https://m.rajoy.grigri.cloud
+    AUDIOS_PATH: /data/mariano-rajoy/audios_output
+    QUOTES_PATH: /data/mariano-rajoy/quotes_output
+    QUOTES_AUTHOR: Mariano Rajoy
+    QUOTES_AUDIO_KEY: '["audio"]'
+    QUOTES_TRANSCRIPT_KEY: '["quote"]'
+  enableServiceLinks: false
+  service:
+    main:
+      ports:
+        http:
+          port: 8080
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+      hosts:
+        - host: &host api.m.rajoy.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: m-rajoy-api-tls-certificate
+
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+
+  persistence:
+    images:
+      enabled: true
+      mountPath: /data/mariano-rajoy
+      accessMode: ReadWriteMany
+      size: 100Mi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 16Mi
+    limits:
+      cpu: 1
+      memory: 128Mi
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: m-rajoy-api
+          app.kubernetes.io/name: m-rajoy-api
