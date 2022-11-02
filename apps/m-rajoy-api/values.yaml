@@ -41,7 +41,7 @@ app-template:
     fsGroup: 991
 
   persistence:
-    images:
+    data:
       enabled: true
       mountPath: /data/mariano-rajoy
       accessMode: ReadWriteMany
