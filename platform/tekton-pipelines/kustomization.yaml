@@ -5,7 +5,7 @@ resources:
   # Pipeline
   - https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
   # namespace
-  - namespace.yaml
+  # - namespace.yaml
   # Triggers
   - https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
   - https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
@@ -15,3 +15,14 @@ resources:
   # Service account
   - serviceaccount.yaml
   - clusterrolebinding.yaml
+
+patchesJson6902:
+  - target:
+      group: apiextensions.k8s.io
+      version: v1
+      kind: Namespace
+      name: tekton-pipelines
+    patch: |-
+      - op: replace
+        path: "/metadata/labels/pod-security.kubernetes.io~1enforce"
+        value: "privileged"
