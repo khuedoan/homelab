@@ -38,6 +38,8 @@ spec:
             value: 0j9-eRla4cHCwLULwcrf_heM8gynEx8tykSc33QgkVE
           - name: MATRIX_USER
             value: botalertmanager
+          - name: MENTION_ROOM
+            value: "1"
 ---
 apiVersion: v1
 kind: Service
