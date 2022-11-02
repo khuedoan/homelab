@@ -48,5 +48,5 @@ alertmanager:
       - name: "null"  # Add this to your config as well
       - name: 'matrix'
         webhook_configs:
-        - url: 'http://alertmanager-operated:9093/alerts?secret=veryverysecretkeyhere'
+        - url: 'http://localhost:9093/alerts?secret=veryverysecretkeyhere'
           send_resolved: true
