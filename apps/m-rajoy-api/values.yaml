@@ -35,10 +35,10 @@ app-template:
             - *host
           secretName: m-rajoy-api-tls-certificate
 
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
+  podSecurityContext:
+    runAsUser: 995
+    runAsGroup: 991
+    fsGroup: 991
 
   persistence:
     images:
