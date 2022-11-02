@@ -46,8 +46,8 @@ app-template:
       cpu: 100m
       memory: 4Mi
     limits:
-      cpu: 500m
-      memory: 32Mi
+      cpu: 200m
+      memory: 16Mi
 
   topologySpreadConstraints:
     - maxSkew: 1
