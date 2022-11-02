@@ -5,4 +5,4 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-triggers
-    pod-security.kubernetes.io/enforce: unrestricted
+    pod-security.kubernetes.io/enforce: privileged
