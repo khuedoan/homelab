@@ -5,7 +5,8 @@ metadata:
   labels:
     app: matrix-alertmanager
 spec:
-  replicas: 3
+  replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: matrix-alertmanager
