@@ -1,0 +1,59 @@
+app-template:
+  controller:
+    replicas: 2
+
+  image:
+    repository: nginx
+    tag: 1.23.2-alpine
+
+  enableServiceLinks: false
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+      hosts:
+        - host: &host antdroid.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: antdroid-tls-certificate
+
+  securityContext:
+    runAsUser: 0
+
+  persistence:
+    data:
+      enabled: true
+      mountPath: /usr/share/nginx/html
+      accessMode: ReadWriteMany
+      size: 100Mi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 4Mi
+    limits:
+      cpu: 500m
+      memory: 32Mi
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: antdroid
+          app.kubernetes.io/name: antdroid
