@@ -54,7 +54,7 @@ app-template:
       cpu: 100m
       memory: 16Mi
     limits:
-      cpu: 1
+      cpu: 500m
       memory: 128Mi
 
   topologySpreadConstraints:
