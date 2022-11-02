@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-system-matrix-alertmanager
+  labels:
+    app: matrix-alertmanager
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: matrix-alertmanager
+  template:
+    metadata:
+      labels:
+        app: matrix-alertmanager
+    spec:
+      containers:
+      - name: matrix-alertmanager
+        image: jaywink/matrix-alertmanager:latest
+        ports:
+        - containerPort: 80
+        env:
+          - name: APP_PORT
+            value: "80"
+          - name: APP_ALERTMANAGER_SECRET
+            value: "Such a sweet sorrow"
+          - name: MATRIX_HOMESERVER_URL
+            value: https://matrix.tribz.cloud
+          - name: MATRIX_ROOMS
+            value: 'receiver1/!SJUyGAU028lzEpIb:matrix.tribz.cloud'
+          - name: MATRIX_TOKEN
+            value: botdarrInvite123
+          - name: MATRIX_USER
+            value: botdarr
+---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: monitoring-system-matrix-alertmanager
+# spec:
+#   selector:
+#     app.kubernetes.io/name: matrix-alertmanager
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80

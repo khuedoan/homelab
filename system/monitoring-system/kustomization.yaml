@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - secret.yaml
+- matrix-alertmanager.yaml
 
 helmCharts:
 - name: kube-prometheus-stack
