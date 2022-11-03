@@ -27,7 +27,7 @@ guacamole-client:
       hosts:
         - host: &host guacamole.tribz.cloud
           paths:
-            - path: /
+            - path: /guacamole
               pathType: Prefix
       tls:
         - secretName: paperless-tls-certificate
