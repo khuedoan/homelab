@@ -1,6 +1,20 @@
 guacamole-client:
   env:
     TZ: Europe/Zurich
+  persistence:
+    initdbdata:
+      enabled: true
+      mountPath: "/initdbdata"
+      size: 10Gi
+    # Both temphack and temphackalso will be removed on the next image release
+    temphack:
+      enabled: true
+      mountPath: "/opt/guacamole/postgresql-hack"
+      size: 10Gi
+    temphackalso:
+      enabled: true
+      mountPath: "/opt/guacamole/postgresql"
+      size: 10Gi
   ingress:
     main:
       enabled: true
