@@ -3,5 +3,5 @@ name: paperless
 version: 0.0.0
 dependencies:
   - name: paperless
-    version: 8.5.0
-    repository: https://k8s-at-home.com/charts/
+    version: "4.0.*"
+    repository: https://charts.truecharts.org
