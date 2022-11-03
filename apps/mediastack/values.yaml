@@ -61,6 +61,42 @@ radarr:
         - secretName: radarr-tls-certificate
           hosts:
             - *host
+plex:
+  # use this when expanding config disk, this frees the PVC from the pod
+  controller:
+    replicas: 1
+  env:
+    TZ: Europe/Zurich
+  plex:
+    serverURL: "https://plex.tribz.cloud"
+    serverIngressURL: "https://plex.tribz.cloud"
+    serverIngressURLPort: "443"
+  persistence:
+    config:
+      enabled: true
+      size: 50Gi
+    data:
+      enabled: true
+      mountPath: /data/media
+      existingClaim: mediastack-data
+      subPath: media/
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: Plex
+        hajimari.io/icon: multimedia
+      hosts:
+        - host: &host plex.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: plex-tls-certificate
+          hosts:
+            - *host
 jellyfin:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
