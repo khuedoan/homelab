@@ -14,7 +14,7 @@ paperless-ng:
       size: 10Gi
   env:
     TZ: Europe/Zurich
-    PAPERLESS_URL: &host paperless.tribz.cloud
+    PAPERLESS_URL: "https://paperless.tribz.cloud"
   ingress:
     main:
       enabled: true
@@ -24,7 +24,7 @@ paperless-ng:
         hajimari.io/appName: Paperless
         hajimari.io/icon: file-document
       hosts:
-        - host: *host
+        - host: &host paperless.tribz.cloud
           paths:
             - path: /
               pathType: Prefix
