@@ -30,7 +30,7 @@ guacamole-client:
             - path: /guacamole
               pathType: Prefix
       tls:
-        - secretName: paperless-tls-certificate
+        - secretName: guacamole-tls-certificate
           hosts:
             - *host
   postgresql:
