@@ -5,7 +5,7 @@ metadata:
   name: mediastack-data
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   storageClassName: freenas-nfs-csi-retain
   resources:
     requests:
