@@ -23,16 +23,16 @@ hajimari:
     defaultEnable: true
     namespaceSelector:
       any: true
-    groups:
-      - name: Homelab
-        links:
-          - name: Documentation
-            url: https://homelab.tribz.cloud
-          - name: Public GitHub repository
-            url: https://github.com/khuedoan/homelab
-      - name: Managed services
-        links:
-          - name: Terraform Cloud
-            url: https://app.terraform.io
-          - name: Cloudflare
-            url: https://dash.cloudflare.com
+    globalBookmarks:
+      - group: Homelab
+        bookmarks:
+        - name: Documentation
+          url: 'https://homelab.tribz.cloud'
+        - name: Public GitHub repository
+          url: 'https://github.com/khuedoan/homelab'
+      - group: Managed services
+        bookmarks:
+        - name: Terraform Cloud
+          url: 'https://app.terraform.io'
+        - name: Cloudflare
+          url: 'https://dash.cloudflare.com'
