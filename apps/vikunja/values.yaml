@@ -1,17 +1,9 @@
 vikunja:
-  # persistence:
-  #   data:
-  #     enabled: true
-  #     mountPath: "/data"
-  #     size: 10Gi
-  #   consume:
-  #     enabled: true
-  #     mountPath: "/consume"
-  #     size: 10Gi
-  #   media:
-  #     enabled: true
-  #     mountPath: "/media"
-  #     size: 10Gi
+  persistence:
+    files:
+      enabled: true
+      mountPath: "/app/vikunja/files"
+      size: 10Gi
   env:
     TZ: Europe/Zurich
     VIKUNJA_SERVICE_FRONTENDURL: "https://vikunja.tribz.cloud"
