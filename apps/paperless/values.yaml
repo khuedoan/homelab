@@ -33,12 +33,14 @@ paperless-ng:
             - *host
 postgresql:
   persistence:
-    enabled: true
-    mountPath: "/bitnami/postgresql"
-    size: 10Gi
+    db:
+      enabled: true
+      mountPath: "/bitnami/postgresql"
+      size: 10Gi
 redis:
   persistence:
-    enabled: true
-    mountPath: "/bitnami/redis"
-    size: 10Gi
+    data:
+      enabled: true
+      mountPath: "/bitnami/redis"
+      size: 10Gi
 
