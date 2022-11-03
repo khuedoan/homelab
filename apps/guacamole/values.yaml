@@ -24,10 +24,11 @@ guacamole-client:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: Guacamole
         hajimari.io/icon: remote-desktop
+        nginx.ingress.kubernetes.io/app-root: /guacamole
       hosts:
         - host: &host guacamole.tribz.cloud
           paths:
-            - path: /guacamole/
+            - path: /
               pathType: Prefix
       tls:
         - secretName: guacamole-tls-certificate
