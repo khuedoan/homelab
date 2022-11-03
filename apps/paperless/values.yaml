@@ -31,16 +31,16 @@ paperless-ng:
         - secretName: paperless-tls-certificate
           hosts:
             - *host
-postgresql:
-  persistence:
-    db:
-      enabled: true
-      mountPath: "/bitnami/postgresql"
-      size: 10Gi
-redis:
-  persistence:
-    data:
-      enabled: true
-      mountPath: "/bitnami/redis"
-      size: 10Gi
+  postgresql:
+    persistence:
+      db:
+        enabled: true
+        mountPath: "/bitnami/postgresql"
+        size: 10Gi
+  redis:
+    persistence:
+      data:
+        enabled: true
+        mountPath: "/bitnami/redis"
+        size: 10Gi
 
