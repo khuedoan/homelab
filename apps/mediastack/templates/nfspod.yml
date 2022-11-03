@@ -3,10 +3,10 @@ kind: Pod
 metadata:
   name: "mediastack-nfs"
 spec:
-  volumes:
-    - name: data
-      persistentVolumeClaim:
-        claimName: mediastack-data
+  # volumes:
+  #   - name: data
+  #     persistentVolumeClaim:
+  #       claimName: mediastack-data
   containers:
   - name: mediastack-nfs
     env:
@@ -14,8 +14,8 @@ spec:
         value: Europe/Zurich
     image: rockylinux:9.0.20220720-minimal
     command: ["/bin/bash", "-c", "sleep infinity"]
-    volumeMounts:
-      - mountPath: /data
-        name: data
+    # volumeMounts:
+    #   - mountPath: /data
+    #     name: data
     securityContext:
       privileged: true
