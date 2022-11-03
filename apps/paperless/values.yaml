@@ -1,4 +1,17 @@
 paperless-ng:
+  persistence:
+    data:
+      enabled: true
+      mountPath: "/data"
+      size: 10Gi
+    consume:
+      enabled: true
+      mountPath: "/consume"
+      size: 10Gi
+    media:
+      enabled: true
+      mountPath: "/media"
+      size: 10Gi
   env:
     TZ: Europe/Zurich
   ingress:
@@ -18,5 +31,16 @@ paperless-ng:
         - secretName: paperless-tls-certificate
           hosts:
             - *host
-  # postgresql:
-  #   enabled: true
+postgresql:
+  volumeClaimTemplates:
+    db:
+      enabled: true
+      mountPath: "/bitnami/postgresql"
+      size: 10Gi
+redis:
+  volumeClaimTemplates:
+    data:
+      enabled: true
+      mountPath: "/bitnami/redis"
+      size: 10Gi
+
