@@ -1,0 +1,46 @@
+vikunja:
+  # persistence:
+  #   data:
+  #     enabled: true
+  #     mountPath: "/data"
+  #     size: 10Gi
+  #   consume:
+  #     enabled: true
+  #     mountPath: "/consume"
+  #     size: 10Gi
+  #   media:
+  #     enabled: true
+  #     mountPath: "/media"
+  #     size: 10Gi
+  env:
+    TZ: Europe/Zurich
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: Vikunja
+        hajimari.io/icon: home
+      hosts:
+        - host: &host vikunja.tribz.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: vikunja-tls-certificate
+          hosts:
+            - *host
+  postgresql:
+    volumeClaimTemplates:
+      db:
+        enabled: true
+        mountPath: "/bitnami/postgresql"
+        size: 10Gi
+  redis:
+    volumeClaimTemplates:
+      data:
+        enabled: true
+        mountPath: "/bitnami/redis"
+        size: 10Gi
+

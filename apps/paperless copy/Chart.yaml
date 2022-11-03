@@ -1,0 +1,7 @@
+apiVersion: v2
+name: vikunja
+version: 0.1.0
+dependencies:
+  - name: vikunja
+    version: "3.0.*"
+    repository: https://charts.truecharts.org
