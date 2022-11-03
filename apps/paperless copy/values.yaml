@@ -14,6 +14,7 @@ vikunja:
   #     size: 10Gi
   env:
     TZ: Europe/Zurich
+    VIKUNJA_SERVICE_FRONTENDURL: "https://vikunja.tribz.cloud"
   ingress:
     main:
       enabled: true
