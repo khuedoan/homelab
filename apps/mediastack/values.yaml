@@ -20,6 +20,7 @@ qbittorrent:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: qBittorrent
         hajimari.io/icon: pirate
+        hajimari.io/group: arr
       hosts:
         - host: &host qbittorrent.tribz.cloud
           paths:
@@ -261,7 +262,7 @@ bazarr:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: bazarr
-        hajimari.io/icon: sync
+        hajimari.io/icon: pirate
         hajimari.io/group: arr
       hosts:
         - host: &host bazarr.tribz.cloud
