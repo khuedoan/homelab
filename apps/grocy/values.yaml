@@ -23,9 +23,3 @@ grocy:
         - secretName: grocy-tls-certificate
           hosts:
             - *host
-  postgresql:
-    volumeClaimTemplates:
-      db:
-        enabled: true
-        mountPath: "/bitnami/postgresql"
-        size: 10Gi
