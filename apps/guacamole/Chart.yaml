@@ -5,3 +5,7 @@ dependencies:
   - name: guacamole-client
     version: "4.0.*"
     repository: https://charts.truecharts.org
+  - name: guacd
+    version: "2.0.*"
+    repository: https://charts.truecharts.org
+
