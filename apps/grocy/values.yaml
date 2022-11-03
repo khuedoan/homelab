@@ -5,7 +5,7 @@ grocy:
    config:
      enabled: true
      mountPath: "/config"
-     size: 10Gi
+     size: 1Gi
   ingress:
     main:
       enabled: true
