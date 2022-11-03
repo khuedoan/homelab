@@ -1,6 +1,7 @@
 guacamole-client:
   env:
     TZ: Europe/Zurich
+    GUACD_HOSTNAME: guacamole-guacd.guacamole
   persistence:
     initdbdata:
       enabled: true
