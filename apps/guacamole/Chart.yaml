@@ -1,0 +1,7 @@
+apiVersion: v2
+name: guacamole
+version: 0.1.0
+dependencies:
+  - name: guacamole-client
+    version: "1.4.*"
+    repository: https://charts.truecharts.org
