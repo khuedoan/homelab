@@ -69,8 +69,8 @@ plex:
     TZ: Europe/Zurich
   plex:
     serverURL: "https://plex.tribz.cloud"
-    serverIngressURL: "https://plex.tribz.cloud"
-    serverIngressURLPort: "443"
+    # serverIngressURL: "https://plex.tribz.cloud"
+    # serverIngressURLPort: "443"
   persistence:
     config:
       enabled: true
