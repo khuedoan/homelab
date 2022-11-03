@@ -42,6 +42,9 @@ alertmanager:
   config:
     route:
       routes:
+        - receiver: "null"
+          matchers:
+            - alertname =~ "InfoInhibitor|Watchdog"
         - receiver: 'matrix'
           continue: true
     receivers:
