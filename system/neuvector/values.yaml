@@ -1,4 +1,6 @@
 core:
+  k3s:
+    enabled: true
   controller:
     ingress:
       enabled: true
