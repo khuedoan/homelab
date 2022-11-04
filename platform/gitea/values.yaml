@@ -27,4 +27,4 @@ gitea:
   postgresql:
     persistence:
       storageClass: longhorn
-      size: 2Gi
+      # size: 2Gi
