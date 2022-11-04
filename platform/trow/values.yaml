@@ -1,6 +1,6 @@
 trow:
   trow:
-    domain: registry.tribz.cloud
+    domain: &host registry.tribz.cloud
     # user: user
     # password: password
     validation:
