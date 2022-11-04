@@ -77,8 +77,8 @@ plex:
     # serverIngressURLPort: "443"
   persistence:
     config:
-      enabled: false
-      # size: 50Gi
+      enabled: true
+      size: 1Gi
     data:
       enabled: true
       mountPath: /data/media
