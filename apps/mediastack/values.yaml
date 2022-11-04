@@ -114,6 +114,7 @@ jellyfin:
     config:
       enabled: true
       size: 50Gi
+      storageClassName: freenas-nfs-csi-delete
     data:
       enabled: true
       mountPath: /data/media
