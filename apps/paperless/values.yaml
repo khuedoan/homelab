@@ -33,13 +33,13 @@ paperless-ng:
           hosts:
             - *host
   postgresql:
-    volumeClaimTemplates:
+    persistence:
       db:
         enabled: true
         mountPath: "/bitnami/postgresql"
         size: 2Gi
   redis:
-    volumeClaimTemplates:
+    persistence:
       data:
         enabled: true
         mountPath: "/bitnami/redis"
