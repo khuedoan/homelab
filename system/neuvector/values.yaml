@@ -13,8 +13,8 @@ core:
             - /
       tls:
         - secretName: neuvector-tls-certificate
-          hosts:
-            - *host
+          # hosts:
+          #   - *host
       # secretname: neuvector-tls-certificate
     pvc:
       enabled: true
