@@ -11,11 +11,8 @@ core:
         - host: &host neuvector.tribz.cloud
           paths:
             - /
-      tls:
-        - secretName: neuvector-tls-certificate
-          # hosts:
-          #   - *host
-      # secretname: neuvector-tls-certificate
+      tls: true
+      secretname: neuvector-tls-certificate
     pvc:
       enabled: true
       # accessModes:
