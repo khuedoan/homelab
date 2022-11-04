@@ -14,7 +14,7 @@ trow:
       proxyDockerHub: false
 
   ingress:
-    enabled: false  # TODO https://github.com/ContainerSolutions/trow/issues/282
+    enabled: true  # TODO https://github.com/ContainerSolutions/trow/issues/282
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
