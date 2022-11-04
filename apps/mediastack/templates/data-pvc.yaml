@@ -1,12 +1,14 @@
 # Retainable storage for whole mediastack data
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mediastack-data
-spec:
-  accessModes:
-  - ReadWriteMany
-  storageClassName: freenas-nfs-csi-retain
-  resources:
-    requests:
-      storage: 2500Gi
+
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mediastack-data
+# spec:
+#   accessModes:
+#   - ReadWriteMany
+#   storageClassName: freenas-nfs-csi-retain
+#   resources:
+#     requests:
+#       storage: 2500Gi
+    # volumeName: pvc-56cd033e-c12f-425f-8c87-dbaaf4785386
