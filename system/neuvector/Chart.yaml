@@ -1,0 +1,7 @@
+apiVersion: v2
+name: neuvector
+version: 0.0.0
+dependencies:
+  - name: core
+    version: ">= 0.0.0"
+    repository: https://neuvector.github.io/neuvector-helm/
