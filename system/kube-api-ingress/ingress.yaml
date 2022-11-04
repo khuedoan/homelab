@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    hajimari.io/enabled: false
+    hajimari.io/enabled: "false"
 spec:
   ingressClassName: nginx
   rules:
