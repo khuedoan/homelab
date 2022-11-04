@@ -20,7 +20,7 @@ trow:
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
       hajimari.io/enable: 'false'
     hosts:
-      - host: &host registry.tribz.cloud
+      - host: *host
         paths:
           - /
     tls:
