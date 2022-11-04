@@ -39,4 +39,4 @@ guacamole-client:
       db:
         enabled: true
         mountPath: "/bitnami/postgresql"
-        size: 10Gi
+        size: 2Gi
