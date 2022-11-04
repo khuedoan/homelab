@@ -7,12 +7,12 @@ core:
         nginx.ingress.kubernetes.io/proxy-body-size: '0'
         hajimari.io/appName: NeuVector
         hajimari.io/icon: train-car-container
-      hosts:
+      host:
         - host: &host neuvector.tribz.cloud
           paths:
             - /
       tls: true
-      secretname: neuvector-tls-certificate
+      secretName: neuvector-tls-certificate
     pvc:
       enabled: true
       # accessModes:
