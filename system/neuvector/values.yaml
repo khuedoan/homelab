@@ -6,10 +6,7 @@ core:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/appName: NeuVector
         hajimari.io/icon: train-car-container
-      host:
-        - host: &host neuvector.tribz.cloud
-          paths:
-            - /
+      host: neuvector.tribz.cloud
       tls: true
       secretName: neuvector-tls-certificate
     pvc:
