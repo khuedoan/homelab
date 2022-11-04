@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kube-api
+  namespace: system
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    hajimari.io/enabled: false
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: &host kube.tribz.cloud
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: kubernetes
+                port:
+                  number: 6443
+  tls:
+    - hosts:
+        - *host
+      secretName: kube-tls-certificate
