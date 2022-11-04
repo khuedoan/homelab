@@ -35,7 +35,7 @@ spec:
           - name: MATRIX_ROOMS
             value: 'matrix/!Q7iSV7EXDYsgrSsn:matrix.tribz.cloud'
           - name: MATRIX_TOKEN
-            value: 0j9-eRla4cHCwLULwcrf_heM8gynEx8tykSc33QgkVE
+            value: m0w0PhSimc3fS_Y_H1Fn-kHmJG19wY8WJ2kJGWxhjPU
           - name: MATRIX_USER
             value: botalertmanager
           - name: MENTION_ROOM
