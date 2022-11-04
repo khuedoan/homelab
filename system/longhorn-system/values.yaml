@@ -5,19 +5,18 @@ longhorn:
     # If you have three or more nodes for storage, use 3; otherwise use 2
     defaultClassReplicaCount: 3  # TODO run DR test to see if we actually need 3
   ingress:
-    main:
-      enabled: true
-      ingressClassName: longhorn
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        hajimari.io/appName: Longhorn
-        hajimari.io/icon: google-drive
-      hosts:
-        - host: &host longhorn.tribz.cloud
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - secretName: longhorn-tls-certificate
-          hosts:
-            - *host
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      hajimari.io/appName: Longhorn
+      hajimari.io/icon: google-drive
+    hosts:
+      - host: &host longhorn.tribz.cloud
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: longhorn-tls-certificate
+        hosts:
+          - *host
