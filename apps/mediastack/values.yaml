@@ -104,7 +104,7 @@ plex:
 jellyfin:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
-    replicas: 1
+    replicas: 0
   env:
     TZ: Europe/Zurich
   image:
@@ -113,8 +113,7 @@ jellyfin:
   persistence:
     config:
       enabled: true
-      size: 10Gi
-      storageClassName: freenas-nfs-csi-delete
+      size: 50Gi
     data:
       enabled: true
       mountPath: /data/media
