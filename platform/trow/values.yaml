@@ -28,4 +28,7 @@ trow:
         hosts:
           - *host
   volumeClaim:
+    resources:
+    requests:
+      storage: 5Gi
     storageClassName: longhorn
