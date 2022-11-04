@@ -25,13 +25,13 @@ vikunja:
           hosts:
             - *host
   postgresql:
-    persistence:
+    volumeClaimTemplates:
       db:
         enabled: true
         mountPath: "/bitnami/postgresql"
         size: 2Gi
   redis:
-    persistence:
+    volumeClaimTemplates:
       data:
         enabled: true
         mountPath: "/bitnami/redis"
