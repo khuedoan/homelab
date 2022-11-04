@@ -3,15 +3,15 @@ paperless-ng:
     data:
       enabled: true
       mountPath: "/data"
-      size: 10Gi
+      size: 2Gi
     consume:
       enabled: true
       mountPath: "/consume"
-      size: 10Gi
+      size: 2Gi
     media:
       enabled: true
       mountPath: "/media"
-      size: 10Gi
+      size: 2Gi
   env:
     TZ: Europe/Zurich
     PAPERLESS_URL: "https://paperless.tribz.cloud"
@@ -37,11 +37,11 @@ paperless-ng:
       db:
         enabled: true
         mountPath: "/bitnami/postgresql"
-        size: 10Gi
+        size: 2Gi
   redis:
     volumeClaimTemplates:
       data:
         enabled: true
         mountPath: "/bitnami/redis"
-        size: 10Gi
+        size: 2Gi
 
