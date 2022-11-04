@@ -3,7 +3,7 @@ vikunja:
     files:
       enabled: true
       mountPath: "/app/vikunja/files"
-      size: 10Gi
+      size: 2Gi
   env:
     TZ: Europe/Zurich
     VIKUNJA_SERVICE_FRONTENDURL: "https://vikunja.tribz.cloud"
@@ -29,11 +29,11 @@ vikunja:
       db:
         enabled: true
         mountPath: "/bitnami/postgresql"
-        size: 10Gi
+        size: 2Gi
   redis:
     volumeClaimTemplates:
       data:
         enabled: true
         mountPath: "/bitnami/redis"
-        size: 10Gi
+        size: 2Gi
 
