@@ -68,7 +68,7 @@ radarr:
 plex:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
-    replicas: 1
+    replicas: 0
   env:
     TZ: Europe/Zurich
   plex:
@@ -77,8 +77,8 @@ plex:
     # serverIngressURLPort: "443"
   persistence:
     config:
-      enabled: true
-      size: 50Gi
+      enabled: false
+      # size: 50Gi
     data:
       enabled: true
       mountPath: /data/media
