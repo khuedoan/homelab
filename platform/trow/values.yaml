@@ -14,11 +14,12 @@ trow:
       proxyDockerHub: false
 
   ingress:
-    enabled: true  # TODO https://github.com/ContainerSolutions/trow/issues/282
+    enabled: true
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/proxy-body-size: '0'
-      hajimari.io/enable: 'false'
+      hajimari.io/appName: Trow
+      hajimari.io/icon: train-car-container
     hosts:
       - host: *host
         paths:
