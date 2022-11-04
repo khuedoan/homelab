@@ -113,7 +113,7 @@ jellyfin:
   persistence:
     config:
       enabled: true
-      size: 50Gi
+      size: 10Gi
       storageClassName: freenas-nfs-csi-delete
     data:
       enabled: true
