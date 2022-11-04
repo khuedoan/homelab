@@ -112,8 +112,8 @@ jellyfin:
     tag: latest
   persistence:
     config:
-      enabled: true
-      size: 50Gi
+      enabled: false
+      # size: 50Gi
     data:
       enabled: true
       mountPath: /data/media
