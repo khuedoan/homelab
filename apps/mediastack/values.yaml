@@ -1,6 +1,6 @@
 qbittorrent:
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   persistence:
@@ -34,7 +34,7 @@ qbittorrent:
             - *host
 radarr:
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   image:
@@ -68,7 +68,7 @@ radarr:
 plex:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   plex:
@@ -156,7 +156,7 @@ jellyfin:
             - *host
 lidarr:
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   persistence:
@@ -189,7 +189,7 @@ lidarr:
             - *host
 sonarr:
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   persistence:
@@ -222,7 +222,7 @@ sonarr:
             - *host
 readarr:
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   persistence:
@@ -282,7 +282,7 @@ prowlarr:
             - *host
 bazarr:
   controller:
-    replicas: 0
+    replicas: 1
   podSecurityContext:
     runAsUser: 911
     runAsGroup: 911

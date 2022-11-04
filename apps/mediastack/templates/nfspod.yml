@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: "mediastack-nfs"
     argocd.argoproj.io/instance: mediastack
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   selector:
     matchLabels:
