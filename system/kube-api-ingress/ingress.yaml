@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kube-api
-  namespace: kube-system
+  namespace: default
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     hajimari.io/enabled: "false"
