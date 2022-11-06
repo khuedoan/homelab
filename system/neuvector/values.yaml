@@ -19,3 +19,11 @@ core:
       host: neuvector.tribz.cloud
       tls: true
       secretName: neuvector-tls-certificate
+  enforcer:
+    resources: 
+      limits:
+        cpu: 1000m
+        memory: 3072Mi
+      requests:
+        cpu: 500m
+        memory: 1024Mi
