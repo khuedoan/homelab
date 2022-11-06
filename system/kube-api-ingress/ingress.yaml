@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: &host kube.tribz.cloud
+    - host: &host k8s.tribz.cloud
       http:
         paths:
           - pathType: ImplementationSpecific
@@ -21,4 +21,4 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: kube-tls-certificate
+      secretName: k8s-tls-certificate
