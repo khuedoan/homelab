@@ -2,6 +2,13 @@ core:
   k3s:
     enabled: true
   controller:
+    pvc:
+      enabled: true
+      # accessModes:
+      #   - ReadWriteMany
+      # storageClass:
+      capacity: 10Gi
+  manager:
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -12,9 +19,3 @@ core:
       host: neuvector.tribz.cloud
       tls: true
       secretName: neuvector-tls-certificate
-    pvc:
-      enabled: true
-      # accessModes:
-      #   - ReadWriteMany
-      # storageClass:
-      capacity: 10Gi
