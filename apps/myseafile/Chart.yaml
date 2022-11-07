@@ -12,4 +12,4 @@ dependencies:
     version: "> 1.6.0"
   - name: common
     repository: https://library-charts.truecharts.org
-    version: 10.7.0
+    version: 10.8.*
