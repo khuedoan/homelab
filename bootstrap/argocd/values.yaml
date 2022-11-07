@@ -1,7 +1,8 @@
 argo-cd:
   server:
     env:
-      TZ: Europe/Zurich
+      - name: "TZ"
+        value: "Europe/Zurich"
     extraArgs:
       - --insecure
     config:
