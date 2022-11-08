@@ -8,14 +8,14 @@ guacamole-client:
       mountPath: "/initdbdata"
       size: 1Gi
     # Both temphack and temphackalso will be removed on the next image release
-    # temphack:
-    #   enabled: true
-    #   mountPath: "/opt/guacamole/postgresql-hack"
-    #   size: 1Gi
-    # temphackalso:
-    #   enabled: true
-    #   mountPath: "/opt/guacamole/postgresql"
-    #   size: 1Gi
+    temphack:
+      enabled: true
+      mountPath: "/opt/guacamole/postgresql-hack"
+      size: 1Gi
+    temphackalso:
+      enabled: true
+      mountPath: "/opt/guacamole/postgresql"
+      size: 1Gi
   ingress:
     main:
       enabled: true
