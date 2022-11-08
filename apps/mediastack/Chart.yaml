@@ -26,9 +26,6 @@ dependencies:
   - name: prowlarr
     version: "> 1.0.0"
     repository: https://k8s-at-home.com/charts/
-  - name: common
-    repository: https://library-charts.truecharts.org
-    version: ">= 10.7.1"
   - name: bazarr
     repository: https://charts.truecharts.org
     version: ">= 0.0.1"
