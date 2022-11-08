@@ -12,7 +12,7 @@ terraform {
 
     http = {
       source  = "hashicorp/http"
-      version = "~> 3.2.0"
+      version = "~> 2.1.0"
     }
   }
 }
