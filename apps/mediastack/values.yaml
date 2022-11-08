@@ -78,7 +78,7 @@ plex:
   persistence:
     config:
       enabled: true
-      size: 1Gi
+      size: 2Gi
     data:
       enabled: true
       mountPath: /data/media
@@ -259,6 +259,7 @@ prowlarr:
   persistence:
     config:
       enabled: true
+      size: 2Gi
   image:
     repository: lscr.io/linuxserver/prowlarr
     tag: develop
