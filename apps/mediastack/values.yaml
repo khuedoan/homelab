@@ -256,7 +256,7 @@ readarr:
             - *host
 prowlarr:
   controller:
-    replicas: 1
+    replicas: 0
   env:
     TZ: Europe/Zurich
   persistence:
