@@ -228,6 +228,7 @@ readarr:
   persistence:
     config:
       enabled: true
+      size: 2Gi
     data:
       enabled: true
       mountPath: /data
@@ -254,6 +255,8 @@ readarr:
           hosts:
             - *host
 prowlarr:
+  controller:
+    replicas: 1
   env:
     TZ: Europe/Zurich
   persistence:
