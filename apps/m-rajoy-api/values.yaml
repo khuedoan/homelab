@@ -17,14 +17,15 @@ app-template:
     main:
       ports:
         http:
-          port: 8080
+          port: &port 8080
 
   probes:
     liveness: &probe
       custom: true
       spec:
-        type: HTTP
-        path: /ping
+        httpGet:
+          path: /ping
+          port: *port
     readiness: *probe
 
   ingress:
