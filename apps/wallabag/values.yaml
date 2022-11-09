@@ -38,7 +38,7 @@ app-template:
     SYMFONY__ENV__DOMAIN_NAME: https://wallabag.grigri.cloud
     SYMFONY__ENV__FOSUSER_REGISTRATION: false
 
-  configmap:
+  configMaps:
     wallabag-patch-avoid-redirect:
       enabled: true
       data:
