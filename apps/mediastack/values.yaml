@@ -68,7 +68,7 @@ radarr:
 plex:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
-    replicas: 1
+    replicas: 0
   env:
     TZ: Europe/Zurich
   plex:
@@ -256,7 +256,7 @@ readarr:
             - *host
 prowlarr:
   controller:
-    replicas: 0
+    replicas: 1
   env:
     TZ: Europe/Zurich
   persistence:
