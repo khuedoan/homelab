@@ -19,6 +19,14 @@ app-template:
         http:
           port: 8080
 
+  probes:
+    liveness: &probe
+      custom: true
+      spec:
+        type: HTTP
+        path: /ping
+    readiness: *probe
+
   ingress:
     main:
       enabled: true
