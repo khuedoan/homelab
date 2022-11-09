@@ -15,6 +15,14 @@ app-template:
         http:
           port: 80
 
+  probes:
+    liveness: &probe
+      custom: true
+      spec:
+        type: HTTP
+        path: /
+    readiness: *probe
+
   ingress:
     main:
       enabled: true
