@@ -100,6 +100,16 @@ app-template:
       cpu: 500m
       memory: 128Mi
 
+  probes:
+    startup:
+      enabled: true
+      spec:
+        initialDelaySeconds: 30
+        failureThreshold: 30
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname
