@@ -9,7 +9,7 @@ env:
   SEAFILE_ADMIN_PASSWORD: admin
   SEAFILE_SERVER_HOSTNAME: &host myseafile.tribz.cloud
   SEAFILE_SERVER_LETSENCRYPT: "false"
-  TIME_ZONE: Etc/UTC
+  TIME_ZONE: Europe/Zurich
   DB_ROOT_PASSWD:
     valueFrom:
       secretKeyRef:
