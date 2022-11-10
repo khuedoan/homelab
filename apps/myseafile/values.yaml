@@ -15,10 +15,10 @@ env:
       secretKeyRef:
         name: myseafile-mariadb
         key: mariadb-root-password
-# lifecycle:
-#   postStart:
-#     exec:
-#       command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+lifecycle:
+  postStart:
+    exec:
+      command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
 securityContext:
   readOnlyRootFilesystem: false
   allowPrivilegeEscalation: true
