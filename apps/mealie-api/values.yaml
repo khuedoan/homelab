@@ -3,7 +3,7 @@ app-template:
     replicas: 1
 
   image:
-    repository: hkotel/mealie
+    repository: pando85/mealie
     tag: api-v1.0.0beta-5
   env:
     ALLOW_SIGNUP: false
