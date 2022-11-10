@@ -95,10 +95,10 @@ app-template:
   resources:
     requests:
       cpu: 100m
-      memory: 16Mi
-    limits:
-      cpu: 500m
       memory: 128Mi
+    limits:
+      cpu: 1
+      memory: 512Mi
 
   probes:
     startup:
