@@ -1,0 +1,126 @@
+app-template:
+  controller:
+    replicas: 1
+
+  image:
+    repository: hkotel/mealie
+    tag: api-v1.0.0beta-5
+  env:
+    ALLOW_SIGNUP: false
+    PUID: 1000
+    PGID: 1000
+    TZ: Europe/Madrid
+    MAX_WORKERS: 1
+    WEB_CONCURRENCY: 1
+    BASE_URL: https://mealie.k8s.grigri
+    LDAP_AUTH_ENABLED: true
+    LDAP_SERVER_URL: ldap://ldap.grigri:389
+    LDAP_TLS_CACERTFILE: /etc/pki/ca-trust/source/anchors/grigri.crt
+    LDAP_BIND_TEMPLATE: (&(objectClass=inetOrgPerson)(memberof=cn=mealie,ou=Groups,dc=grigri,dc=cloud)(uid={}))
+    LDAP_BASE_DN: dc=grigri,dc=cloud
+    LDAP_ADMIN_FILTER: (&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))
+    DB_ENGINE: postgres
+    POSTGRES_SERVER: mealie-postgres
+    POSTGRES_PORT: 5432
+    POSTGRES_DB: mealie
+    POSTGRES_USER:
+      valueFrom:
+        secretKeyRef:
+          name: mealie-api.mealie-postgres.credentials.postgresql.acid.zalan.do
+          key: username
+    POSTGRES_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: mealie-api.mealie-postgres.credentials.postgresql.acid.zalan.do
+          key: password
+
+  configMaps:
+    grigri-ca:
+      enabled: true
+      data:
+        grigri.crt: |
+          -----BEGIN CERTIFICATE-----
+          MIIEOTCCAyGgAwIBAgIBADANBgkqhkiG9w0BAQsFADBxMQswCQYDVQQGEwJFUzEP
+          MA0GA1UECBMGTWFkcmlkMQ8wDQYDVQQHEwZNYWRyaWQxDzANBgNVBAoTBmdyaWdy
+          aTEhMB8GCSqGSIb3DQEJARYScGFuZG84NTVAZ21haWwuY29tMQwwCgYDVQQDEwNW
+          UE4wHhcNMTcwNDIzMDgwNjI1WhcNMjcwNDIxMDgwNjI1WjBxMQswCQYDVQQGEwJF
+          UzEPMA0GA1UECBMGTWFkcmlkMQ8wDQYDVQQHEwZNYWRyaWQxDzANBgNVBAoTBmdy
+          aWdyaTEhMB8GCSqGSIb3DQEJARYScGFuZG84NTVAZ21haWwuY29tMQwwCgYDVQQD
+          EwNWUE4wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC1WrvmJamQlK9G
+          dcRrBgkBuSwvCPz1ezbOcjd39Hf0GRfeZqLhD3fs1Mv+RNriBDMuG4enh+CV1QAo
+          44nxsawHDbHRuePXcmoh1bjT59AVmL5AlnuFfi2X/69YpDSVSl0P0RSFxysSTzZz
+          67Ex/NIt8I5eBTG/ed3yGMXOztGNn0XSMZ1VRs1dS9YB5uMOUmAbJgBWmbb9alQB
+          ljs5beOGezJcJHuKY24MMPyAFUfij1NvPOFOeMbFhxTxceBPA3Mp513xYgl6Eucp
+          kLS9oeStYObJiLS4Mx1jZR2LISiU5h4+mG142HXFBRxjhM4wgqM1N+Dqu+pRpsCW
+          eEbtzlRNAgMBAAGjgdswgdgwHQYDVR0OBBYEFBmwRtVkPDh1nHndbYYxk/U4u5OO
+          MIGbBgNVHSMEgZMwgZCAFBmwRtVkPDh1nHndbYYxk/U4u5OOoXWkczBxMQswCQYD
+          VQQGEwJFUzEPMA0GA1UECBMGTWFkcmlkMQ8wDQYDVQQHEwZNYWRyaWQxDzANBgNV
+          BAoTBmdyaWdyaTEhMB8GCSqGSIb3DQEJARYScGFuZG84NTVAZ21haWwuY29tMQww
+          CgYDVQQDEwNWUE6CAQAwDAYDVR0TBAUwAwEB/zALBgNVHQ8EBAMCAQYwDQYJKoZI
+          hvcNAQELBQADggEBAJd02ob4xmgngDS+vLmJsTqb5sXSWsa5TvfIZrdj0b24I21s
+          IE5+Ju9TKcUZptPF8wu3gHXesYDGuaTLIBf2dfpx6PNg+cGyFKlowVia+ag6BqxE
+          saZpQSC6/w8irc47+ZzEOGqJjUQT1WCXXNXMfSNR3PflrS+PVq11a2mwQRjUyOBt
+          1vU/ZwDe2nfohQTkcCHgzk9a+rnjpUh6SW0nn5sd91khOf2dqqwmy8Q8q6dbg75f
+          3yldsQKIOTcn9yu0vjE+PgIoXll8nCHoe+4vGXXGaBwLgYzTRP4FPpTt9pB52A4r
+          fU4KqEv/GTabVBmyUg0VV9fq0LT+IO+aKFmIIFI=
+          -----END CERTIFICATE-----
+
+  persistence:
+    grigri-ca:
+      enabled: true
+      mountPath: /etc/pki/ca-trust/source/anchors/grigri.crt
+      subPath: grigri.crt
+      type: configMap
+      name: mealie-api-grigri-ca
+    data:
+      enabled: true
+      mountPath: /app/data/
+      accessMode: ReadWriteMany
+      size: 500Mi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+
+  enableServiceLinks: false
+  service:
+    main:
+      ports:
+        http:
+          port: 9000
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+      hosts:
+        - host: &host api.recetas.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: mealie-api-tls-certificate
+
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 16Mi
+    limits:
+      cpu: 500m
+      memory: 128Mi
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: mealie-api
+          app.kubernetes.io/name: mealie-api
