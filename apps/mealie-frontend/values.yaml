@@ -6,7 +6,7 @@ app-template:
     repository: hkotel/mealie
     tag: frontend-v1.0.0beta-5
   env:
-    API_URL: http://mealie-api.mealie-api.svc.cluster.local
+    API_URL: http://mealie-api.mealie-api.svc.cluster.local:9000
 
   enableServiceLinks: false
   service:
