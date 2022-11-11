@@ -16,9 +16,9 @@ app-template:
     LDAP_AUTH_ENABLED: true
     LDAP_SERVER_URL: ldap://ldap.grigri:389
     LDAP_TLS_CACERTFILE: /etc/pki/ca-trust/source/anchors/grigri.crt
-    LDAP_BIND_TEMPLATE: (&(objectClass=inetOrgPerson)(memberof=cn=mealie,ou=Groups,dc=grigri,dc=cloud)(uid={}))
+    LDAP_BIND_TEMPLATE: uid={},ou=People,dc=grigri,dc=cloud
     LDAP_BASE_DN: dc=grigri,dc=cloud
-    LDAP_ADMIN_FILTER: (&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))
+    LDAP_ADMIN_FILTER: memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud
     DB_ENGINE: postgres
     POSTGRES_SERVER: mealie-postgres
     POSTGRES_PORT: 5432
