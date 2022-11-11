@@ -6,19 +6,13 @@ app-template:
     repository: pando85/mealie
     tag: api-v1.0.0beta-5
   env:
-    ALLOW_SIGNUP: false
+    ALLOW_SIGNUP: true
     PUID: 1000
     PGID: 1000
     TZ: Europe/Madrid
     MAX_WORKERS: 1
     WEB_CONCURRENCY: 1
     BASE_URL: https://recetas.k8s.grigri
-    LDAP_AUTH_ENABLED: true
-    LDAP_SERVER_URL: ldap://ldap.grigri:389
-    LDAP_TLS_CACERTFILE: /etc/pki/ca-trust/source/anchors/grigri.crt
-    LDAP_BIND_TEMPLATE: uid={},ou=People,dc=grigri,dc=cloud
-    LDAP_BASE_DN: dc=grigri,dc=cloud
-    LDAP_ADMIN_FILTER: memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud
     DB_ENGINE: postgres
     POSTGRES_SERVER: mealie-postgres
     POSTGRES_PORT: 5432
