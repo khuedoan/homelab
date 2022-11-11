@@ -51,11 +51,11 @@ app-template:
 
   resources:
     requests:
-      cpu: 100m
+      cpu: 20m
       memory: 128Mi
     limits:
-      cpu: 1
-      memory: 512Mi
+      cpu: 500m
+      memory: 256Mi
 
   probes:
     startup:
