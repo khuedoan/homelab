@@ -3,8 +3,8 @@ name: guacamole
 version: 0.1.0
 dependencies:
   - name: guacamole-client
-    version: "4.0.*"
+    version: "5.*.*"
     repository: https://charts.truecharts.org
   - name: guacd
-    version: "2.0.*"
+    version: "3.*.*"
     repository: https://charts.truecharts.org

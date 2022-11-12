@@ -3,5 +3,5 @@ name: paperless
 version: 0.0.0
 dependencies:
   - name: paperless-ng
-    version: "4.0.*"
+    version: "5.*.*"
     repository: https://charts.truecharts.org
