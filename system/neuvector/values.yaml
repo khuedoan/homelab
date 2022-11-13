@@ -7,7 +7,7 @@ core:
       # accessModes:
       #   - ReadWriteMany
       # storageClass:
-      capacity: 10Gi
+      capacity: 2Gi
   manager:
     ingress:
       enabled: true
