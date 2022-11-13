@@ -82,3 +82,8 @@ probes:
       httpGet:
         path: /
         port: 80
+
+mariadb:
+  persistence:
+    enabled: true
+    size: 2Gi
