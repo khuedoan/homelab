@@ -53,12 +53,32 @@ alertmanager:
         webhook_configs:
         - url: 'http://monitoring-system-matrix-alertmanager.monitoring-system/alerts?secret=veryverysecretkeyhere'
           send_resolved: true
+kubeApiServer:
+  enabled: true
+kubeControllerManager:
+  enabled: true
+  endpoints:
+  - 192.168.1.14
+  - 192.168.1.18
+  - 192.168.1.21
+kubeScheduler:
+  enabled: true
+  endpoints:
+  - 192.168.1.14
+  - 192.168.1.18
+  - 192.168.1.21
+kubeProxy:
+  enabled: true
+  endpoints:
+  - 192.168.1.14
+  - 192.168.1.18
+  - 192.168.1.21
 kubeEtcd:
   enabled: true
-
   endpoints:
-    - '192.168.1.18'
-
+  - 192.168.1.14
+  - 192.168.1.18
+  - 192.168.1.21
   service:
     enabled: true
     port: 2381
