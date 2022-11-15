@@ -5,7 +5,7 @@ metadata:
 spec:
   teamId: wallabag
 
-  numberOfInstances: 1
+  numberOfInstances: 0
 
   resources:
     requests:
