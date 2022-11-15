@@ -1,6 +1,6 @@
 metallb:
   prometheus:
-    serviceAccount: "default"
+    serviceAccount: "monitoring-system-kube-pro-prometheus"
 
     # the namespace where prometheus is deployed
     # required when " .Values.prometheus.rbacPrometheus == true " and " .Values.prometheus.podMonitor.enabled=true or prometheus.serviceMonitor.enabled=true "
