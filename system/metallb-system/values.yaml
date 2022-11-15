@@ -1,2 +1,21 @@
 metallb:
-  existingConfigMap: metallb-config
+  prometheus:
+    serviceAccount: "default"
+
+    # the namespace where prometheus is deployed
+    # required when " .Values.prometheus.rbacPrometheus == true " and " .Values.prometheus.podMonitor.enabled=true or prometheus.serviceMonitor.enabled=true "
+    namespace: "monitoring-system"
+
+    # Prometheus Operator PodMonitors
+    podMonitor:
+      # enable support for Prometheus Operator
+      enabled: true
+
+    serviceMonitor:
+      # enable support for Prometheus Operator
+      enabled: true
+
+    # Prometheus Operator alertmanager alerts
+    prometheusRule:
+      # enable alertmanager alerts
+      enabled: true
