@@ -85,7 +85,6 @@ kube-plex:
       subPath: media/
   ingress:
     enabled: false
-    ingressClassName: nginx
     # annotations:
     #   cert-manager.io/cluster-issuer: letsencrypt-prod
     #   hajimari.io/appName: Plex
