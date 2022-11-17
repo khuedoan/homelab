@@ -2,9 +2,9 @@ apiVersion: v2
 name: mediastack
 version: 0.2.0
 dependencies:
-  - name: plex
-    version: "> 10.2.0"
-    repository: https://charts.truecharts.org
+  - name: kube-plex
+    version: "> 0.0.0"
+    repository: https://ressu.github.io/kube-plex
   - name: qbittorrent
     version: "> 4.4.5"
     repository: https://charts.truecharts.org

@@ -65,7 +65,7 @@ radarr:
         - secretName: radarr-tls-certificate
           hosts:
             - *host
-plex:
+kube-plex:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
     replicas: 1
@@ -82,7 +82,7 @@ plex:
     data:
       enabled: true
       mountPath: /data/media
-      existingClaim: mediastack-data
+      claimName: mediastack-data
       subPath: media/
   ingress:
     main:
