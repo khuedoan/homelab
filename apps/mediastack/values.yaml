@@ -91,10 +91,7 @@ kube-plex:
       hajimari.io/appName: Plex
       hajimari.io/icon: multimedia
     hosts:
-      - host: &host plex.tribz.cloud
-        paths:
-          - path: /
-            pathType: Prefix
+      - &host plex.tribz.cloud
     tls:
       - secretName: plex-tls-certificate
         hosts:
