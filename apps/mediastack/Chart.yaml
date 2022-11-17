@@ -6,8 +6,8 @@ dependencies:
     version: "> 0.0.0"
     repository: https://ressu.github.io/kube-plex
   - name: qbittorrent
-    version: "> 4.4.5"
-    repository: https://charts.truecharts.org
+    version: "> 0.0.0"
+    repository: https://aste88.github.io/helm-charts/
   - name: radarr
     version: "> 1.0.0"
     repository: https://k8s-at-home.com/charts/
