@@ -84,18 +84,18 @@ kube-plex:
       claimName: mediastack-data
       subPath: media/
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      hajimari.io/appName: Plex
-      hajimari.io/icon: multimedia
-    hosts:
-      - &host plex.tribz.cloud
-    tls:
-      - secretName: plex-tls-certificate
-        hosts:
-          - *host
+    # annotations:
+    #   cert-manager.io/cluster-issuer: letsencrypt-prod
+    #   hajimari.io/appName: Plex
+    #   hajimari.io/icon: multimedia
+    # hosts:
+    #   - &host plex.tribz.cloud
+    # tls:
+    #   - secretName: plex-tls-certificate
+    #     hosts:
+    #       - *host
 jellyfin:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:

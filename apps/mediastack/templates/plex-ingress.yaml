@@ -3,5 +3,24 @@ kind: Ingress
 metadata:
   name: mediastack-kube-plex
   namespace: mediastack
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    hajimari.io/appName: Plex
+    hajimari.io/icon: multimedia
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - plex.tribz.cloud
+      secretName: plex-tls-certificate
+  rules:
+    - host: plex.tribz.cloud
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: mediastack-kube-plex
+                port:
+                  name: pms
