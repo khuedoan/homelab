@@ -27,5 +27,5 @@ dependencies:
     version: "> 1.0.0"
     repository: https://k8s-at-home.com/charts/
   - name: bazarr
-    repository: https://charts.truecharts.org
-    version: "> 0.0.1"
+    repository: https://geek-cookbook.github.io/charts/
+    version: "> 0.0.0"

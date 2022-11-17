@@ -9,7 +9,7 @@ qbittorrent:
       mountPath: /config
       accessMode: ReadWriteOnce
       size: 1Gi
-    data:
+    downloads:
       enabled: true
       mountPath: /data/torrents
       existingClaim: mediastack-data
@@ -303,7 +303,7 @@ bazarr:
     config:
       enabled: true
       size: 1Gi
-    data:
+    media:
       enabled: true
       mountPath: /data
       existingClaim: mediastack-data
