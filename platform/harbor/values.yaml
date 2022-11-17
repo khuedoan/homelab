@@ -1,18 +1,19 @@
-expose:
-  type: ingress
-  tls:
-    enabled: true
-    certSource: secret
-    secret:
-      secretName: harbor-tls-certificate
-      notarySecretName: harbor-notary-tls-certificate
-  ingress:
-    hosts:
-      core: core.harbor.tribz.cloud
-      notary: notary.harbor.tribz.cloud
-    className: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      hajimari.io/appName: Harbor
-      hajimari.io/icon: git
-externalURL: https://core.harbor.tribz.cloud
+harbor:
+  expose:
+    type: ingress
+    tls:
+      enabled: true
+      certSource: secret
+      secret:
+        secretName: harbor-tls-certificate
+        notarySecretName: harbor-notary-tls-certificate
+    ingress:
+      hosts:
+        core: core.harbor.tribz.cloud
+        notary: notary.harbor.tribz.cloud
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/appName: Harbor
+        hajimari.io/icon: git
+  externalURL: https://core.harbor.tribz.cloud
