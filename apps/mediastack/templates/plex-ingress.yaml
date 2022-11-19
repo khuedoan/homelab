@@ -5,6 +5,8 @@ metadata:
   namespace: mediastack
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     hajimari.io/appName: Plex
     hajimari.io/icon: multimedia
 spec:
