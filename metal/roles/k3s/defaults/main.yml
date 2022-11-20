@@ -12,7 +12,6 @@ k3s_server_config:
   tls-san: k8s.tribz.cloud
   etcd-expose-metrics: true
   kube-controller-manager-arg:
-  - "address=0.0.0.0"
   - "bind-address=0.0.0.0"
   kube-proxy-arg:
   - "metrics-bind-address=0.0.0.0"
