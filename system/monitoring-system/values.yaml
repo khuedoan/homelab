@@ -38,6 +38,14 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
+    storageSpec: 
+     volumeClaimTemplate:
+       spec:
+         storageClassName: freenas-nfs-csi-retain
+         accessModes: ["ReadWriteOnce"]
+         resources:
+           requests:
+             storage: 50Gi
 alertmanager:
   config:
     route:
