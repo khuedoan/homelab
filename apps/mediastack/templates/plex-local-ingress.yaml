@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mediastack-kube-plex-local
+  namespace: mediastack
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    hajimari.io/appName: Plex-Local
+    hajimari.io/icon: multimedia
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - plex-local.tribz.cloud
+      secretName: plex-local-tls-certificate
+  rules:
+    - host: plex-local.tribz.cloud
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: mediastack-kube-plex
+                port:
+                  name: pms

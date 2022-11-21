@@ -1,6 +1,7 @@
 # kube-prometheus-stack:
 grafana:
   adminPassword: admin
+  defaultDashboardsTimezone: Europe/Zurich
   ingress:
     enabled: true
     ingressClassName: nginx
