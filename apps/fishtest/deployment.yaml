@@ -19,10 +19,10 @@ spec:
       - name: worker
         resources:
           requests:
-            memory: "1024Mi"
+            memory: "2048Mi"
             cpu: "1000m"
           limits:
-            memory: "1536Mi"
+            memory: "2560Mi"
             cpu: "1500m"
         image: core.harbor.tribz.cloud/homelab/fishtest:latest
         env:
