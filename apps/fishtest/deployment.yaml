@@ -21,6 +21,9 @@ spec:
           requests:
             memory: "1024Mi"
             cpu: "1000m"
+          limits:
+            memory: "1536Mi"
+            cpu: "1500m"
         image: core.harbor.tribz.cloud/homelab/fishtest:latest
         env:
           - name: FISHTEST_USERNAME
