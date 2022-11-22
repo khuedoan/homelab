@@ -23,3 +23,5 @@ spec:
             value: "Tribute"
           - name: FISHTEST_PASSWORD
             value: "FishTestsKubernetes123"
+          - name: FISHTEST_CORES
+            value: "4"
