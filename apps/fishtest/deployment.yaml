@@ -6,7 +6,6 @@ metadata:
     app: worker
 spec:
   parallelism: 8
-  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: worker
