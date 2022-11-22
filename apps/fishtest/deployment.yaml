@@ -6,7 +6,7 @@ metadata:
     app: worker
 spec:
   replicas: 8
-  revisionHistoryLimit: 3
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: worker
