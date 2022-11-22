@@ -50,6 +50,7 @@ prometheus:
 alertmanager:
   config:
     route:
+      repeat_interval: 1h
       routes:
         - receiver: "null"
           matchers:
