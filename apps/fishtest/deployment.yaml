@@ -6,14 +6,15 @@ metadata:
     app: worker
 spec:
   parallelism: 8
-  selector:
-    matchLabels:
-      app: worker
+  # selector:
+  #   matchLabels:
+  #     app: worker
   template:
-    metadata:
-      labels:
-        app: worker
+    # metadata:
+    #   labels:
+    #     app: worker
     spec:
+      restartPolicy: OnFailure
       containers:
       - name: worker
         resources:
