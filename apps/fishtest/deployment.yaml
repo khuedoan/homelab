@@ -33,4 +33,4 @@ spec:
           - name: FISHTEST_CORES
             value: "1"
           - name: FISHTEST_MEMORY
-            value: "1024"
+            value: "2048"
