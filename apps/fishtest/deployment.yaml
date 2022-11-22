@@ -5,7 +5,7 @@ metadata:
   labels:
     app: worker
 spec:
-  replicas: 8
+  replicas: 4
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -24,6 +24,6 @@ spec:
           - name: FISHTEST_PASSWORD
             value: "FishTestsKubernetes123"
           - name: FISHTEST_CORES
-            value: "1"
+            value: "2"
           - name: FISHTEST_MEMORY
             value: "1024"
