@@ -1,11 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Job
 metadata:
   name: fishtest-worker
   labels:
     app: worker
 spec:
-  replicas: 4
+  paralellism: 8
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -17,6 +17,10 @@ spec:
     spec:
       containers:
       - name: worker
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "1000m"
         image: core.harbor.tribz.cloud/homelab/fishtest:latest
         env:
           - name: FISHTEST_USERNAME
@@ -24,6 +28,6 @@ spec:
           - name: FISHTEST_PASSWORD
             value: "FishTestsKubernetes123"
           - name: FISHTEST_CORES
-            value: "2"
+            value: "1"
           - name: FISHTEST_MEMORY
             value: "1024"
