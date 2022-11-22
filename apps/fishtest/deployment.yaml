@@ -5,7 +5,7 @@ metadata:
   labels:
     app: worker
 spec:
-  parallelism: 8
+  parallelism: 4
   # selector:
   #   matchLabels:
   #     app: worker
