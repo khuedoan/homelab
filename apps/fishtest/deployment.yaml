@@ -1,20 +1,20 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: fishtest-worker
   labels:
     app: worker
 spec:
-  parallelism: 4
-  # selector:
-  #   matchLabels:
-  #     app: worker
+  replicas: 4
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: worker
   template:
-    # metadata:
-    #   labels:
-    #     app: worker
+    metadata:
+      labels:
+        app: worker
     spec:
-      restartPolicy: OnFailure
       containers:
       - name: worker
         resources:
