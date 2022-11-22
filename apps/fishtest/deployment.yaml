@@ -5,7 +5,7 @@ metadata:
   labels:
     app: worker
 spec:
-  replicas: 4
+  replicas: 8
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -19,10 +19,10 @@ spec:
       - name: worker
         resources:
           requests:
-            memory: "2048Mi"
+            memory: "1024Mi"
             cpu: "1000m"
           limits:
-            memory: "2560Mi"
+            memory: "1536Mi"
             cpu: "1500m"
         image: core.harbor.tribz.cloud/homelab/fishtest:latest
         env:
@@ -33,4 +33,4 @@ spec:
           - name: FISHTEST_CORES
             value: "1"
           - name: FISHTEST_MEMORY
-            value: "2048"
+            value: "1024"
