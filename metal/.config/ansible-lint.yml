@@ -1,0 +1,3 @@
+skip_list:
+  - fqcn[action-core]
+  - name[missing]

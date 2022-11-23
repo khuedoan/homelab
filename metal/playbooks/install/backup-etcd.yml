@@ -1,0 +1,30 @@
+- name: Enable etcd backup
+  hosts:
+    - kube_control_plane[0]
+  tasks:
+    - name: Check backup ssh key
+      community.crypto.openssh_keypair:
+        path: "{{ ansible_user_dir }}/id_ed25519"
+        type: ed25519
+      register: key
+
+    - name: Check dependencies
+      ansible.builtin.apt:
+        name:
+          - cron
+          - rsync
+        state: present
+
+    - name: Check backups are enabled
+      ansible.builtin.cron:
+        name: "etcd backup"
+        minute: "0"
+        hour: "1,13"
+        job: >
+          rsync -av --delete -e "ssh -i {{ ansible_user_dir }}/id_ed25519"
+          /var/lib/rancher/k3s/server/db/snapshots/ backup@{{ backup_target_host }}:{{ backup_target_dir }}
+
+    - debug:
+        msg: |
+          Create {{ backup_target_dir }} and
+          add key to authorized_keys on backup host user: {{ key.public_key }} root@{{ ansible_hostname }}

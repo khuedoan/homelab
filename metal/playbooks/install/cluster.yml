@@ -8,3 +8,6 @@
 
 - name: Label Kubernetes nodes
   ansible.builtin.import_playbook: k8s-node-labels.yml
+
+- name: Setup Etcd backups
+  ansible.builtin.import_playbook: backup-etcd.yml

@@ -9,3 +9,6 @@ collections:
 
   - name: community.general
     version: 5.1.1
+
+  - name: community.crypto
+    version: 2.8.1
