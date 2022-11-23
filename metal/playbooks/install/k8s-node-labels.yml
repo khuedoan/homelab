@@ -1,0 +1,58 @@
+- name: Create some basic config
+  hosts: all
+  environment:
+    KUBECONFIG: ../../kubeconfig.yaml
+  tasks:
+    - name: Populate inventory node label
+      vars:
+        inventory_node_labels: []
+      set_fact:
+        inventory_node_labels: "{{ inventory_node_labels + [ '%s=%s'|format(item.key, item.value) ] }}"
+      loop: "{{ node_labels|d({})|dict2items }}"
+      when:
+        - node_labels is defined
+        - node_labels is mapping
+      tags:
+        - node-tag
+
+    - debug: var=inventory_node_labels
+      tags:
+        - node-tag
+
+    - name: Set label to node
+      command: >-
+          kubectl label node {{ kube_override_hostname | default(inventory_hostname) }} {{ item }} --overwrite=true
+      loop: "{{ inventory_node_labels }}"
+      when: inventory_node_labels is defined
+      become: false
+      delegate_to: localhost
+      changed_when: false
+      tags:
+        - node-tag
+
+    - name: Populate inventory node annotations
+      vars:
+        inventory_node_annotations: []
+      set_fact:
+        inventory_node_annotations: "{{ inventory_node_annotations + [ '%s=%s'|format(item.key, item.value) ] }}"
+      loop: "{{ node_annotations|d({})|dict2items }}"
+      when:
+        - node_annotations is defined
+        - node_annotations is mapping
+      tags:
+        - node-annotations
+
+    - debug: var=inventory_node_annotations
+      tags:
+        - node-annotations
+
+    - name: Set annotations to node
+      command: >-
+          kubectl annotate node {{ kube_override_hostname | default(inventory_hostname) }} {{ item }} --overwrite=true
+      loop: "{{ inventory_node_annotations }}"
+      when: inventory_node_annotations is defined
+      become: false
+      delegate_to: localhost
+      changed_when: false
+      tags:
+        - node-annotations
