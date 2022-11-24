@@ -77,7 +77,7 @@ kube-plex:
       size: 2Gi
     config:
       enabled: true
-      size: 2Gi
+      size: 5Gi
     data:
       enabled: true
       mountPath: /data/media
