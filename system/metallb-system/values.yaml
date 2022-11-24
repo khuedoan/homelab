@@ -11,23 +11,23 @@ metallb:
       # enable support for Prometheus Operator
       enabled: true
       relabelings: 
-      - sourceLabels: [__meta_kubernetes_pod_node_name]
-        separator: ;
-        regex: ^(.*)$
-        target_label: nodename
-        replacement: $1
-        action: replace
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          separator: ;
+          regex: ^(.*)$
+          target_label: nodename
+          replacement: $1
+          action: replace
 
     serviceMonitor:
       # enable support for Prometheus Operator
       enabled: true
       relabelings:
-      - sourceLabels: [__meta_kubernetes_pod_node_name]
-        separator: ;
-        regex: ^(.*)$
-        target_label: nodename
-        replacement: $1
-        action: replace
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          separator: ;
+          regex: ^(.*)$
+          target_label: nodename
+          replacement: $1
+          action: replace
 
     # Prometheus Operator alertmanager alerts
     prometheusRule:
