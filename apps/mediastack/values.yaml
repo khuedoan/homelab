@@ -68,7 +68,7 @@ radarr:
 kube-plex:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
-    replicas: 1
+    replicas: 0
   timezone: Europe/Zurich
   claimToken: claim-CJkYTtiRhSuVgqFaU3rm
   persistence:
