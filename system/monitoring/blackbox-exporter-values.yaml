@@ -1,6 +1,6 @@
 fullnameOverride: blackbox-exporter
 
-replicas: 3
+replicas: 1
 
 image:
   repository: quay.io/prometheus/blackbox-exporter
