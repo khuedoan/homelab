@@ -38,8 +38,8 @@ app-template:
       enabled: true
       mountPath: /config
       accessMode: ReadWriteOnce
-      size: 5Gi
-      storageClass: longhorn
+      size: 2Gi
+      storageClass: longhorn-ssd
       skipuninstall: true
 
   resources:
