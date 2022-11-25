@@ -33,7 +33,7 @@ config:
       http:
         valid_http_versions:
           - HTTP/1.1
-          - HTTP/2
+          - HTTP/2.0
         follow_redirects: true
         preferred_ip_protocol: ip4
     http_401:
@@ -42,7 +42,7 @@ config:
       http:
         valid_http_versions:
           - HTTP/1.1
-          - HTTP/2
+          - HTTP/2.0
         follow_redirects: true
         preferred_ip_protocol: ip4
         valid_status_codes:
