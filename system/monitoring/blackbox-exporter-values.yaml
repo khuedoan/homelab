@@ -59,9 +59,9 @@ serviceMonitor:
   enabled: true
   defaults:
     labels:
-      release: prometheus
-    interval: 2m
-    scrapeTimeout: 30s
+      release: monitoring
+    interval: 30s
+    scrapeTimeout: 10s
 
   targets:
     - module: http_2xx
