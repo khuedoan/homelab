@@ -36,8 +36,6 @@ config:
           - HTTP/2
         follow_redirects: true
         preferred_ip_protocol: ip4
-        valid_status_codes:
-          - 200
     http_401:
       prober: http
       timeout: 5s
