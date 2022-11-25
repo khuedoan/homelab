@@ -1,7 +1,0 @@
-apiVersion: v2
-name: mealie-frontend
-version: 0.0.0
-dependencies:
-  - name: app-template
-    version: 1.0.1
-    repository: https://bjw-s.github.io/helm-charts/
