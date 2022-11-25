@@ -68,7 +68,7 @@ serviceMonitor:
       name: rash-sh.github.io
       url: https://rash-sh.github.io
     - module: http_2xx
-      name: api.m.rajoy.grigri.cloud/ping
+      name: api.m.rajoy.grigri.cloud
       url: https://api.m.rajoy.grigri.cloud/ping
     - module: http_2xx
       name: m.rajoy.grigri.cloud
