@@ -9,7 +9,7 @@ ingress:
   enabled: true
   ingressClassName: nginx-internal
   annotations:
-    hajimari.io/enable: "false"
+    cert-manager.io/cluster-issuer: internal
   hosts:
     - host: &host blackbox-exporter.k8s.grigri
       paths:
