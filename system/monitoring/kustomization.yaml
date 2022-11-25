@@ -9,6 +9,12 @@ helmCharts:
     repo: https://prometheus-community.github.io/helm-charts
     valuesFile: values.yaml
     version: 41.7.4
+  - name: prometheus-blackbox-exporter
+    namespace: monitoring
+    releaseName: monitoring
+    repo: https://prometheus-community.github.io/helm-charts
+    valuesFile: blackbox-exporter-values.yaml
+    version: 7.1.3
 
 resources:
   - resources/alertmanager-secret.yaml

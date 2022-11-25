@@ -1,0 +1,131 @@
+fullnameOverride: blackbox-exporter
+
+replicas: 3
+
+image:
+  repository: quay.io/prometheus/blackbox-exporter
+
+ingress:
+  enabled: true
+  ingressClassName: nginx-internal
+  annotations:
+    hajimari.io/enable: "false"
+
+  hosts:
+    - host: &host blackbox-exporter.k8s.grigri
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - *host
+      secretName: blackbox-exporter-tls-certificate
+
+securityContext:
+  capabilities:
+    add:
+      - NET_RAW
+
+config:
+  modules:
+    http_2xx:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions:
+          - HTTP/1.1
+          - HTTP/2
+        follow_redirects: true
+        preferred_ip_protocol: ip4
+        valid_status_codes:
+          - 200
+    http_401:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions:
+          - HTTP/1.1
+          - HTTP/2
+        follow_redirects: true
+        preferred_ip_protocol: ip4
+        valid_status_codes:
+          - 401
+    icmp:
+      prober: icmp
+      timeout: 30s
+      icmp:
+        preferred_ip_protocol: ip4
+
+serviceMonitor:
+  enabled: true
+  defaults:
+    labels:
+      release: prometheus
+    interval: 2m
+    scrapeTimeout: 30s
+
+  targets:
+    - module: http_2xx
+      name: rash-sh.github.io
+      url: https://rash-sh.github.io
+    - module: http_2xx
+      name: api.m.rajoy.grigri.cloud/ping
+      url: https://api.m.rajoy.grigri.cloud/ping
+    - module: http_2xx
+      name: m.rajoy.grigri.cloud
+      url: https://m.rajoy.grigri.cloud
+    - module: http_2xx
+      name: www.mintpsicologia.es
+      url: https://www.mintpsicologia.es
+
+resources:
+  requests:
+    cpu: 15m
+    memory: 64M
+  limits:
+    memory: 64M
+
+prometheusRule:
+  enabled: true
+  additionalLabels:
+    app: prometheus-operator
+    release: prometheus
+  rules:
+    - alert: BlackboxSslCertificateWillExpireSoon
+      expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 3
+      for: 10m
+      labels:
+        severity: critical
+      annotations:
+        description: |-
+          The SSL certificate for {{"{{ $labels.target }}"}} will expire in less than 3 days
+    - alert: BlackboxSslCertificateExpired
+      expr: probe_ssl_earliest_cert_expiry - time() <= 0
+      for: 10m
+      labels:
+        severity: critical
+      annotations:
+        description: |-
+          The SSL certificate for {{"{{ $labels.target }}"}} has expired
+    - alert: BlackboxProbeFailed
+      expr: probe_success == 0
+      for: 10m
+      labels:
+        severity: critical
+      annotations:
+        description: |-
+          The host {{"{{ $labels.target }}"}} is currently unreachable
+    - alert: SlowResponseTime
+      annotations:
+        message: The response time for {{"{{ $labels.target }}"}} has been greater than 30 seconds for 5 minutes.
+      expr: probe_duration_seconds > 30
+      for: 15m
+      labels:
+        severity: warning
+    - alert: BlackboxProbeHttpFailure
+      expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+      for: 5m
+      labels:
+        severity: error
+      annotations:
+        message: The HTTP response for {{"{{ $labels.target }}"}} was not a HTTP status code is not 200-399
