@@ -68,7 +68,7 @@ radarr:
 kube-plex:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
-    replicas: 0
+    replicas: 1
   timezone: Europe/Zurich
   claimToken: claim-CJkYTtiRhSuVgqFaU3rm
   persistence:
@@ -85,16 +85,6 @@ kube-plex:
       subPath: media/
   ingress:
     enabled: false
-    # annotations:
-    #   cert-manager.io/cluster-issuer: letsencrypt-prod
-    #   hajimari.io/appName: Plex
-    #   hajimari.io/icon: multimedia
-    # hosts:
-    #   - &host plex.tribz.cloud
-    # tls:
-    #   - secretName: plex-tls-certificate
-    #     hosts:
-    #       - *host
 jellyfin:
   # use this when expanding config disk, this frees the PVC from the pod
   controller:
