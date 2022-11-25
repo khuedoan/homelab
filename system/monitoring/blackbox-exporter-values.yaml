@@ -10,7 +10,6 @@ ingress:
   ingressClassName: nginx-internal
   annotations:
     hajimari.io/enable: "false"
-
   hosts:
     - host: &host blackbox-exporter.k8s.grigri
       paths:
@@ -50,7 +49,7 @@ config:
         preferred_ip_protocol: ip4
         valid_status_codes:
           - 401
-    icmp:
+    ping:
       prober: icmp
       timeout: 30s
       icmp:
@@ -126,6 +125,6 @@ prometheusRule:
       expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
       for: 5m
       labels:
-        severity: error
+        severity: warning
       annotations:
         message: The HTTP response for {{"{{ $labels.target }}"}} was not a HTTP status code is not 200-399
