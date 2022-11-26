@@ -4,7 +4,7 @@ extraArgs:
   - --autogenInternals=true
   - --loggingFormat=text
   - --v
-  - 6
+  - '6'
 
 topologySpreadConstraints:
   - maxSkew: 1
