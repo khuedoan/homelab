@@ -3,7 +3,7 @@ replicaCount: 3
 extraArgs:
   - --autogenInternals=true
   - --loggingFormat=text
-  - --v 6
+  - -v 6
 
 topologySpreadConstraints:
   - maxSkew: 1
