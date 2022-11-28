@@ -19,7 +19,7 @@ spec:
       destination:
         name: in-cluster
         namespace: '{{ default `{{path.basename}}` $stack.namespace }}'
-      project: default # TODO
+      project: default
       source:
         repoURL: {{ $.Values.gitops.repo }}
         path: '{{ `{{path}}` }}'

@@ -33,11 +33,10 @@ spec:
             - "--v=5"
             - "--leader-election=true"
           imagePullPolicy: IfNotPresent
-          # TODO: adjust values
           resources:
             requests:
               cpu: 10m
-              memory: 64Mi
+              memory: 17Mi
             limits:
               cpu: 100m
-              memory: 128Mi
+              memory: 64Mi

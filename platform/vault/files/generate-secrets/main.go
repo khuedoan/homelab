@@ -1,7 +1,5 @@
 package main
 
-// TODO WIP clean up
-
 import (
 	"fmt"
 	"log"

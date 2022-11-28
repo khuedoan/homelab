@@ -5,34 +5,26 @@
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal bootstrap external wait post-install
+.DEFAULT: help
+help:	## show this help menu.
+	@echo "Usage: make [TARGET ...]"
+	@echo ""
+	@@grep -hE "#[#]" $(MAKEFILE_LIST) | sed -e 's/\\$$//' | awk 'BEGIN {FS = "[:=].*?#[#] "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
 
-configure:
-	./scripts/configure
-	git status
-
+metal:	## run ansible to configure k3s
 metal:
 	make -C metal
 
+bootstrap:	## deploy ArgoCD configured to sync with this repo
 bootstrap:
 	make -C bootstrap
 
-external:
-	make -C external
-
-wait:
-	./scripts/wait-main-apps
-
-post-install:
-	@./scripts/hacks
-
-tools:
-	make -C tools
-
+dev:	## deploy k3s
 dev:
-	make -C metal cluster env=dev
-	make -C bootstrap
+	test/step_by_step_tests.sh
 
+docs:	## run doc server in local at port 8000
 docs:
 	docker run \
 		--rm \
@@ -42,5 +34,6 @@ docs:
 		--volume $(shell pwd):/docs \
 		squidfunk/mkdocs-material
 
+git-hooks:	## pre-commit install
 git-hooks:
 	pre-commit install

@@ -4,8 +4,8 @@ IMAGE=$1
 K8S_HOSTNAME=$2
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root"
-   exit 1
+    echo "This script must be run as root"
+    exit 1
 fi
 
 if [[ -z $IMAGE ]] || [[ -z $K8S_HOSTNAME ]]; then
@@ -15,7 +15,7 @@ fi
 bash -c "dd if=$IMAGE  of=/dev/mmcblk0 bs=1M conv=sync"
 sleep 2
 
-if echo $IMAGE | grep -i rock64; then
+if echo "$IMAGE" | grep -i rock64; then
     HOSTNAME=rock64
 else
     HOSTNAME=odroid-c4
