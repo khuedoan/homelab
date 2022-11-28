@@ -14,5 +14,5 @@ spec:
   retain: 1
   concurrency: 3
   labels:
-    recurring-job-group.longhorn.io/no-backup-retain: one-week
+    recurring-job-group.longhorn.io/no-backup-retain: one-day
     recurring-job-group.longhorn.io/no-backup-frecuency: weekly
