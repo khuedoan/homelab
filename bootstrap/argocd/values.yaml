@@ -156,6 +156,13 @@ argo-cd:
 
       kustomize.buildOptions: --enable-helm
 
+    params:
+      controller.status.processors: 5
+      controller.operation.processors: 5
+      controller.repo.server.timeout.seconds: 300
+
+      server.insecure: true
+
     rbac:
       create: true
 
@@ -178,9 +185,6 @@ argo-cd:
       createSecret: false
 
   server:
-    extraArgs:
-      - --insecure
-
     resources:
       limits:
         cpu: 200m
