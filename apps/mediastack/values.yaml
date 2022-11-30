@@ -138,6 +138,9 @@ jellyfin:
         - secretName: jellyfin-local-tls-certificate
           hosts:
             - *host
+  resources:
+    limits:
+      gpu.intel.com/i915: 1
 lidarr:
   controller:
     replicas: 1
