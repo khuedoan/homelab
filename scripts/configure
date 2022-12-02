@@ -14,7 +14,7 @@ import sys
 from rich.prompt import Confirm, Prompt
 
 default_seed_repo = "https://github.com/khuedoan/homelab"
-default_domain = "khuedoan.com"
+default_domain = "tribz.cloud"
 default_timezone = "Asia/Ho_Chi_Minh"
 default_terraform_workspace = "khuedoan"
 
