@@ -24,7 +24,7 @@ spec:
           limits:
             memory: "1536Mi"
             cpu: "1500m"
-        image: core.harbor.tribz.cloud/homelab/fishtest:latest
+        image: core.harbor.danger250.com/homelab/fishtest:latest
         env:
           - name: FISHTEST_USERNAME
             value: "Tribute"

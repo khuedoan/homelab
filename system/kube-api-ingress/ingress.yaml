@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: &host k8s.tribz.cloud
+    - host: &host k8s.danger250.com
       http:
         paths:
           - pathType: ImplementationSpecific

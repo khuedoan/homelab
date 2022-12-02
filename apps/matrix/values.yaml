@@ -6,12 +6,12 @@ elementweb:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.danger250.com"
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       hajimari.io/appName: Chat
       hajimari.io/icon: chat
     hosts:
-      - host: &frontend_host chat.tribz.cloud
+      - host: &frontend_host chat.danger250.com
         paths:
           - path: /
             pathType: Prefix
@@ -21,8 +21,8 @@ elementweb:
           - *frontend_host
   config:
     default:
-      base_url: https://matrix.tribz.cloud
-      server_name: tribz.cloud
+      base_url: https://matrix.danger250.com
+      server_name: danger250.com
 
 dendrite:
   env:
@@ -33,7 +33,7 @@ dendrite:
     pullPolicy: IfNotPresent
   configuration:
     version: 2
-    servername: &backend_host matrix.tribz.cloud
+    servername: &backend_host matrix.danger250.com
     database:
       host: matrix-postgresql:5432
       user: dendrite
@@ -76,7 +76,7 @@ dendrite:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.danger250.com"
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       nginx.ingress.kubernetes.io/proxy-body-size: 32m
       hajimari.io/enable: 'false'

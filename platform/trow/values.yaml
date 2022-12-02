@@ -1,6 +1,6 @@
 trow:
   trow:
-    domain: &host registry.tribz.cloud
+    domain: &host registry.danger250.com
     # user: user
     # password: password
     validation:

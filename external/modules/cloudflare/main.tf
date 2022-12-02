@@ -1,5 +1,5 @@
 data "cloudflare_zone" "zone" {
-  name = "tribz.cloud"
+  name = "danger250.com"
 }
 
 data "cloudflare_api_token_permission_groups" "all" {}

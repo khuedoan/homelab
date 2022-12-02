@@ -10,7 +10,7 @@ grafana:
       hajimari.io/appName: Grafana
       hajimari.io/icon: chart-bar
     hosts:
-      - &host grafana.tribz.cloud
+      - &host grafana.danger250.com
     tls:
       - secretName: grafana-general-tls
         hosts:
@@ -22,7 +22,7 @@ grafana:
   envFromSecret: grafana-secrets
   grafana.ini:
     server:
-      root_url: https://grafana.tribz.cloud
+      root_url: https://grafana.danger250.com
     auth.generic_oauth:
       enabled: true
       allow_sign_up: true
@@ -30,9 +30,9 @@ grafana:
       client_id: grafana-sso
       client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
       scopes: openid profile email groups
-      auth_url: https://dex.tribz.cloud/auth
-      token_url: https://dex.tribz.cloud/token
-      api_url: https://dex.tribz.cloud/userinfo
+      auth_url: https://dex.danger250.com/auth
+      token_url: https://dex.danger250.com/token
+      api_url: https://dex.danger250.com/userinfo
 prometheus:
   prometheusSpec:
     ruleSelectorNilUsesHelmValues: false

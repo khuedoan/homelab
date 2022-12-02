@@ -1,6 +1,6 @@
 dex:
   config:
-    issuer: https://dex.tribz.cloud
+    issuer: https://dex.danger250.com
     storage:
       type: kubernetes
       config:
@@ -14,13 +14,13 @@ dex:
         config:
           clientID: $GITEA_CLIENT_ID
           clientSecret: $GITEA_CLIENT_SECRET
-          redirectURI: https://dex.tribz.cloud/callback
-          baseURL: https://git.tribz.cloud
+          redirectURI: https://dex.danger250.com/callback
+          baseURL: https://git.danger250.com
     staticClients:
       - id: grafana-sso
         name: Grafana
         redirectURIs:
-          - 'https://grafana.tribz.cloud/login/generic_oauth'
+          - 'https://grafana.danger250.com/login/generic_oauth'
         secretEnv: GRAFANA_SSO_CLIENT_SECRET
   envFrom:
     - secretRef:
@@ -32,7 +32,7 @@ dex:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       hajimari.io/enable: 'false'
     hosts:
-      - host: &host dex.tribz.cloud
+      - host: &host dex.danger250.com
         paths:
           - path: /
             pathType: ImplementationSpecific

@@ -1,4 +1,4 @@
-module git.tribz.cloud/khuedoan/homelab/gitea/config
+module git.danger250.com/khuedoan/homelab/gitea/config
 
 go 1.18
 

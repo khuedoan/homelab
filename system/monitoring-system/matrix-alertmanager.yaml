@@ -31,9 +31,9 @@ spec:
           - name: APP_ALERTMANAGER_SECRET
             value: veryverysecretkeyhere
           - name: MATRIX_HOMESERVER_URL
-            value: https://matrix.tribz.cloud
+            value: https://matrix.danger250.com
           - name: MATRIX_ROOMS
-            value: 'matrix/!Q7iSV7EXDYsgrSsn:matrix.tribz.cloud'
+            value: 'matrix/!Q7iSV7EXDYsgrSsn:matrix.danger250.com'
           - name: MATRIX_TOKEN
             value: m0w0PhSimc3fS_Y_H1Fn-kHmJG19wY8WJ2kJGWxhjPU
           - name: MATRIX_USER

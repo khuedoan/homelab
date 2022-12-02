@@ -7,13 +7,13 @@ seafile:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.danger250.com"
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hajimari.io/appName: Seafile
         hajimari.io/icon: google-drive
         nginx.ingress.kubernetes.io/proxy-body-size: "10g"
       hosts:
-        - host: &host seafile.tribz.cloud
+        - host: &host seafile.danger250.com
           paths:
             - path: /
               pathType: Prefix

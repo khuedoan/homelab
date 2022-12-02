@@ -74,7 +74,7 @@ spec:
     spec:
       ingressClassName: nginx
       rules:
-        - host: &host vault.tribz.cloud
+        - host: &host vault.danger250.com
           http:
             paths:
               - backend:

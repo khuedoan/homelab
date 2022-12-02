@@ -11,10 +11,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - plex-local.tribz.cloud
+        - plex-local.danger250.com
       secretName: plex-local-tls-certificate
   rules:
-    - host: plex-local.tribz.cloud
+    - host: plex-local.danger250.com
       http:
         paths:
           - path: /

@@ -34,7 +34,7 @@ spec:
         - name: CONTEXT
           value: ./tools
         - name: IMAGE
-          value: registry.tribz.cloud/tools:latest
+          value: registry.danger250.com/tools:latest
         - name: EXTRA_ARGS
           value:
             - --cache=true
@@ -49,7 +49,7 @@ spec:
         workspaces:
           - name: source
         stepTemplate:
-          image: registry.tribz.cloud/tools:latest
+          image: registry.danger250.com/tools:latest
           workingDir: /workspace/source
         steps:
           - name: run
@@ -74,7 +74,7 @@ spec:
             secret:
               secretName: terraform-secrets
         stepTemplate:
-          image: registry.tribz.cloud/tools:latest
+          image: registry.danger250.com/tools:latest
           workingDir: /workspace/source/external
           volumeMounts:
             - name: terraform-secrets

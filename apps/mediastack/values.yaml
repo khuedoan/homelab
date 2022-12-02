@@ -24,7 +24,7 @@ qbittorrent:
         hajimari.io/icon: pirate
         hajimari.io/group: arr
       hosts:
-        - host: &host qbittorrent.tribz.cloud
+        - host: &host qbittorrent.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -57,7 +57,7 @@ radarr:
         hajimari.io/icon: pirate
         hajimari.io/group: arr
       hosts:
-        - host: &host radarr.tribz.cloud
+        - host: &host radarr.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -109,12 +109,12 @@ jellyfin:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.danger250.com"
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hajimari.io/appName: Jellyfin
         hajimari.io/icon: multimedia
       hosts:
-        - host: &host jellyfin.tribz.cloud
+        - host: &host jellyfin.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -130,7 +130,7 @@ jellyfin:
         hajimari.io/appName: Jellyfin-Local
         hajimari.io/icon: multimedia
       hosts:
-        - host: &host jellyfin-local.tribz.cloud
+        - host: &host jellyfin-local.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -166,7 +166,7 @@ lidarr:
         hajimari.io/icon: pirate
         hajimari.io/group: arr
       hosts:
-        - host: &host lidarr.tribz.cloud
+        - host: &host lidarr.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -199,7 +199,7 @@ sonarr:
         hajimari.io/icon: pirate
         hajimari.io/group: arr
       hosts:
-        - host: &host sonarr.tribz.cloud
+        - host: &host sonarr.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -233,7 +233,7 @@ readarr:
         hajimari.io/icon: pirate
         hajimari.io/group: arr
       hosts:
-        - host: &host readarr.tribz.cloud
+        - host: &host readarr.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -263,7 +263,7 @@ prowlarr:
         hajimari.io/icon: sync
         hajimari.io/group: arr
       hosts:
-        - host: &host prowlarr.tribz.cloud
+        - host: &host prowlarr.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -304,7 +304,7 @@ bazarr:
         hajimari.io/icon: pirate
         hajimari.io/group: arr
       hosts:
-        - host: &host bazarr.tribz.cloud
+        - host: &host bazarr.danger250.com
           paths:
             - path: /
               pathType: Prefix

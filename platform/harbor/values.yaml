@@ -3,8 +3,8 @@ harbor:
     type: ingress
     ingress:
       hosts:
-        core: core.harbor.tribz.cloud
-        notary: notary.harbor.tribz.cloud
+        core: core.harbor.danger250.com
+        notary: notary.harbor.danger250.com
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -16,4 +16,4 @@ harbor:
       secret:
         secretName: harbor-tls-certificate
         notarySecretName: harbor-notary-tls-certificate
-  externalURL: https://core.harbor.tribz.cloud
+  externalURL: https://core.harbor.danger250.com

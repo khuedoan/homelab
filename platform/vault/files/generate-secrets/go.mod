@@ -1,4 +1,4 @@
-module git.tribz.cloud/khuedoan/homelab/vault/init
+module git.danger250.com/khuedoan/homelab/vault/init
 
 go 1.17
 

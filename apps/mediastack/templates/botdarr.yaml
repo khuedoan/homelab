@@ -24,7 +24,7 @@ spec:
           - name: MAX_RESULTS_TO_SHOW
             value: "100"
           - name: SONARR_URL
-            value: https://sonarr.tribz.cloud
+            value: https://sonarr.danger250.com
           - name: SONARR_TOKEN
             value: "a97228fd3a8046499af2541eeb32be80"
           - name: SONARR_DEFAULT_PROFILE
@@ -32,7 +32,7 @@ spec:
           - name: SONARR_PATH
             value: /data/media/sonarr/
           - name: RADARR_URL
-            value: https://radarr.tribz.cloud
+            value: https://radarr.danger250.com
           - name: RADARR_TOKEN
             value: "80b58a9140a4425592dd1803f9434376"
           - name: RADARR_DEFAULT_PROFILE
@@ -40,12 +40,12 @@ spec:
           - name: RADARR_PATH
             value: /data/media/radarr/
           - name: MATRIX_ROOM
-            value: '!SJUyGAU028lzEpIb:matrix.tribz.cloud'
+            value: '!SJUyGAU028lzEpIb:matrix.danger250.com'
           - name: MATRIX_USERNAME
             value: botdarr
           - name: MATRIX_PASSWORD
             value: botdarrInvite123
           - name: MATRIX_HOME_SERVER_URL
-            value: https://matrix.tribz.cloud
+            value: https://matrix.danger250.com
         ports:
         - containerPort: 80

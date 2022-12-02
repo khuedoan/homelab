@@ -7,7 +7,7 @@ gitea:
       hajimari.io/appName: Gitea
       hajimari.io/icon: git
     hosts:
-      - host: &host git.tribz.cloud
+      - host: &host git.danger250.com
         paths:
           - path: /
             pathType: Prefix
@@ -21,7 +21,7 @@ gitea:
     config:
       server:
         LANDING_PAGE: explore
-        ROOT_URL: https://git.tribz.cloud
+        ROOT_URL: https://git.danger250.com
   persistence:
     storageClass: longhorn
   postgresql:

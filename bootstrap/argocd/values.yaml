@@ -29,7 +29,7 @@ argo-cd:
         hajimari.io/appName: ArgoCD
         hajimari.io/icon: robot
       hosts:
-        - &host argocd.tribz.cloud
+        - &host argocd.danger250.com
       tls:
         - secretName: argocd-tls-certificate
           hosts:

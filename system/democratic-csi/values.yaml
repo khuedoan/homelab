@@ -75,7 +75,7 @@ democratic-csi:
       instance_id:
       httpConnection:
         protocol: http
-        host: truenas.tribz.cloud
+        host: truenas.danger250.com
         port: 80
         # use only 1 of apiKey or username/password
         # if both are present, apiKey is preferred
@@ -88,7 +88,7 @@ democratic-csi:
         # leave unset for auto-detection
         apiVersion: 2
       sshConnection:
-        host: truenas.tribz.cloud
+        host: truenas.danger250.com
         port: 22
         username: root
         # This is the SSH key that we generated for passwordless authentication
@@ -139,7 +139,7 @@ democratic-csi:
       
       nfs:
         #shareCommentTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
-        shareHost: truenas.tribz.cloud
+        shareHost: truenas.danger250.com
         shareAlldirs: false
         shareAllowedHosts: []
         shareAllowedNetworks: []

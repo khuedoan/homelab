@@ -5,7 +5,7 @@ metadata:
   namespace: mediastack
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/target: "homelab-tunnel.tribz.cloud"
+    external-dns.alpha.kubernetes.io/target: "homelab-tunnel.danger250.com"
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     hajimari.io/appName: Plex
     hajimari.io/icon: multimedia
@@ -13,10 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - plex.tribz.cloud
+        - plex.danger250.com
       secretName: plex-tls-certificate
   rules:
-    - host: plex.tribz.cloud
+    - host: plex.danger250.com
       http:
         paths:
           - path: /

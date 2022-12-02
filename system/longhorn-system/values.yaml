@@ -13,7 +13,7 @@ longhorn:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       hajimari.io/appName: Longhorn
       hajimari.io/icon: google-drive
-    host: longhorn.tribz.cloud
+    host: longhorn.danger250.com
     tls: true
     tlsSecret: longhorn-tls-certificate
       # - secretName: longhorn-tls-certificate

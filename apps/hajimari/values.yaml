@@ -9,7 +9,7 @@ hajimari:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/enable: 'false'
       hosts:
-        - host: &host home.tribz.cloud
+        - host: &host home.danger250.com
           paths:
             - path: /
               pathType: Prefix
@@ -30,7 +30,7 @@ hajimari:
       - group: Homelab
         bookmarks:
         - name: Documentation
-          url: 'https://homelab.tribz.cloud'
+          url: 'https://homelab.danger250.com'
         - name: Public GitHub repository
           url: 'https://github.com/khuedoan/homelab'
       - group: Managed services
