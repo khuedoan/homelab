@@ -18,6 +18,10 @@ You can use the default Docker wrapper, or use Nix if you have Nix installed:
     nix-shell
     ```
 
+    !!! tip
+
+        If you have [`direnv`](https://direnv.net) installed, you can run `direnv allow` once and it will automatically enter the Nix shell.
+
 It will open a shell like this:
 
 ```
