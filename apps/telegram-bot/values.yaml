@@ -1,0 +1,78 @@
+app-template:
+  controller:
+    replicas: 1
+
+  image:
+    repository: pando85/troll-bot
+    tag: 1.0.0
+  env:
+    BOT_URL: https://telegram.grigri.cloud
+  envFrom:
+    - secretRef:
+        name: telegram-bot-secret
+
+  enableServiceLinks: false
+  service:
+    main:
+      ports:
+        http:
+          port: 5000
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+      hosts:
+        - host: &host telegram.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: telegram-bot-tls-certificate
+
+  securityContext:
+    runAsUser: 0
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 4Mi
+    limits:
+      cpu: 500m
+      memory: 32Mi
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: telegram-bot
+          app.kubernetes.io/name: telegram-bot
+
+mongodb:
+  useStatefulSet: true
+  auth:
+    enabled: true
+    usernames:
+      - telegram
+    databases:
+      - telegram
+    existingSecret: telegram-bot-database
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+  persistence:
+    enabled: true
+    storageClass: longhorn-ssd
+    size: 500Mi
