@@ -1,6 +1,6 @@
 app-template:
   controller:
-    replicas: 1
+    replicas: 2
 
   image:
     repository: pando85/troll-bot
@@ -53,29 +53,3 @@ app-template:
         matchLabels:
           app.kubernetes.io/instance: telegram-bot
           app.kubernetes.io/name: telegram-bot
-
-mongodb:
-  useStatefulSet: true
-  auth:
-    enabled: true
-    usernames:
-      - telegram
-    databases:
-      - telegram
-    existingSecret: telegram-bot-database
-
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 256Mi
-
-  persistence:
-    enabled: true
-    storageClass: longhorn-ssd
-    size: 500Mi
-
-  arbiter:
-    enabled: false
