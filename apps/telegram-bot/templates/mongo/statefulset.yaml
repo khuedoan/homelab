@@ -17,6 +17,11 @@ spec:
         app.kubernetes.io/instance: mongo
         app.kubernetes.io/name: telegram-bot
     spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        runAsNonRoot: true
+        fsGroup: 999
       containers:
       - name: mongo
         image: mongo:6.0
@@ -31,10 +36,6 @@ spec:
               secretKeyRef:
                 name: telegram-bot-database
                 key: password
-        securityContext:
-          runAsUser: 999
-          runAsGroup: 999
-          fsGroup: 999
         ports:
           - containerPort: 27017
         volumeMounts:
