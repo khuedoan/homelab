@@ -24,7 +24,7 @@ spec:
         fsGroup: 999
       containers:
       - name: mongo
-        image: mongo:6.0
+        image: mongo:4.4
         env:
           - name: MONGO_INITDB_ROOT_USERNAME
             valueFrom:
