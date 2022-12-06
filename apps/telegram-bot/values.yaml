@@ -76,3 +76,6 @@ mongodb:
     enabled: true
     storageClass: longhorn-ssd
     size: 500Mi
+
+  arbiter:
+    enabled: false
