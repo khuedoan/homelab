@@ -11,6 +11,7 @@ app-template:
     - secretRef:
         name: telegram-bot-secret
 
+  command: ["python", "-m", "troll_bot"]
   args:
     - --verbose
 
