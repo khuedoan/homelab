@@ -11,6 +11,9 @@ app-template:
     - secretRef:
         name: telegram-bot-secret
 
+  args:
+    - --verbose
+
   enableServiceLinks: false
   service:
     main:
