@@ -4,14 +4,13 @@ app-template:
 
   image:
     repository: pando85/troll-bot
-    tag: 1.0.0
+    tag: 1.0.1
   env:
     BOT_URL: https://telegram.grigri.cloud
   envFrom:
     - secretRef:
         name: telegram-bot-secret
 
-  command: ["python", "-m", "troll_bot"]
   args:
     - --verbose
 
