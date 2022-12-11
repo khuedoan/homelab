@@ -1,6 +1,6 @@
 app-template:
   controller:
-    replicas: 1
+    replicas: 2
 
   image:
     repository: pando85/troll-bot
@@ -10,9 +10,6 @@ app-template:
   envFrom:
     - secretRef:
         name: telegram-bot-secret
-
-  args:
-    - --verbose
 
   enableServiceLinks: false
   service:
