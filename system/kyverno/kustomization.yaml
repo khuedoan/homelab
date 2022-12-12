@@ -8,7 +8,7 @@ helmCharts:
     releaseName: kyverno
     repo: https://kyverno.github.io/kyverno
     valuesFile: values.yaml
-    version: 2.6.2
+    version: 2.6.4
 
 patchesJson6902:
   - patch: |-
