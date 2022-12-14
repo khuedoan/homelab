@@ -38,7 +38,9 @@ app-template:
       mountPath: /usr/share/nginx/html
       accessMode: ReadWriteMany
       size: 100Mi
-      storageClass: longhorn-ssd
+      # before backup restoring:
+      # storageClass: longhorn-ssd
+      storageClass: longhorn-static
       skipuninstall: true
 
   resources:
