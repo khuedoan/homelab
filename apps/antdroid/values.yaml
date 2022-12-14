@@ -1,6 +1,6 @@
 app-template:
   controller:
-    replicas: 0
+    replicas: 2
 
   image:
     repository: nginx
