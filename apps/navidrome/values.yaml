@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
+    replicas: 1
     strategy: Recreate
 
   image:
@@ -52,20 +52,22 @@ app-template:
     fsGroup: 991
 
   persistence:
-    #music:
-    #  enabled: true
-    #  mountPath: /music
-    #  accessMode: ReadWriteMany
-    #  size: 200Gi
-    #  storageClass: longhorn
-    #  skipuninstall: true
-    #data:
-    #  enabled: true
-    #  mountPath: /data
-    #  accessMode: ReadWriteOnce
-    #  size: 1Gi
-    #  storageClass: longhorn-ssd
-    #  skipuninstall: true
+    music:
+      enabled: true
+      mountPath: /music
+      accessMode: ReadWriteMany
+      size: 200Gi
+      storageClass: longhorn-static
+      skipuninstall: true
+    data:
+      enabled: true
+      mountPath: /data
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      # before backup restoring:
+      # storageClass: longhorn-ssd
+      storageClass: longhorn-static
+      skipuninstall: true
 
   resources:
     requests:
