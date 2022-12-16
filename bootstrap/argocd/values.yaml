@@ -25,7 +25,7 @@ argo-cd:
         hajimari.io/appName: ArgoCD
         hajimari.io/icon: robot
       hosts:
-        - &host argocd.khuedoan.com
+        - &host argocd.qize.link
       tls:
         - secretName: argocd-tls-certificate
           hosts:

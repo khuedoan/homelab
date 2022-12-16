@@ -1,4 +1,4 @@
-iso_url: "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/iso/Fedora-Server-dvd-x86_64-38-1.6.iso"
+iso_url: "https://mirrors.tuna.tsinghua.edu.cn/fedora/releases/38/Server/x86_64/iso/Fedora-Server-dvd-x86_64-38-1.6.iso"
 iso_checksum: "sha256:66b52d7cb39386644cd740930b0bef0a5a2f2be569328fef6b1f9b3679fdc54d"
-timezone: Asia/Ho_Chi_Minh
+timezone: Asia/Shanghai
 dhcp_proxy: true

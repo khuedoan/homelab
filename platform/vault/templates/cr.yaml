@@ -74,7 +74,7 @@ spec:
     spec:
       ingressClassName: nginx
       rules:
-        - host: &host vault.khuedoan.com
+        - host: &host vault.qize.link
           http:
             paths:
               - backend:
