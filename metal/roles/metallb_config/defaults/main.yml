@@ -4,6 +4,6 @@ metallb_subnet_index: -1  # last subnet
 metallb_addresses: |  # Use the last subnet with the specified size from the network
   {{
     (ansible_default_ipv4.network + '/' + ansible_default_ipv4.netmask)
-      | ansible.netcommon.ipaddr('net')
-      | ansible.netcommon.ipsubnet(metallb_subnet_cidr_prefix, metallb_subnet_index)
+      | ansible.utils.ipaddr('net')
+      | ansible.utils.ipsubnet(metallb_subnet_cidr_prefix, metallb_subnet_index)
   }}
