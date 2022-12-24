@@ -31,7 +31,7 @@ func TestSmoke(t *testing.T) {
 			options := k8s.NewKubectlOptions("", "", app.namespace)
 
 			// Wait the service to become available to ensure that we can access it
-			k8s.WaitUntilIngressAvailable(t, options, app.name, 10, 30*time.Second)
+			k8s.WaitUntilIngressAvailable(t, options, app.name, 30, 60*time.Second)
 
 			// Now we verify that the service will successfully boot and start serving requests
 			ingress := k8s.GetIngress(t, options, app.name)
