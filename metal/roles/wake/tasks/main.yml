@@ -1,6 +1,6 @@
 - name: Send Wake-on-LAN magic packets
   community.general.wakeonlan:
-    mac: "{{ hostvars[inventory_hostname]['mac'] }}"
+    mac: "{{ mac }}"
   delegate_to: localhost
 
 - name: Wait for the machines to come online
