@@ -1,4 +1,5 @@
-apiVersion: tekton.dev/v1alpha1
+# https://github.com/tektoncd/plumbing/blob/main/tekton/ci/shared/common-tasks.yaml
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: check-git-files-changed
