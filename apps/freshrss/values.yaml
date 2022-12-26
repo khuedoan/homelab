@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
+    replicas: 1
 
   image:
     repository: ghcr.io/linuxserver/freshrss
