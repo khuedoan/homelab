@@ -19,7 +19,7 @@ loki-stack:
         # 30 days
         retention_period: 720h
 
-    replicas: 0
+    replicas: 1
 
     resources:
       limits:
