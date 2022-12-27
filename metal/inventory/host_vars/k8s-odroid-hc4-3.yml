@@ -1,7 +1,7 @@
 prepare_additional_disks:
   - name: hdd
     dev_id: /dev/disk/by-id/ata-TOSHIBA_HDWQ140_Y8I5K0D2FAYG
-    path: "/var/lib/longhorn/TOSHIBA HDWQ140"
+    path: "/var/lib/longhorn/TOSHIBA_HDWQ140"
     allowScheduling: true
     force_format: false
     tags:

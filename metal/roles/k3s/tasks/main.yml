@@ -83,6 +83,8 @@
   slurp:
     src: /etc/rancher/k3s/k3s.yaml
   register: kubeconfig_base64
+  tags:
+    - kubeconfig
 
 - name: Write Kubernetes config file with the correct cluster address
   copy:
@@ -92,3 +94,5 @@
   delegate_to: localhost
   become: false
   run_once: true
+  tags:
+    - kubeconfig

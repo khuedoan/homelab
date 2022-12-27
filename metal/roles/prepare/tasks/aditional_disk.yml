@@ -33,7 +33,7 @@
   tags:
     - aditional-disk
 
-- name: Mount "{{ item.dev_id }}-part1" to /mnt
+- name: Mount "{{ item.dev_id }}-part1" to {{ item.path }}
   mount:
     path: "{{ item.path }}"
     src: "UUID={{ disk_blkid.stdout }}"
