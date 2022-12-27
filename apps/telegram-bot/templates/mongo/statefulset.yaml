@@ -36,6 +36,13 @@ spec:
               secretKeyRef:
                 name: telegram-bot-database
                 key: password
+        args:
+          # default parameters
+          - --auth
+          - --bind_ip_all
+          - --setParameter
+          # disable metrics
+          - diagnosticDataCollectionEnabled=false
         ports:
           - containerPort: 27017
         volumeMounts:
