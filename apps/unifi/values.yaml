@@ -10,6 +10,7 @@ app-template:
   strategy:
     type: Recreate
   env:
+    TZ: Europe/Madrid
     RUNAS_UID0: "false"
     UNIFI_UID: "999"
     UNIFI_GID: "999"
@@ -84,8 +85,8 @@ app-template:
 
   resources:
     requests:
-      cpu: 10m
-      memory: 1Gi
+      cpu: 100m
+      memory: 560Mi
     limits:
       cpu: 500m
-      memory: 2Gi
+      memory: 1.5Gi

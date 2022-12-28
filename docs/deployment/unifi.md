@@ -1,5 +1,12 @@
 # UniFi
 
+## Config DNS
+
+```bash
+» dog unifi-controller.grigri
+A unifi-controller.grigri. 1h00m00s   192.168.193.2
+```
+
 ## ssh access
 
 Add SSH key to `System->Network Device SSH Authentication->SSH Keys`
@@ -15,7 +22,7 @@ From this [doc][layer_3_adoption], using SSH to adopt devices from the DMZ netwo
 After SSH into the device:
 
 ```bash
-set-inform http://{{ unifi_host }}:8080/inform
+set-inform http://unifi-controller.grigri:8080/inform
 ```
 
 And then you will see the device now show up for adoption.
