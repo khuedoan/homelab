@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
+    replicas: 1
     strategy: Recreate
 
   image:
@@ -99,7 +99,7 @@ app-template:
     runAsUser: 0
   persistence:
     images:
-      enabled: false
+      enabled: true
       mountPath: /var/www/wallabag/web/assets/images
       accessMode: ReadWriteMany
       size: 4Gi
