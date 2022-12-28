@@ -6,7 +6,7 @@
     state: absent
   when: item.force_format | default(false)
   tags:
-    - aditional-disk
+    - additional-disk
 
 - name: Create a new primary partition in {{ item.dev_id }}
   parted:
@@ -15,7 +15,7 @@
     number: 1
     state: present
   tags:
-    - aditional-disk
+    - additional-disk
 
 - name: Create a ext4 filesystem on {{ item.dev_id }}1
   filesystem:
@@ -23,7 +23,7 @@
     dev: "{{ item.dev_id }}-part1"
     force: "{{ item.force_format | default(false) }}"
   tags:
-    - aditional-disk
+    - additional-disk
 
 - name: Get UUID for partition
   command: blkid -s UUID -o value "{{ item.dev_id }}-part1"
@@ -31,7 +31,7 @@
   check_mode: no
   changed_when: false
   tags:
-    - aditional-disk
+    - additional-disk
 
 - name: Mount "{{ item.dev_id }}-part1" to {{ item.path }}
   mount:
@@ -41,4 +41,4 @@
     opts: defaults,noatime
     state: mounted
   tags:
-    - aditional-disk
+    - additional-disk

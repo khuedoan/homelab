@@ -1,7 +1,7 @@
 prepare_additional_disks:
   - name: hdd
     dev_id: /dev/disk/by-id/ata-WDC_WD30EZRX-00DC0B0_WD-WMC1T2292099
-    path: "/var/lib/longhorn/WDC WD30EZRX-00D"
+    path: /var/lib/longhorn/WDC_WD30EZRX-00D
     allowScheduling: true
     force_format: false
     tags:

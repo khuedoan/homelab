@@ -27,7 +27,7 @@
     creates: /etc/machine-id-new
   register: first_execution
   tags:
-    - aditional-disk
+    - additional-disk
 
 - name: First execution
   when: first_execution.changed
@@ -53,10 +53,10 @@
 - debug: var=prepare_additional_disks
 
 - name: Additional storage
-  include_tasks: aditional_disk.yml
+  include_tasks: additional_disk.yml
   loop: "{{ prepare_additional_disks }}"
   tags:
-    - aditional-disk
+    - additional-disk
 
 - name: Disable unused services
   systemd:
