@@ -51,11 +51,11 @@ app-template:
 
   persistence:
     data:
-      enabled: true
+      enabled: false
       mountPath: /data/mariano-rajoy
       accessMode: ReadWriteMany
       size: 100Mi
-      storageClass: longhorn-ssd
+      storageClass: longhorn-static
       skipuninstall: true
 
   resources:
