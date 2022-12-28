@@ -43,6 +43,13 @@ spec:
           - --setParameter
           # disable metrics
           - diagnosticDataCollectionEnabled=false
+        resources:
+          requests:
+            cpu: 10m
+            memory: 140Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
         ports:
           - containerPort: 27017
         volumeMounts:
