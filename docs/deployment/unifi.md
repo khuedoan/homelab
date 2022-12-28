@@ -1,7 +1,5 @@
 # UniFi
 
-TODO
-
 ## ssh access
 
 Add SSH key to `System->Network Device SSH Authentication->SSH Keys`

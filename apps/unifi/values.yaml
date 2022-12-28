@@ -1,0 +1,91 @@
+app-template:
+  controller:
+    # HA is not supported
+    replicas: 1
+
+  image:
+    repository: jacobalberty/unifi
+    tag: v7.3.76
+    pullPolicy: IfNotPresent
+  strategy:
+    type: Recreate
+  env:
+    RUNAS_UID0: "false"
+    UNIFI_UID: "999"
+    UNIFI_GID: "999"
+    UNIFI_STDOUT: "true"
+    JVM_INIT_HEAP_SIZE:
+    JVM_MAX_HEAP_SIZE: 1024M
+  service:
+    main:
+      type: LoadBalancer
+      externalTrafficPolicy: Local
+      loadBalancerIP: 192.168.193.2
+      ports:
+        http:
+          port: 8443
+          protocol: HTTPS
+        controller:
+          enabled: true
+          port: 8080
+          protocol: TCP
+        portal-http:
+          enabled: false
+          port: 8880
+          protocol: HTTP
+        portal-https:
+          enabled: false
+          port: 8843
+          protocol: HTTPS
+        speedtest:
+          enabled: true
+          port: 6789
+          protocol: TCP
+        stun:
+          enabled: true
+          port: 3478
+          protocol: UDP
+        syslog:
+          enabled: true
+          port: 5514
+          protocol: UDP
+        discovery:
+          enabled: true
+          port: 10001
+          protocol: UDP
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        hajimari.io/icon: mdi:lan
+        hajimari.io/appName: unifi
+        hajimari.io/instance: internal
+      hosts:
+        - host: &host unifi.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: unifi-tls-certificate
+
+  persistence:
+    config:
+      enabled: true
+      mountPath: /unifi
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 1Gi
+    limits:
+      cpu: 500m
+      memory: 2Gi
