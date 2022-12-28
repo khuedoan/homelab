@@ -50,6 +50,7 @@
   run_once: true
   slurp:
     src: "{{ k3s_token_file }}"
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
   register: k3s_token_base64
 
 - name: Ensure all nodes has the same token
@@ -83,6 +84,7 @@
   run_once: true
   slurp:
     src: /etc/rancher/k3s/k3s.yaml
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
   register: kubeconfig_base64
   tags:
     - kubeconfig

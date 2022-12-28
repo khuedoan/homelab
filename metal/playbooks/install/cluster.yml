@@ -1,5 +1,6 @@
 - name: Create Kubernetes cluster
   hosts: all
+  serial: "{{ serial | default('100%') }}"
   vars:
     ansible_path: "{{ playbook_dir }}/../.."
   roles:
