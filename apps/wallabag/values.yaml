@@ -99,11 +99,11 @@ app-template:
     runAsUser: 0
   persistence:
     images:
-      enabled: true
+      enabled: false
       mountPath: /var/www/wallabag/web/assets/images
       accessMode: ReadWriteMany
       size: 4Gi
-      storageClass: longhorn
+      storageClass: longhorn-static
       skipuninstall: true
     wallabag-patch:
       enabled: true
