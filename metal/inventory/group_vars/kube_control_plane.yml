@@ -1,0 +1,4 @@
+k3s_kubelet_extra_args:
+  - kube-reserved=cpu=1,memory=2.5Gi,ephemeral-storage=1Gi
+  - system-reserved=cpu=300m,memory=1Gi,ephemeral-storage=1Gi
+  - eviction-hard=memory.available<500Mi,nodefs.available<10%
