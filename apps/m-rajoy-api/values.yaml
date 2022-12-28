@@ -1,6 +1,6 @@
 app-template:
   controller:
-    replicas: 0
+    replicas: 2
 
   image:
     repository: pando85/quotes-simple-web-api
@@ -51,7 +51,7 @@ app-template:
 
   persistence:
     data:
-      enabled: false
+      enabled: true
       mountPath: /data/mariano-rajoy
       accessMode: ReadWriteMany
       size: 100Mi
