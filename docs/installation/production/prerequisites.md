@@ -7,7 +7,7 @@ it's the source of truth for _my_ homelab, so you'll need to fork it to make it 
 
 [:fontawesome-solid-code-fork: Fork khuedoan/homelab](https://github.com/khuedoan/homelab/fork){ .md-button }
 
-By using this project you agree to [the license](/license).
+By using this project you agree to [the license](../../reference/license.md).
 
 
 !!! summary "License TL;DR"
