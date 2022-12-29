@@ -1,5 +1,5 @@
-# https://status.nixos.org
-{ pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/a62844b302507c7531ad68a86cb7aa54704c9cb4.tar.gz") {} }:
+# https://status.nixos.org (nixpkgs-unstable)
+{ pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/e58a7747db96c23b8a977e7c1bbfc5753b81b6fa.tar.gz") {} }:
 
 let
   python-packages = pkgs.python3.withPackages (p: with p; [
