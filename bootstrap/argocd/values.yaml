@@ -248,6 +248,11 @@ argo-cd:
         cpu: 10m
         memory: 44Mi
 
+    livenessProbe:
+      enabled: true
+    readinessProbe:
+      enabled: true
+
   controller:
     resources:
       requests:
