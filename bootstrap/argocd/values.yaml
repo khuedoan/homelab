@@ -298,21 +298,6 @@ argo-cd:
 
   applicationSet:
     enabled: true
-
-    # non ARM image
-    nodeSelector:
-      kubernetes.io/arch: amd64
-    # image:
-    #  # -- Repository to use for the application set controller
-    #  # @default -- `""` (defaults to global.image.repository)
-    #  repository: ""
-    #  # -- Tag to use for the application set controller
-    #  # @default -- `""` (defaults to global.image.tag)
-    #  tag: ""
-    #  # -- Image pull policy for the application set controller
-    #  # @default -- `""` (defaults to global.image.imagePullPolicy)
-    #  imagePullPolicy: ""
-
     resources:
       limits:
         cpu: 400m
