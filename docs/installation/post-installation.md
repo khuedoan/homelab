@@ -24,7 +24,7 @@ Save the following files to a safe location like a password manager (if you're u
     - Username: `gitea_admin`
     - Password: get from Vault
 
-## Run the full test suit
+## Run the full test suite
 
 After the homelab has been stabilized, you can run the full test suite to ensure that everything is working properly:
 
