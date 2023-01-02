@@ -8,7 +8,7 @@ helmCharts:
     releaseName: longhorn-system
     repo: https://charts.longhorn.io
     valuesFile: values.yaml
-    version: 1.3.1
+    version: 1.4.0
 
 resources:
   - resources/backup-postgres-recurrent-job.yaml
