@@ -20,6 +20,10 @@ spec:
         name: in-cluster
         namespace: '{{ default `{{path.basename}}` $stack.namespace }}'
       project: default
+      {{- if $stack.ignoreDifferences }}
+      ignoreDifferences:
+        {{- toYaml $stack.ignoreDifferences | nindent 8 }}
+      {{- end }}
       source:
         repoURL: {{ $.Values.gitops.repo }}
         path: '{{ `{{path}}` }}'

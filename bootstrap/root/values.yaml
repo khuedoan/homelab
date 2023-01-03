@@ -5,5 +5,23 @@ stacks:
   - name: bootstrap
     namespace: argocd
   - name: system
+    ignoreDifferences:
+      - group: '*'
+        kind: CustomResourceDefinition
+        name: 'addresspools.metallb.io'
+        jsonPointers:
+          - /spec/conversion/webhook/clientConfig/caBundle
+      - group: '*'
+        kind: CustomResourceDefinition
+        name: 'bgppeers.metallb.io'
+        jsonPointers:
+          - /spec/conversion/webhook/clientConfig/caBundle
+      - group: '*'
+        kind: Secret
+        jsonPointers:
+          - /data/ca.crt
+          - /data/ca.key
+          - /data/tls.crt
+          - /data/tls.key
   - name: platform
   - name: apps
