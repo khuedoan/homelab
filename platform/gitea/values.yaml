@@ -109,7 +109,7 @@ gitea:
   memcached:
     image:
       repository: memcached
-      tag: 1.6.17
+      tag: 1.6.18
       pullPolicy: IfNotPresent
     arguments: []
 
