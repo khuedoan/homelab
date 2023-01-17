@@ -2,9 +2,40 @@ metal:
   children:
     masters:
       hosts:
-        metal0: {ansible_host: 192.168.1.110, mac: '00:23:24:d1:f3:f0', disk: sda, network_interface: eno1}
-        metal1: {ansible_host: 192.168.1.111, mac: '00:23:24:d1:f4:d6', disk: sda, network_interface: eno1}
-        metal2: {ansible_host: 192.168.1.112, mac: '00:23:24:e7:04:60', disk: sda, network_interface: eno1}
+#         ash:
+#           {
+#             ansible_host: 10.0.50.120,
+#             mac: "18:c0:4d:41:bc:0e",
+#             disk: nvme01,
+#             network_interface: eno1,
+#           }
+        charmander:
+          {
+            ansible_host: 10.0.50.121,
+            mac: "00:23:24:b0:ff:03",
+            disk: sda,
+            network_interface: eno1,
+          }
+        squirtle:
+          {
+            ansible_host: 10.0.50.122,
+            mac: "00:23:24:e2:1f:a1",
+            disk: sda,
+            network_interface: eno1,
+          }
     workers:
       hosts:
-        metal3: {ansible_host: 192.168.1.113, mac: '00:23:24:d1:f5:69', disk: sda, network_interface: eno1}
+        bulbasaur:
+          {
+            ansible_host: 10.0.50.123,
+            mac: "00:23:24:e2:0d:ea",
+            disk: sda,
+            network_interface: eno1,
+          }
+        pikachu:
+          {
+            ansible_host: 10.0.50.124,
+            mac: "e0:4f:43:24:0b:53",
+            disk: sda,
+            network_interface: eno1,
+          }
