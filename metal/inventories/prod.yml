@@ -23,8 +23,6 @@ metal:
             disk: sda,
             network_interface: eno1,
           }
-    workers:
-      hosts:
         bulbasaur:
           {
             ansible_host: 10.0.50.123,
@@ -32,6 +30,8 @@ metal:
             disk: sda,
             network_interface: eno1,
           }
+    workers:
+      hosts:
         pikachu:
           {
             ansible_host: 10.0.50.124,
