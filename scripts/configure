@@ -80,7 +80,7 @@ def main() -> None:
     )
 
     if Confirm.ask("Do you want to use managed services?"):
-        terraform_workspace = Prompt.ask("Enter Terraform Workspace", default=default_terraform_workspace)
+        terraform_workspace = Prompt.ask("Enter Terraform Organization", default=default_terraform_workspace)
 
         find_and_replace(
             pattern=default_terraform_workspace,
