@@ -70,6 +70,7 @@ nextcloud:
     tls:
       - hosts:
           - nextcloud.k8s.grigri
+        secretName: nextcloud-tls-certificate
 
   redis:
     enabled: false
@@ -189,6 +190,7 @@ nextcloud:
 app-template:
   global:
     fullnameOverride: redis
+  # TODO: affinity with nextcloud
   image:
     repository: docker.io/library/redis
     tag: 7.0.8
