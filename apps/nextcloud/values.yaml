@@ -6,6 +6,12 @@ nextcloud:
   env:
     PHP_MEMORY_LIMIT: 256M
 
+  extraEnv:
+    - name: REDIS_HOST
+      value: redis
+    - name: REDIS_HOST_PORT
+      value: "6379"
+
   ingress:
     enabled: true
     className: nginx-internal
@@ -65,16 +71,6 @@ nextcloud:
       - hosts:
           - nextcloud.k8s.grigri
 
-  redis:
-    enabled: true
-    existingSecret: nextcloud
-    existingSecretPasswordKey: redis_password
-    master:
-      persistence:
-        enabled: false
-    replica:
-      persistence:
-        enabled: false
   internalDatabase:
     enabled: false
   externalDatabase:
@@ -186,3 +182,24 @@ nextcloud:
   startupProbe:
     enabled: true
     periodSeconds: 20
+
+app-template:
+  image:
+    repository: docker.io/library/redis
+    tag: 7.0.8
+
+  service:
+    main:
+      ports:
+        http:
+          enabled: false
+        redis:
+          enabled: true
+          port: 6379
+
+  resources:
+    requests:
+      cpu: 23m
+      memory: 64M
+    limits:
+      memory: 64M

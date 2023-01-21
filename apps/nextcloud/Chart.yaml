@@ -5,3 +5,6 @@ dependencies:
   - name: nextcloud
     version: 3.4.1
     repository: https://nextcloud.github.io/helm/
+  - name: app-template
+    version: 1.2.1
+    repository: https://bjw-s.github.io/helm-charts/
