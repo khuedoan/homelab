@@ -1,7 +1,0 @@
-# TODO switch back to Helm when they include CRDs
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-  - github.com/k8up-io/k8up/config/default?ref=master
-  - schedule.yaml

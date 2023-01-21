@@ -1,3 +1,0 @@
-# Vault
-
-TODO (PR welcomed)

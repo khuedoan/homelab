@@ -1,3 +1,0 @@
-# Gitea
-
-TODO (PR welcomed)

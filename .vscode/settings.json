@@ -1,0 +1,20 @@
+{
+  "cSpell.words": [
+    "asciinema",
+    "autohide",
+    "glightbox",
+    "inlinehilite",
+    "linenums",
+    "materialx",
+    "Roboto",
+    "smartsymbols",
+    "superfences",
+    "tasklist",
+    "twemoji",
+    "zoomable"
+  ],
+  "yaml.customTags": [
+    "tag:yaml.org,2002:python/name:materialx.emoji.twemoji scalar",
+    "tag:yaml.org,2002:python/name:materialx.emoji.to_svg scalar"
+  ]
+}

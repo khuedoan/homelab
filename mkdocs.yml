@@ -1,89 +1,102 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
-site_name: Khue's Homelab
-copyright: Copyright &copy; 2020 - 2022 Khue Doan
+site_name: SAPstar Network Homelab
+copyright: Copyright &copy; 2022 - 2023 SAPstar Network
+repo_url: https://github.com/atraides/homelab
+repo_name: atraides/homelab
 
-repo_url: https://github.com/khuedoan/homelab
+extra_css:
+  - /static/css/asciinema-player.css
+
+extra_javascript:
+  - /static/js/asciinema-player.min.js
+
+plugins:
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      skip_classes:
+        - custom-skip-class-name
+      auto_caption: false
+      caption_position: bottom
+  - git-revision-date-localized:
+      type: date
+      enable_creation_date: true
+  - git-committers:
+      repository: atraides/homelab
+      branch: main
+  - git-authors
 
 theme:
   name: material
-  palette:
-    primary: black
-  features:
-    - navigation.indexes
-    - navigation.sections
-    - search.highlight
-    - search.share
 
+  # Font settings
+  font:
+    text: "Roboto Condensed"
+    code: "Roboto Mono"
+
+  # Reading direction left-to-right
+  direction: ltr
+  #direction: rtl
+
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  features:
+    - header.autohide
+    - content.code.copy
+extra:
+  generator: false
 markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - footnotes
+  - pymdownx.snippets
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.smartsymbols
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - toc:
+      permalink: true
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
-  - attr_list
-  - admonition
-  - pymdownx.details
-  - pymdownx.snippets:
-      check_paths: true
-  - def_list
-  - pymdownx.tasklist:
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.tabbed:
-      alternate_style: true
-
-nav:
-  - Home: index.md
-  - Installation:
-    - installation/index.md
-    - installation/sandbox.md
-    - Production:
-      - installation/production/index.md
-      - installation/production/prerequisites.md
-      - installation/production/external-resources.md
-      - installation/production/configuration.md
-      - installation/production/deployment.md
-    - installation/post-installation.md
-  - Getting started:
-    - getting-started/index.md
-    - getting-started/user-onboarding.md
-    - getting-started/install-pre-commit-hooks.md
-  - Concepts:
-    - concepts/index.md
-    - concepts/pxe-boot.md
-    - concepts/secrets-management.md
-    - concepts/certificate-management.md
-    - concepts/tools-container.md
-    - concepts/testing.md
-  - How-to guides:
-    - how-to-guides/index.md
-    - how-to-guides/alternate-dns-setup.md
-    - how-to-guides/expose-services-to-the-internet.md
-    - how-to-guides/use-both-github-and-gitea.md
-    - how-to-guides/add-or-remove-nodes.md
-    - how-to-guides/run-commands-on-multiple-nodes.md
-    - how-to-guides/single-node-cluster-adjustments.md
-    - how-to-guides/disable-dhcp-proxy-in-dnsmasq.md
-    - how-to-guides/updating-documentation.md
-    - Troubleshooting:
-      - how-to-guides/troubleshooting/index.md
-      - how-to-guides/troubleshooting/argocd.md
-      - how-to-guides/troubleshooting/cert-manager.md
-      - how-to-guides/troubleshooting/gitea.md
-      - how-to-guides/troubleshooting/longhorn.md
-      - how-to-guides/troubleshooting/pxe-boot.md
-      - how-to-guides/troubleshooting/vault.md
-  - Reference:
-    - reference/index.md
-    - Architecture:
-      - reference/architecture/index.md
-      - reference/architecture/overview.md
-      - reference/architecture/networking.md
-      - reference/architecture/decision-records.md
-    - reference/license.md
-    - reference/changelog.md
-    - reference/roadmap.md
-    - reference/contributing.md
-    - reference/faq.md
