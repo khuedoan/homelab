@@ -71,6 +71,9 @@ nextcloud:
       - hosts:
           - nextcloud.k8s.grigri
 
+  redis:
+    enabled: false
+
   internalDatabase:
     enabled: false
   externalDatabase:
@@ -184,6 +187,8 @@ nextcloud:
     periodSeconds: 20
 
 app-template:
+  global:
+    fullnameOverride: redis
   image:
     repository: docker.io/library/redis
     tag: 7.0.8
