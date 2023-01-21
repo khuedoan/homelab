@@ -1,0 +1,50 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: nextcloud-postgres
+spec:
+  teamId: nextcloud
+
+  numberOfInstances: 1
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+  volume:
+    size: 1.5Gi
+
+  users:
+    nextcloud:
+    - superuser
+    - createdb
+  databases:
+    nextcloud: nextcloud
+
+  dockerImage: registry.opensource.zalan.do/acid/spilo-cdp-arm64-14:2.1-p232
+
+  postgresql:
+    version: "14"
+    parameters:
+      archive_mode: 'off'
+      max_connections: "4"
+      shared_buffers: 32MB
+      log_checkpoints: 'off'
+      log_connections: 'off'
+      log_disconnections: 'off'
+      log_lock_waits: 'off'
+      log_min_duration_statement: "-1"
+      log_statement: none
+
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/arch
+            operator: In
+            values:
+            - arm64

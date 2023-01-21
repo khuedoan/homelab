@@ -1,0 +1,188 @@
+nextcloud:
+  image:
+    repository: docker.io/library/nextcloud
+    tag: 25.0.3@sha256:aa43a87b0b6acd52c1989dc343d1702f6a9d3ae1be263e62a9d0f99ec10f29a7
+
+  env:
+    PHP_MEMORY_LIMIT: 256M
+
+  ingress:
+    enabled: true
+    className: nginx-internal
+    annotations:
+      hajimari.io/enable: "true"
+      hajimari.io/icon: simple-icons:nextcloud
+      hajimari.io/info: File and Calendar server
+      nginx.ingress.kubernetes.io/proxy-body-size: 10G
+      nginx.ingress.kubernetes.io/server-snippet: |-
+        server_tokens off;
+        proxy_hide_header X-Powered-By;
+
+        # Rule borrowed from .htaccess to handle Microsoft DAV clients
+        location = / {
+          if ( $http_user_agent ~ ^DavClnt ) {
+            return 302 /remote.php/webdav/$is_args$args;
+          }
+        }
+
+        location = /robots.txt {
+            allow all;
+            log_not_found off;
+            access_log off;
+        }
+
+        location ^~ /.well-known {
+
+          # The rules in this block are an adaptation of the rules
+          # in .htaccess that concern /.well-known.
+
+          location = /.well-known/carddav { return 301 /remote.php/dav/; }
+          location = /.well-known/caldav  { return 301 /remote.php/dav/; }
+
+          location /.well-known/acme-challenge    { try_files $uri $uri/ =404; }
+          location /.well-known/pki-validation    { try_files $uri $uri/ =404; }
+
+          # Let Nextcloud's API for /.well-known URIs handle all other
+          # requests by passing them to the front-end controller.
+          return 301 /index.php$request_uri;
+        }
+
+        # Rules borrowed from .htaccess to hide certain paths from clients
+        location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
+          deny all;
+        }
+        location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
+          deny all;
+        }
+
+        # Rule borrowed from .htaccess
+        #location /remote {
+        #    return 301 /remote.php$request_uri;
+        #}
+
+      nginx.ingress.kubernetes.io/enable-global-auth: "false"
+    tls:
+      - hosts:
+          - nextcloud.k8s.grigri
+
+  redis:
+    enabled: true
+    existingSecret: nextcloud
+    existingSecretPasswordKey: redis_password
+    master:
+      persistence:
+        enabled: false
+    replica:
+      persistence:
+        enabled: false
+  internalDatabase:
+    enabled: false
+  externalDatabase:
+    enabled: true
+    type: postgresql
+    database: postgres
+    existingSecret:
+      enabled: true
+      secretName: nextcloud.nextcloud-postgres.credentials.postgresql.acid.zalan.do
+      usernameKey: username
+      passwordKey: password
+    host: nextcloud-postgres
+  cronjob:
+    enabled: true
+    failedJobsHistoryLimit: 1
+    successfulJobsHistoryLimit: 1
+
+  persistence:
+    # Nextcloud Data (/var/www/html)
+    enabled: true
+    storageClass: longhorn
+
+    accessMode: ReadWriteOnce
+    size: 8Gi
+
+    nextcloudData:
+      enabled: true
+      subPath:
+      storageClass: longhorn
+      accessMode: ReadWriteOnce
+      size: 1000Gi
+
+  resources:
+    limits:
+      cpu: 2
+      memory: 512Mi
+    requests:
+      cpu: 400m
+      memory: 128Mi
+
+  nextcloud:
+    host: nextcloud.k8s.grigri
+    # host: nextcloud.grigri.cloud
+    existingSecret:
+      enabled: true
+      secretName: nextcloud
+      usernameKey: username
+      passwordKey: password
+      # TODO
+      tokenKey: serverinfo_token
+      smtpUsernameKey: smtp_username
+      smtpPasswordKey: smtp_password
+    phpConfigs:
+      uploadLimit.ini: |
+        upload_max_filesize = 10G
+        post_max_size = 10G
+        max_input_time = 3600
+        max_execution_time = 3600
+        default_phone_region = ES
+    configs:
+      proxy.config.php: |-
+        <?php
+        $CONFIG = array (
+          'trusted_proxies' =>
+          array(
+              0 => '10.42.0.0/16',
+          ),
+          'forwarded_for_headers' =>
+          array (
+            0 => 'HTTP_X_FORWARDED_FOR',
+          ),
+        );
+      gitops.config.php: |-
+        <?php
+        $CONFIG = array (
+          'appstoreenabled' => true,
+          #'appstoreurl' => 'https://apps.nextcloud.com/api/v0',
+        );
+      #Circumvention for client freezes - https://github.com/nextcloud/desktop/issues/5094
+      bulkupload.config.php: |-
+        <?php
+        $CONFIG = array (
+          'bulkupload.enabled' => false,
+        );
+    mail:
+      enabled: true
+      fromAddress: grigriserver
+      domain: gmail.com
+      smtp:
+        host: smtp.gmail.com
+        secure: tls
+        port: 587
+        authtype: LOGIN
+    extraVolumes:
+      - name: ca-bundle
+        hostPath:
+          path: /etc/ssl/certs/ca-certificates.crt
+          type: File
+    extraVolumeMounts:
+      - name: ca-bundle
+        mountPath: /etc/ssl/certs/ca-certificates.crt
+        readOnly: true
+  livenessProbe:
+    enabled: true
+    periodSeconds: 30
+  readinessProbe:
+    enabled: true
+    periodSeconds: 30
+  startupProbe:
+    enabled: true
+    periodSeconds: 20
