@@ -160,7 +160,7 @@ nextcloud:
           'memcache.locking' => '\OC\Memcache\Redis',
           'memcache.distributed' => '\OC\Memcache\Redis',
           'redis' => [
-              'host' => 'localhost',
+              'host' => 'redis',
               'port' => 6379,
           ],
         );
