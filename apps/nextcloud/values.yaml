@@ -16,6 +16,7 @@ nextcloud:
     enabled: true
     className: nginx-internal
     annotations:
+      cert-manager.io/cluster-issuer: internal
       hajimari.io/enable: "true"
       hajimari.io/icon: simple-icons:nextcloud
       hajimari.io/info: File and Calendar server
