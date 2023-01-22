@@ -1,7 +1,7 @@
 nextcloud:
   image:
-    repository: docker.io/library/nextcloud
-    tag: 25.0.3@sha256:aa43a87b0b6acd52c1989dc343d1702f6a9d3ae1be263e62a9d0f99ec10f29a7
+    repository: nextcloud
+    tag: 24.0.6
 
   ingress:
     enabled: true
@@ -115,8 +115,6 @@ nextcloud:
       secretName: nextcloud
       usernameKey: username
       passwordKey: password
-      # TODO
-      tokenKey: serverinfo_token
       smtpUsernameKey: smtp_username
       smtpPasswordKey: smtp_password
     phpConfigs:
@@ -141,12 +139,6 @@ nextcloud:
           array (
             0 => 'HTTP_X_FORWARDED_FOR',
           ),
-        );
-      gitops.config.php: |-
-        <?php
-        $CONFIG = array (
-          'appstoreenabled' => true,
-          #'appstoreurl' => 'https://apps.nextcloud.com/api/v0',
         );
       #Circumvention for client freezes - https://github.com/nextcloud/desktop/issues/5094
       bulkupload.config.php: |-
