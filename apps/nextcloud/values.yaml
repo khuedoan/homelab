@@ -140,7 +140,7 @@ nextcloud:
             0 => 'HTTP_X_FORWARDED_FOR',
           ),
         );
-      #Circumvention for client freezes - https://github.com/nextcloud/desktop/issues/5094
+      # Circumvention for client freezes - https://github.com/nextcloud/desktop/issues/5094
       bulkupload.config.php: |-
         <?php
         $CONFIG = array (
@@ -188,7 +188,6 @@ nextcloud:
 app-template:
   global:
     fullnameOverride: redis
-  # TODO: affinity with nextcloud
   image:
     repository: redis
     tag: 7.0.8
@@ -214,6 +213,17 @@ app-template:
       memory: 64M
     limits:
       memory: 64M
+
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - nextcloud
+          topologyKey: kubernetes.io/hostname
 
   env:
     REDIS_PASSWORD:
