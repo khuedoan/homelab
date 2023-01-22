@@ -87,10 +87,10 @@ nextcloud:
   persistence:
     # Nextcloud Data (/var/www/html)
     enabled: true
-    storageClass: longhorn
+    storageClass: longhorn-ssd
 
     accessMode: ReadWriteOnce
-    size: 8Gi
+    size: 1Gi
 
     nextcloudData:
       enabled: true

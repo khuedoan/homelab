@@ -17,6 +17,7 @@ spec:
 
   volume:
     size: 1.5Gi
+    storageClass: longhorn-ssd
 
   users:
     nextcloud:
