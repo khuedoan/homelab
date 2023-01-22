@@ -146,6 +146,12 @@ nextcloud:
         $CONFIG = array (
           'bulkupload.enabled' => false,
         );
+      encryption.config.php: |-
+        <?php
+        $CONFIG = array (
+          'secret' =>  getenv('SECRET'),
+          'passwordsalt' => getenv('PASSWORDSALT'),
+        );
 
     extraEnv:
       - name: REDIS_HOST
@@ -157,12 +163,12 @@ nextcloud:
           secretKeyRef:
             name: nextcloud
             key: redis_password
-      - name: NC_secret
+      - name: SECRET
         valueFrom:
           secretKeyRef:
             name: nextcloud
             key: secret
-      - name: NC_passwordsalt
+      - name: PASSWORDSALT
         valueFrom:
           secretKeyRef:
             name: nextcloud
