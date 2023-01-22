@@ -3,9 +3,6 @@ nextcloud:
     repository: docker.io/library/nextcloud
     tag: 25.0.3@sha256:aa43a87b0b6acd52c1989dc343d1702f6a9d3ae1be263e62a9d0f99ec10f29a7
 
-  env:
-    PHP_MEMORY_LIMIT: 256M
-
   ingress:
     enabled: true
     className: nginx-internal
@@ -163,7 +160,11 @@ nextcloud:
         value: redis
       - name: REDIS_HOST_PORT
         value: "6379"
-
+      - name: REDIS_HOST_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: nextcloud
+            key: redis_password
     mail:
       enabled: true
       fromAddress: grigriserver
@@ -197,7 +198,7 @@ app-template:
     fullnameOverride: redis
   # TODO: affinity with nextcloud
   image:
-    repository: docker.io/library/redis
+    repository: redis
     tag: 7.0.8
 
   service:
@@ -209,9 +210,22 @@ app-template:
           enabled: true
           port: 6379
 
+  command:
+    - sh
+  args:
+    - -c
+    - >-
+      redis-server --requirepass $REDIS_PASSWORD
   resources:
     requests:
       cpu: 23m
       memory: 64M
     limits:
       memory: 64M
+
+  env:
+    REDIS_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: nextcloud
+          key: redis_password
