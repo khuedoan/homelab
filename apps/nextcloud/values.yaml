@@ -129,6 +129,9 @@ nextcloud:
         max_input_time = 3600
         max_execution_time = 3600
         default_phone_region = ES
+    defaultConfigs:
+      .htaccess: true
+      redis.config.php: true
     configs:
       proxy.config.php: |-
         <?php
@@ -154,16 +157,12 @@ nextcloud:
         $CONFIG = array (
           'bulkupload.enabled' => false,
         );
-      redis.config.php: |-
-        <?php
-        $CONFIG = array (
-          'memcache.locking' => '\OC\Memcache\Redis',
-          'memcache.distributed' => '\OC\Memcache\Redis',
-          'redis' => [
-              'host' => 'redis',
-              'port' => 6379,
-          ],
-        );
+
+    extraEnv:
+      - name: REDIS_HOST
+        value: redis
+      - name: REDIS_HOST_PORT
+        value: "6379"
 
     mail:
       enabled: true
