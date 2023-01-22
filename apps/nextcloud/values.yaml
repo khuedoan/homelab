@@ -72,7 +72,7 @@ nextcloud:
   externalDatabase:
     enabled: true
     type: postgresql
-    database: postgres
+    database: nextcloud
     existingSecret:
       enabled: true
       secretName: nextcloud.nextcloud-postgres.credentials.postgresql.acid.zalan.do
@@ -228,6 +228,7 @@ app-template:
       cpu: 23m
       memory: 64M
     limits:
+      cpu: 500m
       memory: 64M
 
   affinity:
