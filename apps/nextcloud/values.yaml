@@ -6,12 +6,6 @@ nextcloud:
   env:
     PHP_MEMORY_LIMIT: 256M
 
-  extraEnv:
-    - name: REDIS_HOST
-      value: redis
-    - name: REDIS_HOST_PORT
-      value: "6379"
-
   ingress:
     enabled: true
     className: nginx-internal
@@ -160,6 +154,17 @@ nextcloud:
         $CONFIG = array (
           'bulkupload.enabled' => false,
         );
+      redis.config.php: |-
+        <?php
+        $CONFIG = array (
+          'memcache.locking' => '\OC\Memcache\Redis',
+          'memcache.distributed' => '\OC\Memcache\Redis',
+          'redis' => [
+              'host' => 'localhost',
+              'port' => 6379,
+          ],
+        );
+
     mail:
       enabled: true
       fromAddress: grigriserver
