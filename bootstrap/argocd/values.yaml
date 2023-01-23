@@ -296,6 +296,9 @@ argo-cd:
     metrics:
       enabled: false
 
+    exporter:
+      enabled: false
+
   applicationSet:
     enabled: true
     resources:
