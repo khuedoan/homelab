@@ -22,6 +22,8 @@ gitea:
       server:
         LANDING_PAGE: explore
         ROOT_URL: https://git.khuedoan.com
+      webhook:
+        ALLOWED_HOST_LIST: private
   persistence:
     storageClass: longhorn
   postgresql:
