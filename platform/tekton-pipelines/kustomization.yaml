@@ -15,4 +15,3 @@ resources:
   # Service account
   - serviceaccount.yaml
   - clusterrolebinding.yaml
-  - tasks/

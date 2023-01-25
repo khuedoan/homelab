@@ -8,7 +8,14 @@ spec:
   tasks:
     - name: git-clone
       taskRef:
-        name: git-clone
+        resolver: hub
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: version
+            value: "0.7"
       workspaces:
         - name: output
           workspace: shared-data
