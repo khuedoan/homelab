@@ -7,11 +7,13 @@ resources:
   # Triggers
   - https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
   - https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
-  # Workflow
-  - https://storage.googleapis.com/tekton-releases-nightly/workflows/latest/release.yaml
   # Dashboard
   - https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
   - ingress.yaml
   # Service account
   - serviceaccount.yaml
   - clusterrolebinding.yaml
+  # Workflow
+  - https://storage.googleapis.com/tekton-releases-nightly/workflows/latest/release.yaml
+  # Pre-defined workflows
+  - workflows/master.yaml

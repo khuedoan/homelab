@@ -1,0 +1,51 @@
+apiVersion: workflows.tekton.dev/v1alpha1
+kind: Workflow
+metadata:
+  name: blog-master
+  namespace: tekton-workflows
+spec:
+  triggers:
+    - event:
+        type: push
+        secret:
+          secretName: webhook-secret
+          secretKey: token
+      filters:
+        # TODO Gitea doesn't have refs/head/ prefix, use gitRef after this is fixed
+        # https://github.com/tektoncd/experimental/blob/3644c43377239bb639ec4191acc04fcf3aafb3f2/workflows/pkg/filters/filters.go#L44-L46
+        gitRef:
+          regex: '^master$'
+        # custom:
+        #   - cel: "body.ref.matches('^master$')"
+      bindings:
+        - name: git_url
+          value: $(body.repository.clone_url)
+        - name: git_revision
+          value: $(body.after)
+  params:
+    - name: git_url
+      # TODO don't need default, but invalid mem address if remove this
+      default: https://git.khuedoan.com/foo/bar
+    - name: git_revision
+      default: master
+  pipelineRef:
+    resolver: git
+    params:
+      # TODO ???
+      # supposed to be param. or body., looks like it's not working in v1alpha1 yet
+      - name: url
+        value: $(tt.params.git_url)
+      - name: revision
+        value: $(tt.params.git_revision)
+      - name: pathInRepo
+        value: .ci/master.yaml
+  workspaces:
+    - name: shared-data
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 128Mi
