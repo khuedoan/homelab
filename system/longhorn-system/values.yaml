@@ -10,6 +10,7 @@ defaultSettings:
   defaultDataPath: ""
   backupTarget: s3://longhorn-backups@us-east-1/
   backupTargetCredentialSecret: minio-secret
+  concurrentAutomaticEngineUpgradePerNodeLimit: 1
 
 resources:
   limits:
