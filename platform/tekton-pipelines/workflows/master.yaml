@@ -1,7 +1,7 @@
 apiVersion: workflows.tekton.dev/v1alpha1
 kind: Workflow
 metadata:
-  name: blog-master
+  name: master
   namespace: tekton-workflows
 spec:
   triggers:

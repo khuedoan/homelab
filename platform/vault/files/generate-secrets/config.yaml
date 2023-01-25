@@ -18,3 +18,10 @@
     - key: password
       length: 32
       special: true
+
+# Tekton
+- path: tekton/webhook
+  data:
+    - key: token
+      length: 32
+      special: false

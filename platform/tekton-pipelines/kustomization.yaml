@@ -16,4 +16,5 @@ resources:
   # Workflow
   - https://storage.googleapis.com/tekton-releases-nightly/workflows/latest/release.yaml
   # Pre-defined workflows
+  - workflows/webhook-secret.yaml
   - workflows/master.yaml

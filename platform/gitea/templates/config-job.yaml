@@ -30,6 +30,11 @@ spec:
                     secretKeyRef:
                       name: gitea-admin-secret
                       key: password
+                - name: WEBHOOK_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: gitea-webhook-secret
+                      key: token
               workingDir: /go/src/gitea-config
               command:
                 - sh

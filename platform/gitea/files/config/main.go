@@ -23,6 +23,7 @@ type Repository struct {
 		Source string
 		Mirror bool
 	}
+	Hook bool
 }
 
 type Config struct {
@@ -48,6 +49,7 @@ func main() {
 	gitea_host := os.Getenv("GITEA_HOST")
 	gitea_user := os.Getenv("GITEA_USER")
 	gitea_password := os.Getenv("GITEA_PASSWORD")
+	webhook_token := os.Getenv("WEBHOOK_TOKEN")
 
 	options := (gitea.SetBasicAuth(gitea_user, gitea_password))
 	client, err := gitea.NewClient(gitea_host, options)
@@ -88,6 +90,33 @@ func main() {
 				// Description: "TODO",
 				Private: repo.Private,
 			})
+		}
+
+		if repo.Hook {
+			hooks, _, _ := client.ListRepoHooks(repo.Owner, repo.Name, gitea.ListHooksOptions{})
+			if len(hooks) == 0 {
+				_, _, err = client.CreateRepoHook(repo.Owner, repo.Name, gitea.CreateHookOption{
+					Type: gitea.HookTypeGitea,
+					Config: map[string]string{
+						"url": "http://el-workflows-listener.tekton-workflows:8080",
+						"http_method": "post",
+						"content_type": "json",
+						"secret": webhook_token,
+					},
+					Events: []string{
+						"create",
+						"delete",
+						"push",
+						"pull_request",
+					},
+					BranchFilter: "*",
+					Active: true,
+				})
+
+				if err != nil {
+					log.Printf("Create hook %s/%s: %v", repo.Owner, repo.Name, err)
+				}
+			}
 		}
 	}
 }
