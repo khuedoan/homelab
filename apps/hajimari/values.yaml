@@ -1,6 +1,4 @@
 hajimari:
-  image:  # TODO remove this https://github.com/toboshii/hajimari/blob/main/charts/hajimari/values.yaml
-    tag: v0.2.0
   env:
     TZ: Asia/Ho_Chi_Minh
   ingress:
@@ -23,15 +21,15 @@ hajimari:
     defaultEnable: true
     namespaceSelector:
       any: true
-    groups:
-      - name: Homelab
-        links:
+    globalBookmarks:
+      - group: Homelab
+        bookmarks:
           - name: Documentation
             url: https://homelab.khuedoan.com
           - name: Public GitHub repository
             url: https://github.com/khuedoan/homelab
-      - name: Managed services
-        links:
+      - group: Managed services
+        bookmarks:
           - name: Terraform Cloud
             url: https://app.terraform.io
           - name: Cloudflare
