@@ -6,7 +6,7 @@ spec:
   workspaces:
     - name: shared-data
   tasks:
-    - name: git-clone
+    - name: clone
       taskRef:
         resolver: hub
         params:
@@ -24,7 +24,7 @@ spec:
           value: $(params.git_url)
         - name: revision
           value: $(params.git_revision)
-    - name: pre-commit
+    - name: test
       workspaces:
         - name: source
           workspace: shared-data
@@ -35,7 +35,8 @@ spec:
           image: nixos/nix:latest
           workingDir: /workspace/source
         steps:
-          - name: run
+          # TODO optimize Nix cache, this is too slow
+          - name: pre-commit
             command:
               - nix-shell
               - --command
