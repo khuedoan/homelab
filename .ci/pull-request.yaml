@@ -24,7 +24,33 @@ spec:
           value: $(params.git_url)
         - name: revision
           value: $(params.git_revision)
+    - name: tools
+      runAfter:
+        - clone
+      taskRef:
+        resolver: hub
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: kaniko
+          - name: version
+            value: "0.6"
+      params:
+        - name: DOCKERFILE
+          value: ./Dockerfile.tools
+        - name: IMAGE
+          value: &toolsImage registry.khuedoan.com/homelab-tools:$(params.git_revision)
+        - name: EXTRA_ARGS
+          value:
+            - --cache=true
+      workspaces:
+        - name: source
+          workspace: shared-data
     - name: test
+      runAfter:
+        - clone
+        - tools
       workspaces:
         - name: source
           workspace: shared-data
@@ -32,10 +58,9 @@ spec:
         workspaces:
           - name: source
         stepTemplate:
-          image: nixos/nix:latest
-          workingDir: /workspace/source
+          image: *toolsImage
+          workingDir: $(workspaces.source.path)
         steps:
-          # TODO optimize Nix cache, this is too slow
           - name: pre-commit
             command:
               - nix-shell
