@@ -18,3 +18,4 @@ resources:
   # Pre-defined workflows
   - workflows/webhook-secret.yaml
   - workflows/master.yaml
+  - workflows/pull-request.yaml
