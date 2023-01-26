@@ -14,7 +14,7 @@ spec:
         - name: git_url
           value: $(body.repository.clone_url)
         - name: git_revision
-          value: $(body.head.sha)
+          value: $(body.pull_request.head.sha)
   params:
     - name: git_url
       # TODO don't need default, but invalid mem address if remove this
