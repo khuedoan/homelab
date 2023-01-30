@@ -1,0 +1,7 @@
+apiVersion: v2
+name: ldap
+version: 0.0.0
+dependencies:
+  - name: app-template
+    version: 1.2.1
+    repository: https://bjw-s.github.io/helm-charts/

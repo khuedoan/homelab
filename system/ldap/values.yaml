@@ -1,0 +1,66 @@
+app-template:
+  controller:
+    # HA is not supported
+    replicas: 1
+    strategy: Recreate
+
+  image:
+    repository: minkwe/389ds
+    tag: latest
+  env:
+    DIR_SUFFIX: dc=grigri,dc=cloud
+    DIR_ADMIN_USERNAME: "admin"
+    DIR_ADMIN_UID: "15000"
+    DIR_USERS_HOME: "/home/"
+  envFrom:
+    - secretRef:
+        name: ldap-secret
+  service:
+    main:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.193.3
+      ports:
+        ldap:
+          port: 389
+          protocol: TCP
+        ldaps:
+          port: 636
+          protocol: TCP
+
+  ingress:
+    main:
+      enabled: false
+
+  persistence:
+    data:
+      enabled: true
+      mountPath: /var/lib/dirsrv
+      accessMode: ReadWriteOnce
+      size: 100Mi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+    config:
+      enabled: true
+      mountPath: /etc/dirsrv
+      accessMode: ReadWriteOnce
+      size: 100Mi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+
+    certs:
+      enabled: true
+      type: secret
+      name: ldap-certs
+      mountPath: /certs
+      readOnly: true
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+  nodeSelector:
+    kubernetes.io/arch: amd64
