@@ -19,6 +19,7 @@ app-template:
     main:
       type: LoadBalancer
       loadBalancerIP: 192.168.193.3
+      externalTrafficPolicy: local
       ports:
         http:
           enabled: false
@@ -32,6 +33,9 @@ app-template:
   ingress:
     main:
       enabled: false
+
+  podSecurityContext:
+    fsGroup: 99
 
   persistence:
     data:
@@ -48,13 +52,16 @@ app-template:
       size: 100Mi
       storageClass: longhorn-ssd
       skipuninstall: true
-
     certs:
       enabled: true
       type: secret
       name: ldap-certs
       mountPath: /certs
       readOnly: true
+    logs:
+      enabled: true
+      type: emptyDir
+      mountPath: /var/log/dirsrv/slapd-dir/
 
   resources:
     requests:
