@@ -54,10 +54,11 @@ app-template:
       skipuninstall: true
     certs:
       enabled: true
-      type: secret
-      name: ldap-certs
       mountPath: /certs
-      readOnly: true
+      accessMode: ReadWriteOnce
+      size: 10Mi
+      storageClass: longhorn-ssd
+      skipuninstall: true
     logs:
       enabled: true
       type: emptyDir
