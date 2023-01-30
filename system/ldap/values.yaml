@@ -19,7 +19,7 @@ app-template:
     main:
       type: LoadBalancer
       loadBalancerIP: 192.168.193.3
-      externalTrafficPolicy: local
+      externalTrafficPolicy: Local
       ports:
         http:
           enabled: false
