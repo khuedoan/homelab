@@ -20,6 +20,8 @@ app-template:
       type: LoadBalancer
       loadBalancerIP: 192.168.193.3
       ports:
+        http:
+          enabled: false
         ldap:
           port: 389
           protocol: TCP
