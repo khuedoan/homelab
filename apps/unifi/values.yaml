@@ -79,7 +79,7 @@ app-template:
       enabled: true
       mountPath: /unifi
       accessMode: ReadWriteOnce
-      size: 1Gi
+      size: 2Gi
       storageClass: longhorn-ssd
       skipuninstall: true
 
