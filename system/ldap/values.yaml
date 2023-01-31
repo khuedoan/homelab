@@ -66,6 +66,3 @@ app-template:
     limits:
       cpu: 200m
       memory: 256Mi
-
-  nodeSelector:
-    kubernetes.io/arch: amd64
