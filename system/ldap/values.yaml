@@ -2,6 +2,7 @@ app-template:
   controller:
     # HA is not supported
     replicas: 1
+    type: statefulset
     strategy: Recreate
 
   image:
