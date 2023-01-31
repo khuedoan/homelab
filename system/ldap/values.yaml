@@ -42,9 +42,6 @@ app-template:
     main:
       enabled: false
 
-  securityContext:
-    runAsUser: 389
-
   podSecurityContext:
     fsGroup: 389
 
