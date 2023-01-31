@@ -51,7 +51,19 @@ app-template:
       accessMode: "ReadWriteOnce"
       size: 1Gi
       storageClass: longhorn-ssd
-
+  persistence:
+    certs:
+      enabled: true
+      type: secret
+      name: ldap-certs
+      mountPath: /data/tls
+      readOnly: true
+    ca:
+      enabled: true
+      type: secret
+      name: ldap-ca
+      mountPath: /data/tls/ca
+      readOnly: true
   resources:
     requests:
       cpu: 10m
