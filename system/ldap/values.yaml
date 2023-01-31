@@ -62,6 +62,3 @@ app-template:
     requests:
       cpu: 10m
       memory: 128Mi
-    limits:
-      cpu: 200m
-      memory: 256Mi
