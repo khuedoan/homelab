@@ -49,7 +49,7 @@ app-template:
     - name: data
       mountPath: /data
       accessMode: "ReadWriteOnce"
-      size: 500Mi
+      size: 1Gi
       storageClass: longhorn-ssd
 
   resources:
