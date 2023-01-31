@@ -60,3 +60,6 @@ app-template:
     requests:
       cpu: 10m
       memory: 128Mi
+
+  nodeSelector:
+    kubernetes.io/arch: amd64
