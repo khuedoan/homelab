@@ -30,9 +30,21 @@ app-template:
           protocol: TCP
           targetPort: 3636
 
+  initContainers:
+    chown:
+      image: busybox
+      command: ["sh", "-c", "chown -R 389:389 /data"]
+      volumeMounts:
+        - name: data
+          mountPath: /data
+
   ingress:
     main:
       enabled: false
+
+  securityContext:
+    runAsUser: 389
+    fsGroup: 389
 
   podSecurityContext:
     fsGroup: 389
