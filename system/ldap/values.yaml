@@ -39,14 +39,13 @@ app-template:
     runAsGroup: 389
     fsGroup: 389
 
-  persistence:
-    data:
-      enabled: true
+  volumeClaimTemplates:
+    - name: data
       mountPath: /data
-      accessMode: ReadWriteOnce
+      accessMode: "ReadWriteOnce"
       size: 100Mi
       storageClass: longhorn-ssd
-      skipuninstall: true
+  persistence:
     certs:
       enabled: true
       type: secret
