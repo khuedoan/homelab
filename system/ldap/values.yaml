@@ -5,13 +5,11 @@ app-template:
     strategy: Recreate
 
   image:
-    repository: minkwe/389ds
-    tag: latest
+    repository: quay.io/389ds/dirsrv
+    tag: "@sha256:f87810d0be654ad5cab809c9be966cd425bd87f83a559c44dd854ebacf1171ad"
   env:
-    DIR_SUFFIX: dc=grigri,dc=cloud
-    DIR_ADMIN_USERNAME: "admin"
-    DIR_ADMIN_UID: "15000"
-    DIR_USERS_HOME: "/home/"
+    DS_ERRORLOG_LEVEL: 266354688
+    DS_SUFFIX_NAME: dc=grigri,dc=cloud
   envFrom:
     - secretRef:
         name: ldap-secret
@@ -26,44 +24,41 @@ app-template:
         ldap:
           port: 389
           protocol: TCP
+          targetPort: 3389
         ldaps:
           port: 636
           protocol: TCP
+          targetPort: 3636
 
   ingress:
     main:
       enabled: false
 
   podSecurityContext:
-    fsGroup: 99
+    runAsUser: 389
+    runAsGroup: 389
+    fsGroup: 389
 
   persistence:
     data:
       enabled: true
-      mountPath: /var/lib/dirsrv
-      accessMode: ReadWriteOnce
-      size: 100Mi
-      storageClass: longhorn-ssd
-      skipuninstall: true
-    config:
-      enabled: true
-      mountPath: /etc/dirsrv
+      mountPath: /data
       accessMode: ReadWriteOnce
       size: 100Mi
       storageClass: longhorn-ssd
       skipuninstall: true
     certs:
       enabled: true
-      mountPath: /certs
-      accessMode: ReadWriteOnce
-      size: 10Mi
-      storageClass: longhorn-ssd
-      skipuninstall: true
-    logs:
+      type: secret
+      name: ldap-certs
+      mountPath: /data/tls
+      readOnly: true
+    ca:
       enabled: true
-      type: emptyDir
-      mountPath: /var/log/dirsrv/slapd-dir/
-
+      type: secret
+      name: ldap-ca
+      mountPath: /data/tls/ca
+      readOnly: true
   resources:
     requests:
       cpu: 10m
