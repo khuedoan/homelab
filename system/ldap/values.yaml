@@ -6,7 +6,7 @@ app-template:
 
   image:
     repository: quay.io/389ds/dirsrv
-    tag: latest@sha256:f87810d0be654ad5cab809c9be966cd425bd87f83a559c44dd854ebacf1171ad
+    tag: latest
   env:
     DS_ERRORLOG_LEVEL: "266354688"
     DS_SUFFIX_NAME: dc=grigri,dc=cloud
