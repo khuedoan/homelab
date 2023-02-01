@@ -5,8 +5,8 @@ app-template:
     type: statefulset
 
   image:
-    repository: quay.io/389ds/dirsrv
-    tag: latest
+    repository: pando85/389ds
+    tag: 2.3.0
   env:
     DS_ERRORLOG_LEVEL: "266354688"
     DS_SUFFIX_NAME: dc=grigri,dc=cloud
