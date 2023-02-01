@@ -6,7 +6,7 @@ app-template:
 
   image:
     repository: pando85/389ds
-    tag: 2.3.0
+    tag: 2.2.5
   env:
     DS_ERRORLOG_LEVEL: "266354688"
     DS_SUFFIX_NAME: dc=grigri,dc=cloud
