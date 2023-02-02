@@ -69,5 +69,5 @@ app-template:
       cpu: 50m
       memory: 1Gi
     limits:
-      cpu: 200m
+      cpu: 1
       memory: 1Gi
