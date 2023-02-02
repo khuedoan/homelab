@@ -1,0 +1,84 @@
+ingress-nginx:
+  controller:
+    admissionWebhooks:
+      timeoutSeconds: 30
+
+    replicaCount: 2
+
+    config:
+      http-snippet: |
+        proxy_cache_path /dev/shm levels=1:2 keys_zone=static-cache:2m max_size=300m inactive=7d use_temp_path=off;
+        proxy_cache_key $scheme$proxy_host$request_uri;
+        proxy_cache_lock on;
+        proxy_cache_use_stale updating;
+      use-forwarded-headers: true
+
+    ingressClassResource:
+      name: nginx-external
+      enabled: true
+      default: false
+      controllerValue: "k8s.io/ingress-nginx-external"
+
+    ingressClass: nginx-external
+
+    resources:
+      limits:
+        memory: 328Mi
+      requests:
+        cpu: 100m
+        memory: 150Mi
+
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 11
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 200
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: controller
+            app.kubernetes.io/instance: ingress-nginx
+            app.kubernetes.io/name: ingress-nginx
+    service:
+      enabled: true
+      loadBalancerIP: "192.168.193.4"
+
+      enableHttp: true
+      enableHttps: true
+
+      ports:
+        http: 80
+        https: 443
+
+      targetPorts:
+        http: http
+        https: https
+
+      type: LoadBalancer
+      internal:
+        enabled: false
+
+    extraVolumeMounts:
+      - name: dshm
+        mountPath: /dev/shm
+
+    extraVolumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          # not working until v1.21? https://github.com/kubernetes/kubernetes/issues/63126
+          sizeLimit: 303Mi
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: monitoring
+
+  tcp:
+    29518: gitea/gitea-ssh:22
