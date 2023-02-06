@@ -37,6 +37,16 @@ app-template:
         - hosts:
             - *host
           secretName: freshrss-tls-certificate
+    external:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: true
+      hosts:
+        - host: &host test-freshrss.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
   persistence:
     config:
       enabled: true
