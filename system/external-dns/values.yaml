@@ -1,0 +1,21 @@
+external-dns:
+  interval: 2m
+  # logLevel: debug
+  provider: cloudflare
+  env:
+    - name: CF_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: external-dns-cloudflare
+          key: token
+  extraArgs:
+    - --annotation-filter=external-dns.alpha.kubernetes.io/enabled in (true)
+  # policy sync for fully handle the domain
+  policy: upsert-only
+
+  sources:
+    - ingress
+  domainFilters:
+    - grigri.cloud
+  serviceMonitor:
+    enabled: true
