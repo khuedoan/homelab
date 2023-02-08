@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: nginx-external
   rules:
-  - host: freshrss.k8s.grigri
+  - host: &host freshrss.k8s.grigri
     http:
       paths:
       - backend:
@@ -15,3 +15,7 @@ spec:
               number: 80
         path: /oauth2
         pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - *host
+      secretName: freshrss-tls-certificate
