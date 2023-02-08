@@ -2,6 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: freshrss
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod-dns
 spec:
   ingressClassName: nginx-external
   rules:
