@@ -43,8 +43,8 @@ app-template:
       annotations:
         external-dns.alpha.kubernetes.io/target: grigri.cloud
         cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-        nginx.ingress.kubernetes.io/auth-url: https://freshrss.grigri.cloud/oauth2/auth
-        nginx.ingress.kubernetes.io/auth-signin: https://freshrss.grigri.cloud/oauth2/start
+        nginx.ingress.kubernetes.io/auth-url: https://auth.grigri.cloud/oauth2/auth
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.grigri.cloud/oauth2/start
       hosts:
         - host: &host freshrss.grigri.cloud
           paths:
