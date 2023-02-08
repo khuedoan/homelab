@@ -86,6 +86,22 @@ app-template:
             - *host
           secretName: wallabag-tls-certificate
 
+    external:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+      hosts:
+        - host: &host wallabag.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: wallabag-external-tls-certificate
+
   probes:
     startup:
       enabled: true

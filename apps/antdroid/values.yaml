@@ -28,6 +28,21 @@ app-template:
         - hosts:
             - *host
           secretName: antdroid-tls-certificate
+    external:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+      hosts:
+        - host: &host antdroid.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: antdroid-external-tls-certificate
 
   securityContext:
     runAsUser: 0

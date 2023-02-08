@@ -46,6 +46,22 @@ app-template:
             - *host
           secretName: navidrome-tls-certificate
 
+    external:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+      hosts:
+        - host: &host navidrome.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: navidrome-external-tls-certificate
+
   podSecurityContext:
     runAsUser: 995
     runAsGroup: 991
