@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: freshrss
+spec:
+  ingressClassName: nginx-external
+  rules:
+  - host: freshrss.k8s.grigri
+    http:
+      paths:
+      - backend:
+          service:
+            name: oauth2-proxy
+            port:
+              number: 80
+        path: /oauth2
+        pathType: ImplementationSpecific
