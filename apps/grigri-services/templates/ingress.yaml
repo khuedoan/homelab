@@ -20,7 +20,7 @@ spec:
       paths:
       - backend:
           service:
-            name: {{ .host }}
+            name: {{ .name }}
             port:
               number: 443
         path: /
