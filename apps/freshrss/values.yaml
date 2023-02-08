@@ -28,6 +28,8 @@ app-template:
         hajimari.io/icon: rss-box
         hajimari.io/instance: internal
         hajimari.io/group: News
+        nginx.ingress.kubernetes.io/auth-url: https://auth.grigri.cloud/oauth2/auth
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.grigri.cloud/oauth2/start
       hosts:
         - host: &host freshrss.k8s.grigri
           paths:
