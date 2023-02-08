@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx-external
   rules:
-  - host: &host freshrss.k8s.grigri
+  - host: &host freshrss.grigri.cloud
     http:
       paths:
       - backend:
