@@ -1,0 +1,8 @@
+{{- range .Values.services }}
+kind: Service
+metadata:
+  name: {{ .host }}
+spec:
+  externalName: {{ .host }}
+  type: ExternalName
+{{- end }}

@@ -1,0 +1,30 @@
+{{- range .Values.services }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+    external-dns.alpha.kubernetes.io/target: grigri.cloud
+    {{- if .auth | default false }}
+    nginx.ingress.kubernetes.io/auth-signin: https://auth.grigri.cloud/oauth2/start
+    nginx.ingress.kubernetes.io/auth-url: https://auth.grigri.cloud/oauth2/auth
+    {{- end }}
+  name: {{ .host }}
+spec:
+  ingressClassName: nginx-external
+  rules:
+  - host: {{ .host }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: freshrss
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - {{ .host }}
+    secretName: {{ .host }}-external-tls-certificate
+{{- end }}
