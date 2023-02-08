@@ -1,4 +1,24 @@
 services:
   - name: plex
     host: plex.grigri.cloud
-    auth: false
+  - name: dex
+    host: accounts.grigri.cloud
+  - name: bazarr
+    host: bazarr.grigri.cloud
+    auth: true
+  - name: deluge
+    host: deluge.grigri.cloud
+  - name: jackett
+    host: jackett.grigri.cloud
+    auth: true
+  - name: netdata
+    host: netdata.grigri.cloud
+    auth: true
+  - name: nextcloud
+    host: nextcloud.grigri.cloud
+  - name: radarr
+    host: radarr.grigri.cloud
+    auth: true
+  - name: sonarr
+    host: sonarr.grigri.cloud
+    auth: true
