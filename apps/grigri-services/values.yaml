@@ -1,3 +1,4 @@
 services:
-  - host: plex.grigri.cloud
+  - name: plex
+    host: plex.grigri.cloud
     auth: false
