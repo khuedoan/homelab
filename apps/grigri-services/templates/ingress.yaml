@@ -5,6 +5,8 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod-dns
     external-dns.alpha.kubernetes.io/target: grigri.cloud
+    nginx.ingress.kubernetes.io/upstream-vhost: {{ .host }}
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     {{- if .auth | default false }}
     nginx.ingress.kubernetes.io/auth-signin: https://auth.grigri.cloud/oauth2/start
     nginx.ingress.kubernetes.io/auth-url: https://auth.grigri.cloud/oauth2/auth
@@ -18,9 +20,9 @@ spec:
       paths:
       - backend:
           service:
-            name: freshrss
+            name: {{ .host }}
             port:
-              number: 80
+              number: 443
         path: /
         pathType: Prefix
   tls:
