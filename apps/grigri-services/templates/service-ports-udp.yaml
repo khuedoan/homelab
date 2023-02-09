@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: grigri-ports
+  name: grigri-ports-udp
 spec:
   ports:
-{{- range .Values.ports }}
+{{- range .Values.ports.udp }}
   - name: {{ .name }}
     port: {{ .port }}
-    protocol: {{ .protocol }}
+    protocol: UDP
     targetPort: {{ .port }}
 {{- end }}
   clusterIP: None

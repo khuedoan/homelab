@@ -6,8 +6,8 @@ subsets:
 - addresses:
   - ip: 192.168.192.2
   ports:
-{{- range .Values.ports }}
+{{- range .Values.ports.tcp }}
   - name: {{ .name }}
     port: {{ .port }}
-    protocol: {{ .protocol }}
+    protocol: TCP
 {{- end }}
