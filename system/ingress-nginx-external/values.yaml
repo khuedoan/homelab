@@ -25,7 +25,7 @@ ingress-nginx:
       limits:
         memory: 328Mi
       requests:
-        cpu: 100m
+        cpu: 1
         memory: 150Mi
 
     autoscaling:
