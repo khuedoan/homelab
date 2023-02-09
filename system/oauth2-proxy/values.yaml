@@ -36,13 +36,13 @@ oauth2-proxy:
     ## dex needs to support RFC2307bis
     # allowed-groups: wheel
 
-  resources: {}
-    # limits:
-    #   cpu: 100m
-    #   memory: 300Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 300Mi
+  resources:
+    requests:
+      cpu: 10m
+      memory: 14Mi
+    limits:
+      cpu: 100m
+      memory: 32Mi
 
   affinity:
     podAntiAffinity:
