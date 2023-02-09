@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboards-nginx
+  labels:
+    grafana_dashboard: "1"
+data:
+{{ (.Files.Glob "dashboards/*").AsConfig | indent 2 }}
