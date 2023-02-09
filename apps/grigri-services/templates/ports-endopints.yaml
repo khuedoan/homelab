@@ -9,5 +9,5 @@ subsets:
 {{- range .Values.ports }}
   - name: {{ .name }}
     port: {{ .port }}
-    protocol: TCP
+    protocol: {{ .protocol }}
 {{- end }}
