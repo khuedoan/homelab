@@ -7,7 +7,7 @@ spec:
 {{- range .Values.ports }}
   - name: {{ .name }}
     port: {{ .port }}
-    protocol: TCP
+    protocol: {{ .protocol }}
     targetPort: {{ .port }}
 {{- end }}
   clusterIP: None
