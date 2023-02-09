@@ -11,7 +11,11 @@ metadata:
     {{- if .auth | default false }}
     nginx.ingress.kubernetes.io/auth-signin: https://auth.grigri.cloud/oauth2/start
     nginx.ingress.kubernetes.io/auth-url: https://auth.grigri.cloud/oauth2/auth
-    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.42.0.0/15
+    nginx.ingress.kubernetes.io/server-snippet: |
+      satisfy  any;
+      allow 192.168.0.0/16;
+      allow 10.42.0.0/15;
+      deny   all;
     {{- end }}
   name: {{ .name }}
 spec:
