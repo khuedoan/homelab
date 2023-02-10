@@ -5,7 +5,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-    external-dns.alpha.kubernetes.io/enabled: true
+    external-dns.alpha.kubernetes.io/enabled: "true"
     external-dns.alpha.kubernetes.io/target: grigri.cloud
     nginx.ingress.kubernetes.io/upstream-vhost: {{ .host }}
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"

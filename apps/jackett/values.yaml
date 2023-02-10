@@ -23,7 +23,7 @@ app-template:
       enabled: true
       ingressClassName: nginx-internal
       annotations:
-        external-dns.alpha.kubernetes.io/enabled: true
+        external-dns.alpha.kubernetes.io/enabled: "true"
         cert-manager.io/cluster-issuer: letsencrypt-prod-dns
         hajimari.io/appName: jackett
         hajimari.io/icon: t-shirt-crew
@@ -43,7 +43,7 @@ app-template:
       enabled: true
       ingressClassName: nginx-external
       annotations:
-        external-dns.alpha.kubernetes.io/enabled: true
+        external-dns.alpha.kubernetes.io/enabled: "true"
         external-dns.alpha.kubernetes.io/target: grigri.cloud
         cert-manager.io/cluster-issuer: letsencrypt-prod-dns
         nginx.ingress.kubernetes.io/auth-url: https://auth.grigri.cloud/oauth2/auth
