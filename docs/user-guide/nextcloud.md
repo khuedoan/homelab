@@ -10,11 +10,24 @@
 POD_NAME=$(KUBECONFIG=/tmp/kubeconfig.yaml kubectl -n nextcloud get pod -l app.kubernetes.io/component=app --no-headers -o custom-columns=":metadata.name")
 KUBECONFIG=/tmp/kubeconfig.yaml kubectl -n nextcloud cp config/www/nextcloud/apps/ $POD_NAME:/tmp/
 
+kubectl -n nextcloud exec -it $POD_NAME -- bash
+rm -rf /var/www/html/apps
+mv /tmp/apps /var/www/html/apps
+chown -R www-data:www-data /var/www/html/apps
 ```
 
 #### data
 
-TODO
+```bash
+POD_NAME=$(KUBECONFIG=/tmp/kubeconfig.yaml kubectl -n nextcloud get pod -l app.kubernetes.io/component=app --no-headers -o custom-columns=":metadata.name")
+for DIR in $(find /datasets/nextcloud/ -maxdepth 1 -mindepth 1); do
+    echo $DIR;
+    KUBECONFIG=/tmp/kubeconfig.yaml kubectl -n nextcloud cp --retries=5 $DIR $POD_NAME:/var/www/html/data/
+done
+KUBECONFIG=/tmp/kubeconfig.yaml kubectl -n nextcloud cp --retries=5 /datasets/fotos $POD_NAME:/var/www/html/data/pando/files/
+kubectl -n nextcloud exec -it $POD_NAME -- bash
+chown -R www-data:www-data /var/www/html/data
+```
 
 ### Postgres
 
