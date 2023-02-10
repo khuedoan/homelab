@@ -1,0 +1,62 @@
+app-template:
+  controller:
+    # HA is not supported
+    replicas: 1
+
+  image:
+    repository: ghcr.io/onedr0p/jackett
+    pullPolicy: IfNotPresent
+    tag: 0.20.2297
+  strategy:
+    type: Recreate
+  env:
+    TZ: Europe/Madrid
+
+  service:
+    main:
+      ports:
+        http:
+          port: 9117
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        cert-manager.io/cluster-issuer: internal
+        hajimari.io/appName: jackett
+        hajimari.io/icon: t-shirt-crew
+        hajimari.io/instance: internal
+        hajimari.io/group: Media
+      hosts:
+        - host: &host jackett.k8s.grigri
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: jackett-tls-certificate
+
+  podSecurityContext:
+    runAsUser: 568
+    runAsGroup: 568
+    fsGroup: 568
+    fsGroupChangePolicy: "OnRootMismatch"
+
+  persistence:
+    config:
+      enabled: true
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 500Mi
+      storageClass: longhorn-ssd
+      skipuninstall: true
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 68Mi
+    limits:
+      cpu: 500m
+      memory: 128Mi
