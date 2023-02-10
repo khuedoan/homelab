@@ -8,9 +8,6 @@ services:
     auth: true
   - name: deluge
     host: deluge.grigri.cloud
-  - name: jackett
-    host: jackett.grigri.cloud
-    auth: true
   - name: netdata
     host: netdata.grigri.cloud
     auth: true
