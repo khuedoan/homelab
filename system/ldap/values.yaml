@@ -22,6 +22,7 @@ app-template:
         http:
           enabled: false
         ldap:
+          primary: true
           port: 389
           protocol: TCP
           targetPort: 3389
