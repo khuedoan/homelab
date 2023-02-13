@@ -47,7 +47,7 @@ BGP route table and route all network to that loadbalancer IPs. We use
   ```yaml
   - name: 192.168.192.2
     descr: grigri
-    remote_as: 64514
+    remote_as: 64513
     route_map_filters:
       inbound_router_map_filter: allow-all
       outbound_router_map_filter: allow-all

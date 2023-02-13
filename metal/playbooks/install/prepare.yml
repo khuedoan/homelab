@@ -1,6 +1,6 @@
 ---
 #  ansible-playbook -i inventory/hosts.ini -K --limit {{ hosts }} -e 'serial=100%' playbooks/install/os.yml
 
-- hosts: all
+- hosts: all:!grigri
   roles:
     - prepare
