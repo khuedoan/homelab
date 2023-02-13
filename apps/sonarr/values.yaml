@@ -6,14 +6,11 @@ app-template:
     tag: 4.0.0.373@sha256:7b9d997c25c562f2bf6a535a1dc8325570f33e1ecebc519e30cc5306b96d9467
   env:
     TZ: Europe/Madrid
-    SONARR__INSTANCE_NAME: Sonarr
-    SONARR__PORT: &port 80
-    SONARR__LOG_LEVEL: info
   service:
     main:
       ports:
         http:
-          port: *port
+          port: &port 8989
   probes:
     liveness: &probe
       custom: true
