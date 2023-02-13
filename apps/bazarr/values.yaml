@@ -45,12 +45,12 @@ app-template:
     series:
       enabled: true
       type: hostPath
-      path: /datasets/series
+      hostPath: /datasets/series
       mountPath: /datasets/series
     peliculas:
       enabled: true
       type: hostPath
-      path: /datasets/peliculas
+      hostPath: /datasets/peliculas
       mountPath: /datasets/peliculas
     add-ons:
       enabled: true
