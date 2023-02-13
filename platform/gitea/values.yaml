@@ -10,6 +10,8 @@ gitea:
       external-dns.alpha.kubernetes.io/enabled: "true"
       external-dns.alpha.kubernetes.io/target: grigri.cloud
       cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+      hajimari.io/appName: Gitea
+      hajimari.io/icon: git
     hosts:
       - host: &host gitea.grigri.cloud
         paths:

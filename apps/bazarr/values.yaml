@@ -1,0 +1,81 @@
+app-template:
+  controller:
+    type: statefulset
+  image:
+    repository: ghcr.io/onedr0p/bazarr
+    tag: 1.1.4@sha256:951cc8d9916a0f1fd56a9d413a63c9d189ed5d6e3a0427e097d3094d9ee8835a
+  env:
+    TZ: Europe/Madrid
+  service:
+    main:
+      ports:
+        http:
+          port: 6767
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+        hajimari.io/appName: Bazarr
+        hajimari.io/icon: mdi:subtitles-outline
+      hosts:
+        - host: &host bazarr.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: bazarr-external-tls-certificate
+  podSecurityContext:
+    runAsUser: 995
+    runAsGroup: 991
+    fsGroup: 991
+    fsGroupChangePolicy: "OnRootMismatch"
+  volumeClaimTemplates:
+    - name: config
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: longhorn-ssd
+  persistence:
+    series:
+      enabled: true
+      type: hostPath
+      path: /datasets/series
+      mountPath: /datasets/series
+    peliculas:
+      enabled: true
+      type: hostPath
+      path: /datasets/peliculas
+      mountPath: /datasets/peliculas
+    add-ons:
+      enabled: true
+      type: emptyDir
+      mountPath: /add-ons
+  resources:
+    requests:
+      cpu: 10m
+      memory: 250Mi
+    limits:
+      cpu: 1.5
+      memory: 2000Mi
+  sidecars:
+    subcleaner:
+      image: k8s.gcr.io/git-sync/git-sync:v3.6.4
+      imagePullPolicy: IfNotPresent
+      args:
+        - --repo=https://github.com/KBlixt/subcleaner.git
+        - --branch=master
+        - --depth=1
+        - --wait=21600 # 6 hours
+        - --root=/add-ons/subcleaner
+      volumeMounts:
+        - name: add-ons
+          mountPath: /add-ons
+
+  nodeSelector:
+    name: grigri
