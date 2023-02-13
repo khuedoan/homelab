@@ -5,7 +5,7 @@ app-template:
 
   image:
     repository: jacobalberty/unifi
-    tag: v7.3.76
+    tag: v7.3.83
     pullPolicy: IfNotPresent
   strategy:
     type: Recreate
