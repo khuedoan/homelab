@@ -2,3 +2,6 @@ k3s_kubelet_extra_args:
   - kube-reserved=cpu=300m,memory=300Mi,ephemeral-storage=1Gi
   - system-reserved=cpu=2,memory=26Gi,ephemeral-storage=1Gi
   - eviction-hard=memory.available<300Mi,nodefs.available<10%
+
+node_labels:
+  name: grigri
