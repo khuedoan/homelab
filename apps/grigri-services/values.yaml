@@ -13,9 +13,6 @@ services:
   - name: radarr
     host: radarr.grigri.cloud
     auth: true
-  - name: sonarr
-    host: sonarr.grigri.cloud
-    auth: true
 
 ports:
   tcp:
