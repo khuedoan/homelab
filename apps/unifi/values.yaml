@@ -21,7 +21,8 @@ app-template:
     main:
       type: LoadBalancer
       externalTrafficPolicy: Local
-      loadBalancerIP: 192.168.193.2
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: "192.168.193.2"
       ports:
         http:
           port: 8443
