@@ -32,7 +32,7 @@ ingress-nginx:
       enabled: true
       minReplicas: 2
       maxReplicas: 11
-      targetCPUUtilizationPercentage: 50
+      targetCPUUtilizationPercentage: 500
       targetMemoryUtilizationPercentage: 200
     topologySpreadConstraints:
       - maxSkew: 1
