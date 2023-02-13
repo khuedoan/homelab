@@ -5,13 +5,12 @@ gitea:
 
   ingress:
     enabled: true
-    className: nginx-internal
+    className: nginx-external
     annotations:
-      cert-manager.io/cluster-issuer: internal
-      hajimari.io/appName: Gitea
-      hajimari.io/icon: git
+      external-dns.alpha.kubernetes.io/target: grigri.cloud
+      cert-manager.io/cluster-issuer: letsencrypt-prod-dns
     hosts:
-      - host: &host git.k8s.grigri
+      - host: &host gitea.grigri.cloud
         paths:
           - path: /
             pathType: Prefix
