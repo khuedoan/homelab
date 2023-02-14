@@ -10,9 +10,6 @@ services:
     auth: true
   - name: nextcloud
     host: nextcloud.grigri.cloud
-  - name: radarr
-    host: radarr.grigri.cloud
-    auth: true
 
 ports:
   tcp:
