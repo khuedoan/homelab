@@ -6,7 +6,7 @@ app-template:
 
   image:
     repository: deluan/navidrome
-    tag: 0.49.2
+    tag: 0.49.3
   env:
     #ND_REVERSEPROXYUSERHEADER: "Remote-User"
     #ND_REVERSEPROXYWHITELIST: "10.0.0.0/8"
