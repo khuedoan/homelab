@@ -33,20 +33,11 @@ argo-cd:
             redirectURIs:
               - 'https://grafana.k8s.grigri/login/generic_oauth'
             secretEnv: GRAFANA_SSO_CLIENT_SECRET
-
-        #   - id: oauth2-proxy
-        #     redirectURIs:
-        #     - 'https://beets.grigri.cloud/oauth2/callback'
-        #     - 'https://netdata.grigri.cloud/oauth2/callback'
-        #     - 'https://sonarr.grigri.cloud/oauth2/callback'
-        #     - 'https://couchpotato.grigri.cloud/oauth2/callback'
-        #     - 'https://freshrss.grigri.cloud/oauth2/callback'
-        #     - 'https://bazarr.grigri.cloud/oauth2/callback'
-        #     - 'https://radarr.grigri.cloud/oauth2/callback'
-        #     - 'https://jackett.grigri.cloud/oauth2/callback'
-        #     - 'https://music.grigri.cloud/oauth2/callback'
-        #     name: 'oauth2-proxy'
-        #     secret: XXXXX
+          - id: k8s-oauth2-proxy
+            name: k8s-oauth2-proxy
+            redirectURIs:
+              - https://auth.grigri.cloud/oauth2/callback
+            secretEnv: AUTH_SSO_CLIENT_SECRET
 
         connectors:
         - type: ldap
@@ -231,6 +222,8 @@ argo-cd:
     envFrom:
       - secretRef:
           name: grafana-secret
+      - secretRef:
+          name: auth-secret
     volumeMounts:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
