@@ -15,6 +15,24 @@ app-template:
   ingress:
     main:
       enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+        hajimari.io/appName: Radarr
+        hajimari.io/icon: mdi:filmstrip
+      hosts:
+        - host: &host radarr.internal.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: radarr-tls-certificate
+
+    external:
+      enabled: true
       ingressClassName: nginx-external
       annotations:
         external-dns.alpha.kubernetes.io/enabled: "true"
