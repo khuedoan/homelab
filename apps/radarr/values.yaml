@@ -10,15 +10,7 @@ app-template:
     main:
       ports:
         http:
-          port: &port 7878
-  probes:
-    liveness: &probe
-      custom: true
-      spec:
-        httpGet:
-          path: /ping
-          port: *port
-    readiness: *probe
+          port: 7878
 
   ingress:
     main:
