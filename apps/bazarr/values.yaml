@@ -63,8 +63,8 @@ app-template:
       cpu: 10m
       memory: 250Mi
     limits:
-      cpu: 1.5
-      memory: 2000Mi
+      cpu: 1
+      memory: 500Mi
   sidecars:
     subcleaner:
       image: k8s.gcr.io/git-sync/git-sync:v3.6.4
