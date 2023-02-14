@@ -56,18 +56,13 @@ app-template:
       type: hostPath
       hostPath: /datasets/series
       mountPath: /datasets/series
-    peliculas:
-      enabled: true
-      type: hostPath
-      hostPath: /datasets/peliculas
-      mountPath: /datasets/peliculas
   resources:
     requests:
-      cpu: 10m
+      cpu: 250m
       memory: 250Mi
     limits:
       cpu: 1
-      memory: 2000Mi
+      memory: 500Mi
 
   nodeSelector:
     name: grigri
