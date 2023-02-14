@@ -1,0 +1,68 @@
+app-template:
+  controller:
+    type: statefulset
+  image:
+    repository: ghcr.io/onedr0p/radarr-develop
+    tag: 4.4.1.6926@sha256:f5ffec33b203f9052caf1cf484b1d30f9dc0bc3268c8a439b45e67c3c4dbe5b2
+  env:
+    TZ: Europe/Madrid
+  service:
+    main:
+      ports:
+        http:
+          port: &port 7878
+  probes:
+    liveness: &probe
+      custom: true
+      spec:
+        httpGet:
+          path: /ping
+          port: *port
+    readiness: *probe
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+        hajimari.io/appName: Radarr
+        hajimari.io/icon: mdi:filmstrip
+      hosts:
+        - host: &host radarr.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: radarr-external-tls-certificate
+  podSecurityContext:
+    runAsUser: 995
+    runAsGroup: 991
+    fsGroup: 991
+    fsGroupChangePolicy: "OnRootMismatch"
+  volumeClaimTemplates:
+    - name: config
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: longhorn-ssd
+  persistence:
+    peliculas:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/peliculas
+      mountPath: /datasets/peliculas
+  resources:
+    requests:
+      cpu: 200m
+      memory: 250Mi
+    limits:
+      cpu: 1
+      memory: 500Mi
+
+  nodeSelector:
+    name: grigri
