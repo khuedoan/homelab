@@ -38,25 +38,3 @@ ports:
   udp:
     - name: plex-32400
       port: 32400
-    - name: deluge-11000
-      port: 11000
-    - name: deluge-11001
-      port: 11001
-    - name: deluge-11002
-      port: 11002
-    - name: deluge-11003
-      port: 11003
-    - name: deluge-11004
-      port: 11004
-    - name: deluge-11005
-      port: 11005
-    - name: deluge-11006
-      port: 11006
-    - name: deluge-11007
-      port: 11007
-    - name: deluge-11008
-      port: 11008
-    - name: deluge-11009
-      port: 11009
-    - name: deluge-11010
-      port: 11010

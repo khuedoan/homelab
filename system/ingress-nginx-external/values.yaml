@@ -98,14 +98,3 @@ ingress-nginx:
     11010: grigri-services/grigri-ports:11010
   upd:
     32400: grigri-services/grigri-ports-udp:32400
-    11000: grigri-services/grigri-ports-udp:11000
-    11001: grigri-services/grigri-ports-udp:11001
-    11002: grigri-services/grigri-ports-udp:11002
-    11003: grigri-services/grigri-ports-udp:11003
-    11004: grigri-services/grigri-ports-udp:11004
-    11005: grigri-services/grigri-ports-udp:11005
-    11006: grigri-services/grigri-ports-udp:11006
-    11007: grigri-services/grigri-ports-udp:11007
-    11008: grigri-services/grigri-ports-udp:11008
-    11009: grigri-services/grigri-ports-udp:11009
-    11010: grigri-services/grigri-ports-udp:11010
