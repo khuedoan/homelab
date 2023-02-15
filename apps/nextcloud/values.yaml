@@ -93,7 +93,8 @@ nextcloud:
     size: 1Gi
 
     nextcloudData:
-      enabled: true
+      # hostPath
+      enabled: false
       subPath:
       storageClass: longhorn
       accessMode: ReadWriteOnce
@@ -187,10 +188,23 @@ nextcloud:
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
           type: File
+      - name: nextcloud-data
+        hostPath:
+          path: /datasets/nextcloud
+      - name: fotos
+        hostPath:
+          path: /datasets/fotos
     extraVolumeMounts:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
+      - name: nextcloud-data
+        mountPath: /var/www/html/data
+      - name: fotos
+        mountPath: /var/www/html/data/pando/files/fotos
+  nodeSelector:
+    name: grigri
+
   livenessProbe:
     enabled: true
     periodSeconds: 30
@@ -207,6 +221,10 @@ app-template:
   image:
     repository: redis
     tag: 7.0.8
+
+
+  nodeSelector:
+    name: grigri
 
   service:
     main:
