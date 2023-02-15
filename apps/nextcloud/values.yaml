@@ -93,8 +93,7 @@ nextcloud:
     size: 1Gi
 
     nextcloudData:
-      # hostPath
-      enabled: false
+      enabled: true
       subPath:
       storageClass: longhorn
       accessMode: ReadWriteOnce
@@ -188,24 +187,38 @@ nextcloud:
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
           type: File
-      - name: nextcloud-data
+      - name: nextcloud-billee-data
         hostPath:
-          path: /datasets/nextcloud
+          path: /datasets/nextcloud/billee
           type: Directory
-      #- name: fotos
-      #  hostPath:
-      #    path: /datasets/fotos
-      #    type: Directory
+      - name: nextcloud-teresa-data
+        hostPath:
+          path: /datasets/nextcloud/teresa
+          type: Directory
+      - name: nextcloud-pando-data
+        hostPath:
+          path: /datasets/nextcloud/pando
+          type: Directory
+      - name: fotos
+        hostPath:
+          path: /datasets/fotos
+          type: Directory
     extraVolumeMounts:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
-      - name: nextcloud-data
-        mountPath: /var/www/html/data
+      - name: nextcloud-billee-data
+        mountPath: /var/www/html/data/billie
         readOnly: true
-      #- name: fotos
-      #  mountPath: /var/www/html/data/pando/files/fotos
-      #  readOnly: true
+      - name: nextcloud-teresa-data
+        mountPath: /var/www/html/data/teresa
+        readOnly: true
+      - name: nextcloud-pando-data
+        mountPath: /var/www/html/data/pando
+        readOnly: true
+      - name: fotos
+        mountPath: /var/www/html/data/pando/files/fotos
+        readOnly: true
   nodeSelector:
     name: grigri
 
