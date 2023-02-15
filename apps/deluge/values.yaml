@@ -61,8 +61,8 @@ app-template:
       mountPath: /datasets/documentales
   resources:
     requests:
-      cpu: 1
-      memory: 1Gi
+      cpu: 500m
+      memory: 340Mi
     limits:
       cpu: 1.5
       memory: 3Gi
