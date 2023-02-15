@@ -1,0 +1,71 @@
+app-template:
+  controller:
+    type: statefulset
+  image:
+    repository: linuxserver/deluge
+    tag: 2.0.5-0202112151848ubuntu20.04.1-ls136
+  env:
+    PUID: "995"
+    PGID: "991"
+  service:
+    main:
+      ports:
+        http:
+          port: 8112
+        daemon:
+          port: 58846
+        input:
+          port: 11000
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+      hosts:
+        - host: &host deluge.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: deluge-external-tls-certificate
+  podSecurityContext:
+    fsGroup: 991
+    fsGroupChangePolicy: "OnRootMismatch"
+  volumeClaimTemplates:
+    - name: config
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: longhorn-ssd
+  persistence:
+    series:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/series
+      mountPath: /datasets/series
+    peliculas:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/peliculas
+      mountPath: /datasets/peliculas
+    documentales:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/documentales
+      mountPath: /datasets/documentales
+  resources:
+    requests:
+      cpu: 1
+      memory: 1Gi
+    limits:
+      cpu: 1.5
+      memory: 3Gi
+
+  nodeSelector:
+    name: grigri

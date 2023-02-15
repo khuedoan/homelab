@@ -1,8 +1,6 @@
 services:
   - name: plex
     host: plex.grigri.cloud
-  - name: deluge
-    host: deluge.grigri.cloud
   - name: netdata
     host: netdata.grigri.cloud
     auth: true
