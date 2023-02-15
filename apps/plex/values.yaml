@@ -1,0 +1,94 @@
+app-template:
+  controller:
+    type: statefulset
+  image:
+    repository: ghcr.io/onedr0p/plex
+    tag: 1.31.0.6654-02189b09f@sha256:e008f8822f31a5648ea5b28289ca82388e9111db4418a2662d7fb52ab9e61712
+  env:
+    TZ: Europe/Madrid
+  service:
+    main:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: "192.168.193.5"
+      externalTrafficPolicy: Local
+      ports:
+        http:
+          port: 32400
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+        hajimari.io/appName: Plex
+        hajimari.io/icon: mdi:television-classic
+      hosts:
+        - host: &host plex.internal.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: plex-tls-certificate
+    #external:
+    #  enabled: true
+    #  ingressClassName: nginx-external
+    #  annotations:
+    #    external-dns.alpha.kubernetes.io/enabled: "true"
+    #    external-dns.alpha.kubernetes.io/target: grigri.cloud
+    #    cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+    #  hosts:
+    #    - host: &host plex.grigri.cloud
+    #      paths:
+    #        - path: /
+    #          pathType: Prefix
+    #  tls:
+    #    - hosts:
+    #        - *host
+    #      secretName: plex-external-tls-certificate
+  podSecurityContext:
+    runAsUser: 995
+    runAsGroup: 991
+    fsGroup: 991
+    fsGroupChangePolicy: "OnRootMismatch"
+  volumeClaimTemplates:
+    - name: config
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 100Gi
+      storageClass: longhorn-ssd
+  persistence:
+    series:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/series
+      mountPath: /datasets/series
+      readOnly: true
+    peliculas:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/peliculas
+      mountPath: /datasets/peliculas
+      readOnly: true
+    documentales:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/documentales
+      mountPath: /datasets/documentales
+      readOnly: true
+    transcode:
+      enabled: true
+      type: emptyDir
+  resources:
+    requests:
+      cpu: 100m
+      memory: 1Gi
+    limits:
+      memory: 10Gi
+
+  nodeSelector:
+    name: grigri
