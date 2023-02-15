@@ -76,7 +76,7 @@ app-template:
       mountPath: /datasets/series
   resources:
     requests:
-      cpu: 250m
+      cpu: 150m
       memory: 250Mi
     limits:
       cpu: 1
