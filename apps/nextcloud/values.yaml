@@ -187,18 +187,18 @@ nextcloud:
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
           type: File
-      - name: nextcloud-billee-data
-        hostPath:
-          path: /datasets/nextcloud/billee
-          type: Directory
-      - name: nextcloud-teresa-data
-        hostPath:
-          path: /datasets/nextcloud/teresa
-          type: Directory
-      - name: nextcloud-pando-data
-        hostPath:
-          path: /datasets/nextcloud/pando
-          type: Directory
+      #- name: nextcloud-billee-data
+      #  hostPath:
+      #    path: /datasets/nextcloud/billee
+      #    type: Directory
+      #- name: nextcloud-teresa-data
+      #  hostPath:
+      #    path: /datasets/nextcloud/teresa
+      #    type: Directory
+      #- name: nextcloud-pando-data
+      #  hostPath:
+      #    path: /datasets/nextcloud/pando
+      #    type: Directory
       - name: fotos
         hostPath:
           path: /datasets/fotos
@@ -207,18 +207,18 @@ nextcloud:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
-      - name: nextcloud-billee-data
-        mountPath: /var/www/html/data/billie
-        readOnly: true
-      - name: nextcloud-teresa-data
-        mountPath: /var/www/html/data/teresa
-        readOnly: true
-      - name: nextcloud-pando-data
-        mountPath: /var/www/html/data/pando
-        readOnly: true
-      - name: fotos
-        mountPath: /var/www/html/data/pando/files/fotos
-        readOnly: true
+      #- name: nextcloud-billee-data
+      #  mountPath: /var/www/html/data/billie
+      #  readOnly: true
+      #- name: nextcloud-teresa-data
+      #  mountPath: /var/www/html/data/teresa
+      #  readOnly: true
+      #- name: nextcloud-pando-data
+      #  mountPath: /var/www/html/data/pando
+      #  readOnly: true
+      #- name: fotos
+      #  mountPath: /var/www/html/data/pando/files/fotos
+      #  readOnly: true
   nodeSelector:
     name: grigri
 
