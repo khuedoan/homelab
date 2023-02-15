@@ -191,17 +191,21 @@ nextcloud:
       - name: nextcloud-data
         hostPath:
           path: /datasets/nextcloud
-      - name: fotos
-        hostPath:
-          path: /datasets/fotos
+          type: Directory
+      #- name: fotos
+      #  hostPath:
+      #    path: /datasets/fotos
+      #    type: Directory
     extraVolumeMounts:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
       - name: nextcloud-data
         mountPath: /var/www/html/data
-      - name: fotos
-        mountPath: /var/www/html/data/pando/files/fotos
+        readOnly: true
+      #- name: fotos
+      #  mountPath: /var/www/html/data/pando/files/fotos
+      #  readOnly: true
   nodeSelector:
     name: grigri
 
