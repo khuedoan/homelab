@@ -70,7 +70,7 @@ app-template:
       mountPath: /datasets/peliculas
   resources:
     requests:
-      cpu: 200m
+      cpu: 100m
       memory: 250Mi
     limits:
       cpu: 1
