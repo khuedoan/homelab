@@ -5,7 +5,13 @@ metadata:
     external-dns.alpha.kubernetes.io/enabled: "true"
     external-dns.alpha.kubernetes.io/target: grigri.cloud
     cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/proxy-redirect-from: /api/dex/
+    nginx.ingress.kubernetes.io/proxy-redirect-to: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /api/dex/$1
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Accept-Encoding "";
+      sub_filter '/api/dex/' '/';
   name: accounts-external
 spec:
   ingressClassName: nginx-external
@@ -15,10 +21,10 @@ spec:
       paths:
       - backend:
           service:
-            name: argocd-dex-server
+            name: argocd-server
             port:
-              number: 5556
-        path: /
+              number: 80
+        path: /(.*)
         pathType: Prefix
   tls:
   - hosts:
