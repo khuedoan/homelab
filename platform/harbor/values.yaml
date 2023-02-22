@@ -1,0 +1,29 @@
+harbor:
+  expose:
+    ingress:
+      hosts:
+        core: harbor.khuedoan.com
+        notary: notary.khuedoan.com
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        ingress.kubernetes.io/ssl-redirect: "true"
+        ingress.kubernetes.io/proxy-body-size: "0"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  persistence:
+    enabled: true
+    resourcePolicy: "keep"
+    persistentVolumeClaim:
+      registry:
+        storageClass: "longhorn"
+      chartmuseum:
+        storageClass: "longhorn"
+      jobservice:
+        storageClass: "longhorn"
+      database:
+        storageClass: "longhorn"
+      redis:
+        storageClass: "longhorn"
+      trivy:
+        storageClass: "longhorn"
