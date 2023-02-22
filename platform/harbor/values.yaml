@@ -11,19 +11,25 @@ harbor:
         ingress.kubernetes.io/proxy-body-size: "0"
         nginx.ingress.kubernetes.io/ssl-redirect: "true"
         nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+      certSource: secret
+      secret:
+        secretName: harbor-tls-certificate
+        notarySecretName: notary-tls-certificate
+  externalURL: https://harbor.khuedoan.com
   persistence:
     enabled: true
-    resourcePolicy: "keep"
+    resourcePolicy: keep
     persistentVolumeClaim:
       registry:
-        storageClass: "longhorn"
+        storageClass: longhorn
       chartmuseum:
-        storageClass: "longhorn"
+        storageClass: longhorn
       jobservice:
-        storageClass: "longhorn"
+        storageClass: longhorn
       database:
-        storageClass: "longhorn"
+        storageClass: longhorn
       redis:
-        storageClass: "longhorn"
+        storageClass: longhorn
       trivy:
-        storageClass: "longhorn"
+        storageClass: longhorn
