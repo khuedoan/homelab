@@ -30,6 +30,14 @@
       matchPackagePatterns: ".*",
       additionalBranchPrefix: "{{parentDir}}-",
       addLabels: ["renovate/{{parentDir}}"],
+    },
+    {
+      "matchPackageNames": ["app-template"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
     }
   ]
 }
