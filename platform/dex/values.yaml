@@ -69,6 +69,16 @@ dex:
           - https://auth.grigri.cloud/oauth2/callback
         secretEnv: AUTH_SSO_CLIENT_SECRET
 
+  volumeMounts:
+    - name: ca-bundle
+      mountPath: /etc/ssl/certs/ca-certificates.crt
+      readOnly: true
+  volumes:
+    - name: ca-bundle
+      hostPath:
+        path: /etc/ssl/certs/ca-certificates.crt
+        type: File
+
   ingress:
     enabled: true
     className: nginx-external
