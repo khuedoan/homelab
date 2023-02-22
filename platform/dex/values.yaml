@@ -94,3 +94,11 @@ dex:
     - hosts:
       - *host
       secretName: dex-external-tls-certificate
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 8Mi
