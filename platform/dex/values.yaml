@@ -12,13 +12,12 @@ dex:
         inCluster: true
     oauth2:
       alwaysShowLoginScreen: false
-      responseTypes: ['code', 'token', 'id_token']
       skipApprovalScreen: true
     web:
       http: 0.0.0.0:5556
     frontend:
       theme: 'tectonic'
-      issuer: 'Raspbernetes'
+      issuer: 'Grigri'
       issuerUrl: 'https://accounts.grigri.cloud'
       logoUrl: https://raw.githubusercontent.com/raspbernetes/docs/master/website/static/img/logo.png
     expiry:
