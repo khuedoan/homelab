@@ -44,5 +44,4 @@
   community.docker.docker_compose:
     project_src: "{{ role_path }}/files"
     state: present
-    restarted: true
     build: true
