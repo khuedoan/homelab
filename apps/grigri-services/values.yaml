@@ -6,6 +6,8 @@ services:
     auth: true
   - name: nextcloud
     host: nextcloud.grigri.cloud
+  - name: dex
+    host: accounts.grigri.cloud
 
 ports:
   tcp:

@@ -24,7 +24,7 @@ dex:
       signingKeys: '6h'
       idTokens: '24h'
     logger:
-      level: debug
+      level: info
       format: json
     # Disable default email auth and only use oauth2 providers configured as connectors
     enablePasswordDB: false
@@ -79,7 +79,7 @@ dex:
         type: File
 
   ingress:
-    enabled: true
+    enabled: false
     className: nginx-external
 
     annotations:
