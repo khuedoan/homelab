@@ -1,7 +1,7 @@
 dex:
   image:
     repository: dexidp/dex
-    tag: v2.33.1
+    tag: v2.35.3
   env:
     KUBERNETES_POD_namespace: dex
   config:
