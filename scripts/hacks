@@ -9,6 +9,7 @@ import base64
 import json
 import requests
 import sys
+import urllib
 
 from rich.console import Console
 from kubernetes import client, config
@@ -22,7 +23,7 @@ config.load_kube_config(config_file='./metal/kubeconfig.yaml')
 gitea_host = client.NetworkingV1Api().read_namespaced_ingress('gitea', 'gitea').spec.rules[0].host
 gitea_user = base64.b64decode(client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea').data['username']).decode("utf-8")
 gitea_pass = base64.b64decode(client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea').data['password']).decode("utf-8")
-gitea_url = f"http://{gitea_user}:{gitea_pass}@{gitea_host}"
+gitea_url = f"http://{gitea_user}:{urllib.parse.quote_plus(gitea_pass)}@{gitea_host}"
 
 vault_host = client.NetworkingV1Api().read_namespaced_ingress('vault', 'vault').spec.rules[0].host
 vault_token = base64.b64decode(client.CoreV1Api().read_namespaced_secret('vault-unseal-keys', 'vault').data['vault-root']).decode("utf-8")
