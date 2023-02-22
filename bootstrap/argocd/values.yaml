@@ -33,6 +33,11 @@ argo-cd:
             redirectURIs:
               - 'https://grafana.k8s.grigri/login/generic_oauth'
             secretEnv: GRAFANA_SSO_CLIENT_SECRET
+          - id: k8s-oauth2-proxy
+            name: k8s-oauth2-proxy
+            redirectURIs:
+              - https://auth.grigri.cloud/oauth2/callback
+            secretEnv: AUTH_SSO_CLIENT_SECRET
 
         connectors:
         - type: ldap
