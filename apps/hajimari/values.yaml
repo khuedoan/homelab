@@ -34,3 +34,6 @@ hajimari:
             url: https://app.terraform.io
           - name: Cloudflare
             url: https://dash.cloudflare.com
+  persistence:
+    data:
+      enabled: false
