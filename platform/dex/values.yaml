@@ -1,0 +1,89 @@
+dex:
+  image:
+    repository: dexidp/dex
+    tag: v2.33.1
+  env:
+    KUBERNETES_POD_namespace: dex
+  config:
+    issuer: 'https://accounts.grigri.cloud'
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
+    oauth2:
+      alwaysShowLoginScreen: false
+      responseTypes: ['code', 'token', 'id_token']
+      skipApprovalScreen: true
+    web:
+      http: 0.0.0.0:5556
+    frontend:
+      theme: 'tectonic'
+      issuer: 'Raspbernetes'
+      issuerUrl: 'https://accounts.grigri.cloud'
+      logoUrl: https://raw.githubusercontent.com/raspbernetes/docs/master/website/static/img/logo.png
+    expiry:
+      signingKeys: '6h'
+      idTokens: '24h'
+    logger:
+      level: info
+      format: json
+    # Disable default email auth and only use oauth2 providers configured as connectors
+    enablePasswordDB: false
+
+    envFrom:
+      - secretRef:
+          name: dex-secrets
+
+    # Remember you can have multiple connectors of the same 'type' (with different 'id's)
+    # If you need e.g. logins with groups for two different Microsoft 'tenants'
+    connectors:
+    - config:
+        bindDN: $LDAP_BINDDN
+        bindPW: $LDAP_BINDPW
+        groupSearch:
+          baseDN: ou=Groups,dc=grigri,dc=cloud
+          filter: (objectClass=posixGroup)
+          nameAttr: cn
+          userMatchers:
+          - groupAttr: dn
+            userAttr: memberOf
+        host: ldap.grigri:389
+        startTLS: true
+        userSearch:
+          baseDN: ou=People,dc=grigri,dc=cloud
+          emailAttr: mail
+          filter: (&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))
+          idAttr: uid
+          nameAttr: cn
+          preferredUsernameAttr: cn
+          username: uid
+        usernamePrompt: Username
+      id: ldap
+      name: LDAP.GRIGRI
+      type: ldap
+
+    staticClients:
+      - id: k8s-oauth2-proxy
+        name: k8s-oauth2-proxy
+        redirectURIs:
+          - https://auth.grigri.cloud/oauth2/callback
+        secretEnv: AUTH_SSO_CLIENT_SECRET
+
+  ingress:
+    enabled: true
+    className: nginx-external
+
+    annotations:
+      external-dns.alpha.kubernetes.io/enabled: "true"
+      external-dns.alpha.kubernetes.io/target: grigri.cloud
+      cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+
+    hosts:
+      - host: &host accounts.grigri.cloud
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - *host
+      secretName: dex-external-tls-certificate
