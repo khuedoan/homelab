@@ -4,6 +4,9 @@ dex:
     tag: v2.35.3
   env:
     KUBERNETES_POD_namespace: dex
+  envFrom:
+    - secretRef:
+        name: dex-secrets
   config:
     issuer: 'https://accounts.grigri.cloud'
     storage:
@@ -27,37 +30,33 @@ dex:
     # Disable default email auth and only use oauth2 providers configured as connectors
     enablePasswordDB: false
 
-    envFrom:
-      - secretRef:
-          name: dex-secrets
-
     # Remember you can have multiple connectors of the same 'type' (with different 'id's)
     # If you need e.g. logins with groups for two different Microsoft 'tenants'
     connectors:
-    - config:
-        bindDN: $LDAP_BINDDN
-        bindPW: $LDAP_BINDPW
-        groupSearch:
-          baseDN: ou=Groups,dc=grigri,dc=cloud
-          filter: (objectClass=posixGroup)
-          nameAttr: cn
-          userMatchers:
-          - groupAttr: dn
-            userAttr: memberOf
-        host: ldap.grigri:389
-        startTLS: true
-        userSearch:
-          baseDN: ou=People,dc=grigri,dc=cloud
-          emailAttr: mail
-          filter: (&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))
-          idAttr: uid
-          nameAttr: cn
-          preferredUsernameAttr: cn
-          username: uid
-        usernamePrompt: Username
-      id: ldap
-      name: LDAP.GRIGRI
-      type: ldap
+      - config:
+          bindDN: $LDAP_BINDDN
+          bindPW: $LDAP_BINDPW
+          groupSearch:
+            baseDN: ou=Groups,dc=grigri,dc=cloud
+            filter: (objectClass=posixGroup)
+            nameAttr: cn
+            userMatchers:
+              - groupAttr: dn
+                userAttr: memberOf
+          host: ldap.grigri:389
+          startTLS: true
+          userSearch:
+            baseDN: ou=People,dc=grigri,dc=cloud
+            emailAttr: mail
+            filter: (&(objectClass=inetOrgPerson)(memberOf=cn=wheel,ou=Groups,dc=grigri,dc=cloud))
+            idAttr: uid
+            nameAttr: cn
+            preferredUsernameAttr: cn
+            username: uid
+          usernamePrompt: Username
+        id: ldap
+        name: LDAP.GRIGRI
+        type: ldap
 
     staticClients:
       - id: k8s-oauth2-proxy
@@ -91,9 +90,9 @@ dex:
           - path: /
             pathType: ImplementationSpecific
     tls:
-    - hosts:
-      - *host
-      secretName: dex-external-tls-certificate
+      - hosts:
+          - *host
+        secretName: dex-external-tls-certificate
 
   resources:
     limits:
