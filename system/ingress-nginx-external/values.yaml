@@ -83,8 +83,3 @@ ingress-nginx:
 
   tcp:
     29518: gitea/gitea-ssh:22
-    58846: deluge/deluge:58846
-    32400: grigri-services/grigri-ports:32400
-    11000: deluge/deluge:11000
-  upd:
-    32400: grigri-services/grigri-ports-udp:32400

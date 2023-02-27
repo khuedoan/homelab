@@ -9,6 +9,10 @@ app-template:
     PGID: "991"
   service:
     main:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: "192.168.193.6"
+      externalTrafficPolicy: Local
       ports:
         http:
           port: 8112
