@@ -1,16 +1,6 @@
 services:
-  - name: plex
-    host: plex.grigri.cloud
   - name: netdata
     host: netdata.grigri.cloud
     auth: true
   - name: nextcloud
     host: nextcloud.grigri.cloud
-
-ports:
-  tcp:
-    - name: plex-32400
-      port: 32400
-  udp:
-    - name: plex-32400
-      port: 32400

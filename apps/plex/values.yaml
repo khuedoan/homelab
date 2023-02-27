@@ -34,22 +34,22 @@ app-template:
         - hosts:
             - *host
           secretName: plex-tls-certificate
-    #external:
-    #  enabled: true
-    #  ingressClassName: nginx-external
-    #  annotations:
-    #    external-dns.alpha.kubernetes.io/enabled: "true"
-    #    external-dns.alpha.kubernetes.io/target: grigri.cloud
-    #    cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-    #  hosts:
-    #    - host: &host plex.grigri.cloud
-    #      paths:
-    #        - path: /
-    #          pathType: Prefix
-    #  tls:
-    #    - hosts:
-    #        - *host
-    #      secretName: plex-external-tls-certificate
+    external:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+      hosts:
+        - host: &host plex.grigri.cloud
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: plex-external-tls-certificate
   podSecurityContext:
     runAsUser: 995
     runAsGroup: 991
