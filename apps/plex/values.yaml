@@ -67,19 +67,16 @@ app-template:
       type: hostPath
       hostPath: /datasets/series
       mountPath: /datasets/series
-      readOnly: true
     peliculas:
       enabled: true
       type: hostPath
       hostPath: /datasets/peliculas
       mountPath: /datasets/peliculas
-      readOnly: true
     documentales:
       enabled: true
       type: hostPath
       hostPath: /datasets/documentales
       mountPath: /datasets/documentales
-      readOnly: true
     transcode:
       enabled: true
       type: emptyDir
