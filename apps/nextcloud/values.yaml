@@ -225,7 +225,7 @@ nextcloud:
           - NET_BIND_SERVICE
         drop:
           - ALL
-      runAsUser: "994"
+      runAsUser: 994
       runAsGroup: 990
       fsGroup: 990
       fsGroupChangePolicy: "OnRootMismatch"
