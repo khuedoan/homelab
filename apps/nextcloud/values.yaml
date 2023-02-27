@@ -219,13 +219,12 @@ nextcloud:
       #- name: fotos
       #  mountPath: /var/www/html/data/pando/files/fotos
       #  readOnly: true
-    podSecurityContext:
-      capabilities:
-        add:
-          - NET_BIND_SERVICE
-        drop:
-          - ALL
   securityContext:
+    capabilities:
+      add:
+        - NET_BIND_SERVICE
+      drop:
+        - ALL
     runAsUser: 994
     runAsGroup: 990
     fsGroup: 990
