@@ -100,10 +100,10 @@ nextcloud:
 
   resources:
     limits:
-      memory: 512Mi
+      memory: 2Gi
     requests:
       cpu: 400m
-      memory: 128Mi
+      memory: 512Mi
 
   nextcloud:
     host: nextcloud.grigri.cloud

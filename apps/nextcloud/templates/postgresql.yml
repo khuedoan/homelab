@@ -9,11 +9,10 @@ spec:
 
   resources:
     requests:
-      cpu: 10m
+      cpu: 100m
       memory: 128Mi
     limits:
-      cpu: 500m
-      memory: 256Mi
+      memory: 1Gi
 
   volume:
     size: 1.5Gi
@@ -26,7 +25,7 @@ spec:
   databases:
     nextcloud: nextcloud
 
-  dockerImage: registry.opensource.zalan.do/acid/spilo-cdp-arm64-14:2.1-p232
+  dockerImage: ghcr.io/zalando/spilo-15:2.1-p9
 
   postgresql:
     version: "14"
@@ -40,12 +39,3 @@ spec:
       log_lock_waits: 'off'
       log_min_duration_statement: "-1"
       log_statement: none
-
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/arch
-            operator: In
-            values:
-            - arm64
