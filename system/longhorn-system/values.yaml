@@ -12,6 +12,9 @@ defaultSettings:
   backupTargetCredentialSecret: minio-secret
   concurrentAutomaticEngineUpgradePerNodeLimit: 1
 
+persistence:
+  removeSnapshotsDuringFilesystemTrim: enabled
+
 resources:
   limits:
     cpu: 100m
