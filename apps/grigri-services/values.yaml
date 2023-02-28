@@ -2,5 +2,3 @@ services:
   - name: netdata
     host: netdata.grigri.cloud
     auth: true
-  - name: nextcloud
-    host: nextcloud.grigri.cloud

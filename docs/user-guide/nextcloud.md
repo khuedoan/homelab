@@ -29,6 +29,48 @@ KUBECONFIG=/tmp/kubeconfig.yaml kubectl -n nextcloud exec -it $POD_NAME -- bash
 chown -R www-data:www-data /var/www/html/data
 ```
 
+Alternative using rsync:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rsync
+  namespace: nextcloud
+spec:
+  template:
+    metadata:
+      name: rsync
+    spec:
+      containers:
+        - name: rsync
+          image: instrumentisto/rsync-ssh
+          command:
+            - rsync
+            - -avz
+            - --numeric-ids
+            - --delete
+            - --progress
+            - /src/
+            - /dest/data/
+          volumeMounts:
+            - name: src
+              mountPath: "/src/"
+            - name: dest
+              mountPath: "/dest/"
+      volumes:
+        - name: src
+          hostPath:
+            path: /datasets/nextcloud/
+            type: Directory
+        - name: dest
+          persistentVolumeClaim:
+            claimName: nextcloud-nextcloud-data
+      restartPolicy: Never
+      nodeSelector:
+        name: grigri
+```
+
 ### Postgres
 
 ```bash

@@ -5,12 +5,11 @@ nextcloud:
 
   ingress:
     enabled: true
-    className: nginx-internal
+    ingressClassName: nginx-external
     annotations:
-      cert-manager.io/cluster-issuer: internal
-      hajimari.io/enable: "true"
-      hajimari.io/icon: simple-icons:nextcloud
-      hajimari.io/info: File and Calendar server
+      external-dns.alpha.kubernetes.io/enabled: "true"
+      external-dns.alpha.kubernetes.io/target: grigri.cloud
+      cert-manager.io/cluster-issuer: letsencrypt-prod-dns
       nginx.ingress.kubernetes.io/proxy-body-size: 10G
       nginx.ingress.kubernetes.io/server-snippet: |-
         server_tokens off;
@@ -61,7 +60,7 @@ nextcloud:
       nginx.ingress.kubernetes.io/enable-global-auth: "false"
     tls:
       - hosts:
-          - nextcloud.k8s.grigri
+          - nextcloud.grigri.cloud
         secretName: nextcloud-tls-certificate
 
   redis:
@@ -101,15 +100,13 @@ nextcloud:
 
   resources:
     limits:
-      cpu: 2
       memory: 512Mi
     requests:
       cpu: 400m
       memory: 128Mi
 
   nextcloud:
-    host: nextcloud.k8s.grigri
-    # host: nextcloud.grigri.cloud
+    host: nextcloud.grigri.cloud
     existingSecret:
       enabled: true
       secretName: nextcloud
@@ -187,18 +184,18 @@ nextcloud:
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
           type: File
-      #- name: nextcloud-billee-data
-      #  hostPath:
-      #    path: /datasets/nextcloud/billee
-      #    type: Directory
-      #- name: nextcloud-teresa-data
-      #  hostPath:
-      #    path: /datasets/nextcloud/teresa
-      #    type: Directory
-      #- name: nextcloud-pando-data
-      #  hostPath:
-      #    path: /datasets/nextcloud/pando
-      #    type: Directory
+      - name: nextcloud-billee-data
+        hostPath:
+          path: /datasets/nextcloud/billee
+          type: Directory
+      - name: nextcloud-teresa-data
+        hostPath:
+          path: /datasets/nextcloud/teresa
+          type: Directory
+      - name: nextcloud-pando-data
+        hostPath:
+          path: /datasets/nextcloud/pando
+          type: Directory
       - name: fotos
         hostPath:
           path: /datasets/fotos
@@ -207,30 +204,21 @@ nextcloud:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
-      #- name: nextcloud-billee-data
-      #  mountPath: /var/www/html/data/billie
-      #  readOnly: true
-      #- name: nextcloud-teresa-data
-      #  mountPath: /var/www/html/data/teresa
-      #  readOnly: true
-      #- name: nextcloud-pando-data
-      #  mountPath: /var/www/html/data/pando
-      #  readOnly: true
-      #- name: fotos
-      #  mountPath: /var/www/html/data/pando/files/fotos
-      #  readOnly: true
-  # capabilities is not working so we have to change apache port and use nextcloud.containerPort
-  # to define it
-  #securityContext:
-  #  capabilities:
-  #    add:
-  #      - NET_BIND_SERVICE
-  #    drop:
-  #      - ALL
-  #  runAsUser: 994
-  #  runAsGroup: 990
-  #  fsGroup: 990
-  #  fsGroupChangePolicy: "OnRootMismatch"
+      - name: nextcloud-billee-data
+        mountPath: /var/www/html/data/billie
+        readOnly: true
+      - name: nextcloud-teresa-data
+        mountPath: /var/www/html/data/teresa
+        readOnly: true
+      - name: nextcloud-pando-data
+        mountPath: /var/www/html/data/pando
+        readOnly: true
+      - name: fotos
+        mountPath: /var/www/html/data/pando/files/fotos
+        readOnly: true
+
+  securityContext:
+    fsGroupChangePolicy: "OnRootMismatch"
 
   nodeSelector:
     name: grigri
