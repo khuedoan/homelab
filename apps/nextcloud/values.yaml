@@ -89,7 +89,7 @@ nextcloud:
     storageClass: longhorn-ssd
 
     accessMode: ReadWriteOnce
-    size: 1Gi
+    size: 5Gi
 
     nextcloudData:
       enabled: true
