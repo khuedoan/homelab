@@ -15,7 +15,7 @@ spec:
       memory: 1Gi
 
   volume:
-    size: 1.5Gi
+    size: 2.5Gi
     storageClass: longhorn-ssd
 
   users:
