@@ -1,8 +1,11 @@
-{
-  "extends": [
+module.exports = {
+  extends: [
     "@commitlint/config-conventional"
   ],
-  "rules": {
+  parserPreset: {
+    parserOpts: { headerPattern: /^([^\(\):]*)(?:\((.*)\))?!?: (.*)$/ }
+  },
+  rules: {
     "type-enum": [
       0,
       "always"
@@ -24,4 +27,4 @@
       "always"
     ]
   }
-}
+};
