@@ -1,0 +1,78 @@
+#https://github.com/democratic-csi/democratic-csi/pkgs/container/democratic-csi#multiple-deployments
+democratic-csi:
+  driver:
+    config:
+      driver: zfs-local-dataset
+
+      zfs:
+        # total volume name (zvol/<datasetParentName>/<pvc name>) length cannot exceed 63 chars
+        # https://www.ixsystems.com/documentation/freenas/11.2-U5/storage.html#zfs-zvol-config-opts-tab
+        # standard volume naming overhead is 46 chars
+        # datasetParentName should therefore be 17 chars or less when using TrueNAS 12 or below
+        datasetParentName: datasets/k8s/l/v
+        detachedSnapshotsDatasetParentName: datasets/k8s/l/s
+
+        datasetProperties:
+          compression: lz4
+          "grigri:description": "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+        datasetEnableQuotas: true
+        datasetEnableReservation: false
+
+  csiDriver:
+    name: "org.democratic-csi.zfs-local-dataset"
+    storageCapacity: true
+    fsGroupPolicy: File
+
+  controller:
+    driver:
+      enabled: true
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.1
+
+    strategy: node
+    externalProvisioner:
+      extraArgs:
+        - --leader-election=false
+        - --node-deployment=true
+        - --node-deployment-immediate-binding=false
+        - --feature-gates=Topology=true
+        - --strict-topology=true
+        - --enable-capacity=true
+        - --capacity-ownerref-level=1
+
+    externalResizer:
+      enabled: false
+
+    externalSnapshotter:
+      enabled: true
+      extraArgs:
+        - --leader-election=false
+        - --node-deployment=true
+
+    nodeSelector:
+      name: grigri
+
+  node:
+    driver:
+      enabled: true
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.1
+      resources:
+
+    driverRegistrar:
+      enabled: true
+      resources:
+
+    nodeSelector:
+      name: grigri
+
+  storageClasses:
+    - name: local-dataset
+      defaultClass: false
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
+      allowVolumeExpansion: true
+      parameters:
+        fsType: zfs
+
+  volumeSnapshotClasses:
+    - name: zfs-local-dataset
+      deletionPolicy: Delete
