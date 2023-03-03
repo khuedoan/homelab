@@ -24,12 +24,10 @@ democratic-csi:
     fsGroupPolicy: File
 
   controller:
-    driver:
-      enabled: true
-      image: ghcr.io/democratic-csi/democratic-csi:v1.8.1
-
+    enabled: true
     strategy: node
     externalProvisioner:
+      image: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
       extraArgs:
         - --leader-election=false
         - --node-deployment=true
@@ -43,36 +41,23 @@ democratic-csi:
       enabled: false
 
     externalSnapshotter:
-      enabled: true
-      extraArgs:
-        - --leader-election=false
-        - --node-deployment=true
-
-    nodeSelector:
-      name: grigri
+      enabled: false
 
   node:
     driver:
       enabled: true
       image: ghcr.io/democratic-csi/democratic-csi:v1.8.1
-      resources:
-
-    driverRegistrar:
-      enabled: true
-      resources:
 
     nodeSelector:
       name: grigri
 
   storageClasses:
-    - name: local-dataset
+    - name: zfs-local-dataset
       defaultClass: false
       reclaimPolicy: Delete
-      volumeBindingMode: Immediate
-      allowVolumeExpansion: true
+      volumeBindingMode: WaitForFirstConsumer
+      allowVolumeExpansion: false
       parameters:
         fsType: zfs
 
-  volumeSnapshotClasses:
-    - name: zfs-local-dataset
-      deletionPolicy: Delete
+  volumeSnapshotClasses: []
