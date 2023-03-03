@@ -10,4 +10,6 @@ spec:
       targetPort: 27017
   clusterIP: None
   selector:
-    role: mongo
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: mongo
+    app.kubernetes.io/name: telegram-bot
