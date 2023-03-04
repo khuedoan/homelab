@@ -1,4 +1,4 @@
-k8s-scheduled-volume-snapshotter:
+scheduled-volume-snapshotter:
   image:
     repository: pando85/scheduled-volume-snapshotter
     tag: v0.13.0
