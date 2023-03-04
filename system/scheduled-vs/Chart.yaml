@@ -1,7 +1,0 @@
-apiVersion: v2
-name: scheduled-vs
-version: 0.0.0
-dependencies:
-  - name: scheduled-volume-snapshotter
-    version: 0.13.0
-    repository: https://raw.githubusercontent.com/ryaneorth/k8s-scheduled-volume-snapshotter/main/repo

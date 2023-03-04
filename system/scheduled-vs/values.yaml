@@ -1,6 +1,0 @@
-scheduled-volume-snapshotter:
-  image:
-    repository: pando85/scheduled-volume-snapshotter
-    tag: v0.13.0
-
-  schedule: "0 3 * * *"
