@@ -87,13 +87,14 @@ nextcloud:
     # Nextcloud Data (/var/www/html)
     enabled: true
     storageClass: longhorn-ssd
-
+    # existingClaim:
     accessMode: ReadWriteOnce
     size: 5Gi
 
     nextcloudData:
       enabled: true
       subPath:
+      # existingClaim:
       storageClass: longhorn
       accessMode: ReadWriteOnce
       size: 1000Gi
@@ -206,16 +207,12 @@ nextcloud:
         readOnly: true
       - name: nextcloud-billee-data
         mountPath: /var/www/html/data/billie
-        readOnly: true
       - name: nextcloud-teresa-data
         mountPath: /var/www/html/data/teresa
-        readOnly: true
       - name: nextcloud-pando-data
         mountPath: /var/www/html/data/pando
-        readOnly: true
       - name: fotos
         mountPath: /var/www/html/data/pando/files/fotos
-        readOnly: true
 
   securityContext:
     fsGroupChangePolicy: "OnRootMismatch"
