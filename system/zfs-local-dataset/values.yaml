@@ -31,7 +31,7 @@ democratic-csi:
       extraArgs:
         - --leader-election=false
         - --node-deployment=true
-        - --node-deployment-immediate-binding=false
+        - --node-deployment-immediate-binding=true
         - --feature-gates=Topology=true
         - --strict-topology=true
         - --enable-capacity=true
@@ -41,12 +41,17 @@ democratic-csi:
       enabled: false
 
     externalSnapshotter:
-      enabled: false
+      enabled: true
+      image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
+      extraArgs:
+        - --leader-election=false
+        - --node-deployment=true
 
   node:
     driver:
       enabled: true
       image: ghcr.io/democratic-csi/democratic-csi:v1.8.1
+      logLevel: info
 
     nodeSelector:
       name: grigri
@@ -55,9 +60,14 @@ democratic-csi:
     - name: zfs-local-dataset
       defaultClass: false
       reclaimPolicy: Delete
-      volumeBindingMode: WaitForFirstConsumer
+      volumeBindingMode: Immediate
       allowVolumeExpansion: false
       parameters:
         fsType: zfs
 
-  volumeSnapshotClasses: []
+  volumeSnapshotClasses:
+    - name: zfs-local-dataset
+      parameters:
+        detachedSnapshots: "false"
+      secrets:
+        snapshotter-secret:

@@ -18,7 +18,8 @@ metadata:
   name: snapshot-controller-runner
 rules:
   - apiGroups: [""]
-    resources: ["persistentvolumes"]
+    # nodes needed by zfs-local-dataset
+    resources: ["persistentvolumes", "nodes"]
     verbs: ["get", "list", "watch"]
   - apiGroups: [""]
     resources: ["persistentvolumeclaims"]

@@ -12,7 +12,7 @@ metadata:
   name: snapshot-controller
   namespace: kube-system
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: snapshot-controller
@@ -20,6 +20,11 @@ spec:
   # in #504 the snapshot-controller will exit after around 7.5 seconds if it
   # can't find the v1 CRDs so this value should be greater than that
   minReadySeconds: 15
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -28,15 +33,10 @@ spec:
       serviceAccountName: snapshot-controller
       containers:
         - name: snapshot-controller
-          image: gcr.io/k8s-staging-sig-storage/snapshot-controller:v6.0.1
+          image: registry.k8s.io/sig-storage/snapshot-controller:v6.2.1
           args:
             - "--v=5"
             - "--leader-election=true"
+            # needed by zfs-local-dataset
+            - "--enable-distributed-snapshotting"
           imagePullPolicy: IfNotPresent
-          resources:
-            requests:
-              cpu: 10m
-              memory: 17Mi
-            limits:
-              cpu: 100m
-              memory: 64Mi
