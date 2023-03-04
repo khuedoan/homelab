@@ -69,5 +69,3 @@ democratic-csi:
     - name: zfs-local-dataset
       parameters:
         detachedSnapshots: "false"
-      secrets:
-        snapshotter-secret:
