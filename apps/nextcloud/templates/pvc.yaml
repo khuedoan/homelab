@@ -5,6 +5,7 @@ metadata:
     app.kubernetes.io/component: app
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/name: nextcloud
+    backup: nextcloud-zfs
   name: nextcloud-nextcloud-data-zfs
   namespace: nextcloud
 spec:
