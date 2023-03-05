@@ -72,6 +72,13 @@ app-template:
     limits:
       cpu: 1.5
       memory: 3Gi
-
+  probes:
+    liveness: &probe
+      spec:
+        initialDelaySeconds: 0
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 3
+    readiness: *probe
   nodeSelector:
     name: grigri
