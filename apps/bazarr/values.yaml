@@ -3,7 +3,7 @@ app-template:
     type: statefulset
   image:
     repository: ghcr.io/onedr0p/bazarr
-    tag: 1.1.4@sha256:b5ff5d86f309c7af0ac5de96df7f1b8ff399d3d671a45f5e7a8f41526831aa97
+    tag: 1.1.4@sha256:e6236007abc7369fe2af1737a256ff2b24499d5d24b87013d526d55f33530c0b
   env:
     TZ: Europe/Madrid
   service:
