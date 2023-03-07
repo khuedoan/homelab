@@ -6,6 +6,8 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/name: nextcloud
     backup: nextcloud-zfs
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
   name: nextcloud-nextcloud-data-zfs
   namespace: nextcloud
 spec:
