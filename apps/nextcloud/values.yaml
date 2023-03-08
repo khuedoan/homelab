@@ -93,11 +93,7 @@ nextcloud:
 
     nextcloudData:
       enabled: true
-      subPath:
-      # existingClaim:
-      storageClass: longhorn
-      accessMode: ReadWriteOnce
-      size: 1000Gi
+      existingClaim: nextcloud-nextcloud-data-zfs
 
   resources:
     limits:
@@ -185,31 +181,10 @@ nextcloud:
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
           type: File
-      - name: nextcloud-data-zfs
-        persistentVolumeClaim:
-          claimName: nextcloud-nextcloud-data-zfs
-      - name: nextcloud-pando-data
-        hostPath:
-          path: /datasets/nextcloud/pando
-          type: Directory
-      - name: fotos
-        hostPath:
-          path: /datasets/fotos
-          type: Directory
     extraVolumeMounts:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
-      - name: nextcloud-data-zfs
-        mountPath: /var/www/html/data/billee
-        subPath: data/billee
-      - name: nextcloud-data-zfs
-        mountPath: /var/www/html/data/teresa
-        subPath: data/teresa
-      - name: nextcloud-pando-data
-        mountPath: /var/www/html/data/pando
-      - name: fotos
-        mountPath: /var/www/html/data/pando/files/fotos
 
   securityContext:
     fsGroupChangePolicy: "OnRootMismatch"
