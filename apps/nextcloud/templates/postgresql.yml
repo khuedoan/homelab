@@ -16,7 +16,7 @@ spec:
 
   volume:
     size: 2.5Gi
-    storageClass: longhorn-ssd
+    storageClass: zfs-local-dataset
 
   users:
     nextcloud:
