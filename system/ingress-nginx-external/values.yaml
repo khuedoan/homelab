@@ -47,7 +47,6 @@ ingress-nginx:
       enabled: true
       annotations:
         metallb.universe.tf/loadBalancerIPs: "192.168.193.4"
-        metallb.universe.tf/allow-shared-ip: "xduCBf1jNZ"
 
       enableHttp: true
       enableHttps: true
@@ -61,6 +60,7 @@ ingress-nginx:
         https: https
 
       type: LoadBalancer
+      externalTrafficPolicy: Local
       internal:
         enabled: false
 
