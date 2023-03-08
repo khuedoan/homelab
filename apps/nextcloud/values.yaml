@@ -84,16 +84,11 @@ nextcloud:
     successfulJobsHistoryLimit: 1
 
   persistence:
-    # Nextcloud Data (/var/www/html)
     enabled: true
-    storageClass: longhorn-ssd
-    # existingClaim:
-    accessMode: ReadWriteOnce
-    size: 5Gi
+    existingClaim: nextcloud-nextcloud-data-zfs
 
     nextcloudData:
-      enabled: true
-      existingClaim: nextcloud-nextcloud-data-zfs
+      enabled: false
 
   resources:
     limits:
@@ -176,6 +171,7 @@ nextcloud:
         secure: tls
         port: 587
         authtype: LOGIN
+    # LDAP TLS connection
     extraVolumes:
       - name: ca-bundle
         hostPath:
