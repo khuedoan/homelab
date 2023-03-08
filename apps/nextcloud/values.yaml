@@ -185,14 +185,9 @@ nextcloud:
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
           type: File
-      - name: nextcloud-billee-data
-        hostPath:
-          path: /datasets/nextcloud/billee
-          type: Directory
-      - name: nextcloud-teresa-data
-        hostPath:
-          path: /datasets/nextcloud/teresa
-          type: Directory
+      - name: nextcloud-data-zfs
+        persistentVolumeClaim:
+          claimName: nextcloud-nextcloud-data-zfs
       - name: nextcloud-pando-data
         hostPath:
           path: /datasets/nextcloud/pando
@@ -205,10 +200,12 @@ nextcloud:
       - name: ca-bundle
         mountPath: /etc/ssl/certs/ca-certificates.crt
         readOnly: true
-      - name: nextcloud-billee-data
-        mountPath: /var/www/html/data/billie
-      - name: nextcloud-teresa-data
+      - name: nextcloud-data-zfs
+        mountPath: /var/www/html/data/billee
+        subPath: data/billee
+      - name: nextcloud-data-zfs
         mountPath: /var/www/html/data/teresa
+        subPath: data/teresa
       - name: nextcloud-pando-data
         mountPath: /var/www/html/data/pando
       - name: fotos
