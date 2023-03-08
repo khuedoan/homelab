@@ -74,12 +74,7 @@ app-template:
       memory: 3Gi
   probes:
     liveness: &probe
-      enabled: false
-      spec:
-        initialDelaySeconds: 0
-        periodSeconds: 30
-        timeoutSeconds: 5
-        failureThreshold: 3
+      enabled: true
     readiness: *probe
   nodeSelector:
     name: grigri
