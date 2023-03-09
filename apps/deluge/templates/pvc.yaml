@@ -7,7 +7,7 @@ metadata:
     backup: deluge-zfs
   annotations:
     argocd.argoproj.io/sync-options: Prune=false
-  name: config-deluge-0-zfs
+  name: config-deluge-zfs
 spec:
   accessModes:
     - ReadWriteOnce
