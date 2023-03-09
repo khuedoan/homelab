@@ -1,0 +1,13 @@
+apiVersion: snapscheduler.backube/v1
+kind: SnapshotSchedule
+metadata:
+  name: radarr-zfs-backups
+spec:
+  retention:
+    maxCount: 20
+  schedule: "0 3 * * *"
+  claimSelector:
+    matchLabels:
+      backup: radarr-zfs
+  snapshotTemplate:
+    snapshotClassName: zfs-local-dataset
