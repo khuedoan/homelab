@@ -13,5 +13,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi
   storageClassName: zfs-local-dataset
