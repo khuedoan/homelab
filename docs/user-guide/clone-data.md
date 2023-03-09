@@ -30,7 +30,7 @@ spec:
             - name: dest
               mountPath: "/dest/"
       volumes:
-        - name: dest
+        - name: src
           persistentVolumeClaim:
             claimName: config-plex-0
         - name: dest
