@@ -1,0 +1,13 @@
+apiVersion: snapscheduler.backube/v1
+kind: SnapshotSchedule
+metadata:
+  name: plex-zfs-backups
+spec:
+  retention:
+    maxCount: 20
+  schedule: "0 3 * * *"
+  claimSelector:
+    matchLabels:
+      backup: plex-zfs
+  snapshotTemplate:
+    snapshotClassName: zfs-local-dataset

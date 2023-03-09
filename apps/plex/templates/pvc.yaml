@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: plex
+    app.kubernetes.io/name: plex
+    backup: plex-zfs
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: config-plex-0-zfs
+  namespace: nextcloud
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: zfs-local-dataset
