@@ -43,13 +43,11 @@ app-template:
   podSecurityContext:
     fsGroup: 991
     fsGroupChangePolicy: "OnRootMismatch"
-  volumeClaimTemplates:
-    - name: config
-      mountPath: /config
-      accessMode: ReadWriteOnce
-      size: 1Gi
-      storageClass: longhorn-ssd
   persistence:
+    config:
+      enabled: true
+      mountPath: /config
+      existingClaim: config-deluge-zfs
     series:
       enabled: true
       type: hostPath
