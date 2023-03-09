@@ -8,7 +8,6 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: Prune=false
   name: config-plex-0-zfs
-  namespace: nextcloud
 spec:
   accessModes:
     - ReadWriteOnce
