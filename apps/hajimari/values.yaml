@@ -28,3 +28,7 @@ hajimari:
             url: https://homelab.k8s.grigri
           - name: Public GitHub repository
             url: https://github.com/pando85/homelab
+
+  persistence:
+    data:
+      enabled: false
