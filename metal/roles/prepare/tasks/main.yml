@@ -166,3 +166,8 @@
   ignore_errors: true
   tags:
     - sysstat-collect
+
+- name: Set up storage dependencies
+  import_tasks: storage_dependencies.yml
+  tags:
+    - storage-dependencies

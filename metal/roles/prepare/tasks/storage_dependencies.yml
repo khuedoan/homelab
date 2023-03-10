@@ -1,0 +1,19 @@
+- name: Install storage dependencies
+  apt:
+    name:
+      # zfs-generic-iscsi
+      - open-iscsi
+      - lsscsi
+      - sg3-utils
+      - scsitools
+      # zfs-generic-nfs
+      - nfs-common
+    state: latest
+    force_apt_get: true
+    update_cache: true
+
+- name: Ensure open-iscsi services are running
+  systemd:
+    name: open-iscsi
+    enabled: true
+    state: started
