@@ -32,9 +32,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Verify Renovate Configuration
-        uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.3
-
       - name: Get token
         id: get_token
         uses: machine-learning-apps/actions-app-token@master
@@ -48,7 +45,7 @@ jobs:
           echo "LOG_LEVEL=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" >> "$GITHUB_ENV"
 
       - name: Renovate
-        uses: renovatebot/github-action@v34.152.5
+        uses: renovatebot/github-action@v35.0.0
         with:
           configurationFile: .github/renovate.json5
           token: "${{ steps.get_token.outputs.app_token }}"

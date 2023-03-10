@@ -26,7 +26,7 @@ repos:
       - id: terraform-fmt
       - id: terraform-validate
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 32.177.0
+    rev: 35.0.0
     hooks:
       - id: renovate-config-validator
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
