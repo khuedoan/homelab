@@ -9,7 +9,7 @@
   username: "renovate85-bot[bot]",
   repositories: ["pando85/homelab"],
   gitAuthor: "Renovate <4646670+renovate85-bot[bot]@users.noreply.github.com>",
-  forkInclusion: "enabled",
+  forkProcessing: "enabled",
   rebaseWhen: "conflicted",
   branchConcurrentLimit: 10,
   commitMessagePrefix: "{{parentDir}}: ",
