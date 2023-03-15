@@ -1,0 +1,38 @@
+- name: Create democratic-csi zfs user
+  hosts:
+    - grigri
+  tasks:
+    - name: "Add group zfs-nfs"
+      group:
+        name: "democraticcsi"
+        gid: 985
+      tags:
+        - democratic-csi
+
+    - name: "Add user democraticcsi"
+      user:
+        name: "democraticcsi"
+        shell: /bin/bash
+        uid: 989
+        groups: "democraticcsi"
+        append: yes
+      tags:
+        - democratic-csi
+
+    - name: Allow sudo without password
+      lineinfile:
+        path: /etc/sudoers
+        regexp: "^democraticcsi"
+        line: "democraticcsi   ALL = NOPASSWD: /sbin/zfs"
+      tags:
+        - democratic-csi
+
+    - name: Set authorized keys
+      authorized_key:
+        user: democraticcsi
+        state: present
+        key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIq7FYc59kz3wAjmfdB4k26fco0AQ8nZ43DBFJCLArt1
+      tags:
+        - democratic-csi
+
+    # currently added also to AllowUsers in `/etc/sshd_config`

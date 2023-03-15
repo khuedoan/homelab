@@ -1,0 +1,7 @@
+apiVersion: v2
+name: zfs-grigri-nfs
+version: 0.0.0
+dependencies:
+  - name: democratic-csi
+    version: 0.13.5
+    repository: https://democratic-csi.github.io/charts

@@ -12,3 +12,6 @@
 
 - name: Setup Etcd backups
   ansible.builtin.import_playbook: backup-etcd.yml
+
+- name: Setup democratic-csi user
+  ansible.builtin.import_playbook: democratic-csi-user.yml
