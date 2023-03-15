@@ -7,7 +7,6 @@ cert-manager:
       cpu: 10m
       memory: 36Mi
     limits:
-      cpu: 100m
       memory: 128Mi
 
   extraArgs:
@@ -31,7 +30,6 @@ cert-manager:
         cpu: 10m
         memory: 18Mi
       limits:
-        cpu: 100m
         memory: 128Mi
 
   cainjector:
@@ -40,5 +38,4 @@ cert-manager:
         cpu: 20m
         memory: 72Mi
       limits:
-        cpu: 100m
         memory: 172Mi

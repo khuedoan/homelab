@@ -94,7 +94,6 @@ grafana:
   sidecar:
     resources:
       limits:
-        cpu: 100m
         memory: 128Mi
       requests:
         cpu: 100m
@@ -167,7 +166,6 @@ prometheusOperator:
 
   resources:
     limits:
-      cpu: 200m
       memory: 200Mi
     requests:
       cpu: 100m
@@ -199,7 +197,7 @@ prometheus:
         cpu: 1
         memory: 2Gi
       limits:
-        cpu: 3
+        cpu: 4
         memory: 2.5Gi
     storageSpec:
       volumeClaimTemplate:

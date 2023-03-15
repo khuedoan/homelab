@@ -42,7 +42,6 @@ oauth2-proxy:
       cpu: 10m
       memory: 14Mi
     limits:
-      cpu: 100m
       memory: 32Mi
 
   affinity:
