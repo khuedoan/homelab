@@ -52,7 +52,10 @@ democratic-csi:
       enabled: true
       image: ghcr.io/democratic-csi/democratic-csi:v1.8.1
       logLevel: info
-
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
     nodeSelector:
       name: grigri
 
