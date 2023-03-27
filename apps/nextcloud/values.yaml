@@ -203,7 +203,7 @@ app-template:
     fullnameOverride: redis
   image:
     repository: redis
-    tag: 7.0.9
+    tag: 7.0.10
 
 
   nodeSelector:
