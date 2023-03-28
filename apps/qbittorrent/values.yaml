@@ -57,6 +57,7 @@ app-template:
       tls:
         - hosts:
             - *host
+          secretName: qbittorrent-external-tls-certificate
 
   metrics:
     enabled: true
