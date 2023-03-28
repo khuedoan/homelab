@@ -1,0 +1,104 @@
+app-template:
+  controller:
+    annotations:
+      reloader.stakater.com/auto: "true"
+
+  image:
+    repository: ghcr.io/onedr0p/qbittorrent
+    tag: 4.5.2@sha256:a4a66d66ed11c5e3570078daf4e4adeb8a7f88b000a64aa760d46ef12fa7a4c6
+
+  podAnnotations:
+    setGateway: "true"
+
+  podSecurityContext:
+    runAsUser: 995
+    runAsGroup: 991
+    fsGroup: 991
+    fsGroupChangePolicy: "OnRootMismatch"
+
+  env:
+    UMASK: "022"
+    QBITTORRENT__PORT: &port 8080
+    QBITTORRENT__USE_PROFILE: "true"
+
+  hostname: qbittorrent
+
+  service:
+    main:
+      ports:
+        http:
+          port: *port
+    bittorrent:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: "192.168.193.7"
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        external-dns.alpha.kubernetes.io/hostname: qbittorrent.internal.grigri.cloud
+      externalTrafficPolicy: Local
+      bittorrent:
+        enabled: true
+        port: 50413
+        protocol: TCP
+        targetPort: 50413
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-external
+      annotations:
+        external-dns.alpha.kubernetes.io/enabled: "true"
+        external-dns.alpha.kubernetes.io/target: grigri.cloud
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+      hosts:
+        - host: &host qbittorrent.grigri.cloud
+          paths:
+            - path: /
+      tls:
+        - hosts:
+            - *host
+
+    metrics:
+      enabled: true
+      exporter:
+        image:
+          repository: docker.io/esanchezm/prometheus-qbittorrent-exporter
+          tag: v1.2.0
+      serviceMonitor:
+        interval: 1m
+        scrapeTimeout: 10s
+        labels:
+          release: monitoring
+      prometheusRule:
+        enabled: true
+
+  persistence:
+    config:
+      enabled: true
+      mountPath: /config
+      existingClaim: config-qbittorrent-zfs
+
+    series:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/series/download
+      mountPath: /datasets/series/download
+
+    peliculas:
+      enabled: true
+      type: hostPath
+      hostPath: /datasets/peliculas/download
+      mountPath: /datasets/peliculas/download
+
+  resources:
+    requests:
+      cpu: 49m
+      memory: 765M
+    limits:
+      memory: 1426M
+
+  probes:
+    liveness: &probe
+      enabled: true
+    readiness: *probe
+  nodeSelector:
+    name: grigri
