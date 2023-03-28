@@ -58,19 +58,19 @@ app-template:
         - hosts:
             - *host
 
-    metrics:
+  metrics:
+    enabled: true
+    exporter:
+      image:
+        repository: docker.io/esanchezm/prometheus-qbittorrent-exporter
+        tag: v1.2.0
+    serviceMonitor:
+      interval: 1m
+      scrapeTimeout: 10s
+      labels:
+        release: monitoring
+    prometheusRule:
       enabled: true
-      exporter:
-        image:
-          repository: docker.io/esanchezm/prometheus-qbittorrent-exporter
-          tag: v1.2.0
-      serviceMonitor:
-        interval: 1m
-        scrapeTimeout: 10s
-        labels:
-          release: monitoring
-      prometheusRule:
-        enabled: true
 
   persistence:
     config:
