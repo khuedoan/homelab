@@ -20,6 +20,8 @@ external-dns:
     - grigri.cloud
   serviceMonitor:
     enabled: true
+    additionalLabels:
+      release: monitoring
   resources:
     requests:
       cpu: 10m
