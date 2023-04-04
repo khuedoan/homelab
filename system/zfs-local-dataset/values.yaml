@@ -50,7 +50,7 @@ democratic-csi:
   node:
     driver:
       enabled: true
-      image: ghcr.io/democratic-csi/democratic-csi:v1.8.1
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.2
       logLevel: info
       resources:
         requests:
