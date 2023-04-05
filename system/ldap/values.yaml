@@ -1,7 +1,6 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
     type: statefulset
 
   image:
@@ -47,14 +46,11 @@ app-template:
   podSecurityContext:
     fsGroup: 389
 
-  volumeClaimTemplates:
-    - name: data
-      mountPath: /data
-      accessMode: "ReadWriteOnce"
-      size: 1.5Gi
-      storageClass: longhorn-ssd
   persistence:
-
+    data:
+      enabled: true
+      mountPath: /data
+      existingClaim: ldap-data-zfs
     certs:
       enabled: true
       type: secret
