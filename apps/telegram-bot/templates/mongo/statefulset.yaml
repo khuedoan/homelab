@@ -9,7 +9,7 @@ spec:
       app.kubernetes.io/instance: mongo
       app.kubernetes.io/name: telegram-bot
   serviceName: mongo
-  replicas: 1
+  replicas: 0
   template:
     metadata:
       labels:
