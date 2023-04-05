@@ -17,6 +17,7 @@ spec:
 
   volume:
     size: 1.5Gi
+    storageClass: zfs-local-dataset
 
   users:
     gitea:
@@ -25,7 +26,7 @@ spec:
   databases:
     gitea: gitea
 
-  dockerImage: registry.opensource.zalan.do/acid/spilo-cdp-arm64-14:2.1-p232
+  dockerImage: ghcr.io/zalando/spilo-15:2.1-p9
 
   postgresql:
     version: "14"
@@ -39,12 +40,3 @@ spec:
       log_lock_waits: 'off'
       log_min_duration_statement: "-1"
       log_statement: none
-
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/arch
-            operator: In
-            values:
-            - arm64
