@@ -9,7 +9,7 @@ spec:
       app.kubernetes.io/instance: mongo
       app.kubernetes.io/name: telegram-bot
   serviceName: mongo
-  replicas: 0
+  replicas: 1
   template:
     metadata:
       labels:
@@ -58,6 +58,8 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: mongo-persistent-storage-zfs
+        labels:
+          backup: telegram-bot-zfs
       spec:
         storageClassName: zfs-local-dataset
         accessModes:
