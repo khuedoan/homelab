@@ -24,15 +24,6 @@ alertmanager:
           matchLabels:
             app: alertmanager
 
-    storage:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: zfs-local-dataset
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 100Mi
-
   ingress:
     enabled: true
     ingressClassName: nginx-internal
