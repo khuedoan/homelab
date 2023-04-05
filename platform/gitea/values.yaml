@@ -22,6 +22,8 @@ gitea:
         hosts:
           - *host
 
+  replicaCount: 0
+
   resources:
     limits:
       cpu: 500m
@@ -33,7 +35,7 @@ gitea:
   persistence:
     storageClass: longhorn
     size: 10Gi
-
+    #existingClaim:
   gitea:
     admin:
       existingSecret: gitea-admin
