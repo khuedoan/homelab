@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 1
+    replicas: 0
     type: statefulset
 
   image:
@@ -54,6 +54,7 @@ app-template:
       size: 1.5Gi
       storageClass: longhorn-ssd
   persistence:
+
     certs:
       enabled: true
       type: secret

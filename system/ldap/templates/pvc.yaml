@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: ldap
+    app.kubernetes.io/name: ldap
+    backup: ldap-zfs
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: ldap-data-zfs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1.5Gi
+  storageClassName: zfs-local-dataset
