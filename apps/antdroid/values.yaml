@@ -1,6 +1,6 @@
 app-template:
   controller:
-    replicas: 2
+    replicas: 1
 
   image:
     repository: nginx
@@ -52,12 +52,7 @@ app-template:
     data:
       enabled: true
       mountPath: /usr/share/nginx/html
-      accessMode: ReadWriteMany
-      size: 100Mi
-      # before backup restoring:
-      # storageClass: longhorn-ssd
-      storageClass: longhorn-static
-      skipuninstall: true
+      existingClaim: antdroid-data-zfs
 
   resources:
     requests:
