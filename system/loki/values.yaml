@@ -11,7 +11,7 @@ loki-stack:
     persistence:
       enabled: true
       size: 50Gi
-      storageClassName: longhorn
+      storageClassName: zfs-local-dataset
 
     config:
       table_manager:
