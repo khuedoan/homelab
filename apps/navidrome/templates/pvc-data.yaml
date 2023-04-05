@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: navidrome
+    app.kubernetes.io/name: navidrome
+    backup: navidrome-zfs
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: data-navidrome-zfs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: zfs-local-dataset
