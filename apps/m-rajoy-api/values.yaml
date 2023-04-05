@@ -1,6 +1,6 @@
 app-template:
   controller:
-    replicas: 0
+    replicas: 1
 
   image:
     repository: pando85/quotes-simple-web-api
@@ -70,10 +70,7 @@ app-template:
     data:
       enabled: true
       mountPath: /data/mariano-rajoy
-      accessMode: ReadWriteMany
-      size: 100Mi
-      storageClass: longhorn-static
-      skipuninstall: true
+      existingClaim: m-rajoy-api-data-zfs
 
   resources:
     requests:
