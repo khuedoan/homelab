@@ -26,8 +26,6 @@ spec:
   databases:
     wallabag: wallabag
 
-  dockerImage: ghcr.io/zalando/spilo-15:2.1-p9
-
   postgresql:
     version: "14"
     parameters:
