@@ -1,6 +1,6 @@
 app-template:
   controller:
-    replicas: 2
+    replicas: 0
 
   image:
     repository: pando85/quotes-simple-web-api

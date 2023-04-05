@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: m-rajoy-api
+    app.kubernetes.io/name: m-rajoy-api
+    backup: m-rajoy-api-zfs
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: m-rajoy-api-data-zfs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: zfs-local-dataset

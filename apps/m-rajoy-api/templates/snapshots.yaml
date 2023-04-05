@@ -1,0 +1,13 @@
+apiVersion: snapscheduler.backube/v1
+kind: SnapshotSchedule
+metadata:
+  name: m-rajoy-api-zfs-backups
+spec:
+  retention:
+    maxCount: 20
+  schedule: "0 3 * * *"
+  claimSelector:
+    matchLabels:
+      backup: m-rajoy-api-zfs
+  snapshotTemplate:
+    snapshotClassName: zfs-local-dataset
