@@ -22,7 +22,7 @@ gitea:
         hosts:
           - *host
 
-  replicaCount: 0
+  replicaCount: 1
 
   resources:
     limits:
@@ -33,9 +33,8 @@ gitea:
       memory: 128Mi
 
   persistence:
-    storageClass: longhorn
-    size: 10Gi
-    #existingClaim:
+    existingClaim: data-gitea-zfs-0
+
   gitea:
     admin:
       existingSecret: gitea-admin
