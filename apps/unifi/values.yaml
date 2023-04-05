@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 1
+    replicas: 0
 
   image:
     repository: jacobalberty/unifi

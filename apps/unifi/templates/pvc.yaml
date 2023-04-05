@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: unifi
+    app.kubernetes.io/name: unifi
+    backup: unifi-zfs
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: unifi-config-zfs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: zfs-local-dataset
