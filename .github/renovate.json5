@@ -32,6 +32,12 @@
       addLabels: ["renovate/{{parentDir}}"],
     },
     {
+      "description": "Loose versioning for non-semver packages",
+      "matchDatasources": ["docker"],
+      "versioning": "loose",
+      "matchPackagePatterns": ["plex", "qbittorrent"]
+    },
+    {
       "matchPackageNames": ["app-template"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
