@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
+    replicas: 1
     strategy: Recreate
 
   image:
@@ -72,19 +72,11 @@ app-template:
     music:
       enabled: true
       mountPath: /music
-      accessMode: ReadWriteMany
-      size: 200Gi
-      storageClass: longhorn-static
-      skipuninstall: true
+      existingClaim: music-navidrome-zfs
     data:
       enabled: true
       mountPath: /data
-      accessMode: ReadWriteOnce
-      size: 1Gi
-      # before backup restoring:
-      # storageClass: longhorn-ssd
-      storageClass: longhorn-static
-      skipuninstall: true
+      existingClaim: data-navidrome-zfs
 
   resources:
     requests:
