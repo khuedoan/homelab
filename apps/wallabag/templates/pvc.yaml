@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: wallabag
+    app.kubernetes.io/name: wallabag
+    backup: wallabag-zfs
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: wallabag-images-zfs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+  storageClassName: zfs-local-dataset
