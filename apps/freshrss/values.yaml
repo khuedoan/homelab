@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
+    replicas: 1
 
   image:
     repository: ghcr.io/linuxserver/freshrss
@@ -59,10 +59,7 @@ app-template:
     config:
       enabled: true
       mountPath: /config
-      accessMode: ReadWriteOnce
-      size: 2Gi
-      storageClass: longhorn-ssd
-      skipuninstall: true
+      existingClaim: freshrss-config-zfs
 
   resources:
     requests:
