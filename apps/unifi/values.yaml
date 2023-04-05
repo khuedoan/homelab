@@ -1,7 +1,7 @@
 app-template:
   controller:
     # HA is not supported
-    replicas: 0
+    replicas: 1
 
   image:
     repository: jacobalberty/unifi
@@ -79,10 +79,7 @@ app-template:
     config:
       enabled: true
       mountPath: /unifi
-      accessMode: ReadWriteOnce
-      size: 2Gi
-      storageClass: longhorn-ssd
-      skipuninstall: true
+      existingClaim: unifi-config-zfs
 
   resources:
     requests:
