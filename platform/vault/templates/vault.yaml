@@ -102,6 +102,7 @@ spec:
         resources:
           requests:
             storage: 1Gi
+        storageClassName: zfs-local-dataset
 
   # Support for distributing the generated CA certificate Secret to other namespaces.
   # Define a list of namespaces or use ["*"] for all namespaces.
