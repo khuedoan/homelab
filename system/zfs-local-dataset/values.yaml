@@ -61,7 +61,7 @@ democratic-csi:
 
   storageClasses:
     - name: zfs-local-dataset
-      defaultClass: false
+      defaultClass: true
       reclaimPolicy: Delete
       volumeBindingMode: Immediate
       allowVolumeExpansion: false
