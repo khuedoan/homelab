@@ -3,5 +3,5 @@ name: telegram-bot
 version: 0.0.0
 dependencies:
   - name: app-template
-    version: 1.3.2
+    version: 1.4.0
     repository: https://bjw-s.github.io/helm-charts/
