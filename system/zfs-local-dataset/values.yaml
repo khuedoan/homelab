@@ -27,7 +27,7 @@ democratic-csi:
     enabled: true
     strategy: node
     externalProvisioner:
-      image: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+      image: registry.k8s.io/sig-storage/csi-provisioner:v3.4.1
       extraArgs:
         - --leader-election=false
         - --node-deployment=true
