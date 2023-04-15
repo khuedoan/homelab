@@ -26,7 +26,7 @@ democratic-csi:
 
     driver:
       enabled: true
-      image: ghcr.io/democratic-csi/democratic-csi:v1.8.2
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.3
       logLevel: info
       resources:
         requests:
@@ -38,7 +38,7 @@ democratic-csi:
 
     driver:
       enabled: true
-      image: ghcr.io/democratic-csi/democratic-csi:v1.8.2
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.3
       logLevel: info
       resources:
         requests:
