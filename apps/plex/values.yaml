@@ -3,7 +3,7 @@ app-template:
     type: statefulset
   image:
     repository: ghcr.io/onedr0p/plex
-    tag: 1.31.3.6868-28fc46b27@sha256:6be3a2110e0fa96edb16bb9adf406e3636b7b14e991db834d5e37fd327da1781
+    tag: 1.32.0.6918-6f393eda1@sha256:1a7ca3a38bbe42d846f0e3cd812fba4db6c1eafc63478bb809643d04a3501dc0
   env:
     TZ: Europe/Madrid
   service:
