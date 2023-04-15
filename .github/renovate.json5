@@ -64,6 +64,7 @@
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "automergeType": "pr",
+      "ignoreTests": true,
       "platformAutomerge": true
     },
     {
