@@ -8,7 +8,7 @@ helmCharts:
     releaseName: redis-operator
     repo: https://spotahome.github.io/redis-operator
     valuesFile: values.yaml
-    version: 3.2.7
+    version: 3.2.8
 
 patchesJson6902:
   - patch: |-
