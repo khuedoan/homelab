@@ -3,5 +3,5 @@ name: gitea
 version: 0.0.0
 dependencies:
   - name: gitea
-    version: 8.1.0
+    version: 8.2.0
     repository: https://dl.gitea.io/charts/
