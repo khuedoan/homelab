@@ -3,7 +3,7 @@ app-template:
     type: statefulset
   image:
     repository: ghcr.io/onedr0p/sonarr-develop
-    tag: 4.0.0.479@sha256:1b3d79bd95bbe54ea83d89ba8a3c1a11d77d0acd46bc041ae3a740a53e083099
+    tag: 4.0.0.484@sha256:9193a7e3cd0b1f7f4f1eda1b1465f842cfbb05b7e8a6778a4f61902ae6baf42b
   env:
     TZ: Europe/Madrid
   service:
