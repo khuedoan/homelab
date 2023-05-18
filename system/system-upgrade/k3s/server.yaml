@@ -18,4 +18,4 @@ spec:
     skipWaitForDeleteTimeout: 300  # Honor PodDisruptionBudgets
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.24.9+k3s1
+  version: v1.27.1+k3s1
