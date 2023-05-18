@@ -5,6 +5,7 @@ let
   python-packages = pkgs.python3.withPackages (p: with p; [
     jinja2
     kubernetes
+    mkdocs-material
     netaddr
     rich
   ]);
