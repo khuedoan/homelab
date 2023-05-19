@@ -3,10 +3,3 @@
   roles:
     - k3s
     - automatic_upgrade
-
-- name: Create some basic config
-  hosts: localhost
-  environment:
-    KUBECONFIG: ./kubeconfig.yaml
-  roles:
-    - metallb_config

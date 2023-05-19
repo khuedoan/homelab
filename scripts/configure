@@ -13,10 +13,13 @@ import sys
 
 from rich.prompt import Confirm, Prompt
 
-default_seed_repo = "https://github.com/khuedoan/homelab"
-default_domain = "khuedoan.com"
-default_timezone = "Asia/Ho_Chi_Minh"
-default_terraform_workspace = "khuedoan"
+upstream_config = {
+    "seed_repo": "https://github.com/khuedoan/homelab",
+    "domain": "khuedoan.com",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "terraform_workspace": "khuedoan",
+    "loadbalancer_ip_range": "192.168.1.224/27",
+}
 
 
 def check_python_version(required_version: str) -> None:
@@ -43,12 +46,13 @@ def main() -> None:
     )
 
     editor = Prompt.ask("Select text editor", default='nvim')
-    domain = Prompt.ask("Enter your domain", default=default_domain)
-    seed_repo = Prompt.ask("Enter seed repo", default=default_seed_repo)
-    timezone = Prompt.ask("Enter time zone", default=default_timezone)
+    domain = Prompt.ask("Enter your domain", default=upstream_config['domain'])
+    seed_repo = Prompt.ask("Enter seed repo", default=upstream_config['seed_repo'])
+    timezone = Prompt.ask("Enter time zone", default=upstream_config['timezone'])
+    loadbalancer_ip_range = Prompt.ask("Enter IP range for load balancer", default=upstream_config['loadbalancer_ip_range'])
 
     find_and_replace(
-        pattern=default_domain,
+        pattern=upstream_config['domain'],
         replacement=domain,
         paths=[
             ".ci",
@@ -61,7 +65,7 @@ def main() -> None:
     )
 
     find_and_replace(
-        pattern=default_seed_repo,
+        pattern=upstream_config['seed_repo'],
         replacement=seed_repo,
         paths=[
             "bootstrap",
@@ -70,7 +74,7 @@ def main() -> None:
     )
 
     find_and_replace(
-        pattern=default_timezone,
+        pattern=upstream_config['timezone'],
         replacement=timezone,
         paths=[
             "apps",
@@ -79,20 +83,30 @@ def main() -> None:
         ]
     )
 
+    find_and_replace(
+        pattern=upstream_config['loadbalancer_ip_range'],
+        replacement=loadbalancer_ip_range,
+        paths=[
+            "system/metallb-system/templates/ipaddresspool.yaml",
+        ]
+    )
+
+    if Confirm.ask("Update server list?", default=True):
+        subprocess.run(
+            [editor, 'metal/inventories/prod.yml']
+        )
+
+
     if Confirm.ask("Do you want to use managed services?"):
-        terraform_workspace = Prompt.ask("Enter Terraform Workspace", default=default_terraform_workspace)
+        terraform_workspace = Prompt.ask("Enter Terraform Workspace", default=upstream_config['terraform_workspace'])
 
         find_and_replace(
-            pattern=default_terraform_workspace,
+            pattern=upstream_config['terraform_workspace'],
             replacement=terraform_workspace,
             paths=[
                 "external/versions.tf"
             ]
         )
-
-    subprocess.run(
-        [editor, 'metal/inventories/prod.yml']
-    )
 
 
 if __name__ == '__main__':
