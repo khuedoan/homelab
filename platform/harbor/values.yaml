@@ -2,34 +2,29 @@ harbor:
   expose:
     ingress:
       hosts:
-        core: harbor.khuedoan.com
-        notary: notary.khuedoan.com
+        core: registry.khuedoan.com
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        ingress.kubernetes.io/ssl-redirect: "true"
-        ingress.kubernetes.io/proxy-body-size: "0"
         nginx.ingress.kubernetes.io/ssl-redirect: "true"
         nginx.ingress.kubernetes.io/proxy-body-size: "0"
     tls:
       certSource: secret
       secret:
         secretName: harbor-tls-certificate
-        notarySecretName: notary-tls-certificate
-  externalURL: https://harbor.khuedoan.com
+  externalURL: https://registry.khuedoan.com
+  trivy:
+    enabled: false
+  notary:
+    enabled: false
   persistence:
     enabled: true
-    resourcePolicy: keep
     persistentVolumeClaim:
       registry:
-        storageClass: longhorn
-      chartmuseum:
         storageClass: longhorn
       jobservice:
         storageClass: longhorn
       database:
         storageClass: longhorn
       redis:
-        storageClass: longhorn
-      trivy:
         storageClass: longhorn
