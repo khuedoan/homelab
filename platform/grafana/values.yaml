@@ -12,6 +12,13 @@ grafana:
       - secretName: grafana-general-tls
         hosts:
           - *host
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: monitoring-system
+    datasources:
+      enabled: true
+      searchNamespace: monitoring-system
   envFromSecret: grafana-secrets
   grafana.ini:
     server:
