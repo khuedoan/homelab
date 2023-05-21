@@ -1,0 +1,47 @@
+docker-registry:
+  ingress:
+    enabled: true
+    className: nginx
+    hosts:
+      - &host registry.khuedoan.com
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+      - secretName: registry-tls-certificate
+        hosts:
+          - *host
+  extraVolumes:
+    - name: auth
+      emptyDir: {}
+  extraVolumeMounts:
+    - mountPath: /auth
+      name: auth
+  # TODO uncomment to enable auth
+  # extraEnvVars:
+  #   - name: REGISTRY_AUTH
+  #     value: "htpasswd"
+  #   - name: REGISTRY_AUTH_HTPASSWD_REALM
+  #     value: "Registry Realm"
+  #   - name: REGISTRY_AUTH_HTPASSWD_PATH
+  #     value: "/auth/htpasswd"
+  # initContainers:
+  #   - name: htpasswd
+  #     image: httpd:2-alpine
+  #     command:
+  #       - sh
+  #       - -c
+  #       - htpasswd -Bbn "${username}" "${password}" > /auth/htpasswd
+  #     envFrom:
+  #       - secretRef:
+  #           name: registry-admin-secret
+  #     volumeMounts:
+  #       - mountPath: /auth
+  #         name: auth
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: longhorn
+  garbageCollect:
+    enabled: true

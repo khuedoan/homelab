@@ -129,6 +129,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Ephemeral PXE server and convenient tools container</td>
     </tr>
     <tr>
+        <td><img width="32" src="https://github.com/distribution/distribution/raw/main/distribution-logo.svg"></td>
+        <td><a href="https://github.com/distribution/distribution">Docker Registry</a></td>
+        <td>Private container registry</td>
+    </tr>
+    <tr>
         <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
         <td><a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a></td>
         <td>Synchronizes exposed Kubernetes Services and Ingresses with DNS providers</td>
@@ -197,11 +202,6 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://avatars.githubusercontent.com/u/47602533?s=200&v=4"></td>
         <td><a href="https://tekton.dev">Tekton</a></td>
         <td>Cloud native solution for building CI/CD systems</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://trow.io/trow.png"></td>
-        <td><a href="https://trow.io">Trow</a></td>
-        <td>Private container registry</td>
     </tr>
     <tr>
         <td><img width="32" src="https://simpleicons.org/icons/vault.svg"></td>
