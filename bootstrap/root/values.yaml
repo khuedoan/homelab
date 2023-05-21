@@ -1,9 +1,59 @@
-gitops:
-  repo: http://gitea-http.gitea:3000/ops/homelab
-  revision: master
-stacks:
-  - name: bootstrap
-    namespace: argocd  # Override default value
-  - name: system
-  - name: platform
-  - name: apps
+argocd-apps:
+  applicationsets:
+    - name: root
+      namespace: argocd
+      generators:
+        - git:
+            repoURL: &repoURL http://gitea-http.gitea:3000/ops/homelab
+            revision: &revision master
+            directories:
+              - path: system/*
+              - path: platform/*
+              - path: apps/*
+      strategy:
+        type: RollingSync
+        rollingSync:
+          steps:
+            - matchExpressions:
+                - key: stack
+                  operator: In
+                  values:
+                    - system
+            - matchExpressions:
+                - key: stack
+                  operator: In
+                  values:
+                    - platform
+            - matchExpressions:
+                - key: stack
+                  operator: In
+                  values:
+                    - apps
+      template:
+        metadata:
+          name: '{{path.basename}}'
+          labels:
+            stack: '{{path[0]}}'
+        spec:
+          destination:
+            name: in-cluster
+            namespace: '{{path.basename}}'
+          project: default # TODO
+          source:
+            repoURL: *repoURL
+            path: '{{path}}'
+            targetRevision: *revision
+          syncPolicy:
+            automated:
+              prune: true
+              selfHeal: true
+            retry:
+              limit: 10
+              backoff:
+                duration: 1m
+                factor: 2
+                maxDuration: 16m
+            syncOptions:
+              - CreateNamespace=true
+              - ApplyOutOfSyncOnly=true
+              - ServerSideApply=true

@@ -1,9 +1,12 @@
 argo-cd:
+  configs:
+    params:
+       # TODO remove when it's stable and enabld by default
+      applicationsetcontroller.enable.progressive.syncs: true
   server:
     extraArgs:
       - --insecure
     config:
-      statusbadge.enabled: 'true'
       resource.customizations.health.argoproj.io_Application: |
         hs = {}
         hs.status = "Progressing"
