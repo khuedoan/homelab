@@ -33,7 +33,7 @@ app-template:
 
   initContainers:
     chown:
-      image: busybox:1.36.0
+      image: busybox:1.36.1
       command: ["sh", "-c", "chown -R 389:389 /data"]
       volumeMounts:
         - name: data
