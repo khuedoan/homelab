@@ -5,7 +5,7 @@ grafana:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - &host grafana.khuedoan.com
+      - &host grafana.127-0-0-1.nip.io
     tls:
       - secretName: grafana-general-tls
         hosts:
@@ -20,7 +20,7 @@ grafana:
   envFromSecret: grafana-secrets
   grafana.ini:
     server:
-      root_url: https://grafana.khuedoan.com
+      root_url: https://grafana.127-0-0-1.nip.io
     auth.generic_oauth:
       enabled: true
       allow_sign_up: true
@@ -28,6 +28,6 @@ grafana:
       client_id: grafana-sso
       client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
       scopes: openid profile email groups
-      auth_url: https://dex.khuedoan.com/auth
-      token_url: https://dex.khuedoan.com/token
-      api_url: https://dex.khuedoan.com/userinfo
+      auth_url: https://dex.127-0-0-1.nip.io/auth
+      token_url: https://dex.127-0-0-1.nip.io/token
+      api_url: https://dex.127-0-0-1.nip.io/userinfo

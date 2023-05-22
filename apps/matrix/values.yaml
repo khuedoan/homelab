@@ -4,10 +4,10 @@ elementweb:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.khuedoan.com"
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.127-0-0-1.nip.io"
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     hosts:
-      - host: &frontend_host chat.khuedoan.com
+      - host: &frontend_host chat.127-0-0-1.nip.io
         paths:
           - path: /
             pathType: Prefix
@@ -17,8 +17,8 @@ elementweb:
           - *frontend_host
   config:
     default:
-      base_url: https://matrix.khuedoan.com
-      server_name: khuedoan.com
+      base_url: https://matrix.127-0-0-1.nip.io
+      server_name: 127-0-0-1.nip.io
 
 dendrite:
   dendrite_config:

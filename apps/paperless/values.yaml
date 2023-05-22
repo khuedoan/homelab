@@ -29,7 +29,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host paperless.khuedoan.com
+        - host: &host paperless.127-0-0-1.nip.io
           paths:
             - path: /
               pathType: Prefix
