@@ -1,7 +1,0 @@
-apiVersion: v2
-name: longhorn
-version: 0.0.0
-dependencies:
-  - name: longhorn
-    version: 1.4.2
-    repository: https://charts.longhorn.io

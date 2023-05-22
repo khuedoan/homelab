@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - https://github.com/rancher/system-upgrade-controller/releases/download/v0.8.1/system-upgrade-controller.yaml
-  - k3s
+  # - k3s

@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: &host tekton.khuedoan.com
+    - host: &host tekton.127-0-0-1.nip.io
       http:
         paths:
           - pathType: ImplementationSpecific

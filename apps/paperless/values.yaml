@@ -8,7 +8,7 @@ paperless:
         hajimari.io/appName: Paperless
         hajimari.io/icon: file-document
       hosts:
-        - host: &host paperless.khuedoan.com
+        - host: &host paperless.127-0-0-1.nip.io
           paths:
             - path: /
               pathType: Prefix

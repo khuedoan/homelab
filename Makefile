@@ -5,7 +5,7 @@
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal bootstrap external smoke-test post-install clean
+default: metal bootstrap smoke-test
 
 configure:
 	./scripts/configure
@@ -47,6 +47,7 @@ test:
 
 clean:
 	docker compose --project-directory ./metal/roles/pxe_server/files down
+	k3d cluster delete homelab-dev
 
 dev:
 	make -C metal cluster env=dev
