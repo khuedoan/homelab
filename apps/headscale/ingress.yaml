@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: headscale
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # If you have port-forwarding available, it is recommended to use that intead
+    # of Cloudflare Tunnel to avoid an additional third-party dependency
+    external-dns.alpha.kubernetes.io/target: homelab-tunnel.khuedoan.com
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: &host headscale.khuedoan.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: headscale
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - *host
+      secretName: headscale-tls-certificate
