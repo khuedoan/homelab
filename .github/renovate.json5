@@ -11,7 +11,7 @@
   gitAuthor: "Renovate <4646670+renovate85-bot[bot]@users.noreply.github.com>",
   forkProcessing: "enabled",
   rebaseWhen: "conflicted",
-  branchConcurrentLimit: 10,
+  branchConcurrentLimit: 15,
   commitMessagePrefix: "{{parentDir}}: ",
   timezone: "Europe/Madrid",
   schedule: [
