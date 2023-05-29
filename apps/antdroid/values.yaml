@@ -4,7 +4,7 @@ app-template:
 
   image:
     repository: nginx
-    tag: 1.24.0-alpine
+    tag: 1.25.0-alpine
 
   enableServiceLinks: false
   service:
