@@ -19,6 +19,20 @@ They are not permanent, we can change them in the future if better alternatives 
 
     - CHANGEME
 
+## VPN solution
+
+**Context**
+
+TODO
+
+**Decision**
+
+TODO
+
+**Consequences**
+
+- TODO
+
 ## Manage package versions in tools container
 
 **Context**

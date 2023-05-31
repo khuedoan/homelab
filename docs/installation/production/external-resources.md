@@ -12,7 +12,6 @@ Below is a list of external resources and why we need them (also see some [alter
 | Terraform Cloud | Workspace       | Terraform state backend                                                                                                     |
 | Cloudflare      | DNS             | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates                 |
 | Cloudflare      | Tunnel          | Public services to the internet without port forwarding                                                                     |
-| ZeroTier        | Virtual network | Use as VPN to access home network from anywhere (with [UDP hole punching](https://en.wikipedia.org/wiki/UDP_hole_punching)) |
 <!-- | Minio           | Bucket     | Onsite backup                                                                                               | -->
 <!-- | AWS             | S3 Glacier | Offsite backup                                                                                              | -->
 
@@ -50,11 +49,6 @@ If you decide to use a [different Terraform backend](https://www.terraform.io/la
 <!-- └── Is in - 117.xxx.xxx.xxx, 2402:xxx:xxx:xxx:xxx:xxx:xxx:xxx -->
 <!-- ``` -->
 
-### ZeroTier
-
-- Create a ZeroTier account <https://my.zerotier.com>
-- Generate a new API Token at <https://my.zerotier.com/account>
-
 <!-- ### Create Minio keys -->
 
 <!-- TODO: skip this for now -->
@@ -77,9 +71,4 @@ To avoid vendor lock-in, each external provider must have an equivalent alternat
     - Create a small VPS in the cloud and utilize Wireguard and HAProxy to route traffic via it
     - Access everything via VPN
     - See also [awesome tunneling](https://github.com/anderspitman/awesome-tunneling)
-- ZeroTier virtual network:
-    - [Host your own ZeroTier](https://docs.zerotier.com/self-hosting/introduction)
-    - [Tailscale](https://tailscale.com) (closed source, but you can use [Headscale](https://github.com/juanfont/headscale) to host your own Tailscale control server)
-    - [Netmaker](https://www.netmaker.org) (there's no hosted version, you'll need to host your own server)
-    - Wireguard server (requires port forwarding)
 <!-- - Minio and S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio... -->

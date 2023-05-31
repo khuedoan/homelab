@@ -71,7 +71,7 @@ Can be used in "production" (for family or even small scale businesses).
 - [ ] Clear upgrade path
 - [ ] Additional applications
     - [ ] Matrix with bridges
-    - [ ] VPN server
+    - [x] VPN server (Headscale)
     - [ ] PeerTube
     - [x] Seafile
     - [x] Blog

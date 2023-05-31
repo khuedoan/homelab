@@ -154,6 +154,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Operational dashboards</td>
     </tr>
     <tr>
+        <td><img width="32" src="https://headscale.net/logo/headscale3-dots.svg"></td>
+        <td><a href="https://headscale.net">Headscale</a></td>
+        <td>Open source implementation of the Tailscale control server</td>
+    </tr>
+    <tr>
         <td><img width="32" src="https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg"></td>
         <td><a href="https://helm.sh">Helm</a></td>
         <td>The package manager for Kubernetes</td>
@@ -207,11 +212,6 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://simpleicons.org/icons/vault.svg"></td>
         <td><a href="https://www.vaultproject.io">Vault</a></td>
         <td>Secrets and encryption management system</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png"></td>
-        <td><a href="https://zerotier.com">ZeroTier</a></td>
-        <td>VPN without port forwarding</td>
     </tr>
 </table>
 
