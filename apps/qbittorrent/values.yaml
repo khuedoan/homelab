@@ -5,7 +5,7 @@ app-template:
 
   image:
     repository: ghcr.io/onedr0p/qbittorrent
-    tag: 4.5.3@sha256:5f97e1e998a498cc27ba08abcdad5be61bd396f833157c6b6c1f3d672915f2fa
+    tag: 4.5.4@sha256:f0a74313d750bc437ba2ad34f3412de5ab9a978f3f5b74227a1bda69271fef3e
 
   podAnnotations:
     setGateway: "true"
