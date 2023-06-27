@@ -1,10 +1,6 @@
-// TODO switch to YAML https://github.com/renovatebot/renovate/issues/7031
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  extends: [
-    "config:base",
-    ":preserveSemverRanges"
-  ],
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:base", ":preserveSemverRanges"],
   platform: "github",
   username: "renovate85-bot[bot]",
   repositories: ["pando85/homelab"],
@@ -14,9 +10,7 @@
   branchConcurrentLimit: 15,
   commitMessagePrefix: "{{parentDir}}: ",
   timezone: "Europe/Madrid",
-  schedule: [
-    "after 5am and before 9am on Monday"
-    ],
+  schedule: ["after 5am and before 9am on Monday"],
   enabledManagers: [
     "argocd",
     "github-actions",
@@ -28,23 +22,23 @@
   ],
   regexManagers: [
     {
-      "description": "Process custom dependencies with double quotes",
-      "fileMatch": [".+\\.ya?ml$"],
-      "matchStrings": [
-        "#\\srenovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?\"(?<currentValue>.*)\"\n"
+      description: "Process custom dependencies with double quotes",
+      fileMatch: [".+\\.ya?ml$"],
+      matchStrings: [
+        '#\\srenovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?"(?<currentValue>.*)"\n',
       ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
     },
     {
-      "description": "Process custom dependencies after colon",
-      "fileMatch": [".+\\.ya?ml$"],
-      "matchStrings": [
-        "#\\srenovate: datasource=(?<datasource>\\S+)( versioning=(?<versioning>\\S+))?\n.*?: (?<depName>\\S+):(?<currentValue>.*)\n"
+      description: "Process custom dependencies after colon",
+      fileMatch: [".+\\.ya?ml$"],
+      matchStrings: [
+        "#\\srenovate: datasource=(?<datasource>\\S+)( versioning=(?<versioning>\\S+))?\n.*?: (?<depName>\\S+):(?<currentValue>.*)\n",
       ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    }
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+    },
   ],
   packageRules: [
     {
@@ -53,34 +47,34 @@
       addLabels: ["renovate/{{parentDir}}"],
     },
     {
-      "description": "Loose versioning for non-semver packages",
-      "matchDatasources": ["docker"],
-      "versioning": "loose",
-      "matchPackagePatterns": ["plex", "qbittorrent"]
+      description: "Loose versioning for non-semver packages",
+      matchDatasources: ["docker"],
+      versioning: "loose",
+      matchPackagePatterns: ["plex", "qbittorrent"],
     },
     {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeType": "pr",
-      "ignoreTests": true,
-      "platformAutomerge": true
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["minor", "patch"],
+      matchCurrentVersion: "!/^0/",
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: true,
+      platformAutomerge: true,
     },
     {
-      "matchPackageNames": ["app-template"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeType": "pr",
-      "ignoreTests": true,
-      "platformAutomerge": true
+      matchPackageNames: ["app-template"],
+      matchUpdateTypes: ["minor", "patch"],
+      matchCurrentVersion: "!/^0/",
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: true,
+      platformAutomerge: true,
     },
     {
-      "matchPackageNames": ["vault"],
-      "matchManagers": ["regex"],
-      "matchUpdateTypes": ["major", "minor"],
-      "stabilityDays": 30
-    }
-  ]
+      matchPackageNames: ["vault"],
+      matchManagers: ["regex"],
+      matchUpdateTypes: ["major", "minor"],
+      minimumReleaseAge: "30 days",
+    },
+  ],
 }
