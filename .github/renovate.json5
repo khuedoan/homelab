@@ -79,4 +79,8 @@
       minimumReleaseAge: "30 days",
     },
   ],
+  ignoreDeps: [
+    // deprecated docker image
+    "jackett",
+  ]
 }
