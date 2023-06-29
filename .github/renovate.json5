@@ -81,6 +81,6 @@
   ],
   ignoreDeps: [
     // deprecated docker image
-    "ghcr.io/onedr0p/jackett ",
+    "ghcr.io/onedr0p/jackett",
   ]
 }
