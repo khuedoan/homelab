@@ -3,5 +3,5 @@ name: unifi
 version: 0.0.0
 dependencies:
   - name: app-template
-    version: 1.4.0
+    version: 1.5.1
     repository: https://bjw-s.github.io/helm-charts/
