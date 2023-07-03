@@ -3,7 +3,7 @@ app-template:
     type: statefulset
   image:
     repository: ghcr.io/onedr0p/radarr-develop
-    tag: 4.4.4.7068@sha256:1ac5d9881a0e25b07b6b7e01eaae3d787cac1524e1db7c7010d5a6de38a3112e
+    tag: 4.6.3.7516@sha256:798fe8b616da785edcb84cc871111e63c9227b970dbd33b4ac876faba4c058b8
   env:
     TZ: Europe/Madrid
   service:
