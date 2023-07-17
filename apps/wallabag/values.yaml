@@ -97,12 +97,6 @@ app-template:
       enabled: true
       mountPath: /var/www/wallabag/web/assets/images
       existingClaim: wallabag-images-zfs
-    wallabag-patch:
-      enabled: true
-      mountPath: /var/www/wallabag/web/app.php
-      subPath: app.php
-      type: configMap
-      name: wallabag-wallabag-patch-avoid-redirect
 
   resources:
     requests:
