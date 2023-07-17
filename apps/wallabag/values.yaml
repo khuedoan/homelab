@@ -38,28 +38,6 @@ app-template:
     SYMFONY__ENV__DOMAIN_NAME: https://wallabag.grigri.cloud
     SYMFONY__ENV__FOSUSER_REGISTRATION: false
 
-  configMaps:
-    wallabag-patch-avoid-redirect:
-      enabled: true
-      data:
-        app.php: |
-          <?php
-
-          use Symfony\Component\HttpFoundation\Request;
-
-          require __DIR__.'/../vendor/autoload.php';
-
-          $kernel = new AppKernel('prod', false);
-          //$kernel = new AppCache($kernel);
-
-          // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
-          //Request::enableHttpMethodParameterOverride();
-          Request::setTrustedProxies(['0.0.0.0/0'], Request::HEADER_X_FORWARDED_FOR);
-          $request = Request::createFromGlobals();
-          $response = $kernel->handle($request);
-          $response->send();
-          $kernel->terminate($request, $response);
-
   enableServiceLinks: false
   service:
     main:
