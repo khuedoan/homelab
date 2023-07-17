@@ -6,7 +6,7 @@ app-template:
 
   image:
     repository: wallabag/wallabag
-    tag: 2.5.4
+    tag: 2.6.1
   envFrom:
     - secretRef:
         name: wallabag-secret
@@ -42,23 +42,39 @@ app-template:
     wallabag-patch-avoid-redirect:
       enabled: true
       data:
-        app.php: |
-          <?php
+        config_prod.yml: |
+          imports:
+              - { resource: config.yml }
 
-          use Symfony\Component\HttpFoundation\Request;
+          framework:
+              assets:
+                  # json_manifest_path: '%kernel.project_dir%/web/bundles/wallabagcore/manifest.json'
+              # ...
+              # the IP address (or range) of your proxy
+              trusted_proxies: '0.0.0.0/0'
+              # trust *all* "X-Forwarded-*" headers
+              trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']
+          #doctrine:
+          #    orm:
+          #        metadata_cache_driver: apc
+          #        result_cache_driver: apc
+          #        query_cache_driver: apc
 
-          require __DIR__.'/../vendor/autoload.php';
+          monolog:
+              handlers:
+                  main:
+                      type: fingers_crossed
+                      action_level: error
+                      handler: nested
+                  nested:
+                      type: stream
+                      path: "%kernel.logs_dir%/%kernel.environment%.log"
+                      level: debug
+                  console:
+                      type: console
 
-          $kernel = new AppKernel('prod', false);
-          //$kernel = new AppCache($kernel);
-
-          // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
-          //Request::enableHttpMethodParameterOverride();
-          Request::setTrustedProxies(['0.0.0.0/0']);
-          $request = Request::createFromGlobals();
-          $response = $kernel->handle($request);
-          $response->send();
-          $kernel->terminate($request, $response);
+          sentry:
+              dsn: "%sentry_dsn%"
 
   enableServiceLinks: false
   service:
@@ -121,8 +137,8 @@ app-template:
       existingClaim: wallabag-images-zfs
     wallabag-patch:
       enabled: true
-      mountPath: /var/www/wallabag/web/app.php
-      subPath: app.php
+      mountPath: /var/www/wallabag/app/config/config_prod.yml
+      subPath: config_prod.yml
       type: configMap
       name: wallabag-wallabag-patch-avoid-redirect
 
