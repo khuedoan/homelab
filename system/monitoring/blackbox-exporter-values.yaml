@@ -2,9 +2,6 @@ fullnameOverride: blackbox-exporter
 
 replicas: 1
 
-image:
-  repository: quay.io/prometheus/blackbox-exporter
-
 ingress:
   enabled: true
   ingressClassName: nginx-internal
