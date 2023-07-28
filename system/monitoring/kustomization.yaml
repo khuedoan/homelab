@@ -33,3 +33,12 @@ patchesJson6902:
       kind: CustomResourceDefinition
       name: prometheuses.monitoring.coreos.com
       version: v1
+  - patch: |-
+      - op: add
+        path: "/metadata/annotations/argocd.argoproj.io~1sync-options"
+        value: "Replace=true"
+    target:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      name: prometheusagents.monitoring.coreos.com
+      version: v1
