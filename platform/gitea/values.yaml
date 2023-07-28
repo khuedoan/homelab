@@ -33,7 +33,9 @@ gitea:
       memory: 128Mi
 
   persistence:
-    existingClaim: data-gitea-zfs-0
+    mount: true
+    create: false
+    claimName: data-gitea-zfs-0
 
   gitea:
     admin:
@@ -109,20 +111,8 @@ gitea:
         path: /etc/ssl/certs/ca-certificates.crt
         type: File
 
-  memcached:
-    image:
-      repository: memcached
-      tag: 1.6.21
-      pullPolicy: IfNotPresent
-    arguments: []
-
-    resources:
-      limits:
-        memory: 64Mi
-        cpu: 250m
-      requests:
-        memory: 4Mi
-        cpu: 20m
+  postgresql-ha:
+    enabled: false
 
   postgresql:
     enabled: false
