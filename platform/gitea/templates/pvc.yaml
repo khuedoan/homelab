@@ -9,10 +9,6 @@ metadata:
     argocd.argoproj.io/sync-options: Prune=false
   name: data-gitea-zfs-0
 spec:
-  dataSource:
-    name: data-gitea-zfs-0-gitea-zfs-backups-202307310300
-    kind: VolumeSnapshot
-    apiGroup: snapshot.storage.k8s.io
   accessModes:
     - ReadWriteOnce
   resources:
