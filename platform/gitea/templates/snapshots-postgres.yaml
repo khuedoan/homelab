@@ -1,0 +1,13 @@
+apiVersion: snapscheduler.backube/v1
+kind: SnapshotSchedule
+metadata:
+  name: gitea-postgres-backups
+spec:
+  retention:
+    maxCount: 1
+  schedule: "0 3 * * *"
+  claimSelector:
+    matchLabels:
+      cluster-name: gitea-postgres
+  snapshotTemplate:
+    snapshotClassName: zfs-local-dataset
