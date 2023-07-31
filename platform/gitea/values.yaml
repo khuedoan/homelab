@@ -64,14 +64,8 @@ gitea:
         LOG_SQL: false
       service:
         DISABLE_REGISTRATION: true
-      session:
-        PROVIDER: memory
-      cache:
-        ADAPTER: memory
-      queue:
-        TYPE: level
       log:
-        LEVEL: debug
+        LEVEL: info
       cron:
         NOTICE_ON_SUCCESS: false
 
@@ -124,4 +118,4 @@ gitea:
     enabled: false
 
   redis-cluster:
-    enabled: false
+    enabled: true
