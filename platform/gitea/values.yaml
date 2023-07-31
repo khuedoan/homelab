@@ -68,6 +68,8 @@ gitea:
         PROVIDER: memory
       cache:
         ADAPTER: memory
+      queue:
+        TYPE: level
       log:
         LEVEL: info
       cron:
