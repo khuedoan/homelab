@@ -12,6 +12,8 @@
     owner: root
     group: root
     mode: 0755
+  tags:
+    k3s-upgrade
 
 - name: Link k3s binary
   file:
@@ -22,6 +24,8 @@
     group: root
     mode: 0755
   notify: restart k3s
+  tags:
+    k3s-upgrade
 
 - name: Ensure config directories exist
   file:

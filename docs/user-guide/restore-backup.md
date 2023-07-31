@@ -1,5 +1,13 @@
 # Restore backup
 
+## ZFS
+
+```bash
+zfs rollback ${ZFS_VOLUME}@{ZFS_SNAPSHOT}
+```
+
+## Longhorn
+
 - scale down replicas and delete pvc
 - restore latest backup from [UI](https://longhorn.k8s.grigri/#/backup):
   - pv with the same name
