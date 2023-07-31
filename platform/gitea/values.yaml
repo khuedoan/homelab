@@ -64,6 +64,10 @@ gitea:
         LOG_SQL: false
       service:
         DISABLE_REGISTRATION: true
+      session:
+        PROVIDER: memory
+      cache:
+        ADAPTER: memory
       log:
         LEVEL: info
       cron:
