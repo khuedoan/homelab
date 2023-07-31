@@ -71,7 +71,7 @@ gitea:
       queue:
         TYPE: level
       log:
-        LEVEL: info
+        LEVEL: debug
       cron:
         NOTICE_ON_SUCCESS: false
 
