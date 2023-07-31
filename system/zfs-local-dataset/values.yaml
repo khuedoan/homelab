@@ -22,6 +22,7 @@ democratic-csi:
     name: "org.democratic-csi.zfs-local-dataset"
     storageCapacity: true
     fsGroupPolicy: File
+    attachRequired: false
 
   controller:
     enabled: true
