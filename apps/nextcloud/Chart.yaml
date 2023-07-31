@@ -3,7 +3,7 @@ name: nextcloud
 version: 0.0.0
 dependencies:
   - name: nextcloud
-    version: 3.5.19
+    version: 3.5.20
     repository: https://nextcloud.github.io/helm/
   - name: app-template
     version: 1.5.1
