@@ -116,3 +116,6 @@ gitea:
 
   postgresql:
     enabled: false
+
+  redis-cluster:
+    enabled: false
