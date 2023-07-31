@@ -81,7 +81,7 @@ app-template:
       memory: 500Mi
   sidecars:
     subcleaner:
-      image: registry.k8s.io/git-sync/git-sync:v3.6.8
+      image: registry.k8s.io/git-sync/git-sync:v3.6.9
       imagePullPolicy: IfNotPresent
       args:
         - --repo=https://github.com/KBlixt/subcleaner.git
