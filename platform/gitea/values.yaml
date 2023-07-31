@@ -3,6 +3,9 @@ gitea:
     repository: gitea/gitea
     rootless: true
 
+  strategy:
+    type: "Recreate"
+
   ingress:
     enabled: true
     className: nginx-external
