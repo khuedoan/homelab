@@ -1,0 +1,36 @@
+---
+- name: Test if zfs_exporter binary exists
+  stat:
+    path: /usr/local/bin/zfs-exporter
+  register: zfs_exporter_binary
+  tags:
+    - zfs-exporter
+
+- name: Install the zfs exporter
+  block:
+    - name: Download the zfs exporter
+      delegate_to: localhost
+      become: false
+      ansible.builtin.unarchive:
+        src: https://github.com/pdf/zfs_exporter/releases/download/v{{ zfs_exporter_version }}/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
+        dest: /tmp/
+        remote_src: yes
+
+    - name: Upload the zfs exporter to the server
+      become: true
+      copy:
+        src: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64/zfs_exporter
+        dest: /usr/local/bin
+        mode: 0755
+  when: not zfs_exporter_binary.stat.exists
+  tags:
+    - zfs-exporter
+
+- name: Create the systemd service
+  become: true
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/zfs-exporter.service
+  notify: restart zfs-exporter
+  tags:
+    - zfs-exporter

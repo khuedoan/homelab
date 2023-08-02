@@ -1,0 +1,3 @@
+---
+zfs_exporter_version: 2.2.8
+zfs_exporter_arguments: --collector.dataset-snapshot

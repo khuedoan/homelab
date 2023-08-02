@@ -1,0 +1,8 @@
+---
+- name: restart zfs-exporter
+  become: true
+  systemd:
+    name: zfs-exporter
+    enabled: true
+    daemon_reload: true
+    state: restarted
