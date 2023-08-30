@@ -74,7 +74,7 @@ spec:
     spec:
       ingressClassName: nginx
       rules:
-        - host: &host vault.khuedoan.com
+        - host: &host vault.kgmm.co.uk
           http:
             paths:
               - backend:

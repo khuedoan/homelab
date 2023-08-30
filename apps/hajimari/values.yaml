@@ -1,6 +1,6 @@
 hajimari:
   env:
-    TZ: Asia/Ho_Chi_Minh
+    TZ: Europe/London
   ingress:
     main:
       enabled: true
@@ -9,7 +9,7 @@ hajimari:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/enable: 'false'
       hosts:
-        - host: &host home.khuedoan.com
+        - host: &host home.kgmm.co.uk
           paths:
             - path: /
               pathType: Prefix
@@ -25,7 +25,7 @@ hajimari:
       - group: Homelab
         bookmarks:
           - name: Documentation
-            url: https://homelab.khuedoan.com
+            url: https://homelab.kgmm.co.uk
           - name: Public GitHub repository
             url: https://github.com/khuedoan/homelab
       - group: Managed services

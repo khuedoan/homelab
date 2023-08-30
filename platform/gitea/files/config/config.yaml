@@ -16,7 +16,7 @@ repositories:
     owner: ops
     private: false
     migrate:
-      source: https://github.com/khuedoan/homelab
+      source: https://github.com/km1uk/homelab
       mirror: false
     hook: true
   - name: blog

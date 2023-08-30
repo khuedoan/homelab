@@ -4,12 +4,12 @@ metadata:
   name: excalidraw
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/target: "homelab-tunnel.khuedoan.com"
+    external-dns.alpha.kubernetes.io/target: "homelab-tunnel.kgmm.co.uk"
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
   ingressClassName: nginx
   rules:
-    - host: &host draw.khuedoan.com
+    - host: &host draw.kgmm.co.uk
       http:
         paths:
           - pathType: ImplementationSpecific
