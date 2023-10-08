@@ -17,5 +17,5 @@ spec:
     spec:
       containers:
         - name: blog
-          image: registry.khuedoan.com/blog:latest
+          image: registry.jmq.net.ar/blog:latest
           imagePullPolicy: Always

@@ -1,6 +1,6 @@
 hajimari:
   env:
-    TZ: Asia/Ho_Chi_Minh
+    TZ: etc/utc
   ingress:
     main:
       enabled: true

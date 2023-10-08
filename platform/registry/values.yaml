@@ -3,7 +3,7 @@ docker-registry:
     enabled: true
     className: nginx
     hosts:
-      - &host registry.khuedoan.com
+      - &host registry.jmq.net.ar
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
