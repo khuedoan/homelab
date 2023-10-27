@@ -40,7 +40,7 @@ tools:
 		--volume homelab-tools-cache:/root/.cache \
 		--volume homelab-tools-nix:/nix \
 		--workdir $(shell pwd) \
-		nixos/nix nix-shell
+		nixos/nix nix --experimental-features 'nix-command flakes' develop
 
 test:
 	make -C test

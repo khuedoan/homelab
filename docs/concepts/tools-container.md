@@ -15,7 +15,7 @@ You can use the default Docker wrapper, or use Nix if you have Nix installed:
 === "Nix"
 
     ```sh
-    nix-shell
+    nix develop
     ```
 
     !!! tip
@@ -25,15 +25,15 @@ You can use the default Docker wrapper, or use Nix if you have Nix installed:
 It will open a shell like this:
 
 ```
-[nix-shell:/home/khuedoan/Documents/homelab]# echo hello
+[khuedoan@ryzentower:~/Documents/homelab]$ echo hello
 hello
 ```
 
 ## How it works
 
-- All dependencies are defined in `./shell.nix`
+- All dependencies are defined in `./flake.nix`
 - When you run `make tools`, it will run a thin Docker wrapper with the `nixos/nix` image (because not everyone has Nix installed) and mount some required volumes
-- `nix-shell` will start an interactive shell based on the Nix expression in `./shell.nix` and install everything from there
+- `nix develop` will start an interactive shell based on the Nix expression in `./flake.nix` and install everything from there
 
 ## Known issues
 

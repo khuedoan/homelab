@@ -37,7 +37,7 @@ Open the tools container, which includes all the tools needed:
 === "Nix"
 
     ```sh
-    nix-shell
+    nix develop
     ```
 
 Build a development cluster and bootstrap it:

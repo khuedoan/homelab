@@ -24,7 +24,7 @@ They are not permanent, we can change them in the future if better alternatives 
 **Context**
 
 While Nix is reproducible, we need a way to control the versions of the tools and keep them up-to-date.
-For example, if we update the nixpkgs hash (in `shell.nix`) from `abcd1234` to `defa5678`:
+For example, if we update the nixpkgs hash (in `flake.nix`) from `abcd1234` to `defa5678`:
 
 - `ansible`: 2.12.1 -> 2.12.6
 - `terraform`: 1.2.0 -> 1.2.2
@@ -38,7 +38,7 @@ That looks good. But when we update it from `defa5678` to `cdef9012`:
 
 This time it breaks `foobar` because the new major version contains a breaking change.
 
-We can pin the specific version of each dependency in `shell.nix`,
+We can pin the specific version of each dependency in `flake.nix`,
 however, the maintenance burden is too high (even with Renovate) because we need to update the version of each package regularly rather than just the nixpkgs hash.
 Instead, we can just bump the nixpkgs hash and run some tests to ensure there is no breaking change.
 

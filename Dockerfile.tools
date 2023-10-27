@@ -1,5 +1,5 @@
 FROM nixos/nix
 
-COPY shell.nix shell.nix
+COPY flake.nix flake.nix
 
-RUN nix-shell --command exit
+RUN nix --experimental-features 'nix-command flakes' develop --command true
