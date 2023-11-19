@@ -9,3 +9,4 @@ k3s_server_config:
     - traefik
   disable-cloud-controller: true
   secrets-encryption: true
+  snapshotter: stargz
