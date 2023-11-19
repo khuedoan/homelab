@@ -3,5 +3,5 @@ name: root
 version: 0.0.0
 dependencies:
   - name: argocd-apps
-    version: 1.2.0
+    version: 1.4.1
     repository: https://argoproj.github.io/argo-helm
