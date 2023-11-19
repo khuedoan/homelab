@@ -42,6 +42,5 @@ docker-registry:
   persistence:
     enabled: true
     size: 10Gi
-    storageClass: longhorn
   garbageCollect:
     enabled: true

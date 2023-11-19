@@ -24,8 +24,3 @@ gitea:
         ROOT_URL: https://git.khuedoan.com
       webhook:
         ALLOWED_HOST_LIST: private
-  persistence:
-    storageClass: longhorn
-  postgresql:
-    persistence:
-      storageClass: longhorn

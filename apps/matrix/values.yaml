@@ -44,7 +44,6 @@ dendrite:
       addresses:
         - nats://matrix-nats:4222
   persistence:
-    storageClass: longhorn
     logs:
       capacity: 1Gi
     media:
@@ -63,7 +62,6 @@ dendrite:
         postgresqlPassword: dendrite
     persistence:
       enabled: true
-      storageClass: longhorn
       accessModes:
         - ReadWriteOnce
       size: 5Gi

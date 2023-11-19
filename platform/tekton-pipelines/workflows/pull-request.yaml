@@ -36,7 +36,6 @@ spec:
     - name: shared-data
       volumeClaimTemplate:
         spec:
-          storageClassName: longhorn
           accessModes:
             - ReadWriteOnce
           resources:

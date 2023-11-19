@@ -260,7 +260,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: vault-file
 spec:
-  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
