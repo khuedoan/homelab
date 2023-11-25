@@ -17,30 +17,27 @@ from kubernetes import client, config
 # https://git.khuedoan.com/user/settings/applications
 # Doing this properly inside the cluster requires:
 # - Kubernetes service account
-# - Vault Kubernetes auth
-config.load_kube_config(config_file='./metal/kubeconfig.yaml')
+try:
+    config.load_incluster_config()
+except config.ConfigException:
+    config.load_kube_config()
 
 gitea_host = client.NetworkingV1Api().read_namespaced_ingress('gitea', 'gitea').spec.rules[0].host
-gitea_user = base64.b64decode(client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea').data['username']).decode("utf-8")
-gitea_pass = base64.b64decode(client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea').data['password']).decode("utf-8")
+gitea_user_secret = client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea')
+gitea_user = base64.b64decode(gitea_user_secret.data['username']).decode("utf-8")
+gitea_pass = base64.b64decode(gitea_user_secret.data['password']).decode("utf-8")
 gitea_url = f"http://{gitea_user}:{urllib.parse.quote_plus(gitea_pass)}@{gitea_host}"
 
-vault_host = client.NetworkingV1Api().read_namespaced_ingress('vault', 'vault').spec.rules[0].host
-vault_token = base64.b64decode(client.CoreV1Api().read_namespaced_secret('vault-unseal-keys', 'vault').data['vault-root']).decode("utf-8")
-vault_url = f"https://{vault_host}"
-
-
-def create_vault_secret(path: str, data) -> None:
-    requests.post(
-        url=f"{vault_url}/v1/secret/data/{path}",
-        headers={
-            'X-Vault-Token': vault_token
-        },
-        data=json.dumps({
-            'data': data
-        })
-    )
-
+def create_secret(name: str, namespace: str, data: dict) -> None:
+    try:
+        client.CoreV1Api().read_namespaced_secret(name, namespace)
+    except client.exceptions.ApiException:
+        # Secret doesn't exist, create a new one
+        new_secret = client.V1Secret(
+            metadata=client.V1ObjectMeta(name=name),
+            data=data,
+        )
+        client.CoreV1Api().create_namespaced_secret(namespace, new_secret)
 
 def setup_gitea_access_token(name: str) -> None:
     current_tokens = requests.get(
@@ -63,14 +60,13 @@ def setup_gitea_access_token(name: str) -> None:
                 f"gitea.{name}",
                 "global-secrets",
                 {
-                    'token': resp.json()['sha1']
+                    'token': base64.b64encode(resp.json()['sha1'].encode("utf-8")).decode("utf-8")
                 }
             )
         else:
             print(f"Error creating access token {name} ({resp.status_code})")
             print(resp.content)
             sys.exit(1)
-
 
 def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
     current_apps = requests.get(
@@ -94,8 +90,8 @@ def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
                 f"gitea.{name}",
                 "global-secrets",
                 {
-                    'client_id': resp.json()['client_id'],
-                    'client_secret': resp.json()['client_secret']
+                    'client_id': base64.b64encode(resp.json()['client_id'].encode("utf-8")).decode("utf-8"),
+                    'client_secret': base64.b64encode(resp.json()['client_secret'].encode("utf-8")).decode("utf-8"),
                 }
             )
         else:
@@ -103,9 +99,7 @@ def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
             print(resp.content)
             sys.exit(1)
 
-
 def main() -> None:
-
     with Console().status("Completing the remaining sorcery"):
         gitea_access_tokens = [
             'renovate'
@@ -120,7 +114,6 @@ def main() -> None:
 
         for app in gitea_oauth_apps:
             setup_gitea_oauth_app(app['name'], app['redirect_uri'])
-
 
 if __name__ == '__main__':
     main()
