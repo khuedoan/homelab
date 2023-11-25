@@ -14,9 +14,8 @@
 
 ```mermaid
 flowchart TD
-  subgraph vault-namespace[vault namespace]
-    bank-vaults[Bank Vaults side car] -. init and unseal .- vault[(HashiCorp Vault)]
-    random-secret[Random secrets CronJob] -. generate secrets if not exist .-> vault[(HashiCorp Vault)]
+  subgraph global-secrets-namespace[global-secrets namespace]
+    secret-generator[Secret generator CronJob] -. generate secrets if not exist .-> kubernetes-secrets[Kubernetes Secrets]
   end
 
   subgraph app-namespace[application namespace]

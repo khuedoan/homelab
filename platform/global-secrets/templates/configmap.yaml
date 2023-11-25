@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: secret-generator
+  namespace: {{ .Release.Namespace }}
+data:
+{{ (.Files.Glob "files/secret-generator/*").AsConfig | indent 2 }}

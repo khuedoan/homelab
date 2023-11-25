@@ -1,26 +1,26 @@
 # Gitea
-- path: gitea/admin
+- name: gitea.admin
   data:
     - key: password
       length: 32
       special: true
 
 # Dex
-- path: dex/grafana
+- name: dex.grafana
   data:
     - key: client_secret
       length: 32
       special: false
 
 # Registry
-- path: registry/admin
+- name: registry.admin
   data:
     - key: password
       length: 32
       special: true
 
 # Tekton
-- path: tekton/webhook
+- name: tekton.webhook
   data:
     - key: token
       length: 32

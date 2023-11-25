@@ -59,8 +59,9 @@ def setup_gitea_access_token(name: str) -> None:
         )
 
         if resp.status_code == 201:
-            create_vault_secret(
-                f"gitea/{name}",
+            create_secret(
+                f"gitea.{name}",
+                "global-secrets",
                 {
                     'token': resp.json()['sha1']
                 }
@@ -89,8 +90,9 @@ def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
         )
 
         if resp.status_code == 201:
-            create_vault_secret(
-                f"gitea/{name}",
+            create_secret(
+                f"gitea.{name}",
+                "global-secrets",
                 {
                     'client_id': resp.json()['client_id'],
                     'client_secret': resp.json()['client_secret']
