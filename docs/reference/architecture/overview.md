@@ -23,7 +23,7 @@ Main components:
 - `./metal`: bare metal management, install Linux and Kubernetes
 - `./bootstrap`: GitOps bootstrap with ArgoCD
 - `./system`: critical system components for the cluster (load balancer, storage, ingress, operation tools...)
-- `./platform`: essential components for service hosting platform (vault, git...)
+- `./platform`: essential components for service hosting platform (git, build runners, dashboards...)
 - `./apps`: user facing applications
 - `./external` (optional): externally managed services
 
@@ -48,7 +48,7 @@ Everything is automated, after you edit the configuration files, you just need t
 From now on, ArgoCD will do the rest:
 
 - (3) Build the `./system` layer (storage, networking, monitoring, etc)
-- (4) Build the `./platform` layer (Gitea, Vault, SSO, etc)
+- (4) Build the `./platform` layer (Gitea, Grafana, SSO, etc)
 - (5) Build the `./apps` layer: (Syncthing, Jellyfin, etc)
 
 ```mermaid
@@ -81,9 +81,9 @@ flowchart TD
   cloudflare -.-> cloudflared
 
   subgraph platform
-    gitea[Gitea]
-    tekton[Tekton]
-    vault[Vault]
+    Gitea
+    Tekton
+    Grafana
   end
 
   subgraph apps
@@ -168,7 +168,7 @@ Below is the pseudo code for the entire process, you don't have to read it right
                     migrate the homelab repository from GitHub
                     ArgoCD switch the source from GitHub to Gitea
                 ci
-                vault
+                dashboards
                 etc
             ./apps (depends on ./system and ./platform):
                 homepage

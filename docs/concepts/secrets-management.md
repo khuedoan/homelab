@@ -2,42 +2,44 @@
 
 ## Overview
 
-- Secrets are stored in [HashiCorp Vault](https://www.vaultproject.io)
-- Vault is managed with [Vault Operator (Bank Vaults)](https://banzaicloud.com/docs/bank-vaults/operator), automatically initialize and unseal
-- Secrets that can be generated are automatically generated and stored in Vault.
-- Integrate with GitOps using [External Secrets Operator](https://external-secrets.io)
+- Global secrets are stored in the `global-secrets` namespace.
+- Integrate with GitOps using [External Secrets Operator](https://external-secrets.io).
+- Secrets that can be generated are automatically generated and stored in the `global-secrets` namespace.
 
 !!! info
 
-    Despite the name _External_ Secrets Operator, our Vault is deployed on the same cluster.
-    HashiCorp Vault can be replaced with AWS Secret Manager, Google Cloud Secret Manager, Azure Key Vault, etc.
+    Despite the name _External_ Secrets Operator, global secrets are created in the same cluster and synced
+    to other namespaces using the [Kubernetes provider](https://external-secrets.io/latest/provider/kubernetes).
+
+    While not supported by default in this project, you can also use other external providers such as HashiCorp Vault,
+    AWS Secret Manager, Google Cloud Secret Manager, Azure Key Vault, 1Password, etc.
 
 ```mermaid
 flowchart TD
   subgraph global-secrets-namespace[global-secrets namespace]
-    secret-generator[Secret generator CronJob] -. generate secrets if not exist .-> kubernetes-secrets[Kubernetes Secrets]
+    secret-generator[Secret Generator] -- generate if not exist --> source-secrets[Source Secrets]
   end
 
   subgraph app-namespace[application namespace]
-    ExternalSecret -. generate .-> Secret
+    ExternalSecret -- create --> Secret
     App -- read --> Secret
   end
 
-  ClusterSecretStore --> vault
-  ClusterSecretStore --> ExternalSecret
+  ClusterSecretStore -- read --> source-secrets
+  ExternalSecret --- ClusterSecretStore
 ```
 
 ## Randomly generated secrets
 
-This is useful when you want to generate random secrets like admin password and store in Vault.
+This is useful when you want to generate random secrets like admin password and store in global secrets.
 
-```yaml title="./platform/vault/files/generate-secrets/config.yaml" hl_lines="2-6"
+```yaml title="./platform/global-secrets/files/secret-generator/config.yaml" hl_lines="2-6"
 --8<--
-./platform/vault/files/generate-secrets/config.yaml
+./platform/global-secrets/files/secret-generator/config.yaml
 --8<--
 ```
 
-## How secrets are pulled from Vault to Kubernetes
+## How secrets are pulled from global secrets to other namespaces
 
 When you apply an `ExternalSecret` object, for example:
 
@@ -51,13 +53,13 @@ spec:
   data:
   - remoteRef:
       conversionStrategy: Default
-      key: /gitea/admin
+      key: gitea.admin
       property: password
     secretKey: password
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
-    name: vault
+    name: global-secrets
   target:
     creationPolicy: Owner
     deletionPolicy: Retain

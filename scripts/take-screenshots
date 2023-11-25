@@ -26,10 +26,6 @@ apps = [
         'url': 'https://argocd.khuedoan.com/applications/root'
     },
     {
-        'name': 'vault',
-        'url': 'https://vault.khuedoan.com/ui/vault/secrets'
-    },
-    {
         'name': 'tekton',
         'url': 'https://tekton.khuedoan.com/#/namespaces/tekton-pipelines/pipelineruns/homelab?pipelineTask=external&step=plan'
     },

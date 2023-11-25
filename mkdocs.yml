@@ -75,7 +75,6 @@ nav:
       - how-to-guides/troubleshooting/gitea.md
       - how-to-guides/troubleshooting/longhorn.md
       - how-to-guides/troubleshooting/pxe-boot.md
-      - how-to-guides/troubleshooting/vault.md
   - Reference:
     - reference/index.md
     - Architecture:

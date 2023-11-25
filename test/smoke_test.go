@@ -19,7 +19,6 @@ func TestSmoke(t *testing.T) {
 	}{
 		{"argocd-server", "argocd"},
 		{"hajimari", "hajimari"},
-		{"vault", "vault"},
 		{"gitea", "gitea"},
 	}
 

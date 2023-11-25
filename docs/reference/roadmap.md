@@ -37,7 +37,6 @@ Good enough for tinkering and personal usage, and reasonably secure.
 - [x] Core applications
     - [x] Gitea
     - [x] Tekton
-    - [x] Vault
     - [x] Private container registry
     - [x] Homepage
 
