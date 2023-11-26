@@ -19,6 +19,50 @@ They are not permanent, we can change them in the future if better alternatives 
 
     - CHANGEME
 
+## Remove HashiCorp Vault
+
+**Context**
+
+- HashiCorp changed their license, and it's no longer free/libre software.
+  One of the highest priorities of this project is to minimize
+  the usage of non-free software as much as possible, so I don't really
+  want to keep Vault, especially considering the next point.
+- Vault is fairly complex to maintain properly. This project only uses
+  Vault for two things: basic key-value secret store and its API to
+  create and manage secrets dynamically. With the new Kubernetes secret
+  provider in External Secrets, both features can be replaced with
+  Kubernetes's built-in secrets and API server.
+- A related goal of using Vault as an identity provider for SSO will be
+  discarded, and we'll use Authelia instead, which has a beta identity
+  provider feature (or use another alternative).
+
+**Decision**
+
+Replace Vault with a simplier in-cluster global secret store.
+
+**Consequences**
+
+Unlike secret path in Vault, Kubernetes does not support `/` in object name.
+We need to change secret convention from `path` to `name` and replace `/` with `.`.
+
+Update secret generator config:
+
+```diff
+-- path: gitea/admin
++- name: gitea.admin
+   data:
+     - key: password
+       length: 32
+```
+
+Update secret references in `kind: ExternalSecret`:
+
+```diff
+ remoteRef:
+-  key: /gitea/admin
++  key: gitea.admin
+```
+
 ## Manage package versions in tools container
 
 **Context**
