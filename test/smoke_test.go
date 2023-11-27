@@ -18,8 +18,11 @@ func TestSmoke(t *testing.T) {
 		namespace string
 	}{
 		{"argocd-server", "argocd"},
-		{"hajimari", "hajimari"},
 		{"gitea", "gitea"},
+		{"grafana", "grafana"},
+		{"hajimari", "hajimari"},
+		{"registry-docker-registry", "registry"},
+		{"tekton-dashboard", "tekton-pipelines"},
 	}
 
 	for _, app := range mainApps {
