@@ -62,7 +62,6 @@ flowchart TD
   end
 
   subgraph system[./system]
-    metallb[MetalLB]
     nginx[NGINX]
     longhorn[Longhorn]
     cert-manager
@@ -137,9 +136,7 @@ Below is the pseudo code for the entire process, you don't have to read it right
                 copy k3s config files
                 enable k3s service and form a cluster
                 create KUBECONFIG file
-                create MetalLB config:
-                    use the last /27 subnet of the network
-                    apply the config
+                install Cilium
         build ./bootstrap:
             install ArgoCD:
                 apply helm chart

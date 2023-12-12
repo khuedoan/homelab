@@ -1,8 +1,0 @@
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: default
-  namespace: {{ .Release.Namespace }}
-spec:
-  addresses:
-    - 192.168.1.224/27

@@ -116,6 +116,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Cloud native certificate management</td>
     </tr>
     <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/21054566?s=200&v=4"></td>
+        <td><a href="https://cilium.io">Cilium</a></td>
+        <td>eBPF-based Networking, Observability and Security (CNI, LB, Network Policy, etc.)</td>
+    </tr>
+    <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/314135?s=200&v=4"></td>
         <td><a href="https://www.cloudflare.com">Cloudflare</a></td>
         <td>DNS and Tunnel</td>
@@ -174,11 +179,6 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://longhorn.io/img/logos/longhorn-icon-white.png"></td>
         <td><a href="https://longhorn.io">Longhorn</a></td>
         <td>Cloud native distributed block storage for Kubernetes</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4"></td>
-        <td><a href="https://metallb.org">MetalLB</a></td>
-        <td>Bare metal load-balancer for Kubernetes</td>
     </tr>
     <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/1412239?s=200&v=4"></td>
