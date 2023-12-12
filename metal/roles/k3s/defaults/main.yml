@@ -8,5 +8,8 @@ k3s_server_config:
     - servicelb
     - traefik
   disable-cloud-controller: true
+  disable-helm-controller: true
+  disable-kube-proxy: true
+  disable-network-policy: true
+  flannel-backend: none
   secrets-encryption: true
-  snapshotter: stargz
