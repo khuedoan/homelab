@@ -2,4 +2,3 @@
   hosts: metal
   roles:
     - k3s
-    - automatic_upgrade

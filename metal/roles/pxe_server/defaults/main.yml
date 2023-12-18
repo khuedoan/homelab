@@ -1,4 +1,4 @@
-iso_url: "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Server/x86_64/iso/Fedora-Server-dvd-x86_64-39-1.5.iso"
-iso_checksum: "sha256:2755cdff6ac6365c75be60334bf1935ade838fc18de53d4c640a13d3e904f6e9"
-timezone: Asia/Ho_Chi_Minh
+iso_url: "https://repo.almalinux.org/almalinux/9.3/isos/x86_64/AlmaLinux-9.3-x86_64-dvd.iso"
+iso_checksum: "sha256:4a8c4ed4b79edd0977d7f88be7c07e12c4b748671a7786eb636c6700e58068d5"
+timezone: Europe/Warsaw
 dhcp_proxy: true

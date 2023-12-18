@@ -13,14 +13,15 @@ clearpart --all --drives={{ hostvars[item]['disk'] }}
 # Partitioning
 ignoredisk --only-use={{ hostvars[item]['disk'] }}
 partition /boot/efi --fstype=vfat --size=512
-partition / --fstype=ext4 --grow
+partition / --fstype=xfs --grow
 
 # Network information
 network --bootproto=static --device={{ hostvars[item]['network_interface'] }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
 
 # Use network installation
-repo --name="Repository" --baseurl=http://{{ ansible_default_ipv4.address }}/os
+repo --name="AppStream" --baseurl=http://{{ ansible_default_ipv4.address }}/os/AppStream
 url --url="http://{{ ansible_default_ipv4.address }}/os"
+
 # Disable Setup Agent on first boot
 firstboot --disable
 # Do not configure the X Window System
@@ -43,10 +44,30 @@ selinux --disabled
 # Disable firewall
 firewall --disabled
 
-%packages
-@^custom-environment
-openssh-server
+%packages --inst-langs=en
+@core
+dracut-config-generic
+usermode
 iscsi-initiator-utils
+-biosdevname
+-dnf-plugin-spacewalk
+-dracut-config-rescue
+-iprutils
+-iwl*-firmware
+-langpacks-*
+-mdadm
+-open-vm-tools
+-plymouth
+-rhn*
+%end
+
+# disable kdump service
+%addon com_redhat_kdump --disable
+%end
+#
+%post --erroronfail
+# permit root login via SSH with password authetication
+echo "PermitRootLogin yes" > /etc/ssh/sshd_config.d/01-permitrootlogin.conf
 %end
 
 # Enable iSCSI for Kubernetes storage
