@@ -42,18 +42,7 @@ tools:
 		--workdir $(shell pwd) \
 		docker.io/nixos/nix nix --experimental-features 'nix-command flakes' develop
 
-test:
-	make -C test
 
 clean:
 	docker compose --project-directory ./metal/roles/pxe_server/files down
 
-dev:
-	make -C metal cluster env=dev
-	make -C bootstrap
-
-docs:
-	mkdocs serve
-
-git-hooks:
-	pre-commit install

@@ -1,15 +1,6 @@
 terraform {
   required_version = "~> 1.5.0"
 
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "sudo0"
-
-    workspaces {
-      name = "homelab-external"
-    }
-  }
-
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
