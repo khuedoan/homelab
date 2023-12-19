@@ -2,9 +2,6 @@
 
 default: apply
 
-~/.terraform.d/credentials.tfrc.json:
-	terraform login
-
 terraform.tfvars:
 	ansible-playbook tfvars.yml
 
