@@ -9,7 +9,8 @@ external-dns:
           key: value
   extraArgs:
     - --annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)
-
+  interval: 5m
+  triggerLoopOnEvent: true
   metrics:
     enabled: true
     serviceMonitor:
