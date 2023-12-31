@@ -1,0 +1,22 @@
+# TODO Do not run this script directly, it only serves as documentation,
+# Proper automation will be added later, waiting for client library update:
+# https://github.com/kanidm/kanidm/pull/2301
+
+./scripts/kanidm-reset-admin-password
+# copy password manually
+kanidm login -D admin
+kanidm service-account credential generate -D admin idm_admin
+# copy password manually
+kanidm login -D idm_admin
+
+kanidm person create khuedoan "Khue Doan" --name idm_admin
+kanidm person update khuedoan --mail "mail@khuedoan.com"
+kanidm group create demo_group --name idm_admin
+kanidm group add-members demo_group khuedoan --name idm_admin
+kanidm person credential create-reset-token khuedoan --name idm_admin
+
+kanidm system oauth2 create dex Dex https://dex.khuedoan.com/callback
+kanidm system oauth2 show-basic-secret dex
+# add secret to k8s manually
+kanidm system oauth2 create-scope-map dex demo_group openid profile email groups
+kanidm system oauth2 warning-insecure-client-disable-pkce dex

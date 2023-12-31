@@ -1,0 +1,13 @@
+# TODO https://github.com/kanidm/kanidm/issues/1227
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kanidm-selfsigned
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretName: kanidm-selfsigned-certificate
+  issuerRef:
+    kind: Issuer
+    name: kanidm-selfsigned
+  dnsNames:
+    - home.arpa
