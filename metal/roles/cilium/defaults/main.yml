@@ -7,12 +7,6 @@ cilium_values:
   kubeProxyReplacement: true
   l2announcements:
     enabled: true
-  ingressController:
-    enabled: true
-    default: true
-    loadbalancerMode: shared
-    service:
-      allocateLoadBalancerNodePorts: false
   # TODO the host and port are k3s-specific, generic solution is in progress
   # https://github.com/cilium/cilium/issues/19038
   # https://github.com/cilium/cilium/pull/28741
