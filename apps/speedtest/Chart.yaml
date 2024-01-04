@@ -2,6 +2,6 @@ apiVersion: v2
 name: speedtest
 version: 0.0.0
 dependencies:
-  - name: openspeedtest
-    version: 0.1.2
-    repository: https://openspeedtest.github.io/Helm-chart
+  - name: app-template
+    version: 2.2.0
+    repository: https://bjw-s.github.io/helm-charts
