@@ -25,3 +25,10 @@
     - key: token
       length: 32
       special: false
+
+# Woodpecker
+- name: woodpecker.agent
+  data:
+    - key: secret
+      length: 32
+      special: false
