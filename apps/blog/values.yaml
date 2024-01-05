@@ -10,7 +10,7 @@ app-template:
     main:
       ports:
         http:
-          port: 80
+          port: 3000
           protocol: HTTP
   ingress:
     main:
