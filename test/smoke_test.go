@@ -21,6 +21,7 @@ func TestSmoke(t *testing.T) {
 		{"gitea", "gitea"},
 		{"grafana", "grafana"},
 		{"hajimari", "hajimari"},
+		{"kanidm", "kanidm"},
 		{"registry-docker-registry", "registry"},
 		{"tekton-dashboard", "tekton-pipelines"},
 	}
