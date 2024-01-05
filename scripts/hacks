@@ -181,7 +181,6 @@ def main() -> None:
         ]
 
         gitea_oauth_apps = [
-            {'name': 'dex', 'redirect_uri': f"https://{client.NetworkingV1Api().read_namespaced_ingress('dex', 'dex').spec.rules[0].host}/callback"}
         ]
 
         kanidm_groups = [
