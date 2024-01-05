@@ -27,6 +27,7 @@
             iproute2
             jq
             k9s
+            kanidm
             kube3d
             kubectl
             kubernetes-helm
@@ -45,6 +46,7 @@
               kubernetes
               mkdocs-material
               netaddr
+              pexpect
               rich
             ]))
           ];
