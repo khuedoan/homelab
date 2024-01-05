@@ -23,7 +23,7 @@ Good enough for tinkering and personal usage, and reasonably secure.
     - [x] Monitoring
     - [x] Logging
     - [ ] Alerting
-- [ ] SSO
+- [x] SSO
 - [ ] Reasonably secure
     - [x] Automated certificate management
     - [x] Declarative secret management
