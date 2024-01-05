@@ -1,6 +1,8 @@
 module git.khuedoan.com/ops/homelab
 
-go 1.20
+go 1.21
+
+toolchain go1.21.4
 
 require github.com/gruntwork-io/terratest v0.46.1
 
