@@ -1,0 +1,26 @@
+when:
+  branch: ${CI_REPO_DEFAULT_BRANCH}
+
+steps:
+  # TODO DRY with nix develop and custom entrypoint https://github.com/woodpecker-ci/woodpecker/pull/2985,
+  # but first we need a Nix cache. See the nix-cache branch for the WIP.
+  tools-versions:
+    image: nixos/nix
+    commands:
+      - echo 'experimental-features = flakes nix-command' >> /etc/nix/nix.conf
+      # - echo 'trusted-substituters = http://nix-cache.nix-cache' >> /etc/nix/nix.conf
+      # - echo 'substituters = http://nix-cache.nix-cache' >> /etc/nix/nix.conf
+      - nix develop --command make -C test filter=ToolsVersions
+    when:
+      - event: pull_request
+        path:
+          include:
+            - 'flake.*'
+    depends_on: []
+  pre-commit:
+    image: nixery.dev/shell/git/pre-commit # TODO replace with nix develop
+    commands:
+      - pre-commit run --color=always
+    when:
+      - event: pull_request
+    depends_on: []
