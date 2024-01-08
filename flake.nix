@@ -26,6 +26,7 @@
             diffutils
             docker
             docker-compose_1 # TODO upgrade to version 2
+            dyff
             git
             go
             gotestsum

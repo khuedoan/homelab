@@ -1,0 +1,20 @@
+when:
+  branch: ${CI_REPO_DEFAULT_BRANCH}
+
+matrix:
+  STACK:
+    - system
+    - platform
+    - apps
+
+steps:
+  # TODO DRY with nix develop and custom entrypoint https://github.com/woodpecker-ci/woodpecker/pull/2985,
+  # but first we need a Nix cache. See the nix-cache branch for the WIP.
+  diff:
+    image: nixery.dev/shell/git/python3/kubernetes-helm/diffutils/dyff # TODO replace with nix develop
+    commands:
+      - ./scripts/helm-diff --repository "${CI_REPO_CLONE_URL}" --source "${CI_COMMIT_SOURCE_BRANCH}" --target "${CI_COMMIT_TARGET_BRANCH}" --subpath "${STACK}"
+    when:
+      - event: pull_request
+        path: '${STACK}/**'
+    depends_on: []
