@@ -45,7 +45,7 @@ def create_secret(name: str, namespace: str, data: dict) -> None:
         )
         client.CoreV1Api().create_namespaced_secret(namespace, new_secret)
 
-def setup_gitea_access_token(name: str) -> None:
+def setup_gitea_access_token(name: str, scopes: list[str]) -> None:
     current_tokens = requests.get(
         url=f"{gitea_url}/api/v1/users/{gitea_user}/tokens",
     ).json()
@@ -57,7 +57,8 @@ def setup_gitea_access_token(name: str) -> None:
                 'Content-Type': 'application/json'
             },
             data=json.dumps({
-                'name': name
+                'name': name,
+                'scopes': scopes
             })
         )
 
@@ -179,7 +180,16 @@ def setup_kanidm_oauth_app(name: str, redirect_uri: str) -> None:
 def main() -> None:
     with Console().status("Completing the remaining sorcery"):
         gitea_access_tokens = [
-            'renovate'
+            {
+                'name': 'renovate',
+                'scopes': [
+                    "write:repository",
+                    "read:user",
+                    "write:issue",
+                    "read:organization",
+                    "read:misc"
+                ]
+            }
         ]
 
         gitea_oauth_apps = [
@@ -195,8 +205,8 @@ def main() -> None:
             {'name': 'dex', 'redirect_uri': f"https://{client.NetworkingV1Api().read_namespaced_ingress('dex', 'dex').spec.rules[0].host}/callback"},
         ]
 
-        for token_name in gitea_access_tokens:
-            setup_gitea_access_token(token_name)
+        for token in gitea_access_tokens:
+            setup_gitea_access_token(token['name'], token['scopes'])
 
         for app in gitea_oauth_apps:
             setup_gitea_oauth_app(app['name'], app['redirect_uri'])
