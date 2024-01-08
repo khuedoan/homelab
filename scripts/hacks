@@ -75,6 +75,7 @@ def setup_gitea_access_token(name: str) -> None:
             sys.exit(1)
 
 def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
+    # TODO use the new global application, while it's there in the UI, there's no API yet.
     current_apps = requests.get(
         url=f"{gitea_url}/api/v1/user/applications/oauth2",
     ).json()
@@ -87,7 +88,8 @@ def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
             },
             data=json.dumps({
                 'name': name,
-                'redirect_uris': [redirect_uri]
+                'redirect_uris': [redirect_uri],
+                'confidential_client': True
             })
         )
 
@@ -181,7 +183,7 @@ def main() -> None:
         ]
 
         gitea_oauth_apps = [
-            {'name': 'woodpecker', 'redirect_uri': f"https://{client.NetworkingV1Api().read_namespaced_ingress('woodpecker-server', 'woodpecker').spec.rules[0].host}/authorize"}
+            {'name': 'woodpecker', 'redirect_uri': f"https://{client.NetworkingV1Api().read_namespaced_ingress('woodpecker-server', 'woodpecker').spec.rules[0].host}/authorize"},
         ]
 
         kanidm_groups = [
