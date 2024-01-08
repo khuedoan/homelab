@@ -22,5 +22,14 @@ gitea:
       server:
         LANDING_PAGE: explore
         ROOT_URL: https://git.khuedoan.com
+        OFFLINE_MODE: true
+      repository:
+        DISABLED_REPO_UNITS: repo.wiki,repo.projects,repo.packages
+        DISABLE_STARS: true
+        DEFAULT_BRANCH: master
+      service.explore:
+        DISABLE_USERS_PAGE: true
+      actions:
+        ENABLED: false
       webhook:
         ALLOWED_HOST_LIST: private
