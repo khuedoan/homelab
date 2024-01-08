@@ -81,7 +81,7 @@ flowchart TD
 
   subgraph platform
     Gitea
-    Tekton
+    Woodpecker
     Grafana
   end
 

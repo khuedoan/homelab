@@ -19,13 +19,6 @@
       length: 32
       special: true
 
-# Tekton
-- name: tekton.webhook
-  data:
-    - key: token
-      length: 32
-      special: false
-
 # Woodpecker
 - name: woodpecker.agent
   data:

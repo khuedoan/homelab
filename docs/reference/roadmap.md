@@ -36,7 +36,7 @@ Good enough for tinkering and personal usage, and reasonably secure.
     - [ ] 70% availability (might break in the weekend due to new experimentation)
 - [x] Core applications
     - [x] Gitea
-    - [x] Tekton
+    - [x] Woodpecker
     - [x] Private container registry
     - [x] Homepage
 

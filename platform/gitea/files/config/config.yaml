@@ -18,13 +18,11 @@ repositories:
     migrate:
       source: https://github.com/khuedoan/homelab
       mirror: false
-    hook: true
   - name: blog
     owner: khuedoan
     migrate:
       source: https://github.com/khuedoan/blog
       mirror: true
-    hook: true
   - name: backstage
     owner: khuedoan
     migrate:

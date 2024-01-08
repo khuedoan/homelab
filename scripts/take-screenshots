@@ -26,10 +26,6 @@ apps = [
         'url': 'https://argocd.khuedoan.com/applications/root'
     },
     {
-        'name': 'tekton',
-        'url': 'https://tekton.khuedoan.com/#/namespaces/tekton-pipelines/pipelineruns/homelab?pipelineTask=external&step=plan'
-    },
-    {
         'name': 'matrix',
         'url': 'https://chat.khuedoan.com/#/room/#random:matrix.khuedoan.com'
     },

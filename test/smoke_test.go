@@ -23,7 +23,6 @@ func TestSmoke(t *testing.T) {
 		{"hajimari", "hajimari"},
 		{"kanidm", "kanidm"},
 		{"registry-docker-registry", "registry"},
-		{"tekton-dashboard", "tekton-pipelines"},
 	}
 
 	for _, app := range mainApps {
