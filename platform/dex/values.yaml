@@ -29,6 +29,11 @@ dex:
         redirectURIs:
           - 'https://grafana.khuedoan.com/login/generic_oauth'
         secretEnv: GRAFANA_SSO_CLIENT_SECRET
+      - id: gitea
+        name: Gitea
+        redirectURIs:
+          - 'https://git.khuedoan.com/user/oauth2/Dex/callback'
+        secretEnv: GITEA_CLIENT_SECRET
   envFrom:
     - secretRef:
         name: dex-secrets

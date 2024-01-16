@@ -11,6 +11,11 @@
     - key: client_secret
       length: 32
       special: false
+- name: dex.gitea
+  data:
+    - key: client_secret
+      length: 32
+      special: false
 
 # Registry
 - name: registry.admin
