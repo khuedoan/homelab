@@ -21,10 +21,7 @@ from kubernetes.stream import stream
 # https://git.khuedoan.com/user/settings/applications
 # Doing this properly inside the cluster requires:
 # - Kubernetes service account
-try:
-    config.load_incluster_config()
-except config.ConfigException:
-    config.load_kube_config()
+config.load_config()
 
 gitea_host = client.NetworkingV1Api().read_namespaced_ingress('gitea', 'gitea').spec.rules[0].host
 gitea_user_secret = client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea')
