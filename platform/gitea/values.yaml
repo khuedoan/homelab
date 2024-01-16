@@ -27,6 +27,12 @@ gitea:
         DISABLED_REPO_UNITS: repo.wiki,repo.projects,repo.packages
         DISABLE_STARS: true
         DEFAULT_BRANCH: master
+      # TODO it's not reading the username from Dex correctly for now, related issues:
+      # https://github.com/go-gitea/gitea/issues/25725
+      # https://github.com/go-gitea/gitea/issues/24957
+      # oauth2_client:
+      #   ENABLE_AUTO_REGISTRATION: true
+      #   USERNAME: userid
       service.explore:
         DISABLE_USERS_PAGE: true
       actions:

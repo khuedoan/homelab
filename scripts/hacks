@@ -105,6 +105,31 @@ def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
             print(resp.content)
             sys.exit(1)
 
+def setup_gitea_auth_with_dex():
+    gitea_pod = client.CoreV1Api().list_namespaced_pod(namespace='gitea', label_selector='app=gitea').items[0].metadata.name
+    client_secret = base64.b64decode(
+        client.CoreV1Api().read_namespaced_secret('dex.gitea', 'global-secrets').data['client_secret']
+    ).decode("utf-8")
+    discovery_url = f"https://{client.NetworkingV1Api().read_namespaced_ingress('dex', 'dex').spec.rules[0].host}/.well-known/openid-configuration"
+
+    # TODO currently there's no API to add new authentication sources in Gitea,
+    # so we have to workaround by running Gitea CLI in a Gitea pod.
+    stream(
+        client.CoreV1Api().connect_get_namespaced_pod_exec,
+        gitea_pod,
+        'gitea',
+        command=[
+            'gitea', 'admin', 'auth', 'add-oauth',
+            '--name', 'Dex',
+            '--provider', 'openidConnect',
+            '--key', 'gitea',
+            '--secret', client_secret,
+            '--auto-discover-url', discovery_url
+        ],
+        stderr=True, stdin=False,
+        stdout=False, tty=False
+    )
+
 def reset_kanidm_account_password(account: str) -> str:
     resp = stream(
         client.CoreV1Api().connect_get_namespaced_pod_exec,
@@ -207,6 +232,8 @@ def main() -> None:
 
         for app in gitea_oauth_apps:
             setup_gitea_oauth_app(app['name'], app['redirect_uri'])
+
+        setup_gitea_auth_with_dex()
 
         kanidm_login(["admin", "idm_admin"])
 
