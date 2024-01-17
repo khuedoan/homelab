@@ -77,14 +77,18 @@ app-template:
                 href: https://transmission.khuedoan.com
                 description: Bittorrent client
                 icon: transmission.svg
-            - Jackett:
-                href: https://jackett.khuedoan.com
-                description: API support for torrent trackers
-                icon: jackett.svg
+            - Prowlarr:
+                href: https://prowlarr.khuedoan.com
+                description: Indexer manager
+                icon: prowlarr.svg
             - Radarr:
                 href: https://radarr.khuedoan.com
                 description: Movie manager
                 icon: radarr.svg
+            - Sonarr:
+                href: https://sonarr.khuedoan.com
+                description: TV show manager
+                icon: sonarr.svg
           - Development:
             - Gitea:
                 href: https://git.khuedoan.com
