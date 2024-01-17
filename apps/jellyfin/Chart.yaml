@@ -1,3 +1,4 @@
+apiVersion: v2
 name: jellyfin
 version: 0.0.0
 dependencies:
