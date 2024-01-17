@@ -68,7 +68,7 @@ They can't capture all the project's features, but they are sufficient to get a 
 | [![][pxe-demo]](https://www.youtube.com/watch?v=y-d7btNNAT8)                                |
 | PXE boot                                                                                    |
 | [![][homepage-demo]][homepage-demo]                                                         |
-| Homepage with Ingress discovery powered by... [Homepage](https://gethomepage.dev)           |
+| Homepage powered by... [Homepage](https://gethomepage.dev)                                  |
 | [![][grafana-demo]][grafana-demo]                                                           |
 | Monitoring dashboard powered by [Grafana](https://grafana.com)                              |
 | [![][gitea-demo]][gitea-demo]                                                               |
@@ -84,7 +84,7 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 [deploy-demo]: https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg
 [pxe-demo]: https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png
-[homepage-demo]: https://github.com/khuedoan/homelab/assets/27996771/d8606118-0342-41e8-baaa-687e25a57531
+[homepage-demo]: https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b
 [grafana-demo]: https://user-images.githubusercontent.com/27996771/149446631-1c5d056b-1fdc-48e6-96ba-e1abe1762be0.png
 [gitea-demo]: https://user-images.githubusercontent.com/27996771/149444871-38889c9d-862f-41ff-8c05-8ece21da3e9c.png
 [matrix-demo]: https://user-images.githubusercontent.com/27996771/149448510-7163310c-2049-4ccd-901d-f11f605bfc32.png

@@ -69,6 +69,22 @@ app-template:
                 href: https://jellyfin.khuedoan.com
                 description: Media system (movies, music, etc.)
                 icon: jellyfin.svg
+            - Jellyseerr:
+                href: https://jellyseerr.khuedoan.com
+                description: Request media
+                icon: jellyseerr.svg
+            - Transmission:
+                href: https://transmission.khuedoan.com
+                description: Bittorrent client
+                icon: transmission.svg
+            - Jackett:
+                href: https://jackett.khuedoan.com
+                description: API support for torrent trackers
+                icon: jackett.svg
+            - Radarr:
+                href: https://radarr.khuedoan.com
+                description: Movie manager
+                icon: radarr.svg
           - Development:
             - Gitea:
                 href: https://git.khuedoan.com
@@ -122,6 +138,9 @@ app-template:
               - href: https://my.zerotier.com
                 icon: zerotier.svg
           - Infrastructure:
+            - Router:
+              - href: https://192.168.1.1
+                icon: router.svg
             - Proxmox:
               - href: https://proxmox:8006
                 icon: proxmox.svg
