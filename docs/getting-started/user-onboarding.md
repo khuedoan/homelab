@@ -14,12 +14,13 @@
 
     For all users:
 
-    - [ ] [Password manager](#recommended-password-managers)
-    - [ ] [Matrix chat client](https://matrix.org/clients) (optional, you can use the web version)
+    - [ ] A password manager (I personally recommend [Bitwarden](https://bitwarden.com/download))
+    - [ ] A [Matrix chat client](https://matrix.org/clients) (optional, you can use the web version)
 
     For technical users:
 
     - [ ] [Docker](https://docs.docker.com/engine/install)
+    - [ ] [Nix](https://nixos.org/download) and [direnv](https://direnv.net) (optional, but highly recommended)
     - [ ] [Lens](https://k8slens.dev) (optional, you can use the included `kubectl` or `k9s` command in the tools container)
 
 === "For admin"
@@ -27,14 +28,7 @@
     Run the following script:
 
     ```sh
-    ./script/onboard-user exampleuser "Example User" "user@example.com"
+    ./script/onboard-user johndoe "John Doe" "johndoe@example.com"
     ```
 
     Let the user scan the QR code or follow the link to set up passkeys or password + TOTP.
-
-## Appendix
-
-### Recommended password managers
-
-- [Bitwarden](https://bitwarden.com/download) (easy to use, but requires an online account)
-- [KeePassXC](https://keepassxc.org) (completely offline, but you'll need to sync manually)
