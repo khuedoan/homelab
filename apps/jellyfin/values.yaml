@@ -144,5 +144,5 @@ app-template:
             - path: /shows
               subPath: shows
           jellyseerr:
-            - path: /config
+            - path: /app/config
               subPath: jellyseerr/config
