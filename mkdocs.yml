@@ -67,6 +67,7 @@ nav:
     - how-to-guides/run-commands-on-multiple-nodes.md
     - how-to-guides/single-node-cluster-adjustments.md
     - how-to-guides/disable-dhcp-proxy-in-dnsmasq.md
+    - how-to-guides/media-management.md
     - how-to-guides/updating-documentation.md
     - Troubleshooting:
       - how-to-guides/troubleshooting/index.md
