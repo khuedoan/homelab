@@ -19,7 +19,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host homepage.khuedoan.com # TODO replace hajimari with home. domain
+        - host: &host home.khuedoan.com
           paths:
             - path: /
               pathType: Prefix

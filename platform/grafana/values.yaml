@@ -4,8 +4,6 @@ grafana:
     ingressClassName: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      hajimari.io/appName: Grafana
-      hajimari.io/icon: chart-bar
     hosts:
       - &host grafana.khuedoan.com
     tls:
