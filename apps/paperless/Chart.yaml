@@ -2,6 +2,6 @@ apiVersion: v2
 name: paperless
 version: 0.0.0
 dependencies:
-  - name: paperless
-    version: 8.5.0
-    repository: https://k8s-at-home.com/charts/
+  - name: app-template
+    version: 2.5.0
+    repository: https://bjw-s.github.io/helm-charts
