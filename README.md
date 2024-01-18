@@ -13,7 +13,8 @@ It can be used as a highly customizable framework to build your own homelab.
 > **What is a homelab?**
 >
 > Homelab is a laboratory at home where you can self-host, experiment with new technologies, practice for certifications, and so on.
-> For more information about homelab in general, see the [r/homelab introduction](https://www.reddit.com/r/homelab/wiki/introduction).
+> For more information, please see the [r/homelab introduction](https://www.reddit.com/r/homelab/wiki/introduction) and the
+> [Home Operations Discord community](https://discord.gg/home-operations) (formerly known as [k8s-at-home](https://k8s-at-home.com)).
 
 ## Overview
 
@@ -251,6 +252,8 @@ References:
 - [Diátaxis technical documentation framework](https://diataxis.fr)
 - [Official Terratest examples](https://github.com/gruntwork-io/terratest/tree/master/test)
 - [Self-host an automated Jellyfin media streaming stack](https://zerodya.net/self-host-jellyfin-media-streaming-stack)
+- [App Template Helm chart by bjw-s](https://bjw-s.github.io/helm-charts/docs/app-template)
+- [Various application configurations in onedr0p/home-ops](https://github.com/onedr0p/home-ops)
 
 Here is a list of the contributors who have helped to improve this project.
 Big shout-out to them!
