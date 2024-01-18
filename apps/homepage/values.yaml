@@ -59,12 +59,11 @@ app-template:
               provider: google
               target: _blank
         services.yaml: |
-          - Communication:
+          - Popular:
             - Matrix:
                 href: https://chat.khuedoan.com
                 description: Chat client
                 icon: element.svg
-          - Media:
             - Jellyfin:
                 href: https://jellyfin.khuedoan.com
                 description: Media system (movies, music, etc.)
@@ -73,6 +72,11 @@ app-template:
                 href: https://jellyseerr.khuedoan.com
                 description: Request media
                 icon: jellyseerr.svg
+            - Paperless:
+                href: https://paperless.khuedoan.com
+                description: Document management system
+                icon: paperless.svg
+          - Management:
             - Transmission:
                 href: https://transmission.khuedoan.com
                 description: Bittorrent client
@@ -89,6 +93,10 @@ app-template:
                 href: https://sonarr.khuedoan.com
                 description: TV show manager
                 icon: sonarr.svg
+            - Kanidm:
+                href: https://auth.khuedoan.com
+                description: Identity management
+                icon: https://auth.khuedoan.com/pkg/img/logo-square.svg
           - Development:
             - Gitea:
                 href: https://git.khuedoan.com
@@ -111,10 +119,6 @@ app-template:
                 description: Observability dashboards
                 icon: grafana.svg
           - Utilities:
-            - Kanidm:
-                href: https://auth.khuedoan.com
-                description: Identity management
-                icon: https://auth.khuedoan.com/pkg/img/logo-square.svg
             - Excalidraw:
                 href: https://draw.khuedoan.com
                 description: Virtual whiteboard
