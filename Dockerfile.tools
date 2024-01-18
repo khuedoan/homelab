@@ -1,5 +1,0 @@
-FROM docker.io/nixos/nix
-
-COPY flake.nix flake.nix
-
-RUN nix --experimental-features 'nix-command flakes' develop --command true
