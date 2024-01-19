@@ -14,10 +14,6 @@ repos:
     rev: v1.27.1
     hooks:
       - id: yamllint
-  - repo: https://github.com/k8s-at-home/sops-pre-commit
-    rev: v2.1.1
-    hooks:
-      - id: forbid-secrets
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.17
     hooks:
