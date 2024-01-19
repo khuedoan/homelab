@@ -39,7 +39,7 @@ More information can be found in [the roadmap](#roadmap) below.
 
 ### Features
 
-- [x] Common applications: Gitea, Seafile, Jellyfin, Paperless...
+- [x] Common applications: Gitea, Jellyfin, Paperless...
 - [x] Automated bare metal provisioning with PXE boot
 - [x] Automated Kubernetes installation and management
 - [x] Installing and managing applications using GitOps

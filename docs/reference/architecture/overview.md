@@ -86,10 +86,10 @@ flowchart TD
   end
 
   subgraph apps
+    homepage[Homepage]
     jellyfin[Jellyfin]
     matrix[Matrix]
     paperless[Paperless]
-    seafile[Seafile]
   end
 
   make[Run make] -- 1 --> metal -- 2 --> bootstrap -. 3 .-> system -. 4 .-> platform -. 5 .-> apps

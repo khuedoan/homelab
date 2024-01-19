@@ -72,7 +72,6 @@ Can be used in "production" (for family or even small scale businesses).
     - [ ] Matrix with bridges
     - [ ] VPN server
     - [ ] PeerTube
-    - [x] Seafile
     - [x] Blog
     - [ ] [Development dashboard](https://github.com/khuedoan/homelab-backstage)
 
