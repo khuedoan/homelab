@@ -13,6 +13,7 @@ Below is a list of external resources and why we need them (also see some [alter
 | Cloudflare      | DNS             | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates                 |
 | Cloudflare      | Tunnel          | Public services to the internet without port forwarding                                                                     |
 | ZeroTier        | Virtual network | Use as VPN to access home network from anywhere (with [UDP hole punching](https://en.wikipedia.org/wiki/UDP_hole_punching)) |
+| ntfy            | Topic           | External notification service to receive alerts                                                                             |
 <!-- | Minio           | Bucket     | Onsite backup                                                                                               | -->
 <!-- | AWS             | S3 Glacier | Offsite backup                                                                                              | -->
 
@@ -63,6 +64,10 @@ If you decide to use a [different Terraform backend](https://www.terraform.io/la
 
 <!-- TODO: skip this for now -->
 
+### ntfy
+
+- Choose a topic name like <https://ntfy.sh/random_topic_name_here_a8sd7fkjxlkcjasdw33813> (treat it like you password)
+
 ## Alternatives
 
 To avoid vendor lock-in, each external provider must have an equivalent alternative that is easy to replace:
@@ -82,4 +87,7 @@ To avoid vendor lock-in, each external provider must have an equivalent alternat
     - [Tailscale](https://tailscale.com) (closed source, but you can use [Headscale](https://github.com/juanfont/headscale) to host your own Tailscale control server)
     - [Netmaker](https://www.netmaker.org) (there's no hosted version, you'll need to host your own server)
     - Wireguard server (requires port forwarding)
+- ntfy:
+    - [Self-host your own ntfy server](https://docs.ntfy.sh/install)
+    - Any other [integration supported by Grafana Alerting](https://grafana.com/docs/grafana/latest/alerting/alerting-rules/manage-contact-points/integrations/#list-of-supported-integrations)
 <!-- - Minio and S3 Glacier: any S3 compatible object storage, such as Backblaze B2, Minio... -->

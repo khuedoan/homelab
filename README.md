@@ -54,7 +54,7 @@ More information can be found in [the roadmap](#roadmap) below.
 - [x] Private container registry
 - [x] Distributed storage
 - [x] Support multiple environments (dev, prod)
-- [ ] Monitoring and alerting 🚧
+- [x] Monitoring and alerting
 - [ ] Automated offsite backups 🚧
 - [x] Single sign-on
 - [x] Infrastructure testing
@@ -86,11 +86,11 @@ They can't capture all the project's features, but they are sufficient to get a 
 [deploy-demo]: https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg
 [pxe-demo]: https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png
 [homepage-demo]: https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b
-[grafana-demo]: https://user-images.githubusercontent.com/27996771/149446631-1c5d056b-1fdc-48e6-96ba-e1abe1762be0.png
-[gitea-demo]: https://user-images.githubusercontent.com/27996771/149444871-38889c9d-862f-41ff-8c05-8ece21da3e9c.png
+[grafana-demo]: https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f
+[gitea-demo]: https://github.com/khuedoan/homelab/assets/27996771/c245534f-88d9-4565-bde8-b39f60ccee9e
 [matrix-demo]: https://user-images.githubusercontent.com/27996771/149448510-7163310c-2049-4ccd-901d-f11f605bfc32.png
 [woodpecker-demo]: https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4
-[argocd-demo]: https://user-images.githubusercontent.com/27996771/149444716-fc0d7282-4cf7-4ddb-97a4-1a3fb47ff2b8.png
+[argocd-demo]: https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20
 [lens-demo]: https://user-images.githubusercontent.com/27996771/149448896-9d79947d-468c-45c6-a81d-b43654e8ab6b.png
 
 ### Tech stack
@@ -154,7 +154,7 @@ They can't capture all the project's features, but they are sufficient to get a 
     <tr>
         <td><img width="32" src="https://grafana.com/static/img/menu/grafana2.svg"></td>
         <td><a href="https://grafana.com">Grafana</a></td>
-        <td>Operational dashboards</td>
+        <td>Observability platform</td>
     </tr>
     <tr>
         <td><img width="32" src="https://helm.sh/img/helm.svg"></td>
@@ -190,6 +190,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://avatars.githubusercontent.com/u/1412239?s=200&v=4"></td>
         <td><a href="https://www.nginx.com">NGINX</a></td>
         <td>Kubernetes Ingress Controller</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://ntfy.sh/_next/static/media/logo.077f6a13.svg"></td>
+        <td><a href="https://ntfy.sh">ntfy</a></td>
+        <td>Notification service to send notifications to your phone or desktop</td>
     </tr>
     <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/3380462"></td>

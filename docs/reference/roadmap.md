@@ -22,7 +22,7 @@ Good enough for tinkering and personal usage, and reasonably secure.
 - [x] Observability
     - [x] Monitoring
     - [x] Logging
-    - [ ] Alerting
+    - [x] Alerting
 - [x] SSO
 - [ ] Reasonably secure
     - [x] Automated certificate management
@@ -64,6 +64,7 @@ Can be used in "production" (for family or even small scale businesses).
     - [x] Book (this book)
     - [ ] Walkthrough tutorial and feature demo (video)
 - [x] Configuration script for new users
+- [ ] More dashboards and alert rules
 - [ ] SLOs:
     - [ ] 99,9% availability (less than 9 hours of downtime per year)
     - [ ] 99,99% data durability
