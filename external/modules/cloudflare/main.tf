@@ -29,6 +29,10 @@ resource "kubernetes_secret" "cloudflared_credentials" {
   metadata {
     name      = "cloudflared-credentials"
     namespace = "cloudflared"
+
+    annotations = {
+      "app.kubernetes.io/managed-by" = "Terraform"
+    }
   }
 
   data = {
@@ -59,6 +63,10 @@ resource "kubernetes_secret" "external_dns_token" {
   metadata {
     name      = "cloudflare-api-token"
     namespace = "external-dns"
+
+    annotations = {
+      "app.kubernetes.io/managed-by" = "Terraform"
+    }
   }
 
   data = {
@@ -84,6 +92,10 @@ resource "kubernetes_secret" "cert_manager_token" {
   metadata {
     name      = "cloudflare-api-token"
     namespace = "cert-manager"
+
+    annotations = {
+      "app.kubernetes.io/managed-by" = "Terraform"
+    }
   }
 
   data = {

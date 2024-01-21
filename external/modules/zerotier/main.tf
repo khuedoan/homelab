@@ -43,6 +43,10 @@ resource "kubernetes_secret" "router" {
   metadata {
     name      = "zerotier-router"
     namespace = "zerotier"
+
+    annotations = {
+      "app.kubernetes.io/managed-by" = "Terraform"
+    }
   }
 
   data = {
