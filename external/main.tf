@@ -17,3 +17,8 @@ module "ntfy" {
   source = "./modules/ntfy"
   auth   = var.ntfy
 }
+
+module "backup" {
+  source        = "./modules/backup"
+  backup_bucket = var.backup_bucket
+}

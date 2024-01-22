@@ -1,0 +1,35 @@
+velero:
+  initContainers:
+    - name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.5.1
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
+  configuration:
+    provider: aws
+    # TODO support multiple locations
+    backupStorageLocation:
+      bucket: homelab-backup
+      config:
+        region: minio
+        s3ForcePathStyle: 'true'
+        s3Url: http://192.168.1.24:9000
+        profile: onsite
+    defaultVolumesToRestic: true
+  credentials:
+    useSecret: true
+    existingSecret: velero-credentials
+  schedules:
+    onsite:
+      schedule: "*/2 * * * *"
+      storageLocation: default
+      template:
+        ttl: "240h"
+    # TODO support multiple locations
+    # offsite:
+    #   schedule: "*/2 * * * *"
+    #   storageLocation: offsite
+    #   template:
+    #     ttl: "240h"
+  deployRestic: true

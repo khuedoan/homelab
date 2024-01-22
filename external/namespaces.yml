@@ -12,4 +12,5 @@
         - external-dns
         - global-secrets
         - k8up-operator
+        - velero
         - zerotier

@@ -24,3 +24,14 @@ variable "ntfy" {
 
   sensitive = true
 }
+
+variable "backup_bucket" {
+  type = object({
+    name              = string
+    url               = string
+    bucket            = string
+    region            = string
+    access_key_id     = string
+    secret_access_key = string
+  })
+}

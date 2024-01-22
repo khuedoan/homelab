@@ -21,3 +21,6 @@ plan: .terraform.lock.hcl
 
 apply: .terraform.lock.hcl namespaces
 	terraform apply -auto-approve
+
+format:
+	terraform fmt -recursive .
