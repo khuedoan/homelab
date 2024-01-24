@@ -31,21 +31,3 @@ grafana:
       auth_url: https://dex.khuedoan.com/auth
       token_url: https://dex.khuedoan.com/token
       api_url: https://dex.khuedoan.com/userinfo
-  alerting:
-    contactpoints.yaml:
-      secret:
-        contactPoints:
-          - name: ntfy
-            receivers:
-              - uid: ntfy-relay
-                type: webhook
-                settings:
-                  url: http://ntfy-relay.ntfy-relay
-                  username: admin
-                  password: $__env{NTFY_RELAY_PASSWORD}
-    policies.yaml:
-      policies:
-        - receiver: ntfy
-          group_by:
-            - grafana_folder
-            - alertname

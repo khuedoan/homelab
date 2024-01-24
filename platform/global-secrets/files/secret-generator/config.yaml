@@ -37,10 +37,3 @@
     - key: PAPERLESS_ADMIN_PASSWORD
       length: 32
       special: true
-
-# ntfy
-- name: ntfy-relay.auth
-  data:
-    - key: password
-      length: 32
-      special: true
