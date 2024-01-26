@@ -21,3 +21,13 @@ cluster:
 console:
 	ansible-console \
 		--inventory inventories/${env}.yml
+
+multus:
+	ansible-playbook \
+		--inventory inventories/${env}.yml \
+		multus.yml
+
+reboot:
+	ansible-playbook \
+		--inventory inventories/${env}.yml \
+		reboot.yml

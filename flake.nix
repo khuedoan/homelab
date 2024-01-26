@@ -54,6 +54,7 @@
               netaddr
               pexpect
               rich
+              jmespath
             ]))
           ];
         };

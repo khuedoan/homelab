@@ -1,0 +1,25 @@
+- name: Copy ipvlan plugin to nodes
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/ipvlan"
+    dest: /opt/cni/bin/ipvlan
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy macvlan plugin to nodes
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/macvlan"
+    dest: /opt/cni/bin/macvlan
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Configuring secondary network interface
+  nmcli:
+    conn_name: "System {{ secondary_interface }}"
+    ifname: "{{ secondary_interface }}"
+    type: ethernet
+    state: present
+    autoconnect: yes
+    ip4: "{{ secondary_interface_ip }}"
+    gw4: "{{ secondary_gateway }}"

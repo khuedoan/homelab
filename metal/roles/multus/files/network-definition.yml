@@ -1,0 +1,18 @@
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: multus-conf
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "ipvlan",
+      "master": "enp2s0",
+      "mode": "l3",
+      "ipam": {
+         "type": "host-local",
+         "subnet": "192.168.200.0/24",
+         "rangeStart": "192.168.200.100",
+         "rangeEnd": "192.168.200.216",
+         "gateway": "198.168.200.1"
+      }
+ }'

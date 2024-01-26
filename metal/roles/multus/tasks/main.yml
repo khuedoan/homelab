@@ -1,0 +1,34 @@
+- name: Apply Multus CNI Configuration
+  kubernetes.core.k8s:
+    definition: '{{ item }}'
+  with_items: '{{ lookup("url", "https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset-thick.yml", split_lines=False) | from_yaml_all | list }}'
+  when: item is not none
+
+- name: Avoid race condition
+  pause:
+    seconds: 2
+
+- name: Wait until all the multus pods are up
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: kube-system
+    label_selectors:
+      - app=multus
+  register: pod_list
+  until: pod_list|json_query('resources[*].status.phase')|unique == ["Running"]
+  retries: 6
+  delay: 5
+
+- name: Apply Network Definition
+  kubernetes.core.k8s:
+    namespace: kube-system
+    definition: '{{ item }}'
+  with_items: '{{ lookup("file", "network-definition.yml", split_lines=False) | from_yaml_all | list }}'
+  when: item is not none
+
+#- name: Print return information from the previous task
+#  ansible.builtin.debug:
+#    msg: "All running? {{ pod_list|json_query('resources[*].metadata.name') }}"
+#    msg: "All running? {{ pod_list|json_query('resources[*].status.phase')|unique == [\"Running\"] }}"
+

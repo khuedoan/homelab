@@ -1,0 +1,6 @@
+- name: Unconditionally reboot the machine with all defaults
+  ansible.builtin.reboot:
+
+- name: Wait for the machines to come online
+  ansible.builtin.wait_for_connection:
+    timeout: 600

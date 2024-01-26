@@ -5,7 +5,13 @@
     - k3s
     - automatic_upgrade
 
+- name: Install multus pre-reqs
+  hosts: metal
+  roles:
+    - plugins
+
 - name: Install Kubernetes addons
   hosts: localhost
   roles:
     - cilium
+    - multus

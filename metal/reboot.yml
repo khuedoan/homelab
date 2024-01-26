@@ -1,0 +1,5 @@
+- name: Reboot all nodes
+  hosts: metal
+  gather_facts: false
+  roles:
+    - reboot
