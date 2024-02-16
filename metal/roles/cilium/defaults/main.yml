@@ -1,5 +1,5 @@
 cilium_repo_url: https://helm.cilium.io
-cilium_version: 1.15.0-rc.1 # TODO switch to stable release
+cilium_version: 1.15.1
 cilium_namespace: kube-system
 cilium_values:
   operator:
