@@ -274,6 +274,8 @@ Big shout-out to them!
 - ![](https://github.com/Bourne-ID.png?size=24) [@Bourne-ID](https://github.com/Bourne-ID)
 - ![](https://github.com/akwan.png?size=24) [@akwan](https://github.com/akwan)
 - ![](https://github.com/trangmaiq.png?size=24) [@trangmaiq](https://github.com/trangmaiq)
+- ![](https://github.com/raedkit.png?size=24) [@raedkit](https://github.com/raedkit)
+- ![](https://github.com/ClashTheBunny.png?size=24) [@ClashTheBunny](https://github.com/ClashTheBunny)
 
 If you feel you're missing from this list, feel free to add yourself in a PR.
 
