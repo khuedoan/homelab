@@ -24,7 +24,7 @@ To view PXE server (includes DHCP, TFTP and HTTP server) logs:
 - Check if bare metal nodes are configured to boot from the network
 - Check if Wake-on-LAN is enabled
 - Check if the operating system ISO file is mounted
-- Check the controller's firewall config: make sure that the following ports are open
+- Check the controller's firewall config to make sure that the following ports are open:
   - DHCP (67/68)
   - TFTP (69)
   - HTTP (80)
