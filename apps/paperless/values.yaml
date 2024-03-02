@@ -5,7 +5,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/paperless-ngx/paperless-ngx
-            tag: 2.3.3
+            tag: 2.5.4
           env:
             PAPERLESS_PORT: 8000
             PAPERLESS_ADMIN_USER: admin

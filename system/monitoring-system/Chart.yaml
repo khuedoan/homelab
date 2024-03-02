@@ -3,5 +3,5 @@ name: kube-prometheus-stack
 version: 0.0.0
 dependencies:
   - name: kube-prometheus-stack
-    version: 56.0.1
+    version: 56.19.0
     repository: https://prometheus-community.github.io/helm-charts
