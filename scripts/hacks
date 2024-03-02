@@ -27,7 +27,7 @@ gitea_host = client.NetworkingV1Api().read_namespaced_ingress('gitea', 'gitea').
 gitea_user_secret = client.CoreV1Api().read_namespaced_secret('gitea-admin-secret', 'gitea')
 gitea_user = base64.b64decode(gitea_user_secret.data['username']).decode("utf-8")
 gitea_pass = base64.b64decode(gitea_user_secret.data['password']).decode("utf-8")
-gitea_url = f"http://{gitea_user}:{urllib.parse.quote_plus(gitea_pass)}@{gitea_host}"
+gitea_url = f"http://{gitea_host}"
 
 kanidm_host = client.NetworkingV1Api().read_namespaced_ingress('kanidm', 'kanidm').spec.rules[0].host
 
@@ -50,11 +50,13 @@ def apply_secret(name: str, namespace: str, data: dict) -> None:
 def setup_gitea_access_token(name: str, scopes: list[str]) -> None:
     current_tokens = requests.get(
         url=f"{gitea_url}/api/v1/users/{gitea_user}/tokens",
+        auth=(gitea_user,gitea_pass),
     ).json()
 
     if not any(token['name'] == name for token in current_tokens):
         resp = requests.post(
             url=f"{gitea_url}/api/v1/users/{gitea_user}/tokens",
+            auth=(gitea_user,gitea_pass),
             headers={
                 'Content-Type': 'application/json'
             },
@@ -81,11 +83,13 @@ def setup_gitea_oauth_app(name: str, redirect_uri: str) -> None:
     # TODO use the new global application, while it's there in the UI, there's no API yet.
     current_apps = requests.get(
         url=f"{gitea_url}/api/v1/user/applications/oauth2",
+        auth=(gitea_user,gitea_pass),
     ).json()
 
     if not any(app['name'] == name for app in current_apps):
         resp = requests.post(
             url=f"{gitea_url}/api/v1/user/applications/oauth2",
+            auth=(gitea_user,gitea_pass),
             headers={
                 'Content-Type': 'application/json'
             },
