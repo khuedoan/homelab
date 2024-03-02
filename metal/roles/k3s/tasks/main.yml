@@ -1,16 +1,17 @@
 - name: Download k3s binary
   ansible.builtin.get_url:
-    url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
-    checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-amd64.txt
-    dest: "{{ role_path }}/files/bin/k3s"
+    url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s{{ k3s_architectures[item].arch_suffix }}
+    checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/{{ k3s_architectures[item].arch_sum }}
+    dest: "{{ role_path }}/files/bin/k3s{{ k3s_architectures[item].arch_suffix }}"
     mode: 0755
   delegate_to: localhost
   run_once: true
   register: k3s_binary
+  loop: "{{ k3s_architectures.keys() | list }}"
 
 - name: Copy k3s binary to nodes
   ansible.builtin.copy:
-    src: bin/k3s
+    src: bin/k3s{{ k3s_architectures[ansible_architecture].arch_suffix }}
     dest: /usr/local/bin/k3s
     owner: root
     group: root
