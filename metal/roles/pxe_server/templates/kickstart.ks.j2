@@ -13,7 +13,7 @@ clearpart --all --drives={{ hostvars[item]['disk'] }}
 # Partitioning
 ignoredisk --only-use={{ hostvars[item]['disk'] }}
 partition /boot/efi --fstype=vfat --size=512
-partition / --fstype=ext4 --grow
+partition / --fstype=ext4 --size=32768
 
 # Network information
 network --bootproto=static --device={{ hostvars[item]['network_interface'] }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
@@ -46,10 +46,22 @@ firewall --disabled
 %packages
 @^custom-environment
 openssh-server
-iscsi-initiator-utils
 %end
 
-# Enable iSCSI for Kubernetes storage
-services --enable=iscsid
+# Create a raw partition for Ceph using the remaining space
+# Using a post script because there is no built-in feature in Kickstart
+# The three empty lines are equivalent to pressing Enter to use the default values for:
+# - Partition number
+# - First sector
+# - Last sector
+%post
+fdisk /dev/{{ hostvars[item]['disk'] }} << EOF
+new
+
+
+
+write
+EOF
+%end
 
 reboot
