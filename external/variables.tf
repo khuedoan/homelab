@@ -17,9 +17,8 @@ variable "zerotier_central_token" {
 
 variable "ntfy" {
   type = object({
-    url      = string
-    username = string
-    password = string
+    url   = string
+    topic = string
   })
 
   sensitive = true

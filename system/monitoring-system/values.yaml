@@ -13,3 +13,39 @@ kube-prometheus-stack:
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       probeSelectorNilUsesHelmValues: false
+  alertmanager:
+    alertmanagerSpec:
+      containers:
+        - name: ntfy-relay
+          image: ghcr.io/khuedoan/webhook-transformer:v0.0.3
+          args:
+            - --port=8081
+            - --config=/config/alertmanager-to-ntfy.jsonnet
+            - --upstream-host=https://ntfy.sh
+          envFrom:
+            - secretRef:
+                name: webhook-transformer
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: webhook-transformer
+    config:
+      route:
+        receiver: ntfy
+        group_by:
+          - namespace
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 12h
+        routes:
+          - receiver: ntfy
+            matchers:
+              - alertname = "Watchdog"
+      receivers:
+        - name: ntfy
+          webhook_configs:
+            - url: http://localhost:8081
+              send_resolved: true

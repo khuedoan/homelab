@@ -1,7 +1,7 @@
 resource "kubernetes_secret" "ntfy_auth" {
   metadata {
-    name      = "ntfy.auth"
-    namespace = "global-secrets"
+    name      = "webhook-transformer"
+    namespace = "monitoring-system"
 
     annotations = {
       "app.kubernetes.io/managed-by" = "Terraform"
@@ -9,8 +9,7 @@ resource "kubernetes_secret" "ntfy_auth" {
   }
 
   data = {
-    url      = var.auth.url
-    username = var.auth.username
-    password = var.auth.password
+    NTFY_URL   = var.auth.url
+    NTFY_TOPIC = var.auth.topic
   }
 }

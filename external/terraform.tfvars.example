@@ -9,10 +9,8 @@ cloudflare_api_key = "foobarkey"
 zerotier_central_token = "foobartoken"
 
 ntfy = {
-  # https://ntfy.sh/app or your own instance
-  url = "https://ntfy.sh/random_topic_name_here_a8sd7fkjxlkcjasdw33813"
-  # Optional, required if the ntfy instance has access control enabled
-  username = ""
-  # Optional, required if the ntfy instance has access control enabled
-  password = ""
+  # https://ntfy.sh or your own instance
+  url = "https://ntfy.sh"
+  # Your topic name
+  topic = "random_topic_name_here_a8sd7fkjxlkcjasdw33813"
 }
