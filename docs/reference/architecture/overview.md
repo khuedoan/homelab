@@ -63,7 +63,7 @@ flowchart TD
 
   subgraph system[./system]
     nginx[NGINX]
-    longhorn[Longhorn]
+    rook-ceph[Rook Ceph]
     cert-manager
     external-dns[External DNS]
     cloudflared

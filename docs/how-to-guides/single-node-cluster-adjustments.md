@@ -1,15 +1,45 @@
 # Single node cluster adjustments
 
+!!! danger
+
+    This is not officially supported and I don't regularly test it,
+    I highly recommend using multiple nodes.
+
+    Using a single node could lead to data loss unless your backup strategy is rock solid,
+    make sure you are **ABSOLUTELY CERTAIN** this is what you want.
+
 Update the following changes, then commit and push.
 
-## Reduce Longhorn replica count
+## Remove storage redundancy
 
-Set the `defaultClassReplicaCount` to 1:
+Set pod counts and number of data copies to `1`:
 
-```yaml title="system/longhorn-system/values.yaml" hl_lines="6"
---8<--
-system/longhorn-system/values.yaml
---8<--
+```yaml title="system/rook-ceph/values.yaml" hl_lines="4 6 11 12 18 22 25"
+rook-ceph-cluster:
+  cephClusterSpec:
+    mon:
+      count: 1
+    mgr:
+      count: 1
+  cephBlockPools:
+    - name: standard-rwo
+      spec:
+        replicated:
+          size: 1
+          requireSafeReplicaSize: false
+  cephFileSystems:
+    - name: standard-rwx
+      spec:
+        metadataPool:
+          replicated:
+            size: 1
+        dataPools:
+          - name: data0
+            replicated:
+              size: 1
+        metadataServer:
+          activeCount: 1
+          activeStandby: false
 ```
 
 ## Disable automatic upgrade

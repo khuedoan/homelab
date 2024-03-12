@@ -74,7 +74,6 @@ nav:
       - how-to-guides/troubleshooting/argocd.md
       - how-to-guides/troubleshooting/cert-manager.md
       - how-to-guides/troubleshooting/gitea.md
-      - how-to-guides/troubleshooting/longhorn.md
       - how-to-guides/troubleshooting/pxe-boot.md
   - Reference:
     - reference/index.md

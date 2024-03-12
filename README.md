@@ -182,11 +182,6 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Log aggregation system</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://longhorn.io/img/logos/longhorn-icon-white.png"></td>
-        <td><a href="https://longhorn.io">Longhorn</a></td>
-        <td>Cloud native distributed block storage for Kubernetes</td>
-    </tr>
-    <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/1412239?s=200&v=4"></td>
         <td><a href="https://www.nginx.com">NGINX</a></td>
         <td>Kubernetes Ingress Controller</td>
@@ -205,6 +200,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://docs.renovatebot.com/assets/images/logo.png"></td>
         <td><a href="https://www.whitesourcesoftware.com/free-developer-tools/renovate">Renovate</a></td>
         <td>Automatically update dependencies</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/rook/artwork/master/logo/blue.svg"></td>
+        <td><a href="https://rook.io">Rook Ceph</a></td>
+        <td>Cloud-Native Storage for Kubernetes</td>
     </tr>
     <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/84780935?s=200&v=4"></td>
