@@ -6,5 +6,5 @@ dependencies:
     version: 0.0.6
     repository: https://locmai.github.io/charts  # TODO switch to official chart
   - name: dendrite
-    version: 0.0.3
-    repository: https://locmai.github.io/charts  # TODO switch to official chart
+    version: 0.13.5
+    repository: https://matrix-org.github.io/dendrite

@@ -21,62 +21,18 @@ elementweb:
       server_name: khuedoan.com
 
 dendrite:
-  polylith: false
-  image:
-    name: "locmai/dendrite-monolith:010922"  # TODO switch to official image
-    pullPolicy: IfNotPresent
-  configuration:
-    version: 2
-    servername: &backend_host matrix.khuedoan.com
-    database:
-      host: matrix-postgresql:5432
-      user: dendrite
-      password: dendrite
-      max_open_conns: 100
-      max_idle_conns: 2
-      conn_max_lifetime: -1
-    metrics:
-      enabled: true
-    jetstream:
-      in_memory: false
-      addresses:
-        - nats://matrix-nats:4222
-  persistence:
-    logs:
-      capacity: 1Gi
-    media:
-      capacity: 5Gi
-  nats:
-    enabled: true
-    nats:
-      jetstream:
-        enabled: true
-  postgresql:
-    enabled: true
+  dendrite_config:
     global:
-      postgresql:
-        postgresqlDatabase: dendrite
-        postgresqlUsername: dendrite
-        postgresqlPassword: dendrite
-    persistence:
-      enabled: true
-      accessModes:
-        - ReadWriteOnce
-      size: 5Gi
+      server_name: matrix.khuedoan.com
   ingress:
     enabled: true
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.khuedoan.com"
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-      nginx.ingress.kubernetes.io/proxy-body-size: 32m
-    hosts:
-      - host: *backend_host
-        paths:
-          - path: /
-            pathType: Prefix
+    hostName: matrix.khuedoan.com
     tls:
-      - secretName: dendrite-tls-certificate
-        hosts:
-          - *backend_host
+      - hosts:
+          - matrix.khuedoan.com
+        secretName: matrix-tls-certificate
+  postgresql:
+    enabled: true
