@@ -1,0 +1,38 @@
+# kubectl apply -f dbench-rwx.yaml
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dbench-rwx
+spec:
+  storageClassName: standard-rwx
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbench-rwx
+spec:
+  template:
+    spec:
+      containers:
+        - name: dbench
+          image: zayashv/dbench:latest
+          imagePullPolicy: Always
+          env:
+            - name: DBENCH_MOUNTPOINT
+              value: /data
+            - name: DBENCH_QUICK
+              value: "no"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      restartPolicy: Never
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: dbench-rwx
