@@ -39,6 +39,14 @@ This is useful when you want to generate random secrets like admin password and 
 --8<--
 ```
 
+## Extra third-party secrets
+
+For third-party secrets that you don't control, add them to `external/terraform.tfvars` under the `extra_secrets` key,
+then run `make external`.
+
+They will be available as a Secret named `external` in the `global-secrets` namespace.
+You can use it with `ExternalSecret` just like any other global secret.
+
 ## How secrets are pulled from global secrets to other namespaces
 
 When you apply an `ExternalSecret` object, for example:
