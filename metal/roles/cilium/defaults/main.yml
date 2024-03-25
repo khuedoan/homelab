@@ -12,3 +12,8 @@ cilium_values:
   # https://github.com/cilium/cilium/pull/28741
   k8sServiceHost: 127.0.0.1
   k8sServicePort: 6444
+  hubble:
+    relay:
+      enabled: true
+    ui:
+      enabled: true
