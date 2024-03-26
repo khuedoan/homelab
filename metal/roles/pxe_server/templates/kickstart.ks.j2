@@ -13,7 +13,7 @@ clearpart --all --drives={{ hostvars[item]['disk'] }}
 # Partitioning
 ignoredisk --only-use={{ hostvars[item]['disk'] }}
 partition /boot/efi --fstype=vfat --size=512
-partition / --fstype=ext4 --size=32768
+partition / --fstype=ext4 --size=65536
 
 # Network information
 network --bootproto=static --device={{ hostvars[item]['network_interface'] }} --ip={{ hostvars[item]['ansible_host'] }} --gateway={{ ansible_default_ipv4.gateway }} --nameserver={{ dns_server }} --netmask={{ ansible_default_ipv4.netmask }} --ipv6=auto --hostname={{ hostvars[item]['inventory_hostname'] }} --activate
