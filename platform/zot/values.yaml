@@ -1,0 +1,20 @@
+zot:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    className: nginx
+    hosts:
+      - host: &host registry.khuedoan.com
+        paths:
+          - path: /
+    tls:
+      - secretName: zot-tls-certificate
+        hosts:
+          - *host
+  # TODO enable auth
+  persistence: true
+  pvc:
+    create: true
+    storage: 10Gi
