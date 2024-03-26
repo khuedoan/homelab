@@ -132,11 +132,6 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Ephemeral PXE server and convenient tools container</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://github.com/distribution/distribution/raw/main/distribution-logo.svg"></td>
-        <td><a href="https://github.com/distribution/distribution">Docker Registry</a></td>
-        <td>Private container registry</td>
-    </tr>
-    <tr>
         <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
         <td><a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a></td>
         <td>Synchronizes exposed Kubernetes Services and Ingresses with DNS providers</td>
@@ -215,6 +210,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png"></td>
         <td><a href="https://zerotier.com">ZeroTier</a></td>
         <td>VPN without port forwarding</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://zotregistry.dev/v2.0.2/assets/images/logo.svg"></td>
+        <td><a href="https://zotregistry.dev">Zot Registry</a></td>
+        <td>Private container registry</td>
     </tr>
 </table>
 
