@@ -4,6 +4,7 @@ argo-cd:
   configs:
     params:
       server.insecure: true
+      controller.diff.server.side: "true"
     cm:
       resource.ignoreResourceUpdatesEnabled: true
       resource.customizations.ignoreResourceUpdates.all: |
