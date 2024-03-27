@@ -23,7 +23,7 @@ func TestSmoke(t *testing.T) {
 		{"grafana", "grafana"},
 		{"homepage", "homepage"},
 		{"kanidm", "kanidm"},
-		{"registry-docker-registry", "registry"},
+		{"zot", "zot"},
 	}
 
 	for _, app := range mainApps {
