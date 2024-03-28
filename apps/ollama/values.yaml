@@ -52,3 +52,11 @@ app-template:
             - *ollamaHost
             - *uiHost
           secretName: ollama-tls-certificate
+  persistence:
+    data:
+      accessMode: ReadWriteOnce
+      size: 10Gi
+      advancedMounts:
+        main:
+          main:
+            - path: /root/.ollama
