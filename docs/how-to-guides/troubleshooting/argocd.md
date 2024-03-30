@@ -1,3 +1,0 @@
-# ArgoCD
-
-TODO (PR welcomed)
