@@ -1,3 +1,4 @@
+apiVersion: v2
 name: kanidm
 version: 0.0.0
 dependencies:
