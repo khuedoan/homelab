@@ -6,4 +6,5 @@ book/
 *.png
 *.tgz
 *kubeconfig.yaml
+*.tfvars
 Chart.lock
