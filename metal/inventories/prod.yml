@@ -1,6 +1,6 @@
 all:
   vars:
-    control_plane_endpoint: 192.168.0.53
+    control_plane_endpoint: 192.168.0.100
     load_balancer_ip_pool:
       - 192.168.0.225/27
 metal:
