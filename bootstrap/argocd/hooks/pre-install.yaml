@@ -1,0 +1,11 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  # Name for the pod created by the hook
+  name: wait-for-crds
+spec:
+  containers:
+  - name: wait-for-crds
+    image: busybox:latest
+    command: ["sh", "-c", "until kubectl get crd applications.argoproj.io &> /dev/null; do sleep 5; done"]
+  restartPolicy: OnFailure

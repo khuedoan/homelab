@@ -1,0 +1,37 @@
+---
+- name: Install Cronie Package
+  dnf:
+    name: cronie
+    state: present
+
+- name: Set up FIRST WEEKLY reboot
+  cron:
+    name: First Weekly Reboot
+    minute: 0
+    hour: 2
+    weekday: 1
+    job: "/usr/bin/touch /var/run/reboot-required"
+    state: present
+
+- name: Set up SECOND WEEKLY reboot
+  cron:
+    name: Second Weekly Reboot
+    minute: 0
+    hour: 2
+    weekday: 3
+    job: "/usr/bin/touch /var/run/reboot-required"
+    state: present
+
+- name: Set up THIRD WEEKLY reboot
+  cron:
+    name: Third Weekly Reboot
+    minute: 0
+    hour: 2
+    weekday: 5
+    job: "/usr/bin/touch /var/run/reboot-required"
+    state: present
+
+- name: Restart Cronie Service
+  service:
+    name: crond
+    state: restarted
