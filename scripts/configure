@@ -10,22 +10,23 @@ Basic configure script for new users
 import fileinput
 import subprocess
 import sys
+import os
 
 from rich.prompt import Confirm, Prompt
 
 upstream_config = {
-    "seed_repo": "https://github.com/khuedoan/homelab",
-    "domain": "khuedoan.com",
-    "timezone": "Asia/Ho_Chi_Minh",
-    "terraform_workspace": "khuedoan",
-    "loadbalancer_ip_range": "192.168.1.224/27",
+    "domain": "<domain>",
+    "seed_repo": "<seed_repo>",
+    "branch": "<branch>",
+    "timezone": "<timezone>",
+    "terraform_workspace": "<terraform_workspace>",
+    "loadbalancer_ip_range": "<loadbalancer_ip_range>",
+    "control_plane_endpoint": "<control_plane_endoint>"
 }
-
 
 def check_python_version(required_version: str) -> None:
     if sys.version_info < tuple(map(int, required_version.split('.'))):
         raise Exception(f"Must be using Python >= {required_version}")
-
 
 def find_and_replace(pattern: str, replacement: str, paths: list[str]) -> None:
     files_with_matches = subprocess.run(
@@ -39,17 +40,17 @@ def find_and_replace(pattern: str, replacement: str, paths: list[str]) -> None:
             for line in file:
                 print(line.replace(pattern, replacement), end='')
 
-
 def main() -> None:
     check_python_version(
         required_version='3.10.0'
     )
 
-    editor = Prompt.ask("Select text editor", default='nvim')
     domain = Prompt.ask("Enter your domain", default=upstream_config['domain'])
     seed_repo = Prompt.ask("Enter seed repo", default=upstream_config['seed_repo'])
+    branch = Prompt.ask("Enter seed repo branch", default=upstream_config['branch'])
     timezone = Prompt.ask("Enter time zone", default=upstream_config['timezone'])
     loadbalancer_ip_range = Prompt.ask("Enter IP range for load balancer", default=upstream_config['loadbalancer_ip_range'])
+    control_plane_endpoint = Prompt.ask("Enter IP for control plane endpoint", default=upstream_config['control_plane_endpoint'])
 
     find_and_replace(
         pattern=upstream_config['domain'],
@@ -74,6 +75,15 @@ def main() -> None:
     )
 
     find_and_replace(
+        pattern=upstream_config['branch'],
+        replacement=branch,
+        paths=[
+            "bootstrap/root/values-seed.yaml",
+            "bootstrap/root/values.yaml"
+        ]
+    )
+
+    find_and_replace(
         pattern=upstream_config['timezone'],
         replacement=timezone,
         paths=[
@@ -87,16 +97,24 @@ def main() -> None:
         pattern=upstream_config['loadbalancer_ip_range'],
         replacement=loadbalancer_ip_range,
         paths=[
-            "metal/group_vars/all.yml",
-            "external/main.tf",
+            "metal/inventories/prod.yml",
+            "external/main.tf"
+        ]
+    )
+
+    find_and_replace(
+        pattern=upstream_config['control_plane_endpoint'],
+        replacement=control_plane_endpoint,
+        paths=[
+            "metal/inventories/prod.yml"
         ]
     )
 
     if Confirm.ask("Update server list?", default=True):
+        editor = os.getenv('EDITOR', 'nvim')
         subprocess.run(
             [editor, 'metal/inventories/prod.yml']
         )
-
 
     if Confirm.ask("Do you want to use managed services?"):
         terraform_workspace = Prompt.ask("Enter Terraform Workspace", default=upstream_config['terraform_workspace'])
@@ -108,7 +126,6 @@ def main() -> None:
                 "external/versions.tf"
             ]
         )
-
 
 if __name__ == '__main__':
     main()

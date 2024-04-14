@@ -19,7 +19,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host home.khuedoan.com
+        - host: &host home.<domain>
           paths:
             - path: /
               pathType: Prefix
@@ -61,76 +61,76 @@ app-template:
         services.yaml: |
           - Popular:
             - Matrix:
-                href: https://chat.khuedoan.com
+                href: https://chat.<domain>
                 description: Chat client
                 icon: element.svg
             - Jellyfin:
-                href: https://jellyfin.khuedoan.com
+                href: https://jellyfin.<domain>
                 description: Media system (movies, music, etc.)
                 icon: jellyfin.svg
             - Jellyseerr:
-                href: https://jellyseerr.khuedoan.com
+                href: https://jellyseerr.<domain>
                 description: Request media
                 icon: jellyseerr.svg
             - Paperless:
-                href: https://paperless.khuedoan.com
+                href: https://paperless.<domain>
                 description: Document management system
                 icon: paperless.svg
           - Management:
             - Transmission:
-                href: https://transmission.khuedoan.com
+                href: https://transmission.<domain>
                 description: Bittorrent client
                 icon: transmission.svg
             - Prowlarr:
-                href: https://prowlarr.khuedoan.com
+                href: https://prowlarr.<domain>
                 description: Indexer manager
                 icon: prowlarr.svg
             - Radarr:
-                href: https://radarr.khuedoan.com
+                href: https://radarr.<domain>
                 description: Movie manager
                 icon: radarr.svg
             - Sonarr:
-                href: https://sonarr.khuedoan.com
+                href: https://sonarr.<domain>
                 description: TV show manager
                 icon: sonarr.svg
             - Kanidm:
-                href: https://auth.khuedoan.com
+                href: https://auth.<domain>
                 description: Identity management
-                icon: https://auth.khuedoan.com/pkg/img/logo-square.svg
+                icon: https://auth.<domain>/pkg/img/logo-square.svg
           - Development:
             - Gitea:
-                href: https://git.khuedoan.com
+                href: https://git.<domain>
                 description: Git forge
                 icon: gitea.svg
             - Woodpecker:
-                href: https://ci.khuedoan.com
+                href: https://ci.<domain>
                 description: Continuous integration
                 icon: woodpecker-ci.svg
             - ArgoCD:
-                href: https://argocd.khuedoan.com
+                href: https://argocd.<domain>
                 description: Continuous deployment
                 icon: argocd.svg
             - Registry:
-                href: https://registry.khuedoan.com
+                href: https://registry.<domain>
                 description: Container registry
                 icon: docker.svg
             - Grafana:
-                href: https://grafana.khuedoan.com
+                href: https://grafana.<domain>
                 description: Observability dashboards
                 icon: grafana.svg
           - Utilities:
             - Excalidraw:
-                href: https://draw.khuedoan.com
+                href: https://draw.<domain>
                 description: Virtual whiteboard
                 icon: excalidraw.svg
             - Speedtest:
-                href: https://speedtest.khuedoan.com
+                href: https://speedtest.<domain>
                 description: Internal network speed test
                 icon: openspeedtest.png
         bookmarks.yaml: |
           - Homelab:
             - Documentation:
-              - href: https://homelab.khuedoan.com
+              - href: https://homelab.<domain>
                 icon: google-docs.svg
             - Public homelab repository:
               - href: https://github.com/khuedoan/homelab
