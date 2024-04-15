@@ -54,9 +54,14 @@ app-template:
           secretName: ollama-tls-certificate
   persistence:
     data:
-      accessMode: ReadWriteOnce
-      size: 10Gi
+      enabled: true
+      accessMode: ReadWriteMany  # Changed to ReadWriteMany for NAS use
+      size: 50Gi  # Ensure the size aligns with your requirements
       advancedMounts:
         main:
           main:
-            - path: /root/.ollama
+            - type: nfs
+              server: 10.0.50.3
+              path: /mnt/user/ollama
+              mountPath: /root/.ollama
+
