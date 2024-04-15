@@ -57,42 +57,42 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &jellyfinHost jellyfin.falconpunch.org
+        - host: &jellyfinHost jellyfin.<domain>
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: http
-        - host: &transmissionHost transmission.falconpunch.org
+        - host: &transmissionHost transmission.<domain>
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: transmission
-        - host: &prowlarrHost prowlarr.falconpunch.org
+        - host: &prowlarrHost prowlarr.<domain>
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: prowlarr
-        - host: &radarrHost radarr.falconpunch.org
+        - host: &radarrHost radarr.<domain>
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: radarr
-        - host: &sonarrHost sonarr.falconpunch.org
+        - host: &sonarrHost sonarr.<domain>
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: sonarr
-        - host: &jellyseerrHost jellyseerr.falconpunch.org
+        - host: &jellyseerrHost jellyseerr.<domain>
           paths:
             - path: /
               pathType: Prefix

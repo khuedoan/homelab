@@ -25,8 +25,8 @@ app-template:
           db_path = "/data/kanidm.db"
           tls_chain = "/data/ca.crt"
           tls_key = "/data/tls.key"
-          domain = "auth.falconpunch.org"
-          origin = "https://auth.falconpunch.org"
+          domain = "auth.<domain>"
+          origin = "https://auth.<domain>"
   service:
     main:
       ports:
@@ -46,7 +46,7 @@ app-template:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         nginx.ingress.kubernetes.io/backend-protocol: HTTPS
       hosts:
-        - host: &host auth.falconpunch.org
+        - host: &host auth.<domain>
           paths:
             - path: /
               pathType: Prefix

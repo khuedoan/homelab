@@ -9,10 +9,10 @@ woodpecker:
       WOODPECKER_MAX_WORKFLOWS: 10
   server:
     env:
-      WOODPECKER_HOST: https://ci.falconpunch.org
+      WOODPECKER_HOST: https://ci.<domain>
       WOODPECKER_WEBHOOK_HOST: http://woodpecker-server.woodpecker
       WOODPECKER_GITEA: true
-      WOODPECKER_GITEA_URL: https://git.falconpunch.org
+      WOODPECKER_GITEA_URL: https://git.<domain>
       WOODPECKER_OPEN: true
       WOODPECKER_ADMIN: gitea_admin
     ingress:
@@ -21,7 +21,7 @@ woodpecker:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       ingressClassName: nginx
       hosts:
-        - host: &host ci.falconpunch.org
+        - host: &host ci.<domain>
           paths:
             - path: /
       tls:
