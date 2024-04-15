@@ -133,7 +133,7 @@ app-template:
               - href: https://homelab.<domain>
                 icon: google-docs.svg
             - Public homelab repository:
-              - href: https://github.com/khuedoan/homelab
+              - href: <seed_repo>
                 icon: github.svg
           - Managed services:
             - Cloudflare:
