@@ -4,7 +4,7 @@ app-template:
       containers:
         main:
           image:
-            repository: registry.falconpunch.org/blog
+            repository: registry.<domain>/blog
             tag: latest
   service:
     main:
@@ -18,10 +18,10 @@ app-template:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        external-dns.alpha.kubernetes.io/target: homelab-tunnel.falconpunch.org
+        external-dns.alpha.kubernetes.io/target: homelab-tunnel.<domain>
         external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
       hosts:
-        - host: &host www.falconpunch.org
+        - host: &host www.<domain>
           paths:
             - path: /
               pathType: Prefix

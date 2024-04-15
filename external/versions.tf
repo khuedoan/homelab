@@ -3,7 +3,7 @@ terraform {
 
   backend "remote" {
     hostname     = "app.terraform.io"
-    organization = "brimdor-dev"
+    organization = "<terraform_workspace>"
 
     workspaces {
       name = "homelab-external"

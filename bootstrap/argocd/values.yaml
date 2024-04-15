@@ -1,6 +1,6 @@
 argo-cd:
   global:
-    domain: argocd.falconpunch.org
+    domain: argocd.<domain>
   configs:
     params:
       server.insecure: true

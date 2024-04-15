@@ -4,8 +4,6 @@
     - prerequisites
     - k3s
     - automatic_upgrade
-    - cronjobs
-    - nfs_utils
 
 - name: Install Kubernetes addons
   hosts: localhost
