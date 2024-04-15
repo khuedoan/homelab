@@ -70,7 +70,10 @@ def main() -> None:
         replacement=seed_repo,
         paths=[
             "bootstrap",
-            "platform"
+            "platform",
+            "apps",
+            "docs",
+            "mkdocs.yml"
         ]
     )
 
