@@ -19,7 +19,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host home.<domain>
+        - host: &host home.falconpunch.org
           paths:
             - path: /
               pathType: Prefix
@@ -61,79 +61,79 @@ app-template:
         services.yaml: |
           - Popular:
             - Matrix:
-                href: https://chat.<domain>
+                href: https://chat.falconpunch.org
                 description: Chat client
                 icon: element.svg
             - Jellyfin:
-                href: https://jellyfin.<domain>
+                href: https://jellyfin.falconpunch.org
                 description: Media system (movies, music, etc.)
                 icon: jellyfin.svg
             - Jellyseerr:
-                href: https://jellyseerr.<domain>
+                href: https://jellyseerr.falconpunch.org
                 description: Request media
                 icon: jellyseerr.svg
             - Paperless:
-                href: https://paperless.<domain>
+                href: https://paperless.falconpunch.org
                 description: Document management system
                 icon: paperless.svg
           - Management:
             - Transmission:
-                href: https://transmission.<domain>
+                href: https://transmission.falconpunch.org
                 description: Bittorrent client
                 icon: transmission.svg
             - Prowlarr:
-                href: https://prowlarr.<domain>
+                href: https://prowlarr.falconpunch.org
                 description: Indexer manager
                 icon: prowlarr.svg
             - Radarr:
-                href: https://radarr.<domain>
+                href: https://radarr.falconpunch.org
                 description: Movie manager
                 icon: radarr.svg
             - Sonarr:
-                href: https://sonarr.<domain>
+                href: https://sonarr.falconpunch.org
                 description: TV show manager
                 icon: sonarr.svg
             - Kanidm:
-                href: https://auth.<domain>
+                href: https://auth.falconpunch.org
                 description: Identity management
-                icon: https://auth.<domain>/pkg/img/logo-square.svg
+                icon: https://auth.falconpunch.org/pkg/img/logo-square.svg
           - Development:
             - Gitea:
-                href: https://git.<domain>
+                href: https://git.falconpunch.org
                 description: Git forge
                 icon: gitea.svg
             - Woodpecker:
-                href: https://ci.<domain>
+                href: https://ci.falconpunch.org
                 description: Continuous integration
                 icon: woodpecker-ci.svg
             - ArgoCD:
-                href: https://argocd.<domain>
+                href: https://argocd.falconpunch.org
                 description: Continuous deployment
                 icon: argocd.svg
             - Registry:
-                href: https://registry.<domain>
+                href: https://registry.falconpunch.org
                 description: Container registry
                 icon: docker.svg
             - Grafana:
-                href: https://grafana.<domain>
+                href: https://grafana.falconpunch.org
                 description: Observability dashboards
                 icon: grafana.svg
           - Utilities:
             - Excalidraw:
-                href: https://draw.<domain>
+                href: https://draw.falconpunch.org
                 description: Virtual whiteboard
                 icon: excalidraw.svg
             - Speedtest:
-                href: https://speedtest.<domain>
+                href: https://speedtest.falconpunch.org
                 description: Internal network speed test
                 icon: openspeedtest.png
         bookmarks.yaml: |
           - Homelab:
             - Documentation:
-              - href: https://homelab.<domain>
+              - href: https://homelab.falconpunch.org
                 icon: google-docs.svg
             - Public homelab repository:
-              - href: <seed_repo>
+              - href: https://github.com/pixelpaladins/homelab
                 icon: github.svg
           - Managed services:
             - Cloudflare:

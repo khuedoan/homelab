@@ -4,10 +4,10 @@ elementweb:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.<domain>"
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.falconpunch.org"
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     hosts:
-      - host: &frontend_host chat.<domain>
+      - host: &frontend_host chat.falconpunch.org
         paths:
           - path: /
             pathType: Prefix
@@ -17,22 +17,22 @@ elementweb:
           - *frontend_host
   config:
     default:
-      base_url: https://matrix.<domain>
-      server_name: <domain>
+      base_url: https://matrix.falconpunch.org
+      server_name: falconpunch.org
 
 dendrite:
   dendrite_config:
     global:
-      server_name: matrix.<domain>
+      server_name: matrix.falconpunch.org
   ingress:
     enabled: true
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-    hostName: matrix.<domain>
+    hostName: matrix.falconpunch.org
     tls:
       - hosts:
-          - matrix.<domain>
+          - matrix.falconpunch.org
         secretName: matrix-tls-certificate
   postgresql:
     enabled: true

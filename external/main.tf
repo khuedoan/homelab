@@ -9,7 +9,7 @@ module "zerotier" {
   source                 = "./modules/zerotier"
   zerotier_central_token = var.zerotier_central_token
   bridged_routes = [
-    "<loadbalancer_ip_range>"
+    "10.0.60.224/27"
   ]
 }
 

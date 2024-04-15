@@ -18,10 +18,10 @@ app-template:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        external-dns.alpha.kubernetes.io/target: homelab-tunnel.<domain>
+        external-dns.alpha.kubernetes.io/target: homelab-tunnel.falconpunch.org
         external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
       hosts:
-        - host: &host draw.<domain>
+        - host: &host draw.falconpunch.org
           paths:
             - path: /
               pathType: Prefix

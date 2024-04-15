@@ -16,7 +16,7 @@ repositories:
     owner: ops
     private: false
     migrate:
-      source: <seed_repo>
+      source: https://github.com/pixelpaladins/homelab
       mirror: false
   - name: blog
     owner: khuedoan

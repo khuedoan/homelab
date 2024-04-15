@@ -19,7 +19,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host budget.<domain>
+        - host: &host budget.falconpunch.org
           paths:
             - path: /
               pathType: Prefix
