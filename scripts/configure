@@ -21,7 +21,7 @@ upstream_config = {
     "timezone": "<timezone>",
     "terraform_workspace": "<terraform_workspace>",
     "loadbalancer_ip_range": "<loadbalancer_ip_range>",
-    "control_plane_endpoint": "<control_plane_endoint>"
+    "control_plane_endpoint": "<control_plane_endpoint>"
 }
 
 def check_python_version(required_version: str) -> None:
