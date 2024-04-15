@@ -2,4 +2,4 @@ kured:
   configuration:
     annotateNodes: true
     rebootSentinelCommand: sh -c "! needs-restarting --reboothint"
-    timeZone: <timezone>
+    timeZone: America/Chicago

@@ -33,14 +33,14 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &ollamaHost ollama.<domain>
+        - host: &ollamaHost ollama.falconpunch.org
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: http
-        - host: &uiHost ai.<domain>
+        - host: &uiHost ai.falconpunch.org
           paths:
             - path: /
               pathType: Prefix

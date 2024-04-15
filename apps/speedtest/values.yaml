@@ -20,7 +20,7 @@ app-template:
         nginx.ingress.kubernetes.io/proxy-body-size: 50m
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host speedtest.<domain>
+        - host: &host speedtest.falconpunch.org
           paths:
             - path: /
               pathType: Prefix

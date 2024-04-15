@@ -9,7 +9,7 @@ app-template:
           env:
             PAPERLESS_PORT: 8000
             PAPERLESS_ADMIN_USER: admin
-            PAPERLESS_URL: https://paperless.<domain>
+            PAPERLESS_URL: https://paperless.falconpunch.org
           envFrom:
             - secret: "{{ .Release.Name }}-secret"
         redis:
@@ -29,7 +29,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host paperless.<domain>
+        - host: &host paperless.falconpunch.org
           paths:
             - path: /
               pathType: Prefix

@@ -6,7 +6,7 @@ zot:
       nginx.ingress.kubernetes.io/proxy-body-size: "0"
     className: nginx
     hosts:
-      - host: &host registry.<domain>
+      - host: &host registry.falconpunch.org
         paths:
           - path: /
     tls:

@@ -3,7 +3,7 @@
 site_name: Khue's Homelab
 copyright: Copyright &copy; 2020 - 2024 Khue Doan
 
-repo_url: <seed_repo>
+repo_url: https://github.com/pixelpaladins/homelab
 
 theme:
   favicon: https://github.com/khuedoan/homelab/assets/27996771/d33be1af-3687-4712-a671-4370da13cc92
