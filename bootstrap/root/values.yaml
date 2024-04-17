@@ -1,9 +1,0 @@
-gitops:
-  repo: http://gitea-http.gitea:3000/ops/homelab
-  revision: master
-stacks:
-  - name: bootstrap
-    namespace: argocd  # Override default value
-  - name: system
-  - name: platform
-  - name: apps

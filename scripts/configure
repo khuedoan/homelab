@@ -57,7 +57,6 @@ def main() -> None:
         paths=[
             ".ci",
             "apps",
-            "bootstrap",
             "platform",
             "system",
             "external"
@@ -68,7 +67,7 @@ def main() -> None:
         pattern=upstream_config['seed_repo'],
         replacement=seed_repo,
         paths=[
-            "bootstrap",
+            "system",
             "platform"
         ]
     )
