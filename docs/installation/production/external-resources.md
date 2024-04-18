@@ -79,7 +79,7 @@ To avoid vendor lock-in, each external provider must have an equivalent alternat
     - [Alternate DNS setup](../../how-to-guides/alternate-dns-setup.md)
 - Cloudflare Tunnel:
     - Use port forwarding if it's available
-    - Create a small VPS in the cloud and utilize Wireguard and HAProxy to route traffic via it
+    - Create a small VPS in the cloud and utilize Wireguard to route traffic via it
     - Access everything via VPN
     - See also [awesome tunneling](https://github.com/anderspitman/awesome-tunneling)
 - ZeroTier virtual network:
