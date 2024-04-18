@@ -145,9 +145,9 @@ def reset_kanidm_account_password(account: str) -> str:
         'kanidm-0',
         'kanidm',
         command=["kanidmd", "recover-account", "--output", "json", account],
-        stderr=True, stdin=False,
-        stdout=False, tty=False
-    ).replace("\'", "\"")
+        stderr=False, stdin=False,
+        stdout=True, tty=False
+    ).splitlines()[-1]
 
     return json.loads(resp)['password']
 

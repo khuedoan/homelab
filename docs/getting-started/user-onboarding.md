@@ -28,7 +28,7 @@
     Run the following script:
 
     ```sh
-    ./script/onboard-user johndoe "John Doe" "johndoe@example.com"
+    ./scripts/onboard-user johndoe "John Doe" "johndoe@example.com"
     ```
 
     Let the user scan the QR code or follow the link to set up passkeys or password + TOTP.
