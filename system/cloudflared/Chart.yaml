@@ -2,6 +2,6 @@ apiVersion: v2
 name: cloudflared
 version: 0.0.0
 dependencies:
-  - name: cloudflared
-    version: 0.4.3
-    repository: https://khuedoan.github.io/charts
+  - name: app-template
+    version: 3.1.0
+    repository: https://bjw-s.github.io/helm-charts
