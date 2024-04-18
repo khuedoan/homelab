@@ -47,6 +47,7 @@ nav:
       - installation/production/deployment.md
     - installation/post-installation.md
   - Getting started:
+    - getting-started/vpn-setup.md
     - getting-started/user-onboarding.md
     - getting-started/install-pre-commit-hooks.md
   - Concepts:

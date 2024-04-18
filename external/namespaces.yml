@@ -13,4 +13,3 @@
         - global-secrets
         - k8up-operator
         - monitoring-system
-        - zerotier

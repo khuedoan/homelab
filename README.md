@@ -48,7 +48,7 @@ More information can be found in [the roadmap](#roadmap) below.
 - [x] Modular architecture, easy to add or remove features/components
 - [x] Automated certificate management
 - [x] Automatically update DNS records for exposed services
-- [x] VPN without port forwarding
+- [x] VPN (Tailscale or Wireguard)
 - [x] Expose services to the internet securely with [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
 - [x] CI/CD platform
 - [x] Private container registry
@@ -208,14 +208,19 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Cloud-Native Storage for Kubernetes</td>
     </tr>
     <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/48932923?s=200&v=4"></td>
+        <td><a href="https://tailscale.com">Tailscale</a></td>
+        <td>VPN without port forwarding</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/13991055?s=200&v=4"></td>
+        <td><a href="https://www.wireguard.com">Wireguard</a></td>
+        <td>Fast, modern, secure VPN tunnel</td>
+    </tr>
+    <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/84780935?s=200&v=4"></td>
         <td><a href="https://woodpecker-ci.org">Woodpecker CI</a></td>
         <td>Simple yet powerful CI/CD engine with great extensibility</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png"></td>
-        <td><a href="https://zerotier.com">ZeroTier</a></td>
-        <td>VPN without port forwarding</td>
     </tr>
     <tr>
         <td><img width="32" src="https://zotregistry.dev/v2.0.2/assets/images/logo.svg"></td>

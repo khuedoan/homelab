@@ -142,9 +142,6 @@ app-template:
             - Terraform Cloud:
               - href: https://app.terraform.io
                 icon: terraform.svg
-            - Zerotier:
-              - href: https://my.zerotier.com
-                icon: zerotier.svg
           - Infrastructure:
             - Router:
               - href: https://192.168.1.1

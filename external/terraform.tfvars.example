@@ -5,9 +5,6 @@ cloudflare_account_id = "foobarid"
 # https://dash.cloudflare.com/profile/api-tokens
 cloudflare_api_key = "foobarkey"
 
-# https://my.zerotier.com/account
-zerotier_central_token = "foobartoken"
-
 ntfy = {
   # https://ntfy.sh or your own instance
   url = "https://ntfy.sh"
