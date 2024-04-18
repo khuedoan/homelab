@@ -50,8 +50,8 @@ resource "cloudflare_api_token" "external_dns" {
 
   policy {
     permission_groups = [
-      data.cloudflare_api_token_permission_groups.all.permissions["Zone Read"],
-      data.cloudflare_api_token_permission_groups.all.permissions["DNS Write"]
+      data.cloudflare_api_token_permission_groups.all.zone["Zone Read"],
+      data.cloudflare_api_token_permission_groups.all.zone["DNS Write"]
     ]
     resources = {
       "com.cloudflare.api.account.zone.*" = "*"
@@ -79,8 +79,8 @@ resource "cloudflare_api_token" "cert_manager" {
 
   policy {
     permission_groups = [
-      data.cloudflare_api_token_permission_groups.all.permissions["Zone Read"],
-      data.cloudflare_api_token_permission_groups.all.permissions["DNS Write"]
+      data.cloudflare_api_token_permission_groups.all.zone["Zone Read"],
+      data.cloudflare_api_token_permission_groups.all.zone["DNS Write"]
     ]
     resources = {
       "com.cloudflare.api.account.zone.*" = "*"
