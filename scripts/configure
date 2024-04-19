@@ -86,8 +86,8 @@ def main() -> None:
         pattern=upstream_config['loadbalancer_ip_range'],
         replacement=loadbalancer_ip_range,
         paths=[
-            "metal/group_vars/all.yml",
-            "external/main.tf",
+            "metal/inventories/prod.yml",
+            "apps/tailscale/values.yaml",
         ]
     )
 
