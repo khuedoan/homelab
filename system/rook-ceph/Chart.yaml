@@ -8,3 +8,8 @@ dependencies:
   - name: rook-ceph-cluster
     version: 1.13.5
     repository: https://charts.rook.io/release
+  # TODO switch to official chart when there is one
+  # https://github.com/kubernetes-csi/external-snapshotter/issues/812
+  - name: snapshot-controller
+    version: 2.2.1
+    repository: https://piraeus.io/helm-charts

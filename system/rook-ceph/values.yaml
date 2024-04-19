@@ -52,6 +52,9 @@ rook-ceph-cluster:
           csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
           csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
           csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
+  cephBlockPoolsVolumeSnapshotClass:
+    enabled: true
+    isDefault: true
   cephFileSystems:
     - name: standard-rwx
       spec:
@@ -85,4 +88,7 @@ rook-ceph-cluster:
           csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
           csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
           csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
+  cephFileSystemVolumeSnapshotClass:
+    enabled: true
+    isDefault: false
   cephObjectStores: []
