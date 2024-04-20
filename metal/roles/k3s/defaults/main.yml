@@ -1,4 +1,13 @@
 k3s_version: v1.28.3+k3s2
+
+k3s_architectures:
+  x86_64:
+    arch_suffix: ""
+    arch_sum: sha256sum-amd64.txt
+  aarch64:
+    arch_suffix: "-arm64"
+    arch_sum: sha256sum-arm64.txt
+
 k3s_config_file: /etc/rancher/k3s/config.yaml
 k3s_token_file: /etc/rancher/node/password
 k3s_service_file: /etc/systemd/system/k3s.service
