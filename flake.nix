@@ -13,7 +13,6 @@
         # (Source: https://xeiaso.net/blog/notes/nix-flakes-terraform-unfree-fix)
         pkgs = import nixpkgs {
           inherit system;
-          config.allowUnfree = true;
         };
       in
       with pkgs;
@@ -44,7 +43,7 @@
             p7zip
             pre-commit
             shellcheck
-            terraform # TODO replace with OpenTofu, Terraform is no longer FOSS
+            opentofu
             yamllint
 
             (python3.withPackages (p: with p; [
