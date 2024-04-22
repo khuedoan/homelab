@@ -40,10 +40,10 @@
             libisoburn
             neovim
             openssh
+            opentofu
             p7zip
             pre-commit
             shellcheck
-            opentofu
             yamllint
 
             (python3.withPackages (p: with p; [
