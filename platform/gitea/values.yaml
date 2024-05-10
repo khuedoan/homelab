@@ -5,7 +5,7 @@ gitea:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - host: &host git.khuedoan.com
+      - host: &host git.<domain>
         paths:
           - path: /
             pathType: Prefix
@@ -19,12 +19,12 @@ gitea:
     config:
       server:
         LANDING_PAGE: explore
-        ROOT_URL: https://git.khuedoan.com
+        ROOT_URL: https://git.<domain>
         OFFLINE_MODE: true
       repository:
         DISABLED_REPO_UNITS: repo.wiki,repo.projects,repo.packages
         DISABLE_STARS: true
-        DEFAULT_BRANCH: master
+        DEFAULT_BRANCH: <branch>
       # TODO it's not reading the username from Dex correctly for now, related issues:
       # https://github.com/go-gitea/gitea/issues/25725
       # https://github.com/go-gitea/gitea/issues/24957

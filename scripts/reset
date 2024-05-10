@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Change to home directory
+cd ~
+
+# Function to display help message
+function show_help() {
+  echo "Usage: ./reset.sh [OPTION]"
+  echo ""
+  echo "Options:"
+  echo "  -h, --help  Display this help message and exit."
+  echo "  -p, --prune   Perform image pruning using 'docker image prune -a --force'."
+  echo ""
+  echo "**Note:** The 'prune' option is only executed if specified."
+}
+
+# Process arguments using getopts
+while getopts ":hp" opt; do
+  case $opt in
+    h)
+      show_help
+      exit 0
+      ;;
+    p)
+      # Flag for prune option
+      PRUNE=true
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      show_help
+      exit 1
+      ;;
+  esac
+done
+
+# Shift arguments to exclude processed options
+shift $((OPTIND - 1))
+
+# Check for prune option
+if [[ $PRUNE == true ]]; then
+  echo "Pruning Images"
+  docker image prune -a --force
+fi
+
+# Get the repo URL from the user
+read -p "What is the URL of your repo? (https://...): " REPO_URL
+
+# Get the repo branch from the user
+read -p "What is the branch of the repo that you will be using? (ex. master, main, development): " BRANCH
+
+# Your original script tasks here:
+
+# Stopping Docker Containers
+echo "Stopping Docker Containers"
+docker stop files_http_1 files_dnsmasq_1
+
+# Removing Docker Containers
+echo "Removing Docker Containers"
+docker rm files_http_1 files_dnsmasq_1
+
+# Removing Cache Containers
+echo "Removing Cache Containers"
+docker volume rm homelab-tools-cache homelab-tools-nix
+
+# Removing terraform.d folder
+echo "Removing terraform.d folder"
+sudo rm -Rf ~/.terraform.d
+
+# Removing homelab folder
+echo "Removing homelab folder"
+sudo rm -Rf homelab*
+
+# Pulling a Fresh Clone of Homelab
+echo "Pulling a Fresh Clone of Homelab from $REPO_URL on $BRANCH branch"
+git clone "$REPO_URL" -b $BRANCH
+
+# And Bob is your uncle!
+echo "And Bob is your uncle!"
