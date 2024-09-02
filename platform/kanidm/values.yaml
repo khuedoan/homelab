@@ -6,7 +6,7 @@ app-template:
         main:
           image:
             repository: docker.io/kanidm/server
-            tag: 1.1.0-rc.16
+            tag: 1.3.3
       statefulset:
         volumeClaimTemplates:
           - name: data
@@ -21,7 +21,7 @@ app-template:
         server.toml: |
           bindaddress = "[::]:443"
           ldapbindaddress = "[::]:636"
-          # trust_x_forward_for = false
+          trust_x_forward_for = true
           db_path = "/data/kanidm.db"
           tls_chain = "/data/ca.crt"
           tls_key = "/data/tls.key"

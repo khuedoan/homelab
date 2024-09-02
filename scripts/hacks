@@ -172,7 +172,7 @@ def setup_kanidm_group(name: str) -> None:
 def setup_kanidm_oauth_app(name: str, redirect_uri: str) -> None:
     try:
         subprocess.run(
-            ["kanidm", "system", "oauth2", "create", "--url", f"https://{kanidm_host}", "--name", "admin", name, name, redirect_uri],
+            ["kanidm", "system", "oauth2", "create", "--url", f"https://{kanidm_host}", "--name", "idm_admin", name, name, redirect_uri],
             capture_output=True,
             check=True,
         )
@@ -181,20 +181,20 @@ def setup_kanidm_oauth_app(name: str, redirect_uri: str) -> None:
 
     # TODO https://github.com/dexidp/dex/pull/3188
     subprocess.run(
-        ["kanidm", "system", "oauth2", "warning-insecure-client-disable-pkce", "--url", f"https://{kanidm_host}", "--name", "admin", name],
+        ["kanidm", "system", "oauth2", "warning-insecure-client-disable-pkce", "--url", f"https://{kanidm_host}", "--name", "idm_admin", name],
         capture_output=True,
         check=True,
     )
 
     subprocess.run(
         # TODO better group management
-        ["kanidm", "system", "oauth2", "create-scope-map", "--url", f"https://{kanidm_host}", "--name", "admin", name, "editor", "openid", "profile", "email", "groups"],
+        ["kanidm", "system", "oauth2", "create-scope-map", "--url", f"https://{kanidm_host}", "--name", "idm_admin", name, "editor", "openid", "profile", "email", "groups"],
         capture_output=True,
         check=True,
     )
 
     client_secret = json.loads(subprocess.run(
-        ["kanidm", "system", "oauth2", "show-basic-secret", "--url", f"https://{kanidm_host}", "--name", "admin", "--output", "json", name],
+        ["kanidm", "system", "oauth2", "show-basic-secret", "--url", f"https://{kanidm_host}", "--name", "idm_admin", "--output", "json", name],
         capture_output=True,
         check=True,
     ).stdout.decode("utf-8"))['secret']
