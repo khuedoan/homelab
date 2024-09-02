@@ -3,7 +3,7 @@ name: argocd
 version: 0.0.0
 dependencies:
   - name: argo-cd
-    version: 6.4.1
+    version: 7.5.2
     repository: https://argoproj.github.io/argo-helm
   - name: argocd-apps
     version: 2.0.0
