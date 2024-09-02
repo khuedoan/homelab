@@ -17,14 +17,14 @@ func TestToolsVersions(t *testing.T) {
 		versionConstraint string
 	}{
 		{"ansible", "--version", ">= 2.12.6, < 3.0.0"},
-		{"docker", "--version", ">= 24.0.0, < 25.0.0"},
+		{"docker", "--version", ">= 25.0.0, < 26.0.0"},
 		{"git", "--version", ">= 2.37.1, < 3.0.0"},
-		{"go", "version", ">= 1.21.0, < 1.22.0"},
+		{"go", "version", ">= 1.22.0, < 1.23.0"},
 		{"helm", "version", ">= 3.9.4, < 4.0.0"},
-		{"kubectl", "version", ">= 1.27.0, < 1.29.0"}, // https://kubernetes.io/releases/version-skew-policy/#kubectl
+		{"kubectl", "version", ">= 1.30.0, < 1.32.0"}, // https://kubernetes.io/releases/version-skew-policy/#kubectl
 		{"kustomize", "version", ">= 5.0.3, < 6.0.0"},
 		{"pre-commit", "--version", ">= 3.3.2, < 4.0.0"},
-		{"terraform", "--version", ">= 1.6.0, < 1.7.0"},
+		{"terraform", "--version", ">= 1.8.0, < 1.9.0"},
 	}
 
 	for _, tool := range tools {
