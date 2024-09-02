@@ -41,7 +41,7 @@
   loop: "{{ groups['metal'] }}"
 
 - name: Start the ephemeral PXE server
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: "{{ role_path }}/files"
     state: present
-    build: true
+    build: always
