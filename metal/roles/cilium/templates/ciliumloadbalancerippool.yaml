@@ -3,7 +3,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: default
 spec:
-  cidrs:
+  blocks:
     {% for cidr in load_balancer_ip_pool %}
     - cidr: {{ cidr }}
     {% endfor %}
