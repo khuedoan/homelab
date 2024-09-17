@@ -4,6 +4,11 @@
     - key: password
       length: 32
       special: true
+- name: gitea.renovate
+  data:
+    - key: token
+      length: 32
+      special: false
 
 # Dex
 - name: dex.grafana
@@ -38,6 +43,14 @@
     - key: secret
       length: 32
       special: false
+- name: gitea.woodpecker
+  data:
+    - key: client_id
+      length: 32
+      special: false
+    - key: client_secret
+      length: 32
+      special: false
 
 # Paperless
 - name: paperless.admin
@@ -45,3 +58,10 @@
     - key: PAPERLESS_ADMIN_PASSWORD
       length: 32
       special: true
+
+# Tailscale
+- name: external
+  data:
+    - key: tailscale-auth-key
+      length: 32
+      special: false
