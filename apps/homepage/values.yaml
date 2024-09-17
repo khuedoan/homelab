@@ -96,7 +96,7 @@ app-template:
             - Kanidm:
                 href: https://auth.pouria.sh
                 description: Identity management
-                icon: https://auth.khuedoan.com/pkg/img/logo-square.svg
+                icon: https://auth.pouria.sh/pkg/img/logo-square.svg
           - Development:
             - Gitea:
                 href: https://git.pouria.sh
