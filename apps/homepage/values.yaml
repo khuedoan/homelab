@@ -19,7 +19,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host home.khuedoan.com
+        - host: &host home.pouria.sh
           paths:
             - path: /
               pathType: Prefix
@@ -61,79 +61,79 @@ app-template:
         services.yaml: |
           - Popular:
             - Matrix:
-                href: https://chat.khuedoan.com
+                href: https://chat.pouria.sh
                 description: Chat client
                 icon: element.svg
             - Jellyfin:
-                href: https://jellyfin.khuedoan.com
+                href: https://jellyfin.pouria.sh
                 description: Media system (movies, music, etc.)
                 icon: jellyfin.svg
             - Jellyseerr:
-                href: https://jellyseerr.khuedoan.com
+                href: https://jellyseerr.pouria.sh
                 description: Request media
                 icon: jellyseerr.svg
             - Paperless:
-                href: https://paperless.khuedoan.com
+                href: https://paperless.pouria.sh
                 description: Document management system
                 icon: paperless.svg
           - Management:
             - Transmission:
-                href: https://transmission.khuedoan.com
+                href: https://transmission.pouria.sh
                 description: Bittorrent client
                 icon: transmission.svg
             - Prowlarr:
-                href: https://prowlarr.khuedoan.com
+                href: https://prowlarr.pouria.sh
                 description: Indexer manager
                 icon: prowlarr.svg
             - Radarr:
-                href: https://radarr.khuedoan.com
+                href: https://radarr.pouria.sh
                 description: Movie manager
                 icon: radarr.svg
             - Sonarr:
-                href: https://sonarr.khuedoan.com
+                href: https://sonarr.pouria.sh
                 description: TV show manager
                 icon: sonarr.svg
             - Kanidm:
-                href: https://auth.khuedoan.com
+                href: https://auth.pouria.sh
                 description: Identity management
                 icon: https://auth.khuedoan.com/pkg/img/logo-square.svg
           - Development:
             - Gitea:
-                href: https://git.khuedoan.com
+                href: https://git.pouria.sh
                 description: Git forge
                 icon: gitea.svg
             - Woodpecker:
-                href: https://ci.khuedoan.com
+                href: https://ci.pouria.sh
                 description: Continuous integration
                 icon: woodpecker-ci.svg
             - ArgoCD:
-                href: https://argocd.khuedoan.com
+                href: https://argo.pouria.sh
                 description: Continuous deployment
                 icon: argocd.svg
             - Registry:
-                href: https://registry.khuedoan.com
+                href: https://cr.pouria.sh
                 description: Container registry
                 icon: docker.svg
             - Grafana:
-                href: https://grafana.khuedoan.com
+                href: https://monitoring.pouria.sh
                 description: Observability dashboards
                 icon: grafana.svg
           - Utilities:
             - Excalidraw:
-                href: https://draw.khuedoan.com
+                href: https://draw.pouria.sh
                 description: Virtual whiteboard
                 icon: excalidraw.svg
             - Speedtest:
-                href: https://speedtest.khuedoan.com
+                href: https://speedtest.pouria.sh
                 description: Internal network speed test
                 icon: openspeedtest.png
         bookmarks.yaml: |
           - Homelab:
             - Documentation:
-              - href: https://homelab.khuedoan.com
+              - href: https://homelab.pouria.sh
                 icon: google-docs.svg
             - Public homelab repository:
-              - href: https://github.com/khuedoan/homelab
+              - href: https://github.com/AnotherPouria/homelab
                 icon: github.svg
           - Managed services:
             - Cloudflare:
@@ -144,7 +144,7 @@ app-template:
                 icon: terraform.svg
           - Infrastructure:
             - Router:
-              - href: https://192.168.1.1
+              - href: https://192.168.2.1
                 icon: router.svg
             - Proxmox:
               - href: https://proxmox:8006
