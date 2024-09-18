@@ -13,6 +13,13 @@ gitea:
       - secretName: gitea-tls-certificate
         hosts:
           - *host
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
   gitea:
     admin:
       existingSecret: gitea-admin-secret
