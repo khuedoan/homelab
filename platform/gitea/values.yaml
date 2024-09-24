@@ -46,3 +46,5 @@ gitea:
         ALLOWED_HOST_LIST: private
   postgresql:
     enabled: true
+  postgresql-ha:
+    enabled: false
