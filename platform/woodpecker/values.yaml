@@ -1,6 +1,6 @@
 woodpecker:
   agent:
-    replicaCount: 2
+    replicaCount: 1
     env:
       WOODPECKER_BACKEND_K8S_STORAGE_RWX: false
       # Agents will spawn pods to run workflow steps using the
