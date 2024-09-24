@@ -44,3 +44,6 @@ gitea:
         ENABLED: false
       webhook:
         ALLOWED_HOST_LIST: private
+
+postgresql:
+  enabled: true
