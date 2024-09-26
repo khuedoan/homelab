@@ -12,7 +12,7 @@ app-template:
             TS_HOSTNAME: homelab-router
             TS_USERSPACE: false
             TS_KUBE_SECRET: tailscale
-            TS_ROUTES: 192.168.1.224/27
+            TS_ROUTES: 192.168.2.224/27
             TS_AUTHKEY:
               valueFrom:
                 secretKeyRef:
