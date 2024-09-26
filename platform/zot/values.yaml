@@ -6,7 +6,7 @@ zot:
       nginx.ingress.kubernetes.io/proxy-body-size: "0"
     className: nginx
     hosts:
-      - host: &host registry.khuedoan.com
+      - host: &host registry.pouria.sh
         paths:
           - path: /
     tls:

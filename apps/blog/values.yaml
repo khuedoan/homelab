@@ -4,7 +4,7 @@ app-template:
       containers:
         main:
           image:
-            repository: registry.khuedoan.com/blog
+            repository: registry.pouria.sh/blog
             tag: latest
   service:
     main:
@@ -18,10 +18,10 @@ app-template:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        external-dns.alpha.kubernetes.io/target: homelab-tunnel.khuedoan.com
+        external-dns.alpha.kubernetes.io/target: homelab-tunnel.pouria.sh
         external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
       hosts:
-        - host: &host www.khuedoan.com
+        - host: &host www.pouria.sh
           paths:
             - path: /
               pathType: Prefix
