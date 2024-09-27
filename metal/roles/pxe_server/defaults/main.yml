@@ -1,4 +1,4 @@
-iso_url: "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Server/x86_64/iso/Fedora-Server-netinst-x86_64-40-1.14.iso"
-iso_checksum: "sha256:1b4f163c55aa9b35bb08f3d465534aa68899a4984b8ba8976b1e7b28297b61fe"
+iso_url: "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Server/x86_64/iso/Fedora-Server-dvd-x86_64-40-1.14.iso"
+iso_checksum: "sha256:32d9ab1798fc8106a0b06e873bdcd83a3efea8412c9401dfe4097347ed0cfc65"
 timezone: Europe/Berlin
 dhcp_proxy: true
