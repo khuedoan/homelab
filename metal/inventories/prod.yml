@@ -12,5 +12,5 @@ metal:
         metal3: {ansible_host: 192.168.2.113, mac: 'f8:b4:6a:25:06:e5', disk: sda, network_interface: eno1}
     workers:
       hosts:
-        metal4: {ansible_host: 192.168.2.114, mac: '9c:7b:ef:77:45:4f', disk: sda, network_interface: eno1}
+        metal4: {ansible_host: 192.168.2.117, mac: '9c:7b:ef:77:45:4f', disk: sda, network_interface: eno1}
 
