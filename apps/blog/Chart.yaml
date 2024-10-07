@@ -1,7 +1,0 @@
-apiVersion: v2
-name: blog
-version: 0.0.0
-dependencies:
-  - name: app-template
-    version: 2.2.0
-    repository: https://bjw-s.github.io/helm-charts
