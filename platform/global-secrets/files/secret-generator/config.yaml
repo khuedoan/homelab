@@ -41,9 +41,9 @@
 # Kanidm
 - name: kanidm.dex
   data:
-    - key: KANIDM_CLIENT_ID
+    - key: client_id
       length: 32
       special: false
-    - key: KANIDM_CLIENT_SECRET
+    - key: client_secret
       length: 32
       special: false
