@@ -37,3 +37,13 @@
     - key: PAPERLESS_ADMIN_PASSWORD
       length: 32
       special: true
+
+# Kanidm
+- name: kanidm.dex
+  data:
+    - key: KANIDM_CLIENT_ID
+      length: 32
+      special: false
+    - key: KANIDM_CLIENT_SECRET
+      length: 32
+      special: false
