@@ -43,9 +43,9 @@ gitea:
   postgresql-ha:
     enabled: false
 
-  redis-cluster:
-    enabled: false
-  redis:
-    enabled: true
+  # redis-cluster:
+  #   enabled: false
+  # redis:
+  #   enabled: true
 
 
