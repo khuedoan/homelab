@@ -38,9 +38,14 @@ gitea:
       webhook:
         ALLOWED_HOST_LIST: private
 
-      postgresql-ha:
-        enabled: false
-      postgres:
-        enabled: true
+  postgres:
+    enabled: true
+  postgresql-ha:
+    enabled: false
+
+  redis-cluster:
+    enabled: false
+  redis:
+    enabled: true
 
 
