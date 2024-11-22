@@ -42,6 +42,17 @@ tools:
 		--workdir $(shell pwd) \
 		docker.io/nixos/nix nix --experimental-features 'nix-command flakes' develop
 
+# TODO maybe there's a better way to manage backup with GitOps?
+backup:
+	./scripts/backup --action setup --namespace=actualbudget --pvc=actualbudget-data
+	./scripts/backup --action setup --namespace=wireguard --pvc=wireguard-data
+	./scripts/backup --action setup --namespace=jellyfin --pvc=jellyfin-data
+
+restore:
+	./scripts/backup --action restore --namespace=actualbudget --pvc=actualbudget-data
+	./scripts/backup --action restore --namespace=wireguard --pvc=wireguard-data
+	./scripts/backup --action restore --namespace=jellyfin --pvc=jellyfin-data
+
 test:
 	make -C test
 

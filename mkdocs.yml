@@ -59,6 +59,7 @@ nav:
   - How-to guides:
     - how-to-guides/alternate-dns-setup.md
     - how-to-guides/expose-services-to-the-internet.md
+    - how-to-guides/backup-and-restore.md
     - how-to-guides/use-both-github-and-gitea.md
     - how-to-guides/add-or-remove-nodes.md
     - how-to-guides/run-commands-on-multiple-nodes.md

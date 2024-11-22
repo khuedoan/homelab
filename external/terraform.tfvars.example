@@ -16,6 +16,11 @@ extra_secrets = {
   # Try to keep this to a minimum with third-party secrets
   # Consider using the secret generator if possible
   # ../platform/global-secrets/files/secret-generator/config.yaml
+  # Here's some examples of what you might want to add:
   #
-  # key = "value"
+  # tailscale-auth-key = "tskey-auth-xxxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  # restic-password = "xxxxxxxxxxxxxxxxxxxxxxxx"
+  # restic-s3-bucket = "https://s3.amazonaws.com/my-homelab-backup-xxxxxxxxxx"
+  # restic-s3-access-key = "xxxxxxxxxxxxxxxx"
+  # restic-s3-secret-key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }

@@ -55,7 +55,7 @@ More information can be found in [the roadmap](#roadmap) below.
 - [x] Distributed storage
 - [x] Support multiple environments (dev, prod)
 - [x] Monitoring and alerting
-- [ ] Automated offsite backups 🚧
+- [x] Automated backup and restore
 - [x] Single sign-on
 - [x] Infrastructure testing
 

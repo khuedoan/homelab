@@ -26,6 +26,11 @@ Save the following files to a safe location like a password manager (if you're u
     - Username: `admin`
     - Password: get from `global-secrets` namespace
 
+## Backup
+
+Now is a good time to set up backups for your homelab.
+Follow the [backup and restore guide](../how-to-guides/backup-and-restore.md) to get started.
+
 ## Run the full test suite
 
 After the homelab has been stabilized, you can run the full test suite to ensure that everything is working properly:
