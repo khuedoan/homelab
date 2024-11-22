@@ -278,7 +278,7 @@ Big shout-out to them!
 - ![](https://github.com/MatthewJohn.png?size=24) [@MatthewJohn](https://github.com/MatthewJohn)
 - ![](https://github.com/karpfediem.png?size=24) [@karpfediem](https://github.com/karpfediem)
 - ![](https://github.com/linhng98.png?size=24) [@linhng98](https://github.com/linhng98)
-- ![](https://github.com/BlueHatbRit.png?size=24) [@BlueHatbRit](https://github.com/BlueHatbRit)
+- ![](https://github.com/elliotblackburn.png?size=24) [@elliotblackburn](https://github.com/elliotblackburn)
 - ![](https://github.com/dotdiego.png?size=24) [@dotdiego](https://github.com/dotdiego)
 - ![](https://github.com/Crimrose.png?size=24) [@Crimrose](https://github.com/Crimrose)
 - ![](https://github.com/eventi.png?size=24) [@eventi](https://github.com/eventi)

@@ -75,6 +75,7 @@ You may want to back up the `external/terraform.tfvars` file to a secure locatio
 ## Add backup configuration for volumes
 
 !!! warning
+
     Do not run the backup command when building a new cluster where you intend
     to restore backups, as it may overwrite existing backup data. To restore
     data on a new cluster, refer to the [restore from
