@@ -24,7 +24,7 @@ Terraform is stateful, which means it needs somewhere to store its state. Terraf
 
 1. Sign up for a [Terraform Cloud](https://cloud.hashicorp.com/products/terraform) account
 2. Create a workspace named `homelab-external`, this is the workspace where your homelab state will be stored.
-3. Change the "Execution Mode" from "Remote" to "Local". This will ensure your local machine, which can access your lab, is the one executing the terraform plan rather than the cloud runners.
+3. Change the "Execution Mode" from "Remote" to "Local". This will ensure your local machine, which can access your lab, is the one executing the Terraform plan rather than the cloud runners.
 
 If you decide to use a [different Terraform backend](https://www.terraform.io/language/settings/backends#available-backends), you'll need to edit the `external/versions.tf` file as required.
 

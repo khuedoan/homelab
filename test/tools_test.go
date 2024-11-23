@@ -24,7 +24,7 @@ func TestToolsVersions(t *testing.T) {
 		{"kubectl", "version", ">= 1.30.0, < 1.32.0"}, // https://kubernetes.io/releases/version-skew-policy/#kubectl
 		{"kustomize", "version", ">= 5.0.3, < 6.0.0"},
 		{"pre-commit", "--version", ">= 3.3.2, < 4.0.0"},
-		{"terraform", "--version", ">= 1.8.0, < 1.9.0"},
+		{"tofu", "--version", ">= 1.7.0, < 1.9.0"},
 	}
 
 	for _, tool := range tools {

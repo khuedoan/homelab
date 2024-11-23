@@ -9,12 +9,7 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        # TODO remove unfree after removing Terraform
-        # (Source: https://xeiaso.net/blog/notes/nix-flakes-terraform-unfree-fix)
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
+        pkgs = import nixpkgs { inherit system; };
       in
       with pkgs;
       {
@@ -41,10 +36,10 @@
             libisoburn
             neovim
             openssh
+            opentofu # Drop-in replacement for Terraform
             p7zip
             pre-commit
             shellcheck
-            terraform # TODO replace with OpenTofu, Terraform is no longer FOSS
             yamllint
 
             (python3.withPackages (p: with p; [

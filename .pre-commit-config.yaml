@@ -15,8 +15,11 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.17
+    rev: v0.1.24
     hooks:
       - id: helmlint
       - id: shellcheck
-      - id: terraform-fmt
+  - repo: https://github.com/tofuutils/pre-commit-opentofu
+    rev: v2.1.0
+    hooks:
+      - id: tofu_fmt
