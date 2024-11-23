@@ -5,7 +5,7 @@
 # - [ ] self contained
 # - [ ] login automatically credentials from Kubernetes Secrets (is this really needed?)
 
-# TODO put this in tools container or use Docker
+# TODO put this in ../flake.nix or use Docker
 # pip install selenium
 # sudo pacman -S geckodriver
 

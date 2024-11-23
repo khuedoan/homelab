@@ -135,7 +135,7 @@ They can't capture all the project's features, but they are sufficient to get a 
     <tr>
         <td><img width="32" src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png"></td>
         <td><a href="https://www.docker.com">Docker</a></td>
-        <td>Ephemeral PXE server and convenient tools container</td>
+        <td>Ephemeral PXE server</td>
     </tr>
     <tr>
         <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
@@ -186,6 +186,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://avatars.githubusercontent.com/u/1412239?s=200&v=4"></td>
         <td><a href="https://www.nginx.com">NGINX</a></td>
         <td>Kubernetes Ingress Controller</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nix-snowflake-colours.svg"></td>
+        <td><a href="https://nixos.org">Nix</a></td>
+        <td>Convenient development shell</td>
     </tr>
     <tr>
         <td><img width="32" src="https://ntfy.sh/_next/static/media/logo.077f6a13.svg"></td>

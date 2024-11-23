@@ -1,18 +1,10 @@
 # Deployment
 
-Open the tools container if you haven't already:
+Open the development shell if you haven't already:
 
-=== "Docker"
-
-    ```sh
-    make tools
-    ```
-
-=== "Nix"
-
-    ```sh
-    nix develop
-    ```
+```sh
+nix develop
+```
 
 Build the lab:
 

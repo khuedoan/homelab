@@ -19,6 +19,27 @@ They are not permanent, we can change them in the future if better alternatives 
 
     - CHANGEME
 
+## Remove the Docker wrapper for Nix shell
+
+**Context**
+
+The Docker wrapper was originally added because not everyone has Nix installed.
+However, it is not a good abstraction. Depending on how Docker (or Podman) was
+installed, there may be permission issues, and it is slower than running Nix
+directly on the host.
+
+**Decision**
+
+Remove the Docker wrapper and run the Nix development shell directly. While not
+everyone has Nix installed, not everyone has the same Docker setup either.
+
+**Consequences**
+
+- Requires an additional step to install Nix, but this is a one-time setup.
+- The `make tools` command has been removed, you now need to run `nix develop`
+  directly. Although it can be added to the `Makefile`, this requires `make` to
+  be installed, and not everyone has the same version of `make`.
+
 ## Remove HashiCorp Vault
 
 **Context**
@@ -63,7 +84,7 @@ Update secret references in `kind: ExternalSecret`:
 +  key: gitea.admin
 ```
 
-## Manage package versions in tools container
+## Manage package versions in development shell
 
 **Context**
 

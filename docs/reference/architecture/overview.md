@@ -26,7 +26,6 @@ Main components:
 
 Support components:
 
-- `./tools`: tools container, includes all the tools you'll need
 - `./docs`: all documentation go here, this will generate a searchable web UI
 - `./scripts`: scripts to automate common tasks
 

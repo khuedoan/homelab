@@ -15,7 +15,7 @@ Host machine:
 Install the following packages:
 
 - `docker`
-- `make`
+- `nix` (see [development shell](../concepts/development-shell.md) for the installation guide)
 
 Clone the repository and checkout the development branch:
 
@@ -26,19 +26,11 @@ git checkout dev
 
 ## Build
 
-Open the tools container, which includes all the tools needed:
+Open the development shell, which includes all the tools needed:
 
-=== "Docker"
-
-    ```sh
-    make tools
-    ```
-
-=== "Nix"
-
-    ```sh
-    nix develop
-    ```
+```sh
+nix develop
+```
 
 Build a development cluster and bootstrap it:
 
