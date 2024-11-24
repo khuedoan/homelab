@@ -67,3 +67,9 @@ argocd-apps:
               - CreateNamespace=true
               - ApplyOutOfSyncOnly=true
               - ServerSideApply=true
+            managedNamespaceMetadata:
+              annotations:
+                # Enable privileged VolSync movers by default for all namespaces
+                # TODO this may be refactored in the future for finer granularity
+                # See also https://volsync.readthedocs.io/en/stable/usage/permissionmodel.html
+                volsync.backube/privileged-movers: "true"
