@@ -18,6 +18,7 @@ extra_secrets = {
   # ../platform/global-secrets/files/secret-generator/config.yaml
   # Here's some examples of what you might want to add:
   #
+  # wireguard-private-key = "wg genkey output here"
   # tailscale-auth-key = "tskey-auth-xxxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   # restic-password = "xxxxxxxxxxxxxxxxxxxxxxxx"
   # restic-s3-bucket = "https://s3.amazonaws.com/my-homelab-backup-xxxxxxxxxx"

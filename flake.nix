@@ -39,7 +39,9 @@
             opentofu # Drop-in replacement for Terraform
             p7zip
             pre-commit
+            qrencode
             shellcheck
+            wireguard-tools
             yamllint
 
             (python3.withPackages (p: with p; [

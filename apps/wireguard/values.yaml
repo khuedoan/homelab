@@ -8,10 +8,7 @@ app-template:
             tag: latest
           env:
             LOG_CONFS: false
-            PEERS: |
-              KDDesktop
-              KDLaptop
-              KDPhone
+            USE_COREDNS: true
           securityContext:
             capabilities:
               add:
@@ -25,8 +22,57 @@ app-template:
           port: 51820
           protocol: UDP
   persistence:
-    data:
-      accessMode: ReadWriteOnce
-      size: 10Mi
+    config:
+      type: secret
+      name: "{{ .Release.Name }}-secret"
       globalMounts:
-        - path: /config
+        - path: /config/wg_confs
+  rawResources:
+    secret:
+      apiVersion: external-secrets.io/v1beta1
+      kind: ExternalSecret
+      spec:
+        spec:
+          secretStoreRef:
+            kind: ClusterSecretStore
+            name: global-secrets
+          data:
+            - secretKey: WIREGUARD_PRIVATE_KEY
+              remoteRef:
+                key: external
+                property: wireguard-private-key
+          target:
+            template:
+              data:
+                wg0.conf: |
+                  [Interface]
+                  Address = 172.16.0.1/32
+                  ListenPort = 51820
+                  PrivateKey = {{ `{{ .WIREGUARD_PRIVATE_KEY }}` }}
+                  PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth+ -j MASQUERADE
+                  PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth+ -j MASQUERADE
+
+                  # Note that WireGuard will ignore a peer whose public key matches
+                  # the interface's private key. So you can distribute a single
+                  # list of peers everywhere.
+                  # https://lists.zx2c4.com/pipermail/wireguard/2018-December/003703.html
+
+                  [Peer]
+                  # homelab
+                  PublicKey = sSAZS1Z3vB7Wx8e2yVqXfeHjgWTa80wnSYoma3mZkiU=
+                  AllowedIPs = 172.16.0.1/32, 192.168.1.224/27
+
+                  [Peer]
+                  # khuedoan-ryzentower
+                  PublicKey = 2poJnXVSbbaqY90B6ruupKEO4OrDFCur2s2pqTk1HWE=
+                  AllowedIPs = 172.16.0.10/32
+
+                  [Peer]
+                  # khuedoan-thinkpadz13
+                  PublicKey = kgQbzrz+/P3Xd+L2hseKDYUjhwgfuQOro6tNz11ePH4=
+                  AllowedIPs = 172.16.0.11/32
+
+                  [Peer]
+                  # khuedoan-phone
+                  PublicKey = nITHFdgTkNZOTWeSWqnGXjgwlCJMKRCnnUsjMx2yp2U=
+                  AllowedIPs = 172.16.0.12/32

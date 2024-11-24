@@ -3,5 +3,5 @@ name: wireguard
 version: 0.0.0
 dependencies:
   - name: app-template
-    version: 3.1.0
+    version: 3.5.0
     repository: https://bjw-s.github.io/helm-charts
