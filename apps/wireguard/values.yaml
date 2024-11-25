@@ -75,12 +75,12 @@ app-template:
 
                   [Peer]
                   # khuedoan-ryzentower
-                  PublicKey = 2poJnXVSbbaqY90B6ruupKEO4OrDFCur2s2pqTk1HWE=
+                  PublicKey = qnDY23ZWUOlCRUmB8anpXH1uzX0A17F1YtQJmVi7GWM=
                   AllowedIPs = 172.16.0.10/32
 
                   [Peer]
                   # khuedoan-thinkpadz13
-                  PublicKey = kgQbzrz+/P3Xd+L2hseKDYUjhwgfuQOro6tNz11ePH4=
+                  PublicKey = hSVWn2lBasJeueHApQYmYR0s2zNpXrqZX6F8gyEqpy0=
                   AllowedIPs = 172.16.0.11/32
 
                   [Peer]
