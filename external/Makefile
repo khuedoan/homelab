@@ -3,7 +3,7 @@
 default: apply
 
 ~/.terraform.d/credentials.tfrc.json:
-	tofu login
+	tofu login app.terraform.io
 
 terraform.tfvars:
 	cp terraform.tfvars.example ${@}
