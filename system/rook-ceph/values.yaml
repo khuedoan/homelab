@@ -40,7 +40,7 @@ rook-ceph-cluster:
     - name: standard-rwo
       spec:
         replicated:
-          size: 2
+          size: 1
       storageClass:
         enabled: true
         name: standard-rwo
@@ -62,11 +62,11 @@ rook-ceph-cluster:
       spec:
         metadataPool:
           replicated:
-            size: 2
+            size: 1
         dataPools:
           - name: data0
             replicated:
-              size: 2
+              size: 1
         metadataServer:
           activeCount: 1
           activeStandby: true
