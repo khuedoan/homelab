@@ -63,6 +63,10 @@ rook-ceph-cluster:
   cephFileSystems:
     - name: standard-rwx
       spec:
+        cephConfig:
+          global:
+            osd_pool_default_size: "1"
+            osd_pool_default_min_size: "1"
         metadataPool:
           replicated:
             size: 1
