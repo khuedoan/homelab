@@ -2,11 +2,6 @@ rook-ceph:
   monitoring:
     enabled: true
 rook-ceph-cluster:
-  configOverride:
-    configOverride: |
-      [global]
-      osd_pool_default_size = 1
-      osd_pool_default_min_size = 1
   monitoring:
     enabled: true
     createPrometheusRules: true
@@ -42,6 +37,10 @@ rook-ceph-cluster:
   cephBlockPools:
     - name: standard-rwo
       spec:
+        cephConfig:
+          global:
+            osd_pool_default_size: "1"
+            osd_pool_default_min_size: "1"
         replicated:
           size: 1
           requireSafeReplicaSize: false
