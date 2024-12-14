@@ -1,0 +1,13 @@
+argo-cd:
+  global:
+    domain: argocd.127-0-0-1.nip.io
+argocd-apps:
+  applicationsets:
+    root:
+      template:
+        spec:
+          source:
+            helm:
+              valueFiles:
+                - values-dev.yaml
+              ignoreMissingValueFiles: true

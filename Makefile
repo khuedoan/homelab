@@ -2,23 +2,26 @@
 .PHONY: *
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
+env ?= dev
+KUBECONFIG = $(shell pwd)/metal/kubeconfig-${env}.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal system external smoke-test post-install clean
+default: metal system external smoke-test post-install
 
 configure:
 	./scripts/configure
 	git status
 
 metal:
-	make -C metal
+	[ "$(env)" = "dev" ] \
+		&& make k3d \
+		|| make -C metal
 
 system:
 	make -C system
 
 external:
-	make -C external
+	[ "$(env)" != "dev" ] && make -C external
 
 smoke-test:
 	make -C test filter=Smoke
@@ -40,9 +43,17 @@ test:
 
 clean:
 	docker compose --project-directory ./metal/roles/pxe_server/files down
+	k3d cluster delete homelab-dev
 
 docs:
 	mkdocs serve
 
 git-hooks:
 	pre-commit install
+
+info:
+	kubectl cluster-info
+
+k3d:
+	k3d cluster start homelab-dev || k3d cluster create --config metal/k3d-${env}.yaml
+	k3d kubeconfig get homelab-dev > metal/kubeconfig-${env}.yaml

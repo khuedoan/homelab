@@ -5,5 +5,5 @@ book/
 *.log
 *.png
 *.tgz
-*kubeconfig.yaml
+*kubeconfig*.yaml
 Chart.lock

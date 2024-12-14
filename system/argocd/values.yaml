@@ -53,6 +53,8 @@ argocd-apps:
             repoURL: *repoURL
             path: '{{path}}'
             targetRevision: *revision
+            helm:
+              ignoreMissingValueFiles: true
           syncPolicy:
             automated:
               prune: true

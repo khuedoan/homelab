@@ -1,0 +1,13 @@
+argo-cd:
+  global:
+    domain: argocd.khuedoan.com
+argocd-apps:
+  applicationsets:
+    root:
+      template:
+        spec:
+          source:
+            helm:
+              valueFiles:
+                - values-dev.yaml
+              ignoreMissingValueFiles: true

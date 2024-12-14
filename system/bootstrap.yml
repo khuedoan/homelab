@@ -25,6 +25,7 @@
         release_namespace: argocd
         dependency_update: true
         values_files:
+          - "argocd/values-{{ env }}.yaml"
           - "argocd/{{ (first_install.resources | length == 0) | ternary('values-seed.yaml', 'values.yaml') }}"
       register: argocd_manifests
 
