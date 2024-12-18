@@ -19,12 +19,12 @@ repositories:
       source: https://github.com/meyeringh/homelab
       mirror: false
   - name: blog
-    owner: khuedoan
+    owner: ops
     migrate:
       source: https://github.com/khuedoan/blog
       mirror: true
   - name: backstage
-    owner: khuedoan
+    owner: ops
     migrate:
       source: https://github.com/khuedoan/backstage
       mirror: true
