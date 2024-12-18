@@ -11,6 +11,12 @@ organizations:
       - name: Owners
         members:
           - renovate
+  - name: meyeringh
+    description: Operations
+    teams:
+      - name: Owners
+        members:
+          - renovate
 repositories:
   - name: homelab
     owner: ops
@@ -19,12 +25,12 @@ repositories:
       source: https://github.com/meyeringh/homelab
       mirror: false
   - name: blog
-    owner: ops
+    owner: meyeringh
     migrate:
       source: https://github.com/khuedoan/blog
       mirror: true
   - name: backstage
-    owner: ops
+    owner: meyeringh
     migrate:
       source: https://github.com/khuedoan/backstage
       mirror: true
