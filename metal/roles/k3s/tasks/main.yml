@@ -95,17 +95,3 @@
     mode: 0600
   delegate_to: localhost
   run_once: true
-
-#- name: Remove taint if single-node cluster
-#  kubernetes.core.k8s_taint:
-#    state: absent
-#    name: "{{ groups['masters'][0] }}"
-#    kind: Node
-#    api_version: v1
-#    #kubeconfig: ./metal/kubeconfig.yaml
-#    taints:
-#      - key: "node.kubernetes.io/unschedulable"
-#        effect: NoSchedule
-#  when: groups['masters']|length == 1 and 
-#        groups['workers']|length == 1 and 
-#        groups['masters'][0] == groups['workers'][0]
