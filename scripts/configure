@@ -87,6 +87,7 @@ def main() -> None:
         replacement=loadbalancer_ip_range,
         paths=[
             "metal/inventories/prod.yml",
+            "apps/tailscale/values.yaml",
         ]
     )
 
