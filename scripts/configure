@@ -14,11 +14,11 @@ import sys
 from rich.prompt import Confirm, Prompt
 
 upstream_config = {
-    "seed_repo": "https://github.com/khuedoan/homelab",
-    "domain": "khuedoan.com",
-    "timezone": "Asia/Ho_Chi_Minh",
-    "terraform_workspace": "khuedoan",
-    "loadbalancer_ip_range": "192.168.1.224/27",
+    "seed_repo": "https://github.com/meyeringh/homelab",
+    "domain": "meyeringh.org",
+    "timezone": "Europe/Berlin",
+    "terraform_workspace": "meyeringh",
+    "loadbalancer_ip_range": "192.168.1.4/30",
 }
 
 
@@ -45,7 +45,7 @@ def main() -> None:
         required_version='3.10.0'
     )
 
-    editor = Prompt.ask("Select text editor", default='nvim')
+    editor = Prompt.ask("Select text editor", default='vim')
     domain = Prompt.ask("Enter your domain", default=upstream_config['domain'])
     seed_repo = Prompt.ask("Enter seed repo", default=upstream_config['seed_repo'])
     timezone = Prompt.ask("Enter time zone", default=upstream_config['timezone'])
