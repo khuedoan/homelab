@@ -21,7 +21,6 @@ app-template:
         http:
           port: 51820
           protocol: UDP
-          targetPort: 51820
   persistence:
     config:
       type: secret
