@@ -21,6 +21,7 @@ app-template:
         http:
           port: 51820
           protocol: UDP
+          targetPort: 51820
   persistence:
     config:
       type: secret
@@ -46,7 +47,7 @@ app-template:
               data:
                 wg0.conf: |
                   [Interface]
-                  Address = 172.16.0.1/32
+                  Address = 192.168.1.8/32
                   ListenPort = 51820
                   PrivateKey = {{ `{{ .WIREGUARD_PRIVATE_KEY }}` }}
                   PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth+ -j MASQUERADE
@@ -60,30 +61,11 @@ app-template:
                   # Servers
 
                   [Peer]
-                  # homelab
-                  PublicKey = sSAZS1Z3vB7Wx8e2yVqXfeHjgWTa80wnSYoma3mZkiU=
-                  AllowedIPs = 172.16.0.1/32, 192.168.1.100/32, 192.168.1.224/27
-
-                  [Peer]
-                  # horus
-                  PublicKey = zVwYqwvGn/IL7o6CD84y4/Y/OnRAUl/jw6T7DtNqWGM=
-                  Endpoint = horus.meyeringh.org:51820
-                  PersistentKeepalive = 25
-                  AllowedIPs = 172.16.0.2/32
-
-                  # Clients
-
-                  [Peer]
-                  # khuedoan-ryzentower
-                  PublicKey = qnDY23ZWUOlCRUmB8anpXH1uzX0A17F1YtQJmVi7GWM=
-                  AllowedIPs = 172.16.0.10/32
-
-                  [Peer]
-                  # khuedoan-thinkpadz13
-                  PublicKey = hSVWn2lBasJeueHApQYmYR0s2zNpXrqZX6F8gyEqpy0=
-                  AllowedIPs = 172.16.0.11/32
-
-                  [Peer]
-                  # khuedoan-phone
+                  # sipgate thonkpad
                   PublicKey = nITHFdgTkNZOTWeSWqnGXjgwlCJMKRCnnUsjMx2yp2U=
-                  AllowedIPs = 172.16.0.12/32
+                  AllowedIPs = 192.168.1.9/32
+
+                  [Peer]
+                  # google pixel 6
+                  PublicKey = nITHFdgTkNZOTWeSWqnGXjgwlCJMKRCnnUsjMx2yp2U=
+                  AllowedIPs = 192.168.1.10/32
