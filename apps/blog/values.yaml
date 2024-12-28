@@ -4,8 +4,8 @@ app-template:
       containers:
         main:
           image:
-            repository: registry.meyeringh.org/blog
-            tag: latest
+            repository: docker.io/khuedoan/blog
+            tag: 6fbd90b77a81e0bcb330fddaa230feff744a7010
   service:
     main:
       ports:
