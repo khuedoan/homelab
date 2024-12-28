@@ -23,14 +23,4 @@ repositories:
     private: false
     migrate:
       source: https://github.com/meyeringh/homelab
-      mirror: false
-  - name: blog
-    owner: meyeringh
-    migrate:
-      source: https://github.com/khuedoan/blog
-      mirror: true
-  - name: backstage
-    owner: meyeringh
-    migrate:
-      source: https://github.com/khuedoan/backstage
       mirror: true
