@@ -18,8 +18,6 @@ app-template:
         config.yaml: |
           tunnel: homelab
           credentials-file: /etc/cloudflared/credentials.json
-          warp-routing:
-            enabled: true
           metrics: 0.0.0.0:2000
           no-autoupdate: true
           ingress:
