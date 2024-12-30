@@ -12,7 +12,7 @@ nextcloud:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: element-tls-certificate
+      - secretName: nextcloud-tls-certificate
         hosts:
           - *frontend_host
   cronjob:
