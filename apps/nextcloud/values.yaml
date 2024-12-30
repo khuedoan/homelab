@@ -1,0 +1,115 @@
+nextcloud:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    hosts:
+      - host: &frontend_host cloud.meyeringh.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: element-tls-certificate
+        hosts:
+          - *frontend_host
+  cronjob:
+    annotations: {}
+    curlInsecure: false
+    enabled: true
+    failedJobsHistoryLimit: 5
+    image: {}
+    schedule: '*/1*     *** '
+    successfulJobsHistoryLimit: 2
+  hpa:
+    enabled: false
+  image:
+    repository: nextcloud
+    tag: 30.0.4-apache
+    pullPolicy: IfNotPresent
+  internalDatabase:
+    enabled: false
+  mariadb:
+    enabled: false
+  postgresql:
+    db:
+      name: nextcloud
+      password: db-password
+      user: nextcloud
+    enabled: true
+    master:
+      persistence:
+        accessMode: ReadWriteOnce
+        enabled: true
+        size: 8Gi
+    replication:
+      enabled: false
+    rootUser:
+      password: root-db-password
+      forcePassword: true
+  metrics:
+    enabled: true
+    https: false
+    image:
+      pullPolicy: IfNotPresent
+      repository: xperimental/nextcloud-exporter
+      tag: v0.3.0
+    replicaCount: 1
+    service:
+      annotations:
+        prometheus.io/port: '9205'
+        prometheus.io/scrape: 'true'
+      labels: {}
+      type: ClusterIP
+    timeout: 5s
+  nextcloud:
+    configs:
+      custom.config.php: |-
+        <?php
+        $CONFIG = array (
+            'overwriteprotocol' => 'https',
+            'overwrite.cli.url' => 'https://cloud.meyeringh.org',
+            'filelocking.enabled' => 'true',
+            'loglevel' => '2',
+            'enable_previews' => true,
+            'trusted_domains' =>
+                 [
+                    'nextcloud',
+                    'cloud.meyeringh.org'
+                 ]
+        );
+  redis.config.php: |-
+    <?php
+    $CONFIG = array (
+      'memcache.local' => '\\OC\\Memcache\\Redis',
+      'memcache.distributed' => '\OC\Memcache\Redis',
+      'memcache.locking' => '\OC\Memcache\Redis',
+      'redis' => array(
+        'host' => getenv('REDIS_HOST'),
+        'port' => getenv('REDIS_HOST_PORT') ?: 6379,
+        'password' => getenv('ihr-passwort-für-redis')
+      )
+    );
+  defaultConfigs:
+    .htaccess: true
+    apache-pretty-urls.config.php: true
+    apcu.config.php: true
+    apps.config.php: true
+    autoconfig.php: false
+    redis.config.php: false
+    smtp.config.php: true
+  host: cloud.meyeringh.org
+  password: ihr-passwort
+  username: admin
+  persistence:
+    accessMode: ReadWriteOnce
+    annotations: {}
+    enabled: true
+    size: 8Gi
+  redis:
+    enabled: true
+    password: 'ihr-passwort-für-redis'
+    usePassword: true
+  replicaCount: 1
