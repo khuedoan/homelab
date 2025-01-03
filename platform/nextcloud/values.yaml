@@ -72,7 +72,7 @@ nextcloud:
             'overwriteprotocol' => 'https',
             'overwrite.cli.url' => 'https://cloud.meyeringh.org',
             'filelocking.enabled' => 'true',
-            'loglevel' => '2',
+            'loglevel' => '1',
             'enable_previews' => true,
             'trusted_domains' =>
                  [
