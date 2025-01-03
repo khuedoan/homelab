@@ -80,7 +80,7 @@ nextcloud:
                     'nextcloud.kube.home',
                     'cloud.meyeringh.org'
                  ],
-            'dbuser' => 'nextcloud'
+            'dbuser' => 'nextcloud',
             'dbpassword' => 'db-password'
         );
   redis.config.php: |-
