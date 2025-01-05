@@ -16,11 +16,10 @@ nextcloud:
       - secretName: nextcloud-tls-certificate
         hosts:
           - *frontend_host
-	
+
   hpa:
     enabled: false
-  fullnameOverride: nextcloud
-  
+
   nextcloud:
     host: nextcloud.meyeringh.org
     trustedDomains:
@@ -29,12 +28,10 @@ nextcloud:
       imaginary.config.php: true
     persistence:
       enabled: true
-  
+
   imaginary:
     enabled: true
-  image:
-    flavor: fpm
-  
+
   nginx:
     enabled: false
   postgresql:
@@ -43,16 +40,17 @@ nextcloud:
       postgresql:
         auth:
           password: "testing123456"
-  
+
   internalDatabase:
     enabled: false
-  
+
   externalDatabase:
     enabled: true
     type: postgresql
     password: "testing123456"
+
   fullnameOverride: nextcloud
-  
+
   image:
     repository: nextcloud
     tag: 30.0.4-apache
