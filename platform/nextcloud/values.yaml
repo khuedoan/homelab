@@ -8,7 +8,7 @@ nextcloud:
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       nginx.ingress.kubernetes.io/affinity: cookie
     hosts:
-      - host: &frontend_host nextcloud.meyeringh.org
+      - host: &frontend_host cloud.meyeringh.org
         paths:
           - path: /
             pathType: Prefix
@@ -21,9 +21,9 @@ nextcloud:
     enabled: false
 
   nextcloud:
-    host: nextcloud.meyeringh.org
+    host: cloud.meyeringh.org
     trustedDomains:
-      - 'nextcloud.meyeringh.org'
+      - 'cloud.meyeringh.org'
     defaultConfigs:
       imaginary.config.php: true
     persistence:
