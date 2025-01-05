@@ -38,6 +38,10 @@ nextcloud:
       name: nextcloud
       password: changeme
       user: nextcloud
+    global:
+      postgresql:
+        auth:
+          password: "testing123456"
     enabled: true
     master:
       persistence:
