@@ -17,7 +17,7 @@ nextcloud:
     flavor: fpm
   
   nginx:
-    enabled: true
+    enabled: false
   postgresql:
     enabled: true
     global:
