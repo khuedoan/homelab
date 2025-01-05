@@ -65,7 +65,6 @@ nextcloud:
       type: ClusterIP
     timeout: 5s
   nextcloud:
-    password: db-password
     configs:
       custom.config.php: |-
         <?php
