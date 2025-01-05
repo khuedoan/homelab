@@ -1,5 +1,6 @@
 ingress-nginx:
   controller:
+    allowSnippetAnnotations: true
     admissionWebhooks:
       timeoutSeconds: 30
     metrics:
