@@ -40,9 +40,6 @@ nextcloud:
     pullPolicy: IfNotPresent
     flavor: fpm
   
-  nginx:
-    enabled: true
-  
   nextcloud:
     host: nextcloud
     trustedDomains:
