@@ -1,120 +1,55 @@
 nextcloud:
-  ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    hosts:
-      - host: &frontend_host cloud.meyeringh.org
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - secretName: nextcloud-tls-certificate
-        hosts:
-          - *frontend_host
-  cronjob:
-    annotations: {}
-    curlInsecure: false
-    enabled: true
-    failedJobsHistoryLimit: 5
-    image: {}
-    schedule: '*/1*     *** '
-    successfulJobsHistoryLimit: 2
   hpa:
-    enabled: false
+    enabled: true
+    minPods: 2
+    maxPods: 3
+    targetCPUUtilizationPercentage: 75
+  fullnameOverride: nextcloud
+  
+  nextcloud:
+    host: nextcloud
+    trustedDomains:
+      - 'nextcloud.nextcloud.svc.cluster.local'
+      - 'nextcloud'
+    defaultConfigs:
+      imaginary.config.php: true
+  
+  imaginary:
+    enabled: true
   image:
-    repository: nextcloud
-    tag: 30.0.4-apache
-    pullPolicy: IfNotPresent
-  internalDatabase:
-    enabled: false
-  mariadb:
-    enabled: false
+    flavor: fpm
+  
+  nginx:
+    enabled: true
   postgresql:
-    db:
-      name: nextcloud
-      password: changeme
-      user: nextcloud
+    enabled: true
     global:
       postgresql:
         auth:
           password: "testing123456"
+  
+  internalDatabase:
+    enabled: false
+  
+  externalDatabase:
     enabled: true
-    master:
-      persistence:
-        accessMode: ReadWriteOnce
-        enabled: true
-        size: 8Gi
-    replication:
-      enabled: false
-    rootUser:
-      password: root-db-password
-      forcePassword: true
-  metrics:
+    type: postgresql
+    password: "testing123456"
+  fullnameOverride: nextcloud
+  
+  image:
+    repository: nextcloud
+    tag: 30.0.4-apache
+    pullPolicy: IfNotPresent
+    flavor: fpm
+  
+  nginx:
     enabled: true
-    https: false
-    image:
-      pullPolicy: IfNotPresent
-      repository: xperimental/nextcloud-exporter
-      tag: v0.3.0
-    replicaCount: 1
-    service:
-      annotations:
-        prometheus.io/port: '9205'
-        prometheus.io/scrape: 'true'
-      labels: {}
-      type: ClusterIP
-    timeout: 5s
+  
   nextcloud:
-    configs:
-      custom.config.php: |-
-        <?php
-        $CONFIG = array (
-            'overwriteprotocol' => 'https',
-            'overwrite.cli.url' => 'https://cloud.meyeringh.org',
-            'filelocking.enabled' => 'true',
-            'loglevel' => '1',
-            'enable_previews' => true,
-            'trusted_domains' =>
-                 [
-                    'nextcloud',
-                    'nextcloud.kube.home',
-                    'cloud.meyeringh.org'
-                 ]
-        );
-  redis.config.php: |-
-    <?php
-    $CONFIG = array (
-      'memcache.local' => '\\OC\\Memcache\\Redis',
-      'memcache.distributed' => '\OC\Memcache\Redis',
-      'memcache.locking' => '\OC\Memcache\Redis',
-      'redis' => array(
-        'host' => getenv('REDIS_HOST'),
-        'port' => getenv('REDIS_HOST_PORT') ?: 6379,
-        'password' => getenv('ihr-passwort-für-redis')
-      )
-    );
-  defaultConfigs:
-    .htaccess: true
-    apache-pretty-urls.config.php: true
-    apcu.config.php: true
-    apps.config.php: true
-    autoconfig.php: false
-    redis.config.php: false
-    smtp.config.php: true
-  host: cloud.meyeringh.org
-  password: ihr-passwort
-  username: admin
-  persistence:
-    accessMode: ReadWriteOnce
-    annotations: {}
-    enabled: true
-    size: 8Gi
-  redis:
-    enabled: true
-    password: 'ihr-passwort-für-redis'
-    usePassword: true
-  replicaCount: 1
+    host: nextcloud
+    trustedDomains:
+      - 'nextcloud.nextcloud.svc.cluster.local'
+      - 'nextcloud'
+    persistence:
+      enabled: true
