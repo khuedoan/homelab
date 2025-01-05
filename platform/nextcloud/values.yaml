@@ -36,7 +36,7 @@ nextcloud:
   postgresql:
     db:
       name: nextcloud
-      password: db-password
+      password: changeme
       user: nextcloud
     enabled: true
     master:
