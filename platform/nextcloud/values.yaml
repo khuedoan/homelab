@@ -58,12 +58,9 @@ nextcloud:
 
   nginx:
     enabled: false
+
   postgresql:
     enabled: true
-    global:
-      postgresql:
-        auth:
-          password: "testing123456"
 
   internalDatabase:
     enabled: false
@@ -72,6 +69,10 @@ nextcloud:
     enabled: true
     type: postgresql
     password: "testing123456"
+    existingSecret:
+      enabled: true
+      secretName: nextcloud-postgresql
+      passwordKey: password
 
   fullnameOverride: nextcloud
 
