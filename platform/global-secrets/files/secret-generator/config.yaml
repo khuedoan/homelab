@@ -41,6 +41,6 @@
 # Nextcloud
 - name: nextcloud.postgresql
   data:
-    - key: NEXTCLOUD_POSTGRESQL_PASSWORD
+    - key: password
       length: 32
       special: true
