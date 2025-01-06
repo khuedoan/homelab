@@ -68,7 +68,6 @@ nextcloud:
   externalDatabase:
     enabled: true
     type: postgresql
-    password: "testing123456"
     existingSecret:
       enabled: true
       secretName: nextcloud-postgresql
