@@ -75,6 +75,7 @@ nextcloud:
   externalDatabase:
     enabled: true
     type: postgresql
+    user: nextcloud
     existingSecret:
       enabled: true
       secretName: nextcloud-postgresql
