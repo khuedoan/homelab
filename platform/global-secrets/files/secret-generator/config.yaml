@@ -37,13 +37,3 @@
     - key: PAPERLESS_ADMIN_PASSWORD
       length: 32
       special: true
-
-# Nextcloud
-- name: nextcloud.postgresql
-  data:
-    - key: password
-      length: 32
-      special: true
-    - key: NEXTCLOUD_POSTGRESQL_PASSWORD
-      length: 32
-      special: true
