@@ -68,7 +68,10 @@ nextcloud:
   externalDatabase:
     enabled: true
     type: postgresql
-    password: "changeme"
+    existingSecret:
+      enabled: true
+      secretName: nextcloud-postgresql
+      passwordKey: password
 
   fullnameOverride: nextcloud
 
