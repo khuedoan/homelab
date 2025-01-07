@@ -64,6 +64,7 @@ nextcloud:
     global:
       postgresql:
         auth:
+          username: nextcloud
           existingSecret: nextcloud-postgresql
           secretKeys:
             adminPasswordKey: NEXTCLOUD_POSTGRESQL_PASSWORD
