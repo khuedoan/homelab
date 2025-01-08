@@ -35,12 +35,12 @@ rook-ceph-cluster:
           cpu: "100m"
           memory: "512Mi"
   cephBlockPools:
-    - name: builtin-mgr
-      spec:
-        name: .mgr
-        failureDomain: osd
-        replicated:
-          size: 2
+#    - name: builtin-mgr
+#      spec:
+#        name: .mgr
+#        failureDomain: osd
+#        replicated:
+#          size: 2
     - name: standard-rwo
       spec:
         failureDomain: osd
