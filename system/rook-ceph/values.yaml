@@ -37,6 +37,7 @@ rook-ceph-cluster:
   cephBlockPools:
     - name: standard-rwo
       spec:
+        failureDomain: osd
         replicated:
           size: 2
           requireSafeReplicaSize: false
@@ -60,10 +61,12 @@ rook-ceph-cluster:
     - name: standard-rwx
       spec:
         metadataPool:
+          failureDomain: osd
           replicated:
             size: 2
         dataPools:
           - name: data0
+            failureDomain: osd
             replicated:
               size: 2
         metadataServer:
