@@ -59,10 +59,10 @@ nextcloud:
       - 'cloud.meyeringh.org'
     defaultConfigs:
       imaginary.config.php: true
-    persistence:
-      enabled: true
-      size: 50Gi
-      accessMode: ReadWriteOnce
+
+  persistence:
+    enabled: true
+    size: 50Gi
 
   imaginary:
     enabled: true
