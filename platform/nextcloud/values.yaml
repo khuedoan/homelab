@@ -61,6 +61,7 @@ nextcloud:
       imaginary.config.php: true
     persistence:
       enabled: true
+      size: 50Gi
 
   imaginary:
     enabled: true
