@@ -1,4 +1,10 @@
 nextcloud:
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+          protocol: HTTP
   ingress:
     enabled: true
     className: nginx
@@ -36,6 +42,9 @@ nextcloud:
         paths:
           - path: /
             pathType: Prefix
+            service:
+              name: main
+              port: http
     tls:
       - secretName: nextcloud-tls-certificate
         hosts:
