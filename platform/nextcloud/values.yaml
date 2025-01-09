@@ -62,6 +62,7 @@ nextcloud:
     persistence:
       enabled: true
       size: 50Gi
+      accessMode: ReadWriteOnce
 
   imaginary:
     enabled: true
