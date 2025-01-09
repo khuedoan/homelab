@@ -61,7 +61,7 @@ nextcloud:
       imaginary.config.php: true
     existingSecret:
       enabled: true
-      secretName: nextcloud2
+      secretName: nextcloud
       usernameKey: nextcloud-username
       passwordKey: nextcloud-password
 
@@ -77,6 +77,13 @@ nextcloud:
 
   postgresql:
     enabled: true
+    global:
+      postgresql:
+        auth:
+          existingSecret: nextcloud-postgresql
+          secretKeys:
+            adminPasswordKey: postgres-password
+            userPasswordKey: password
 
   internalDatabase:
     enabled: false
