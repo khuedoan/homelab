@@ -59,6 +59,11 @@ nextcloud:
       - 'cloud.meyeringh.org'
     defaultConfigs:
       imaginary.config.php: true
+    existingSecret:
+      enabled: true
+      secretName: nextcloud2
+      usernameKey: nextcloud-username
+      passwordKey: nextcloud-password
 
   persistence:
     enabled: true
