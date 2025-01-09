@@ -49,3 +49,7 @@
     - key: password
       length: 32
       special: true
+  data:
+    - key: postgres-password
+      length: 32
+      special: true
