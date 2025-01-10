@@ -43,7 +43,7 @@
   data:
     - key: nextcloud-password
       length: 32
-      special: false
+      special: true
 - name: nextcloud.nextcloud-postgresql
   data:
     - key: password
