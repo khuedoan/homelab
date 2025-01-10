@@ -59,11 +59,6 @@ nextcloud:
       - 'cloud.meyeringh.org'
     defaultConfigs:
       imaginary.config.php: true
-#    existingSecret:
-#      enabled: true
-#      secretName: nextcloud
-#      usernameKey: nextcloud-username
-#      passwordKey: nextcloud-password
 
   persistence:
     enabled: true
@@ -85,10 +80,6 @@ nextcloud:
     enabled: true
     type: postgresql
     password: "changeme"
-#    existingSecret:
-#      enabled: true
-#      secretName: nextcloud-postgresql
-#      passwordKey: password
 
   fullnameOverride: nextcloud
 
