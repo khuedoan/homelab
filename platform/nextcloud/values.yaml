@@ -77,13 +77,6 @@ nextcloud:
 
   postgresql:
     enabled: true
-    global:
-      postgresql:
-        auth:
-          existingSecret: nextcloud-postgresql
-          secretKeys:
-            adminPasswordKey: postgres-password
-            userPasswordKey: password
 
   internalDatabase:
     enabled: false
