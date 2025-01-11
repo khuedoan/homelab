@@ -55,6 +55,7 @@ spec:
             - |
               set -e
 
+              su -s /bin/bash -l www-data
               cd /var/www/html
               
               echo "Waiting for Nextcloud to become ready..."
