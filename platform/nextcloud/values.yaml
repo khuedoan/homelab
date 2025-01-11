@@ -66,7 +66,7 @@ nextcloud:
       passwordKey: nextcloud-password
 
   persistence:
-    enabled: false
+    enabled: true
     size: 7Ti
 
   imaginary:
