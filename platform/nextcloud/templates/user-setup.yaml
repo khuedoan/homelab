@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nextcloud-user-setup
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: nextcloud-data
+          persistentVolumeClaim:
+            claimName: nextcloud-nextcloud
+      containers:
+        - name: create-user
+          image: "nextcloud:30.0.4-apache"
+          volumeMounts:
+            - name: nextcloud-data
+              mountPath: /var/www/html
+          env:
+            - name: NEXTCLOUD_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud
+                  key: nextcloud-username
+            - name: NEXTCLOUD_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud
+                  key: nextcloud-password
+            - name: POSTGRES_HOST
+              value: nextcloud-postgresql
+            - name: POSTGRES_DB
+              value: nextcloud
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud-postgresql
+                  key: db-username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud-postgresql
+                  key: password
+            - name: NC_NEWUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: meyeringh
+                  key: password
+
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -e
+              
+              echo "Waiting for Nextcloud to become ready..."
+
+              for i in $(seq 1 30); do
+                if php occ status | grep -q "installed: true"; then
+                  echo "Nextcloud is ready!"
+                  break
+                fi
+                echo "Not ready yet, sleeping 5s..."
+                sleep 5
+              done
+              
+              echo "Creating user 'meyeringh'..."
+
+              php occ user:add --password-from-env NC_NEWUSER_PASSWORD meyeringh
+              
+              echo "User 'meyeringh' created successfully."
