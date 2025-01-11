@@ -52,8 +52,3 @@
     - key: postgres-password
       length: 32
       special: true
-- name: nextcloud.meyeringh
-  data:
-    - key: password
-      length: 32
-      special: true
