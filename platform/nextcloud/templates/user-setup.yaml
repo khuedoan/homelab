@@ -54,6 +54,8 @@ spec:
           args:
             - |
               set -e
+
+              cd /var/www/html
               
               echo "Waiting for Nextcloud to become ready..."
 
