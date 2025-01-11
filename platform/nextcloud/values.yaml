@@ -103,3 +103,14 @@ nextcloud:
     tag: 30.0.4-apache
     pullPolicy: IfNotPresent
     flavor: fpm
+
+  extraVolumes:
+    - name: external-drive
+      hostPath:
+        path: /mnt
+        type: DirectoryOrCreate
+
+  extraVolumeMounts:
+    - name: external-drive
+      mountPath: /mnt
+      readOnly: true
