@@ -28,7 +28,7 @@ vaultwarden:
   domain: "https://vault.meyeringh.org"
   
   adminToken:
-    existingSecret: "vaultwarden"
+    existingSecret: "vaultwarden-admin"
     existingSecretKey: "ADMIN_TOKEN"
 
   data:
