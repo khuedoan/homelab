@@ -3,7 +3,7 @@ vaultwarden:
     main:
       ports:
         http:
-          port: 22300
+          port: 8080
           protocol: HTTP
   ingress:
     enabled: true
