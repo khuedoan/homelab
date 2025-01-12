@@ -52,3 +52,10 @@
     - key: postgres-password
       length: 32
       special: true
+
+# Vaultwarden
+- name: vaultwarden.vaultwarden
+  data:
+    - key: ADMIN_TOKEN
+      length: 32
+      special: true

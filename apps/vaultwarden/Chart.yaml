@@ -1,0 +1,7 @@
+apiVersion: v2
+name: vaultwarden
+version: 0.0.0
+dependencies:
+  - name: vaultwarden
+    version: 0.31.1
+    repository: https://guerzon.github.io/vaultwarden

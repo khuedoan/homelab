@@ -1,0 +1,32 @@
+vaultwarden:
+  service:
+    main:
+      ports:
+        http:
+          port: 22300
+          protocol: HTTP
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    hosts:
+      - host: &frontend_host vault.meyeringh.org
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: main
+              port: http
+    tls:
+      - secretName: vaultwarden-tls-certificate
+        hosts:
+          - *frontend_host
+
+  domain: "https://vault.meyeringh.org"
+  
+  adminToken:
+    existingSecret: "vaultwarden"
+    existingSecretKey: "ADMIN_TOKEN"
