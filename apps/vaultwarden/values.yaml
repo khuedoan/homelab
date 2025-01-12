@@ -30,3 +30,7 @@ vaultwarden:
   adminToken:
     existingSecret: "vaultwarden"
     existingSecretKey: "ADMIN_TOKEN"
+
+  data:
+    name: "vaultwarden-data"
+    size: "15Gi"
