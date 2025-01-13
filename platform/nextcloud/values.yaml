@@ -64,15 +64,6 @@ nextcloud:
       secretName: nextcloud
       usernameKey: nextcloud-username
       passwordKey: nextcloud-password
-    extraVolumes:
-      - name: external-drive
-        hostPath:
-          path: /mnt
-          type: DirectoryOrCreate
-    extraVolumeMounts:
-      - name: external-drive
-        mountPath: /mnt
-        readOnly: true
 
   persistence:
     enabled: true
