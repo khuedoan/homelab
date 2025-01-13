@@ -109,6 +109,6 @@ nextcloud:
 
   image:
     repository: nextcloud
-    tag: 29.0.10-apache
+    tag: 30.0.4-apache
     pullPolicy: IfNotPresent
     flavor: fpm
