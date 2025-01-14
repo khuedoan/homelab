@@ -1,0 +1,45 @@
+app-template:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ckulka/baikal
+            tag: 0.10.1-nginx
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+          protocol: HTTP
+  ingress:
+    main:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"	
+      hosts:
+        - host: &host dav.meyeringh.org
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: baikal-tls-certificate
+  persistence:
+    data:
+      accessMode: ReadWriteOnce
+      size: 10Gi
+      advancedMounts:
+        main:
+          main:
+            - path: /var/www/baikal/Specific
+              subPath: data
+            - path: /var/www/baikal/config
+              subPath: config
