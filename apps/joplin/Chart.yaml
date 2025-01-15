@@ -5,3 +5,6 @@ dependencies:
   - name: app-template
     version: 2.6.0
     repository: https://bjw-s.github.io/helm-charts
+  - name: postgresql
+    version: 16.4.3
+    repository: https://charts.bitnami.com/bitnami

@@ -35,12 +35,11 @@ app-template:
         - hosts:
             - *host
           secretName: joplin-tls-certificate
-  persistence:
-    data:
-      accessMode: ReadWriteOnce
-      size: 5Gi
-      advancedMounts:
-        main:
-          main:
-            - path: /home/joplin/packages/server/db-prod.sqlite
-              subPath: db-prod.sqlite
+postgresql:
+  global:
+    postgresql:
+      auth:
+        username: "joplin"
+        database: "joplin"
+    persistence:
+      enabled: false
