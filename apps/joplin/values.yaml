@@ -1,0 +1,34 @@
+app-template:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: joplin/server
+            tag: 3.0.1-beta
+  service:
+    main:
+      ports:
+        http:
+          port: 22300
+          protocol: HTTP
+  ingress:
+    main:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      hosts:
+        - host: &host notes.meyeringh.org
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: joplin-tls-certificate
