@@ -35,12 +35,12 @@ app-template:
         - hosts:
             - *host
           secretName: joplin-tls-certificate
-  persistence:
-    data:
-      accessMode: ReadWriteOnce
-      size: 5Gi
-      advancedMounts:
-        main:
-          main:
-            - path: /home/joplin/packages/server
-              subPath: server
+#  persistence:
+#    data:
+#      accessMode: ReadWriteOnce
+#      size: 5Gi
+#      advancedMounts:
+#        main:
+#          main:
+#            - path: /home/joplin/packages/server
+#              subPath: server
