@@ -68,4 +68,4 @@
       special: true
     - key: userPassword
       length: 32
-      special: true
+      special: false
