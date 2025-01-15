@@ -9,6 +9,16 @@ app-template:
           env:
             APP_BASE_URL: https://notes.meyeringh.org
             APP_PORT: 22300
+            DB_CLIENT: pg
+            POSTGRES_DATABASE: joplin
+            POSTGRES_USER: joplin
+            POSTGRES_PORT: 5432
+            POSTGRES_HOST: postgresql
+            POSTGRES_PASSWORD: 
+              valueFrom:
+                secretKeyRef:
+                  name: joplin-db
+                  key: userPassword
   service:
     main:
       ports:
@@ -41,5 +51,9 @@ postgresql:
       auth:
         username: "joplin"
         database: "joplin"
+      existingSecret: "joplin"
+      secretKeys:
+        adminPasswordKey: "adminPassword"
+        userPasswordKey: "userPassword"
     persistence:
       enabled: false

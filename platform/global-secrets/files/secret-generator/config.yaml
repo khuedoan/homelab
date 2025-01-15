@@ -59,3 +59,13 @@
     - key: ADMIN_TOKEN
       length: 32
       special: true
+
+# Joplin
+- name: joplin.joplin-db
+  data:
+    - key: adminPassword
+      length: 32
+      special: true
+    - key: userPassword
+      length: 32
+      special: true
