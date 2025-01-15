@@ -13,7 +13,7 @@ app-template:
             POSTGRES_DATABASE: joplin
             POSTGRES_USER: joplin
             POSTGRES_PORT: 5432
-            POSTGRES_HOST: joplin-postgresql-0
+            POSTGRES_HOST: joplin-postgresql
             POSTGRES_PASSWORD: 
               valueFrom:
                 secretKeyRef:
