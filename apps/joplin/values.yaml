@@ -43,4 +43,4 @@ app-template:
         main:
           main:
             - path: /home/joplin/packages/server
-              subPath: data
+              subPath: server
