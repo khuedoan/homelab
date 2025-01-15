@@ -6,6 +6,9 @@ app-template:
           image:
             repository: joplin/server
             tag: 3.0.1-beta
+          env:
+            APP_BASE_URL: https://notes.meyeringh.org
+            APP_PORT: 22300
   service:
     main:
       ports:
