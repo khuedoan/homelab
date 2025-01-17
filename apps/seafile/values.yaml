@@ -1,0 +1,84 @@
+app-template:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: seafileltd/seafile-mc
+            tag: 12.0.7
+          env:
+            DB_HOST: seafile-mariadb
+            DB_ROOT_PASSWD:
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-db
+                  key: mariadb-root-password
+            SEAFILE_SERVER_HOSTNAME: files.meyeringh.org
+            SEAFILE_ADMIN_EMAIL: admin@localhost
+            SEAFILE_ADMIN_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: seafile
+                  key: adminPassword
+
+            TIME_ZONE: Europe/Berlin
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+          protocol: HTTP
+
+  ingress:
+    main:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.example.com"
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      hosts:
+        - host: &host files.meyeringh.org
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: seafile-tls-certificate
+  persistence:
+    data:
+      enabled: false
+      accessMode: ReadWriteOnce
+      size: 10Gi
+      retain: true
+      advancedMounts:
+        main:
+          main:
+            - path: /shared
+              subPath: shared
+
+mariadb:
+  auth:
+    existingSecret: seafile-db
+  primary:
+    persistence:
+      enabled: false
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+
+memcached:
+  architecture: "standalone"
+  persistence:
+    enabled: false  # typically memcached data is ephemeral
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 50m
+    limits:
+      memory: 512Mi
+      cpu: 200m

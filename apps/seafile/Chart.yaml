@@ -1,0 +1,13 @@
+apiVersion: v2
+name: seafile
+version: 0.0.0
+dependencies:
+  - name: app-template
+    version: 2.6.0
+    repository: https://bjw-s.github.io/helm-charts
+  - name: mariadb
+    version: 20.2.1
+    repository: https://charts.bitnami.com/bitnami
+  - name: memcached
+    version: 7.6.1
+    repository: https://charts.bitnami.com/bitnami

@@ -69,3 +69,21 @@
     - key: userPassword
       length: 32
       special: true
+
+# Seafile
+- name: seafile.seafile-db
+  data:
+    - key: mariadb-root-password
+      length: 32
+      special: true
+    - key: mariadb-replication-password
+      length: 32
+      special: true
+    - key: mariadb-password
+      length: 32
+      special: true
+- name: seafile.seafile
+  data:
+    - key: adminPassword
+      length: 32
+      special: true
