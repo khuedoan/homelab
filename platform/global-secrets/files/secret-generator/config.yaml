@@ -68,7 +68,4 @@
       special: true
     - key: userPassword
       length: 32
-      special: false
-    - key: lmaoyeet
-      length: 32
-      special: false
+      special: true

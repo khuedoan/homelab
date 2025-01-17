@@ -46,14 +46,13 @@ app-template:
             - *host
           secretName: joplin-tls-certificate
 postgresql:
-  global:
-    postgresql:
-      auth:
-        username: "joplin"
-        database: "joplin"
-        existingSecret: "joplin-db"
-        secretKeys:
-          adminPasswordKey: "adminPassword"
-          userPasswordKey: "userPassword"
+  auth:
+    username: "joplin"
+    database: "joplin"
+    existingSecret: "joplin-db"
+    secretKeys:
+      adminPasswordKey: "adminPassword"
+      userPasswordKey: "userPassword"
+  primary:
     persistence:
       enabled: false
