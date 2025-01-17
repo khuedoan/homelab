@@ -66,6 +66,6 @@
     - key: adminPassword
       length: 32
       special: true
-    - key: userPassword2
+    - key: userPassword
       length: 32
       special: true
