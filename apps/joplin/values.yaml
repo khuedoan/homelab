@@ -55,4 +55,4 @@ postgresql:
       userPasswordKey: "userPassword"
   primary:
     persistence:
-      enabled: false
+      enabled: true
