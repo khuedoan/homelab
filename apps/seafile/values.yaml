@@ -13,6 +13,11 @@ app-template:
                 secretKeyRef:
                   name: seafile-db
                   key: mariadb-root-password
+            SEAFILE_MYSQL_DB_USER:
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-db
+                  key: mariadb-password
             SEAFILE_SERVER_HOSTNAME: files.meyeringh.org
             SEAFILE_ADMIN_EMAIL: admin@localhost
             SEAFILE_ADMIN_PASSWORD:
