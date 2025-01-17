@@ -55,4 +55,5 @@ postgresql:
       userPasswordKey: "userPassword"
   primary:
     persistence:
-      enabled: false
+      enabled: true
+      size: 5Gi
