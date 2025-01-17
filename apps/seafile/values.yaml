@@ -13,7 +13,7 @@ app-template:
                 secretKeyRef:
                   name: seafile-db
                   key: mariadb-root-password
-            SEAFILE_MYSQL_DB_USER:
+            SEAFILE_MYSQL_DB_PASSWORD:
               valueFrom:
                 secretKeyRef:
                   name: seafile-db
@@ -79,7 +79,7 @@ mariadb:
 memcached:
   architecture: "standalone"
   persistence:
-    enabled: false  # typically memcached data is ephemeral
+    enabled: false
   resources:
     requests:
       memory: 256Mi
