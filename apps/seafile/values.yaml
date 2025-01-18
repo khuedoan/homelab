@@ -37,7 +37,7 @@ app-template:
     main:
       ports:
         http:
-          port: 8000
+          port: 80
           protocol: HTTP
         fileserver:
           port: 8082
