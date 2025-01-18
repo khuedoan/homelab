@@ -90,3 +90,6 @@
     - key: JWTPrivateKey
       length: 40
       special: false
+    - key: test
+      length: 40
+      special: false
