@@ -30,7 +30,10 @@ app-template:
     main:
       ports:
         http:
-          port: 80
+          port: 8000
+          protocol: HTTP
+        fileserver:
+          port: 8082
           protocol: HTTP
 
   ingress:
@@ -42,16 +45,24 @@ app-template:
         external-dns.alpha.kubernetes.io/target: "homelab-tunnel.example.com"
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       hosts:
-        - host: &host files.meyeringh.org
+        - host: &httpHost files.meyeringh.org
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: http
+        - host: &fileserverHost hub.meyeringh.org
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: main
+                port: fileserver
       tls:
         - hosts:
-            - *host
+            - *httpHost
+            - *fileserverHost
           secretName: seafile-tls-certificate
   persistence:
     data:
