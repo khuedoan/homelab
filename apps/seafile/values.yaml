@@ -36,7 +36,7 @@ app-template:
   service:
     main:
       ports:
-        hub:
+        http:
           port: 8000
           protocol: HTTP
         fileserver:
@@ -58,7 +58,7 @@ app-template:
               pathType: Prefix
               service:
                 name: main
-                port: hub
+                port: http
         - host: &fileserverHost files.meyeringh.org
           paths:
             - path: /
