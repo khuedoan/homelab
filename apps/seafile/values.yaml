@@ -21,6 +21,11 @@ app-template:
                   name: seafile
                   key: adminPassword
             TIME_ZONE: Europe/Berlin
+            JWT_PRIVATE_KEY:
+              valueFrom:
+                secretKeyRef:
+                  name: seafile
+                  key: JWTPrivateKey
   service:
     main:
       ports:
