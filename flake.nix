@@ -17,13 +17,13 @@
           packages = [
             ansible
             ansible-lint
-            bmake
             diffutils
             docker
             docker-compose
             dyff
             git
             go
+            go-task
             gotestsum
             iproute2
             jq

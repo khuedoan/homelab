@@ -1,0 +1,14 @@
+version: '3'
+
+tasks:
+  default:
+    - task: apply
+  plan:
+    desc: Plan external resources
+    cmds:
+      - tofu plan
+  apply:
+    desc: Apply external resources
+    cmds:
+      - ansible-playbook namespaces.yml
+      - tofu apply --auto-approve

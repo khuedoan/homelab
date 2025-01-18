@@ -10,7 +10,7 @@ steps:
       - echo 'experimental-features = flakes nix-command' >> /etc/nix/nix.conf
       # - echo 'trusted-substituters = http://nix-cache.nix-cache' >> /etc/nix/nix.conf
       # - echo 'substituters = http://nix-cache.nix-cache' >> /etc/nix/nix.conf
-      - nix develop --command make -C test filter=ToolsVersions
+      - nix develop --command task test:tools
     when:
       - event: pull_request
         path:

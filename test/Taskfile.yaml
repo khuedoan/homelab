@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  default:
+    - task: tools
+    - task: smoke
+  tools:
+    desc: Test tools compatibility
+    cmds:
+      - gotestsum --format testname -- -run Tools
+  smoke:
+    desc: Run smoke tests
+    cmds:
+      - gotestsum --format testname -- -timeout 30m -run Smoke
+  all:
+    desc: Run all tests
+    cmds:
+      - gotestsum --format testname -- -timeout 30m

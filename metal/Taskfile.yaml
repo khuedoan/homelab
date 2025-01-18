@@ -1,0 +1,24 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: boot
+      - task: cluster
+  boot:
+    desc: Install OS via PXE boot
+    cmds:
+      - ansible-playbook --inventory inventories/${env}.yml boot.yml
+  cluster:
+    desc: Setup cluster
+    cmds:
+      - ansible-playbook --inventory inventories/${env}.yml cluster.yml
+  console:
+    desc: Open console for executing commands on all nodes
+    cmds:
+      - ansible-console --inventory inventories/${env}.yml
+  k3d:
+    desc: Create a local k3d cluster for development
+    cmds:
+      - k3d cluster start homelab-{{.CLUSTER}} 2> /dev/null || k3d cluster create --config k3d-{{.CLUSTER}}.yaml
+      - k3d kubeconfig get homelab-{{.CLUSTER}} > kubeconfig-${{.CLUSTER}}.yaml

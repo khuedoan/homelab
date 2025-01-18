@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  default:
+    - task: bootstrap
+  bootstrap:
+    desc: Bootstrap GitOps on the {{.CLUSTER}} cluster
+    cmds:
+      - ansible-playbook --extra-vars "cluster={{.CLUSTER}}" bootstrap.yml

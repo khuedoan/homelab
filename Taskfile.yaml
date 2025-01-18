@@ -1,0 +1,50 @@
+version: '3'
+
+vars:
+  CLUSTER: '{{.CLUSTER| default "dev"}}'
+env:
+  KUBECONFIG: '{{.ROOT_DIR}}/metal/kubeconfig-{{.CLUSTER}}.yaml'
+includes:
+  metal:
+    taskfile: ./metal/Taskfile.yaml
+    dir: ./metal
+  system:
+    taskfile: ./system/Taskfile.yaml
+    dir: ./system
+  external:
+    taskfile: ./external/Taskfile.yaml
+    dir: ./external
+  test:
+    taskfile: ./test/Taskfile.yaml
+    dir: ./test
+tasks:
+  default:
+    silent: true
+    desc: List all tasks
+    cmds:
+      - task --list-all
+  dev:
+    desc: Apply dev cluster
+    cmds:
+      - task: metal:k3d
+      - task: system
+      - task: test:smoke
+  production:
+    desc: Apply production cluster
+    cmds:
+      - task: metal
+      - task: system
+      - task: test:smoke
+  configure:
+    - ./scripts/configure
+    - git status
+  docs:
+    desc: Preview documentation
+    cmds:
+      - mkdocs serve
+  info:
+    desc: Display cluster information
+    silent: true
+    cmds:
+      - echo "Running on {{.CLUSTER}} cluster"
+      - kubectl cluster-info
