@@ -7,7 +7,7 @@ app-template:
             liveness:
               enabled: false
             readiness:
-              enabled: false	
+              enabled: false
             startup:
               enabled: false
           image:
@@ -59,7 +59,7 @@ app-template:
               service:
                 name: main
                 port: hub
-        - host: &fileserverHost files.meyeringh.org 
+        - host: &fileserverHost files.meyeringh.org
           paths:
             - path: /
               pathType: Prefix
