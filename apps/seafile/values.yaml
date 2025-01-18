@@ -36,7 +36,7 @@ app-template:
   service:
     main:
       ports:
-        http:
+        hub:
           port: 8000
           protocol: HTTP
         fileserver:
@@ -49,17 +49,17 @@ app-template:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.example.com"
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       hosts:
-        - host: &httpHost files.meyeringh.org
+        - host: &hubHost hub.meyeringh.org
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
-                port: http
-        - host: &fileserverHost hub.meyeringh.org
+                port: hub
+        - host: &fileserverHost files.meyeringh.org 
           paths:
             - path: /
               pathType: Prefix
@@ -68,7 +68,7 @@ app-template:
                 port: fileserver
       tls:
         - hosts:
-            - *httpHost
+            - *hubHost
             - *fileserverHost
           secretName: seafile-tls-certificate
   persistence:
