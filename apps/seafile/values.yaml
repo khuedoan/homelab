@@ -3,13 +3,6 @@ app-template:
     main:
       containers:
         main:
-          ports:
-            - name: http
-              containerPort: 8000
-              protocol: HTTP
-            - name: fileserver
-              containerPort: 8082
-              protocol: HTTP
           probes:
             liveness:
               enabled: false
