@@ -33,6 +33,7 @@ app-template:
                 secretKeyRef:
                   name: seafile
                   key: JWTPrivateKey
+            CLUSTER_INIT_MEMCACHED_HOST: seafile-memcached
   service:
     main:
       ports:
