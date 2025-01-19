@@ -86,7 +86,7 @@
   data:
     - key: adminPassword
       length: 32
-      special: true
+      special: false
     - key: JWTPrivateKey
       length: 40
       special: false
