@@ -49,3 +49,8 @@ kube-prometheus-stack:
           webhook_configs:
             - url: http://localhost:8081
               send_resolved: true
+  defaultRules:
+    rules:
+      kubeControllerManager: false
+      kubeProxy: false
+      kubeSchedulerAlerting: false
