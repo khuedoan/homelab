@@ -21,6 +21,7 @@ app-template:
                   name: seafile-db
                   key: mariadb-root-password
             SEAFILE_SERVER_HOSTNAME: hub.meyeringh.org
+            # the admin user creation doesnt work, so create user with: /opt/seafile/seafile-server-latest/reset-admin.sh
             SEAFILE_ADMIN_EMAIL: admin@localhost
             SEAFILE_ADMIN_PASSWORD:
               valueFrom:
@@ -73,7 +74,7 @@ app-template:
           secretName: seafile-tls-certificate
   persistence:
     data:
-      enabled: false
+      enabled: true
       accessMode: ReadWriteOnce
       size: 10Gi
       retain: true
@@ -88,7 +89,7 @@ mariadb:
     existingSecret: seafile-db
   primary:
     persistence:
-      enabled: false
+      enabled: true
       accessModes:
         - ReadWriteOnce
       size: 5Gi
