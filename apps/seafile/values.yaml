@@ -83,7 +83,17 @@ app-template:
           main:
             - path: /shared
               subPath: shared
-
+    drive:
+      enabled: true
+      type: persistentVolumeClaim
+      existingClaim: seafile-drive-pvc
+      size: 10Ti
+      accessMode: ReadWriteOnce
+  
+      advancedMounts:
+        main:
+          main:
+            - path: /drive
 mariadb:
   auth:
     existingSecret: seafile-db
