@@ -33,8 +33,6 @@ app-template:
                 secretKeyRef:
                   name: seafile
                   key: JWTPrivateKey
-  defaultPodOptions:
-    hostname: memcached
   service:
     main:
       ports:
@@ -96,6 +94,7 @@ mariadb:
       size: 5Gi
 
 memcached:
+  fullnameOverride: "memcached"
   architecture: "standalone"
   persistence:
     enabled: false
