@@ -33,7 +33,8 @@ app-template:
                 secretKeyRef:
                   name: seafile
                   key: JWTPrivateKey
-            CLUSTER_INIT_MEMCACHED_HOST: seafile-memcached
+  defaultPodOptions:
+    hostname: memcached
   service:
     main:
       ports:
