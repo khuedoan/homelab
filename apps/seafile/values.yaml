@@ -76,7 +76,7 @@ app-template:
     data:
       enabled: true
       accessMode: ReadWriteOnce
-      size: 10Gi
+      size: 7Ti
       retain: true
       advancedMounts:
         main:
@@ -102,7 +102,7 @@ mariadb:
       enabled: true
       accessModes:
         - ReadWriteOnce
-      size: 5Gi
+      size: 10Gi
 
 memcached:
   fullnameOverride: "memcached"
