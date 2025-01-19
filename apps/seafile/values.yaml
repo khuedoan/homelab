@@ -83,7 +83,21 @@ app-template:
           main:
             - path: /shared
               subPath: shared
-
+    drive:
+      enabled: true
+      type: hostPath
+  
+      hostPath:
+        path: /mnt/test
+  
+      accessMode: ReadWriteOnce
+      size: 10Gi
+  
+      advancedMounts:
+        main:
+          main:
+            - path: /drive
+              readOnly: true
 mariadb:
   auth:
     existingSecret: seafile-db
