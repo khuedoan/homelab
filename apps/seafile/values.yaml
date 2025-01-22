@@ -1,9 +1,6 @@
 app-template:
   controllers:
     main:
-      defaultContainerOptions:
-        securityContext:
-          privileged: true
       containers:
         main:
           probes:
@@ -13,6 +10,8 @@ app-template:
               enabled: false
             startup:
               enabled: false
+          securityContext:
+            privileged: true
           image:
             repository: seafileltd/seafile-mc
             tag: 12.0.7
