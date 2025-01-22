@@ -1,10 +1,9 @@
 app-template:
-  defaultPodOptions:
-    securityContext:
-      privileged: true
-
   controllers:
     main:
+      defaultContainerOptions:
+        securityContext:
+          privileged: true
       containers:
         main:
           probes:
