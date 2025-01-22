@@ -1,4 +1,8 @@
 app-template:
+  defaultPodOptions:
+    securityContext:
+      privileged: true
+
   controllers:
     main:
       containers:
