@@ -14,7 +14,7 @@ app-template:
             privileged: true
           image:
             repository: seafileltd/seafile-mc
-            tag: 12.0.8
+            tag: 12.0.7
           env:
             DB_HOST: seafile-mariadb
             INIT_SEAFILE_MYSQL_ROOT_PASSWORD:
