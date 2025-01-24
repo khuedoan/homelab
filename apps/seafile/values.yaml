@@ -76,7 +76,7 @@ app-template:
           secretName: seafile-tls-certificate
   persistence:
     data:
-      enabled: true
+      enabled: false
       accessMode: ReadWriteOnce
       size: 7Ti
       retain: true
@@ -86,7 +86,7 @@ app-template:
             - path: /shared
               subPath: shared
     drive:
-      enabled: true
+      enabled: false
       type: persistentVolumeClaim
       existingClaim: seafile-drive-pvc
       size: 10Ti
@@ -101,7 +101,7 @@ mariadb:
     existingSecret: seafile-db
   primary:
     persistence:
-      enabled: true
+      enabled: false
       accessModes:
         - ReadWriteOnce
       size: 10Gi
