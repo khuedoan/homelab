@@ -17,7 +17,7 @@ app-template:
             tag: 12.0.7
           env:
             DB_HOST: seafile-mariadb
-            INIT_SEAFILE_MYSQL_ROOT_PASSWORD:
+            DB_ROOT_PASSWD:
               valueFrom:
                 secretKeyRef:
                   name: seafile-db
