@@ -23,7 +23,7 @@ app-template:
                   name: seafile-db
                   key: mariadb-root-password
             SEAFILE_SERVER_HOSTNAME: hub.meyeringh.org
-            SEAFILE_SERVER_PROTOCOL: https
+            SEAFILE_SERVER_PROTOCOL: http
             INIT_SEAFILE_ADMIN_EMAIL: admin@localhost
             INIT_SEAFILE_ADMIN_PASSWORD:
               valueFrom:
