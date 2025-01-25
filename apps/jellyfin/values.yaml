@@ -56,14 +56,26 @@ app-template:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       hosts:
-        - host: &jellyfinHost jellyfin.meyeringh.org
+        - host: &jellyfinHost media.meyeringh.org
           paths:
             - path: /
               pathType: Prefix
               service:
                 name: main
                 port: http
+      tls:
+        - secretName: jellyfin-tls-certificate
+          hosts:
+            - *jellyfinHost
+    servarr:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts:
         - host: &transmissionHost transmission.meyeringh.org
           paths:
             - path: /
@@ -100,9 +112,8 @@ app-template:
                 name: main
                 port: jellyseerr
       tls:
-        - secretName: jellyfin-tls-certificate
+        - secretName: servarr-tls-certificate
           hosts:
-            - *jellyfinHost
             - *transmissionHost
             - *prowlarrHost
             - *radarrHost
