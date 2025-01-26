@@ -76,10 +76,18 @@ app-template:
               service:
                 name: main
                 port: http
+        - host: &jellyseerrHost requests.meyeringh.org
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: main
+                port: jellyseerr
       tls:
         - secretName: jellyfin-tls-certificate
           hosts:
             - *jellyfinHost
+            - *jellyseerrHost
     servarr:
       enabled: true
       className: nginx
@@ -114,13 +122,6 @@ app-template:
               service:
                 name: main
                 port: sonarr
-        - host: &jellyseerrHost jellyseerr.meyeringh.org
-          paths:
-            - path: /
-              pathType: Prefix
-              service:
-                name: main
-                port: jellyseerr
       tls:
         - secretName: servarr-tls-certificate
           hosts:
@@ -128,7 +129,6 @@ app-template:
             - *prowlarrHost
             - *radarrHost
             - *sonarrHost
-            - *jellyseerrHost
   persistence:
     data:
       enabled: true
