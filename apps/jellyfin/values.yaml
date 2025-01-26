@@ -131,8 +131,10 @@ app-template:
             - *jellyseerrHost
   persistence:
     data:
+      enabled: true
       accessMode: ReadWriteOnce
       size: 50Gi
+      retain: true
       advancedMounts:
         main:
           main:
