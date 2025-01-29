@@ -23,7 +23,7 @@ app-template:
                   name: seafile-db
                   key: mariadb-root-password
             SEAFILE_SERVER_HOSTNAME: hub.meyeringh.org
-            SEAFILE_SERVER_PROTOCOL: http
+            SEAFILE_SERVER_PROTOCOL: https
             INIT_SEAFILE_ADMIN_EMAIL: admin@localhost
             INIT_SEAFILE_ADMIN_PASSWORD:
               valueFrom:
@@ -85,17 +85,6 @@ app-template:
           main:
             - path: /shared
               subPath: shared
-    drive:
-      enabled: true
-      type: persistentVolumeClaim
-      existingClaim: seafile-drive-pvc
-      size: 10Ti
-      accessMode: ReadWriteOnce
-  
-      advancedMounts:
-        main:
-          main:
-            - path: /drive
 mariadb:
   auth:
     existingSecret: seafile-db
