@@ -27,7 +27,9 @@ app-template:
       enabled: true
       className: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
+        cert-manager.io/cluster-issuer: letsencrypt-prod 
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       hosts:
         - host: &host paperless.meyeringh.org
           paths:
@@ -44,6 +46,7 @@ app-template:
     data:
       accessMode: ReadWriteOnce
       size: 10Gi
+      retain: true
       advancedMounts:
         main:
           main:
