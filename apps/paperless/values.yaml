@@ -54,3 +54,13 @@ app-template:
               subPath: data
             - path: /usr/src/paperless/media
               subPath: media
+    drive:
+      enabled: true
+      type: persistentVolumeClaim
+      existingClaim: seafile-drive-pvc
+      size: 10Ti
+      accessMode: ReadWriteOnce
+      advancedMounts:
+        main:
+          main:
+            - path: /drive
