@@ -102,10 +102,6 @@ app-template:
                 href: https://git.meyeringh.org
                 description: Git forge
                 icon: gitea.svg
-            - Woodpecker:
-                href: https://ci.meyeringh.org
-                description: Continuous integration
-                icon: woodpecker-ci.svg
             - ArgoCD:
                 href: https://argocd.meyeringh.org
                 description: Continuous deployment
