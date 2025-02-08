@@ -20,6 +20,7 @@ app-template:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+        nginx.ingress.kubernetes.io/proxy-body-size: "10mb"
       hosts:
         - host: &host budget.meyeringh.org
           paths:
