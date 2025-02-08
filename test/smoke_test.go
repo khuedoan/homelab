@@ -21,7 +21,6 @@ func TestSmoke(t *testing.T) {
 		{"argocd-server", "argocd"},
 		{"gitea", "gitea"},
 		{"grafana", "grafana"},
-		{"homepage", "homepage"},
 		{"kanidm", "kanidm"},
 		{"zot", "zot"},
 	}

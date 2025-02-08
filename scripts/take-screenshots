@@ -14,20 +14,12 @@ from selenium import webdriver
 
 apps = [
     {
-        'name': 'home',
-        'url': 'https://home.khuedoan.com'
-    },
-    {
         'name': 'gitea',
         'url': 'https://git.khuedoan.com/ops/homelab'
     },
     {
         'name': 'argocd',
         'url': 'https://argocd.khuedoan.com/applications/root'
-    },
-    {
-        'name': 'matrix',
-        'url': 'https://chat.khuedoan.com/#/room/#random:matrix.khuedoan.com'
     },
     {
         'name': 'grafana',
