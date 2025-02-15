@@ -30,7 +30,7 @@ app-template:
         http:
           port: 2283
           protocol: HTTP
-        http:
+        machine-learning:
           port: 3003
           protocol: HTTP
   ingress:
@@ -83,6 +83,6 @@ postgresql:
 
 redis:
   enabled: true
-    architecture: standalone
-    auth:
-      enabled: false
+  architecture: "standalone"
+  auth:
+    enabled: false
