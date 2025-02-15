@@ -17,6 +17,7 @@ app-template:
                   name: immich-db
                   key: userPassword
             IMMICH_MACHINE_LEARNING_URL: "http://immich-machine-learning:3003"
+            IMMICH_PORT: 2283
             TZ: Europe/Berlin
         machine-learning:
           image:
