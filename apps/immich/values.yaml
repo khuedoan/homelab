@@ -79,6 +79,12 @@ postgresql:
       adminPasswordKey: "adminPassword"
       userPasswordKey: "userPassword"
   primary:
+    initdb:
+      scripts:
+        create-extensions.sql: |
+          CREATE EXTENSION cube;
+          CREATE EXTENSION earthdistance;
+          CREATE EXTENSION vectors;
     persistence:
       enabled: true
 
