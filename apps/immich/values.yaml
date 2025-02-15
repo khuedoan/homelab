@@ -71,9 +71,3 @@ app-template:
           machine-learning:
             - path: /cache
               subPath: cache
-
-redis:
-  enabled: true
-  architecture: "standalone"
-  auth:
-    enabled: false
