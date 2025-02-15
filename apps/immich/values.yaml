@@ -1,0 +1,88 @@
+app-template:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ghcr.io/immich-app/immich-server
+            tag: v1.126.1
+          env:
+            REDIS_HOSTNAME: immich-redis-master
+            DB_HOSTNAME: immich-postgresql
+            DB_USERNAME: immich
+            DB_DATABASE_NAME: immich
+            DB_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: immich-db
+                  key: userPassword
+            IMMICH_MACHINE_LEARNING_URL: "http://immich-machine-learning:3003"
+            TZ: Europe/Berlin
+        machine-learning:
+          image:
+            repository: ghcr.io/immich-app/immich-machine-learning
+            tag: v1.126.1
+          env:
+            TZ: Europe/Berlin
+  service:
+    main:
+      ports:
+        http:
+          port: 2283
+          protocol: HTTP
+        http:
+          port: 3003
+          protocol: HTTP
+  ingress:
+    main:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      hosts:
+        - host: &host gallery.meyeringh.org
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: immich-tls-certificate
+  persistence:
+    data:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 20Gi
+      retain: false
+      advancedMounts:
+        main:
+          main:
+            - path: /usr/src/app/upload
+              subPath: upload
+          machine-learning:
+            - path: /cache
+              subPath: cache
+
+postgresql:
+  auth:
+    username: "immich"
+    database: "immich"
+    existingSecret: "immich-db"
+    secretKeys:
+      adminPasswordKey: "adminPassword"
+      userPasswordKey: "userPassword"
+  primary:
+    persistence:
+      enabled: true
+
+redis:
+  enabled: true
+    architecture: standalone
+    auth:
+      enabled: false

@@ -1,0 +1,15 @@
+---
+apiVersion: v2
+name: immich
+version: 0.0.0
+dependencies:
+  - name: app-template
+    repository: https://bjw-s.github.io/helm-charts
+    version: 2.6.0
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 16.4.3
+  - name: redis
+    condition: redis
+    repository: https://charts.bitnami.com/bitnami
+    version: 19.5.3
