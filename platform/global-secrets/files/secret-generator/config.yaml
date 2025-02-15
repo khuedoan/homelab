@@ -68,3 +68,13 @@
     - key: JWTPrivateKey
       length: 40
       special: false
+
+# Immich
+- name: immich.immich-db
+  data:
+    - key: adminPassword
+      length: 32
+      special: true
+    - key: userPassword
+      length: 32
+      special: true
