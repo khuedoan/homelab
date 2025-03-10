@@ -4,10 +4,10 @@ elementweb:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.khuedoan.com"
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.epx.pub"
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     hosts:
-      - host: &frontend_host chat.khuedoan.com
+      - host: &frontend_host chat.epx.pub
         paths:
           - path: /
             pathType: Prefix
@@ -17,22 +17,22 @@ elementweb:
           - *frontend_host
   config:
     default:
-      base_url: https://matrix.khuedoan.com
-      server_name: khuedoan.com
+      base_url: https://matrix.epx.pub
+      server_name: epx.pub
 
 dendrite:
   dendrite_config:
     global:
-      server_name: matrix.khuedoan.com
+      server_name: matrix.epx.pub
   ingress:
     enabled: true
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-    hostName: matrix.khuedoan.com
+    hostName: matrix.epx.pub
     tls:
       - hosts:
-          - matrix.khuedoan.com
+          - matrix.epx.pub
         secretName: matrix-tls-certificate
   postgresql:
     enabled: true

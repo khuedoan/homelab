@@ -19,7 +19,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
-        - host: &host budget.khuedoan.com
+        - host: &host budget.epx.pub
           paths:
             - path: /
               pathType: Prefix

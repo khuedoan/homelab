@@ -1,6 +1,6 @@
 argo-cd:
   global:
-    domain: argocd.khuedoan.com
+    domain: argocd.epx.pub
   configs:
     params:
       server.insecure: true
