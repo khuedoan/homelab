@@ -21,7 +21,7 @@ resource "cloudflare_record" "tunnel" {
   type    = "CNAME"
   name    = "homelab-tunnel"
   value   = "${cloudflare_tunnel.homelab.id}.cfargotunnel.com"
-  proxied = true
+  proxied = false
   ttl     = 1 # Auto
 }
 
