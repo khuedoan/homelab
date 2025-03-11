@@ -6,7 +6,8 @@
   },
   "mounts": [
     "source=${localWorkspaceFolder}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/.terraform.d,target=/home/vscode/.terraform.d,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/.terraform.d,target=/home/vscode/.terraform.d,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/../.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
   ],
   "runArgs": [
     "--network=host"
