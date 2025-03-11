@@ -14,6 +14,9 @@ This directory contains configuration files for a Visual Studio Code Development
 2. Place your SSH keys in the `.ssh` directory at the root of the repository
    - These will be mounted to `/root/.ssh` inside the container
    - This is necessary for tasks like SSH access to your homelab nodes
+3. Place your Terraform credentials in the `.terraform.d` directory
+   - Add your `credentials.tfrc.json` file here for Terraform Cloud authentication
+   - These will be mounted to `/root/.terraform.d` inside the container
 3. Open the repository in VS Code
 4. Click the green button in the bottom-left corner and select "Reopen in Container"
 5. Wait for the container to build and start (this may take a few minutes the first time)
@@ -32,6 +35,7 @@ This directory contains configuration files for a Visual Studio Code Development
 - The container uses host networking, so services you run inside the container will be accessible at `localhost`
 - The container runs with elevated privileges (needed for Docker-in-Docker)
 - Your SSH keys will be available inside the container, allowing you to connect to your homelab servers
+- Your Terraform credentials will be available, enabling authentication with Terraform Cloud
 - KUBECONFIG is automatically set to point to `./metal/kubeconfig.yaml`
 
 ## VS Code Extensions
