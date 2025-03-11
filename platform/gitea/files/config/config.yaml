@@ -1,9 +1,8 @@
 # TODO create user and access token
-# users:
-#   - name: renovate
-#     fullName: Renovate
-#     email: bot@renovateapp.com
-#     tokenSecretRef: renovate-secret # ???
+users:
+  - name: renovate
+    fullName: Renovate
+    email: bot@renovateapp.com
 organizations:
   - name: ops
     description: Operations
