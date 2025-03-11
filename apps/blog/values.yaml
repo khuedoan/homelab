@@ -3,6 +3,7 @@ app-template:
     main:
       containers:
         main:
+          replicas: 0
           image:
             repository: registry.epx.pub/blog
             tag: latest
@@ -19,7 +20,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         external-dns.alpha.kubernetes.io/target: homelab-tunnel.epx.pub
-        external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
+        external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       hosts:
         - host: &host www.epx.pub
           paths:
