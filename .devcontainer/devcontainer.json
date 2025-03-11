@@ -1,17 +1,15 @@
 {
-  "name": "Homelab Development Environment",
+  "name": "Homelab Development",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": "."
   },
   "mounts": [
-    "source=${localWorkspaceFolder}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/.terraform.d,target=/root/.terraform.d,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.terraform.d,target=/home/vscode/.terraform.d,type=bind,consistency=cached"
   ],
-  "remoteUser": "root",
-  "updateRemoteUserUID": false,
   "runArgs": [
-    "--network=host",
-    "--privileged"
+    "--network=host"
   ],
   "containerEnv": {
     "KUBECONFIG": "${containerWorkspaceFolder}/metal/kubeconfig.yaml"
@@ -24,7 +22,6 @@
         "redhat.vscode-yaml",
         "ms-vscode.makefile-tools",
         "yzhang.markdown-all-in-one",
-        "jnoortheen.nix-ide",
         "mads-hartmann.bash-ide-vscode"
       ],
       "settings": {
@@ -36,8 +33,6 @@
       }
     }
   },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
+  "remoteUser": "vscode",
   "postCreateCommand": "pre-commit install"
 }
