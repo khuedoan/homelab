@@ -1,0 +1,43 @@
+{
+  "name": "Homelab Development Environment",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.terraform.d,target=/root/.terraform.d,type=bind,consistency=cached"
+  ],
+  "remoteUser": "root",
+  "updateRemoteUserUID": false,
+  "runArgs": [
+    "--network=host",
+    "--privileged"
+  ],
+  "containerEnv": {
+    "KUBECONFIG": "${containerWorkspaceFolder}/metal/kubeconfig.yaml"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "hashicorp.terraform",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "redhat.vscode-yaml",
+        "ms-vscode.makefile-tools",
+        "yzhang.markdown-all-in-one",
+        "jnoortheen.nix-ide",
+        "mads-hartmann.bash-ide-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terraform.languageServer.enable": true,
+        "yaml.schemas": {
+          "kubernetes": "*.yaml"
+        }
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "postCreateCommand": "pre-commit install"
+}
