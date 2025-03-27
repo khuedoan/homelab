@@ -14,6 +14,7 @@
       default = with nixpkgs.legacyPackages.${system}; mkShell {
         packages = [
           go
+          go-task
           kubectl
           opentofu
         ];

@@ -1,0 +1,18 @@
+# Controller's dependencies
+services:
+  netboot:
+    image: ghcr.io/netbootxyz/netbootxyz:0.7.5-nbxyz4
+    ports:
+      - 3000:3000
+      - 69:69
+      - 8080:80
+  temporal:
+    image: docker.io/temporalio/server:1.27
+    entrypoint:
+      - temporal
+      - server
+      - start-dev
+      - --ip=0.0.0.0
+    ports:
+      - 7233:7233
+      - 8233:8233
