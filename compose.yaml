@@ -1,11 +1,17 @@
 # Controller's dependencies
 services:
-  netboot:
-    image: ghcr.io/netbootxyz/netbootxyz:0.7.5-nbxyz4
-    ports:
-      - 3000:3000
-      - 69:69
-      - 8080:80
+  pixiecore:
+    image: docker.io/pixiecore/pixiecore:master@sha256:f9ad6ef63ca80a2c96ec6d89ea8fc24e785fba697a8a39a26bc3e5e7524a21ab
+    network_mode: host
+    entrypoint:
+      - /pixiecore
+      - boot
+      # See https://github.com/nix-community/nixos-images/releases/download/nixos-24.11/netboot-x86_64-linux.ipxe
+      - https://github.com/nix-community/nixos-images/releases/download/nixos-24.11/bzImage-x86_64-linux
+      - https://github.com/nix-community/nixos-images/releases/download/nixos-24.11/initrd-x86_64-linux
+      - --cmdline
+      - "init=/nix/store/gqg5692q8cica6dyaki9ak0pf8qf0kpj-nixos-system-nixos-24.11beta708350.1d95cb5/init nohibernate loglevel=4"
+      - --debug
   temporal:
     image: docker.io/temporalio/server:1.27
     entrypoint:
