@@ -1,0 +1,105 @@
+nextcloud:
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+          protocol: HTTP
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      nginx.ingress.kubernetes.io/affinity: cookie
+      nginx.ingress.kubernetes.io/server-snippet: |-
+        server_tokens off;
+        proxy_hide_header X-Powered-By;
+        rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
+        rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
+        rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
+        rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
+        location = /.well-known/carddav {
+          return 301 $scheme://$host/remote.php/dav;
+        }
+        location = /.well-known/caldav {
+          return 301 $scheme://$host/remote.php/dav;
+        }
+        location = /robots.txt {
+          allow all;
+          log_not_found off;
+          access_log off;
+        }
+        location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
+          deny all;
+        }
+        location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
+          deny all;
+        }
+    hosts:
+      - host: &frontend_host cloud.meyeringh.org
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: main
+              port: http
+    tls:
+      - secretName: nextcloud-tls-certificate
+        hosts:
+          - *frontend_host
+
+  hpa:
+    enabled: false
+
+  nextcloud:
+    host: cloud.meyeringh.org
+    trustedDomains:
+      - 'cloud.meyeringh.org'
+    defaultConfigs:
+      imaginary.config.php: true
+    existingSecret:
+      enabled: true
+      secretName: nextcloud
+      usernameKey: nextcloud-username
+      passwordKey: nextcloud-password
+
+  persistence:
+    enabled: true
+    size: 7Ti
+
+  imaginary:
+    enabled: true
+
+  nginx:
+    enabled: false
+
+  postgresql:
+    enabled: true
+    global:
+      postgresql:
+        auth:
+          existingSecret: nextcloud-postgresql
+          secretKeys:
+            adminPasswordKey: postgres-password
+            userPasswordKey: password
+
+  internalDatabase:
+    enabled: false
+
+  externalDatabase:
+    enabled: true
+    type: postgresql
+    existingSecret:
+      enabled: true
+      secretName: nextcloud-postgresql
+      passwordKey: password
+
+  fullnameOverride: nextcloud
+
+  image:
+    repository: nextcloud
+    tag: 30.0.4-apache
+    pullPolicy: IfNotPresent
+    flavor: fpm
