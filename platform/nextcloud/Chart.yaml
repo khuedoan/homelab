@@ -1,8 +1,11 @@
 apiVersion: v2
 name: nextcloud
-version: 6.6.9
+version: 0.0.0
 appVersion: 30.0.6
 dependencies:
+  - name: nextcloud
+    version: 6.6.9
+    repository: https://nextcloud.github.io/helm/
   - name: postgresql
     version: 15.5.0
     repository: oci://registry-1.docker.io/bitnamicharts

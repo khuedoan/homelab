@@ -1,87 +1,128 @@
-image:
-  repository: nextcloud
-  flavor: apache
-  tag:
-  pullPolicy: IfNotPresent
-
-replicaCount: 1
-
-ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/server-snippet: |-
-      server_tokens off;
-      proxy_hide_header X-Powered-By;
-      rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
-      rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
-      rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
-      rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
-      location = /.well-known/carddav {
-        return 301 $scheme://$host/remote.php/dav;
-      }
-      location = /.well-known/caldav {
-        return 301 $scheme://$host/remote.php/dav;
-      }
-      location = /robots.txt {
-        allow all;
-        log_not_found off;
-        access_log off;
-      }
-      location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
-        deny all;
-      }
-      location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
-        deny all;
-      }
-  hosts:
-    - host: &frontend_host cloud.meyeringh.org
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: main
-            port: http
-  tls:
-    - secretName: nextcloud-tls-certificate
-      hosts:
-        - *frontend_host
-
+nextcloud:
+  image:
+    repository: nextcloud
+    flavor: apache
+    tag:
+    pullPolicy: IfNotPresent
+  
+  replicaCount: 1
+  
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/target: "homelab-tunnel.meyeringh.org"
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      nginx.ingress.kubernetes.io/affinity: cookie
+      nginx.ingress.kubernetes.io/server-snippet: |-
+        server_tokens off;
+        proxy_hide_header X-Powered-By;
+        rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
+        rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
+        rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
+        rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
+        location = /.well-known/carddav {
+          return 301 $scheme://$host/remote.php/dav;
+        }
+        location = /.well-known/caldav {
+          return 301 $scheme://$host/remote.php/dav;
+        }
+        location = /robots.txt {
+          allow all;
+          log_not_found off;
+          access_log off;
+        }
+        location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
+          deny all;
+        }
+        location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
+          deny all;
+        }
+    hosts:
+      - host: &frontend_host cloud.meyeringh.org
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: main
+              port: http
+    tls:
+      - secretName: nextcloud-tls-certificate
+        hosts:
+          - *frontend_host
+  
+    nextcloud:
+      host: cloud.meyeringh.org
+      trustedDomains:
+        - 'cloud.meyeringh.org'
+      defaultConfigs:
+        imaginary.config.php: true
+      existingSecret:
+        enabled: true
+        secretName: nextcloud
+        usernameKey: nextcloud-username
+        passwordKey: nextcloud-password
+  
   nextcloud:
     host: cloud.meyeringh.org
-    trustedDomains:
-      - 'cloud.meyeringh.org'
-    defaultConfigs:
-      imaginary.config.php: true
     existingSecret:
       enabled: true
       secretName: nextcloud
       usernameKey: nextcloud-username
       passwordKey: nextcloud-password
-
-nextcloud:
-  host: cloud.meyeringh.org
-  existingSecret:
+    datadir: /var/www/html/data
+  
+  internalDatabase:
+    enabled: false
+  
+  externalDatabase:
     enabled: true
-    secretName: nextcloud
-    usernameKey: nextcloud-username
-    passwordKey: nextcloud-password
-  datadir: /var/www/html/data
+    type: postgresql
+    existingSecret:
+      enabled: true
+      secretName: nextcloud-postgresql
+      passwordKey: password
 
-internalDatabase:
-  enabled: false
-
-externalDatabase:
-  enabled: true
-  type: postgresql
-  existingSecret:
-    enabled: true
-    secretName: nextcloud-postgresql
-    passwordKey: password
+  persistence:
+    # Nextcloud Data (/var/www/html)
+    enabled: false
+    annotations: {}
+    ## nextcloud data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+  
+    ## A manually managed Persistent Volume and Claim
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    # existingClaim:
+  
+    accessMode: ReadWriteOnce
+    size: 8Gi
+  
+    ## Use an additional pvc for the data directory rather than a subpath of the default PVC
+    ## Useful to store data on a different storageClass (e.g. on slower disks)
+    nextcloudData:
+      enabled: false
+      subPath:
+      annotations: {}
+      # storageClass: "-"
+      # existingClaim:
+      accessMode: ReadWriteOnce
+      size: 8Gi
+  
+  resources:
+    limits:
+     cpu: 100m
+     memory: 1Gi
+    requests:
+     cpu: 100m
+     memory: 1Gi
 
 postgresql:
   enabled: true
@@ -169,43 +210,3 @@ postgresql:
 #
 #  # see collabora helm README.md for recommended values
 #  resources: {}
-
-persistence:
-  # Nextcloud Data (/var/www/html)
-  enabled: false
-  annotations: {}
-  ## nextcloud data Persistent Volume Storage Class
-  ## If defined, storageClassName: <storageClass>
-  ## If set to "-", storageClassName: "", which disables dynamic provisioning
-  ## If undefined (the default) or set to null, no storageClassName spec is
-  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-  ##   GKE, AWS & OpenStack)
-  ##
-  # storageClass: "-"
-
-  ## A manually managed Persistent Volume and Claim
-  ## Requires persistence.enabled: true
-  ## If defined, PVC must be created manually before volume will be bound
-  # existingClaim:
-
-  accessMode: ReadWriteOnce
-  size: 8Gi
-
-  ## Use an additional pvc for the data directory rather than a subpath of the default PVC
-  ## Useful to store data on a different storageClass (e.g. on slower disks)
-  nextcloudData:
-    enabled: false
-    subPath:
-    annotations: {}
-    # storageClass: "-"
-    # existingClaim:
-    accessMode: ReadWriteOnce
-    size: 8Gi
-
-resources:
-  limits:
-   cpu: 100m
-   memory: 1Gi
-  requests:
-   cpu: 100m
-   memory: 1Gi
