@@ -297,6 +297,7 @@ Big shout-out to them!
 - ![](https://github.com/raedkit.png?size=24) [@raedkit](https://github.com/raedkit)
 - ![](https://github.com/ClashTheBunny.png?size=24) [@ClashTheBunny](https://github.com/ClashTheBunny)
 - ![](https://github.com/retX0.png?size=24) [@retX0](https://github.com/retX0)
+- ![](https://github.com/zalsader.png?size=24) [@zalsader](https://github.com/zalsader)
 
 If you feel you're missing from this list, please feel free to add yourself in a PR.
 
