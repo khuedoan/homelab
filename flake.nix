@@ -36,7 +36,7 @@
             kustomize
             libisoburn
             neovim
-            openssh
+            openssh_gssapi
             opentofu # Drop-in replacement for Terraform
             p7zip
             pre-commit
