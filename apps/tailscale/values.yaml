@@ -18,6 +18,7 @@ app-template:
                 secretKeyRef:
                   name: tailscale-auth
                   key: TS_AUTHKEY
+            TS_EXTRA_ARGS: "--login-server https://headscale.khuedoan.com --advertise-tags=tag:server"
           securityContext:
             capabilities:
               add:

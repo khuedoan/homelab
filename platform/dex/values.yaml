@@ -34,6 +34,11 @@ dex:
         redirectURIs:
           - 'https://git.khuedoan.com/user/oauth2/Dex/callback'
         secretEnv: GITEA_CLIENT_SECRET
+      - id: headscale
+        name: Headscale
+        redirectURIs:
+          - 'https://headscale.khuedoan.com/oidc/callback'
+        secretEnv: HEADSCALE_CLIENT_SECRET
   envFrom:
     - secretRef:
         name: dex-secrets
