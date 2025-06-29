@@ -85,6 +85,5 @@ Nice to have
 - [ ] Air-gap install
 - [ ] Automated testing
 - [ ] Security audit
-- [ ] Serverless ([Knative](https://knative.dev))
 - [ ] Cluster API ([last attempt](https://github.com/khuedoan/homelab/pull/2))
 - [ ] Split DNS (requires a better router)
