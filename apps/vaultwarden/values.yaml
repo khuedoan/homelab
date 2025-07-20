@@ -19,3 +19,4 @@ vaultwarden:
     data:
       name: "vaultwarden-data"
       size: "15Gi"
+      accessMode: "ReadWriteOnce"
