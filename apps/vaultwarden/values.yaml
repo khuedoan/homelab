@@ -15,6 +15,6 @@ vaultwarden:
     existingSecret: "vaultwarden-admin"
     existingSecretKey: "ADMIN_TOKEN"
 
-  data:
-    name: "vaultwarden-data"
+  storage:
+    enabled: true
     size: "15Gi"
