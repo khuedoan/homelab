@@ -1,0 +1,31 @@
+{
+    "tagOwners": {
+        "tag:server": [],
+    },
+    // Allow all connections to server machines
+    "acls": [
+        {
+            "action": "accept",
+            "src": [
+                "*"
+            ],
+            "dst": [
+                "tag:server:*"
+            ],
+        }
+    ],
+    "ssh": [
+        {
+            "action": "accept",
+            "src": [
+                "*"
+            ],
+            "dst": [
+                "tag:server"
+            ],
+            "users": [
+                "root",
+            ]
+        }
+    ]
+}

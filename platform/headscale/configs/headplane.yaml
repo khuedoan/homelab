@@ -1,0 +1,159 @@
+# Configuration for the Headplane server and web application
+server:
+  host: "0.0.0.0"
+  port: 3000
+
+  # The secret used to encode and decode web sessions
+  # Ensure that this is exactly 32 characters long
+  cookie_secret: <your-cookie-secret>
+
+  # Should the cookies only work over HTTPS?
+  # Set to false if running via HTTP without a proxy
+  # (I recommend this is true in production)
+  cookie_secure: true
+
+# Headscale specific settings to allow Headplane to talk
+# to Headscale and access deep integration features
+headscale:
+  # The URL to your Headscale instance
+  # (All API requests are routed through this URL)
+  # (THIS IS NOT the gRPC endpoint, but the HTTP endpoint)
+  #
+  # IMPORTANT: If you are using TLS this MUST be set to `https://`
+  url: "https://headscale.khuedoan.com"
+
+  # If you use the TLS configuration in Headscale, and you are not using
+  # Let's Encrypt for your certificate, pass in the path to the certificate.
+  # (This has no effect `url` does not start with `https://`)
+  # tls_cert_path: "/tls/tls.crt"
+
+  # Optional, public URL if they differ
+  # This affects certain parts of the web UI
+  public_url: "https://headscale.khuedoan.com"
+
+  # Path to the Headscale configuration file
+  # This is optional, but HIGHLY recommended for the best experience
+  # If this is read only, Headplane will show your configuration settings
+  # in the Web UI, but they cannot be changed.
+  config_path: "/etc/headscale/config.yaml"
+
+  # Headplane internally validates the Headscale configuration
+  # to ensure that it changes the configuration in a safe way.
+  # If you want to disable this validation, set this to false.
+  config_strict: true
+
+  # If you are using `dns.extra_records_path` in your Headscale
+  # configuration, you need to set this to the path for Headplane
+  # to be able to read the DNS records.
+  #
+  # Pass it in if using Docker and ensure that the file is both
+  # readable and writable to the Headplane process.
+  # When using this, Headplane will no longer need to automatically
+  # restart Headscale for DNS record changes.
+  # dns_records_path: "/var/lib/headplane/extra_records.json"
+
+# Integration configurations for Headplane to interact with Headscale
+integration:
+  agent:
+    # The Headplane agent allows retrieving information about nodes
+    # This allows the UI to display version, OS, and connectivity data
+    # You will see the Headplane agent in your Tailnet as a node when
+    # it connects.
+    enabled: false
+    # To connect to your Tailnet, you need to generate a pre-auth key
+    # This can be done via the web UI or through the `headscale` CLI.
+    pre_authkey: "<your-preauth-key>"
+    # Optionally change the name of the agent in the Tailnet.
+    # host_name: "headplane-agent"
+
+    # Configure different caching settings. By default, the agent will store
+    # caches in the path below for a maximum of 1 minute. If you want data
+    # to update faster, reduce the TTL, but this will increase the frequency
+    # of requests to Headscale.
+    # cache_ttl: 60
+    # cache_path: /var/lib/headplane/agent_cache.json
+
+    # Do not change this unless you are running a custom deployment.
+    # The work_dir represents where the agent will store its data to be able
+    # to automatically reauthenticate with your Tailnet. It needs to be
+    # writable by the user running the Headplane process.
+    # work_dir: "/var/lib/headplane/agent"
+
+  # Only one of these should be enabled at a time or you will get errors
+  # This does not include the agent integration (above), which can be enabled
+  # at the same time as any of these and is recommended for the best experience.
+  docker:
+    enabled: false
+
+    # By default we check for the presence of a container label (see the docs)
+    # to determine the container to signal when changes are made to DNS settings.
+    container_label: "me.tale.headplane.target=headscale"
+
+    # HOWEVER, you can fallback to a container name if you desire, but this is
+    # not recommended as its brittle and doesn't work with orchestrators that
+    # automatically assign container names.
+    #
+    # If `container_name` is set, it will override any label checks.
+    # container_name: "headscale"
+
+    # The path to the Docker socket (do not change this if you are unsure)
+    # Docker socket paths must start with unix:// or tcp:// and at the moment
+    # https connections are not supported.
+    socket: "unix:///var/run/docker.sock"
+
+  # Please refer to docs/integration/Kubernetes.md for more information
+  # on how to configure the Kubernetes integration. There are requirements in
+  # order to allow Headscale to be controlled by Headplane in a cluster.
+  kubernetes:
+    enabled: true
+    # Validates the manifest for the Pod to ensure all of the criteria
+    # are set correctly. Turn this off if you are having issues with
+    # shareProcessNamespace not being validated correctly.
+    validate_manifest: true
+    # This should be the name of the Pod running Headscale and Headplane.
+    # If this isn't static you should be using the Kubernetes Downward API
+    # to set this value (refer to docs/Integrated-Mode.md for more info).
+    pod_name: "headscale"
+
+  # Proc is the "Native" integration that only works when Headscale and
+  # Headplane are running outside of a container. There is no configuration,
+  # but you need to ensure that the Headplane process can terminate the
+  # Headscale process.
+  #
+  # (If they are both running under systemd as sudo, this will work).
+  proc:
+    enabled: false
+
+# OIDC Configuration for simpler authentication
+# (This is optional, but recommended for the best experience)
+# oidc:
+#   issuer: "https://accounts.google.com"
+#   client_id: "your-client-id"
+
+#   # The client secret for the OIDC client
+#   # Either this or `client_secret_path` must be set for OIDC to work
+#   client_secret: "<your-client-secret>"
+#   # You can alternatively set `client_secret_path` to read the secret from disk.
+#   # The path specified can resolve environment variables, making integration
+#   # with systemd's `LoadCredential` straightforward:
+#   # client_secret_path: "${CREDENTIALS_DIRECTORY}/oidc_client_secret"
+
+#   disable_api_key_login: false
+#   token_endpoint_auth_method: "client_secret_post"
+
+#   # If you are using OIDC, you need to generate an API key
+#   # that can be used to authenticate other sessions when signing in.
+#   #
+#   # This can be done with `headscale apikeys create --expiration 999d`
+#   headscale_api_key: "<your-headscale-api-key>"
+
+#   # Optional, but highly recommended otherwise Headplane
+#   # will attempt to automatically guess this from the issuer
+#   #
+#   # This should point to your publicly accessibly URL
+#   # for your Headplane instance with /admin/oidc/callback
+#   redirect_uri: "http://localhost:3000/admin/oidc/callback"
+
+#   # Stores the users and their permissions for Headplane
+#   # This is a path to a JSON file, default is specified below.
+#   user_storage_file: "/var/lib/headplane/users.json"

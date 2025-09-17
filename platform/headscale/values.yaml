@@ -1,0 +1,161 @@
+app-template:
+  defaultPodOptions:
+    shareProcessNamespace: true
+  controllers:
+    headscale:
+      serviceAccount:
+        name: headplane
+      containers:
+        headscale:
+          image:
+            repository: headscale/headscale
+            tag: v0.26.1
+          args:
+            - serve
+          env:
+            - name: HEADSCALE_SERVER_URL
+              value: https://headscale.khuedoan.com
+            - name: HEADSCALE_DNS_BASE_DOMAIN
+              value: hs-machine.khuedoan.com
+        headplane:
+          image:
+            repository: ghcr.io/tale/headplane
+            tag: 0.6.0
+          env:
+            - name: HEADPLANE_LOAD_ENV_OVERRIDES
+              value: 'true'
+            - name: 'HEADPLANE_INTEGRATION__KUBERNETES__POD_NAME'
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+  service:
+    headscale:
+      controller: headscale
+      ports:
+        http:
+          port: 8080
+          protocol: HTTP
+        headplane:
+          port: 3000
+          protocol: HTTP
+        metrics:
+          port: 9090
+          protocol: TCP
+        grpc:
+          port: 50443
+          protocol: TCP
+  ingress:
+    headscale:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/target: ddns.khuedoan.com
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      hosts:
+        - host: &host headscale.khuedoan.com
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                identifier: headscale
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: headscale-tls-certificate
+    headplane:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts:
+        - host: &host hs-admin.khuedoan.com
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                identifier: headscale
+                port: headplane
+      tls:
+        - hosts:
+            - *host
+          secretName: hs-admin-tls-certificate
+    grpc:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/target: ddns.khuedoan.com
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+        nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+      hosts:
+        - host: &host-grpc hs-grpc.khuedoan.com
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                identifier: headscale
+                port: grpc
+      tls:
+        - hosts:
+            - *host-grpc
+          secretName: hs-grpc-tls-certificate
+  persistence:
+    config:
+      type: configMap
+      name: headscale-config
+      globalMounts:
+        - path: /etc/headscale/config.yaml
+          subPath: config.yaml
+          readOnly: true
+    headplane-config:
+      type: configMap
+      name: headplane-config
+      globalMounts:
+        - path: /etc/headplane/config.yaml
+          subPath: headplane.yaml
+          readOnly: true
+    acl-policy:
+      type: configMap
+      name: headscale-acl-policy
+      globalMounts:
+        - path: /etc/headscale/acl-policy.hujson
+          subPath: acl-policy.hujson
+          readOnly: true
+    tls:
+      type: secret
+      name: headscale-tls-certificate
+      globalMounts:
+        - path: /tls
+          readOnly: true
+    oidc:
+      type: secret
+      name: headscale-secret
+      globalMounts:
+        - path: /oidc
+          readOnly: true
+    headplane-cookie:
+      type: secret
+      name: headplane-cookie
+      globalMounts:
+        - path: /cookie
+          subPath: cookie
+          readOnly: true
+    volume:
+      accessMode: ReadWriteOnce
+      size: 10Gi
+      globalMounts:
+        - path: /etc/headscale
+          subPath: etc
+        - path: /var/lib/headscale
+          subPath: lib
+        - path: /var/run/headscale
+          subPath: run
+        - path: /etc/headplane
+          subPath: hp-etc
+        - path: /var/lib/headplane
+          subPath: hp-lib
+        - path: /var/run/headplane
+          subPath: hp-run
