@@ -77,14 +77,14 @@
       nixosConfigurations = import ./metal {
         inherit nixpkgs disko;
       };
-      nixos-pxe =
+      nixosPxeServer =
         let
           installer = (import ./metal { inherit nixpkgs disko; }).installer;
           hostPkgs = installer.pkgs;
           build = installer.config.system.build;
         in
         hostPkgs.writeShellApplication {
-          name = "nixos-pxe";
+          name = "nixos-pxe-server";
           # TODO Pixiecore is unmaintained, probably need to find a new one
           text = ''
             exec ${hostPkgs.pixiecore}/bin/pixiecore \
@@ -94,8 +94,7 @@
               --cmdline "init=${build.toplevel}/init loglevel=4" \
               --dhcp-no-bind \
               --debug \
-              --port 64172 \
-              --status-port 64172 "$@"
+              --port 8080
           '';
         };
     };
