@@ -5,7 +5,7 @@
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal system external smoke-test post-install clean
+default: metal system external smoke-test post-install clean fmt
 
 configure:
 	./scripts/configure
@@ -13,6 +13,12 @@ configure:
 
 metal:
 	make -C metal
+	# TODO new install flow
+	# sudo -v
+	# sudo nix run .#nixos-pxe
+	# echo 'waiting until installer is booted' && sleep 30
+	# nixos-anywhere --flake .#metal1 --target-host root@192.168.1.6
+	# nixos-rebuild --flake .#metal1 --target-host root@192.168.1.6 switch
 
 system:
 	make -C system
@@ -46,3 +52,6 @@ docs:
 
 git-hooks:
 	pre-commit install
+
+fmt:
+	treefmt

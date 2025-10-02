@@ -12,8 +12,15 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, disko }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      disko,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
       in
@@ -41,6 +48,8 @@
             kustomize
             libisoburn
             neovim
+            nixfmt-tree
+            nixos-anywhere
             openssh_gssapi
             opentofu # Drop-in replacement for Terraform
             p7zip
@@ -50,14 +59,16 @@
             wireguard-tools
             yamllint
 
-            (python3.withPackages (p: with p; [
-              jinja2
-              kubernetes
-              mkdocs-material
-              netaddr
-              pexpect
-              rich
-            ]))
+            (python3.withPackages (
+              p: with p; [
+                jinja2
+                kubernetes
+                mkdocs-material
+                netaddr
+                pexpect
+                rich
+              ]
+            ))
           ];
         };
       }
@@ -66,20 +77,25 @@
       nixosConfigurations = import ./metal {
         inherit nixpkgs disko;
       };
-      nixos-pxe = let
-        installer = (import ./metal { inherit nixpkgs disko; }).installer;
-        hostPkgs = installer.pkgs;
-        build = installer.config.system.build;
-      in
+      nixos-pxe =
+        let
+          installer = (import ./metal { inherit nixpkgs disko; }).installer;
+          hostPkgs = installer.pkgs;
+          build = installer.config.system.build;
+        in
         hostPkgs.writeShellApplication {
           name = "nixos-pxe";
           # TODO Pixiecore is unmaintained, probably need to find a new one
           text = ''
             exec ${hostPkgs.pixiecore}/bin/pixiecore \
-              boot ${build.kernel}/bzImage ${build.netbootRamdisk}/initrd \
+              boot \
+              ${build.kernel}/bzImage \
+              ${build.netbootRamdisk}/initrd \
               --cmdline "init=${build.toplevel}/init loglevel=4" \
-              --debug --dhcp-no-bind \
-              --port 64172 --status-port 64172 "$@"
+              --dhcp-no-bind \
+              --debug \
+              --port 64172 \
+              --status-port 64172 "$@"
           '';
         };
     };
