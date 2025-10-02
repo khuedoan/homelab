@@ -66,5 +66,21 @@
       nixosConfigurations = import ./metal {
         inherit nixpkgs disko;
       };
+      nixos-pxe = let
+        installer = (import ./metal { inherit nixpkgs disko; }).installer;
+        hostPkgs = installer.pkgs;
+        build = installer.config.system.build;
+      in
+        hostPkgs.writeShellApplication {
+          name = "nixos-pxe";
+          # TODO Pixiecore is unmaintained, probably need to find a new one
+          text = ''
+            exec ${hostPkgs.pixiecore}/bin/pixiecore \
+              boot ${build.kernel}/bzImage ${build.netbootRamdisk}/initrd \
+              --cmdline "init=${build.toplevel}/init loglevel=4" \
+              --debug --dhcp-no-bind \
+              --port 64172 --status-port 64172 "$@"
+          '';
+        };
     };
 }
