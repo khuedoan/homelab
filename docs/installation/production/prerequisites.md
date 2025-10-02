@@ -26,6 +26,7 @@ By using this project you agree to [the license](../../reference/license.md).
     The initial controller is the machine used to bootstrap the cluster, we only need it once, you can use your laptop or desktop
 
 - A **Linux** machine that can run Docker (because the `host` networking driver used for PXE boot [only supports Linux](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows).
+- mDNS configured to resolve `.local` domains, either with `systemd-resolved` or `avahi` daemon (TODO clarify this part)
 
 ### Servers
 
