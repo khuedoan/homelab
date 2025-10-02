@@ -1,20 +1,25 @@
 {
-  description = "Homelab";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-25.05";
+    };
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, disko }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
       in
-      with pkgs;
       {
-        devShells.default = mkShell {
-          packages = [
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
             ansible
             ansible-lint
             bmake
@@ -56,5 +61,10 @@
           ];
         };
       }
-    );
+    )
+    // {
+      nixosConfigurations = import ./metal {
+        inherit nixpkgs disko;
+      };
+    };
 }
