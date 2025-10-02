@@ -15,10 +15,10 @@ metal:
 	make -C metal
 	# TODO new install flow
 	# sudo -v
-	# sudo nix run .#nixos-pxe
+	# sudo nix run .#nixosPxeServer
 	# echo 'waiting until installer is booted' && sleep 30
-	# nixos-anywhere --flake .#metal1 --target-host root@192.168.1.6
-	# nixos-rebuild --flake .#metal1 --target-host root@192.168.1.6 switch
+	# ssh root@192.168.1.2 cat /etc/os-release | grep VARIANT_ID=installer && nixos-anywhere --flake .#metal1 --target-host root@192.168.1.2
+	# nixos-rebuild --flake . --target-host root@metal1.local switch
 
 system:
 	make -C system
