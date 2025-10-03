@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, ... }:
+{ pkgs, lib, config, modulesPath, ... }:
 
 {
   imports = [
@@ -8,9 +8,14 @@
   networking.hostName = "nixos-installer";
   services.openssh.enable = true;
 
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5ue4np7cF34f6dwqH1262fPjkowHQ8irfjVC156PCG"
-  ];
+  # Set root password to "nixos-installer" for initial SSH access
+  users.users.root = {
+    password = "nixos-installer";
+    initialHashedPassword = lib.mkForce null;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5ue4np7cF34f6dwqH1262fPjkowHQ8irfjVC156PCG"
+    ];
+  };
 
   environment = {
     systemPackages = with pkgs; [
@@ -44,4 +49,7 @@
       };
       wantedBy = [ "multi-user.target" ];
     };
+
+  # TODO
+  # system.stateVersion = config.system.nixos.version;
 }

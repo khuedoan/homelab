@@ -19,10 +19,28 @@
       flake-utils,
       disko,
     }:
-    flake-utils.lib.eachDefaultSystem (
+    (flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        installer = (import ./metal { inherit nixpkgs disko; }).installer;
+        build = installer.config.system.build;
+        homelabInstall = pkgs.buildGoModule {
+          pname = "homelab-install";
+          version = "0.1.0";
+          src = ./tools;
+          vendorHash = "sha256-cYS7Jel5ARf+FioPxP5/Wu+LHQLX1U94kfMQ+K26Rnk=";
+
+          postInstall = ''
+            wrapProgram $out/bin/homelab-install \
+              --add-flags "-kernel ${build.kernel}/bzImage" \
+              --add-flags "-initrd ${build.netbootRamdisk}/initrd" \
+              --add-flags "-init ${build.toplevel}/init" \
+              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nixos-anywhere ]}
+          '';
+
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -40,31 +58,17 @@
             opentofu
           ];
         };
+
+        packages = {
+          homelabInstall = homelabInstall;
+          nixosPxeServer = homelabInstall; # Alias for backwards compatibility
+          default = homelabInstall;
+        };
       }
-    )
+    ))
     // {
       nixosConfigurations = import ./metal {
         inherit nixpkgs disko;
       };
-      nixosPxeServer =
-        let
-          installer = (import ./metal { inherit nixpkgs disko; }).installer;
-          hostPkgs = installer.pkgs;
-          build = installer.config.system.build;
-        in
-        hostPkgs.writeShellApplication {
-          name = "nixos-pxe-server";
-          # TODO Pixiecore is unmaintained, probably need to find a new one
-          text = ''
-            exec ${hostPkgs.pixiecore}/bin/pixiecore \
-              boot \
-              ${build.kernel}/bzImage \
-              ${build.netbootRamdisk}/initrd \
-              --cmdline "init=${build.toplevel}/init loglevel=4" \
-              --dhcp-no-bind \
-              --debug \
-              --port 8080
-          '';
-        };
     };
 }
