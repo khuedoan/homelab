@@ -44,9 +44,6 @@ restore:
 test:
 	make -C test
 
-clean:
-	docker compose --project-directory ./metal/roles/pxe_server/files down
-
 docs:
 	mkdocs serve
 
