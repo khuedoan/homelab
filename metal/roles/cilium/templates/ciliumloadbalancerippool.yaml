@@ -1,9 +1,0 @@
-apiVersion: cilium.io/v2alpha1
-kind: CiliumLoadBalancerIPPool
-metadata:
-  name: default
-spec:
-  blocks:
-    {% for cidr in load_balancer_ip_pool %}
-    - cidr: {{ cidr }}
-    {% endfor %}

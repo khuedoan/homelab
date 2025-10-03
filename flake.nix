@@ -27,48 +27,17 @@
       {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            ansible
-            ansible-lint
-            bmake
-            diffutils
-            docker
-            docker-compose
             dyff
-            git
-            glibcLocales
+            gnumake
             go
             gotestsum
-            iproute2
-            jq
-            k9s
-            kanidm
-            kube3d
             kubectl
             kubernetes-helm
-            kustomize
-            libisoburn
-            neovim
             nixfmt-tree
             nixos-anywhere
+            nixos-rebuild
             openssh_gssapi
-            opentofu # Drop-in replacement for Terraform
-            p7zip
-            pre-commit
-            qrencode
-            shellcheck
-            wireguard-tools
-            yamllint
-
-            (python3.withPackages (
-              p: with p; [
-                jinja2
-                kubernetes
-                mkdocs-material
-                netaddr
-                pexpect
-                rich
-              ]
-            ))
+            opentofu
           ];
         };
       }
