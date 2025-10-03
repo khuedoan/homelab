@@ -52,3 +52,4 @@ git-hooks:
 
 fmt:
 	treefmt
+	cd tools && go fmt ./...
