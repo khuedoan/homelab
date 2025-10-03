@@ -1,9 +1,0 @@
-ignore: |
-  templates/
-  mkdocs.yml
-
-extends: default
-
-rules:
-  document-start: disable
-  line-length: disable

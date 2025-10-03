@@ -1,7 +1,0 @@
-metal:
-  children:
-    masters:
-      hosts:
-        proxmox0: {ansible_host: 192.168.1.169, mac: 'c2:f5:cf:1f:3e:c0', disk: sda, network_interface: ens18}
-    workers:
-      hosts: {}
