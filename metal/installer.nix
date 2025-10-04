@@ -1,4 +1,10 @@
-{ pkgs, lib, config, modulesPath, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  modulesPath,
+  ...
+}:
 
 {
   imports = [
@@ -23,16 +29,26 @@
     ];
   };
 
-  systemd.services."phone-home" =
+  systemd.services."installer-callback" =
     let
-      reportScript = pkgs.writeShellScript "phone-home.sh" ''
+      reportScript = pkgs.writeShellScript "installer-callback.sh" ''
         set -euo pipefail
 
-        sleep 30
+        # Wait for default route and IP address to be ready
+        echo "Waiting for network to be ready..."
+        while true; do
+          if ${pkgs.iproute2}/bin/ip route show default > /dev/null 2>&1; then
+            iface=$(${pkgs.iproute2}/bin/ip route show default | ${pkgs.coreutils}/bin/cut -d ' ' -f 5)
+            ip=$(${pkgs.iproute2}/bin/ip route show default | ${pkgs.coreutils}/bin/cut -d ' ' -f 9)
+            if [ -n "$iface" ] && [ -n "$ip" ] && [ "$ip" != "0.0.0.0" ]; then
+              echo "Network is ready: interface=$iface ip=$ip"
+              break
+            fi
+          fi
+          sleep 1
+        done
 
-        iface=$(${pkgs.iproute2}/bin/ip route show default | ${pkgs.coreutils}/bin/cut -d ' ' -f 5)
         mac=$(cat /sys/class/net/$iface/address)
-        ip=$(${pkgs.iproute2}/bin/ip route show default | ${pkgs.coreutils}/bin/cut -d ' ' -f 9)
 
         ${pkgs.curl}/bin/curl -sf -X POST "http://192.168.1.15:5000/report" \
           --data-urlencode "mac=$mac" \
