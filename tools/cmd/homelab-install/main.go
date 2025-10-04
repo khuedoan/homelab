@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -12,11 +11,13 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/log"
 	"go.universe.tf/netboot/out/ipxe"
 	"go.universe.tf/netboot/pixiecore"
 )
 
-// Hardcoded map of MAC → flake target
+// TODO do not harcode map of MAC → flake target
 var hostMap = map[string]string{
 	"bc:24:11:d0:28:34": ".#metal2",
 	"bc:24:11:0d:2f:20": ".#metal1",
@@ -32,19 +33,38 @@ var (
 	shutdownCh = make(chan struct{})
 )
 
+func getSubsystemStyle(subsystem string) lipgloss.Style {
+	switch subsystem {
+	case "DHCP":
+		return lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
+	case "TFTP":
+		return lipgloss.NewStyle().Foreground(lipgloss.Color("2"))
+	case "HTTP":
+		return lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
+	case "CALLBACK":
+		return lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
+	case "INSTALL":
+		return lipgloss.NewStyle().Foreground(lipgloss.Color("5"))
+	case "PXE":
+		return lipgloss.NewStyle().Foreground(lipgloss.Color("6"))
+	default:
+		return lipgloss.NewStyle().Foreground(lipgloss.Color("7"))
+	}
+}
+
 var (
 	kernelPath = flag.String("kernel", "", "Path to kernel bzImage")
 	initrdPath = flag.String("initrd", "", "Path to initrd")
 	initPath   = flag.String("init", "", "Path to init in the system")
 	address    = flag.String("address", "0.0.0.0", "Address to listen on (default: 0.0.0.0 for all interfaces)")
+	debug      = flag.Bool("debug", false, "Enable debug mode")
 )
 
-type phoneHome struct {
+type callback struct {
 	MAC string
 	IP  string
 }
 
-// Pixiecore boot handler
 type bootHandler struct {
 	kernelPath string
 	initrdPath string
@@ -54,7 +74,6 @@ type bootHandler struct {
 func (b bootHandler) BootSpec(m pixiecore.Machine) (*pixiecore.Spec, error) {
 	mac := m.MAC.String()
 	if _, ok := hostMap[mac]; ok {
-		// Serve the NixOS installer kernel/initrd
 		return &pixiecore.Spec{
 			Kernel:  pixiecore.ID("kernel"),
 			Initrd:  []pixiecore.ID{"initrd"},
@@ -100,34 +119,19 @@ func main() {
 		log.Fatal("Usage: homelab-install -kernel <path> -initrd <path> -init <path>")
 	}
 
-	fmt.Println("Servers to install:", hostMap)
+	if *debug {
+		log.SetLevel(log.DebugLevel)
+	}
 
-	// Load pixiecore's embedded iPXE binaries
 	ipxeMap := make(map[pixiecore.Firmware][]byte)
 
-	// Load BIOS/PXE binary
-	biosData, err := ipxe.Asset("third_party/ipxe/src/bin/undionly.kpxe")
-	if err != nil {
-		log.Fatalf("Failed to load embedded BIOS iPXE binary: %v", err)
-	}
-	ipxeMap[pixiecore.FirmwareX86PC] = biosData
-
-	// Load EFI64 binary
 	efi64Data, err := ipxe.Asset("third_party/ipxe/src/bin-x86_64-efi/ipxe.efi")
 	if err != nil {
-		log.Fatalf("Failed to load embedded EFI64 iPXE binary: %v", err)
+		log.Fatal("Failed to load embedded EFI64 iPXE binary", "error", err)
 	}
 	ipxeMap[pixiecore.FirmwareEFI64] = efi64Data
 	ipxeMap[pixiecore.FirmwareEFIBC] = efi64Data
 
-	// Load EFI32 binary
-	efi32Data, err := ipxe.Asset("third_party/ipxe/src/bin-i386-efi/ipxe.efi")
-	if err != nil {
-		log.Fatalf("Failed to load embedded EFI32 iPXE binary: %v", err)
-	}
-	ipxeMap[pixiecore.FirmwareEFI32] = efi32Data
-
-	// Start Pixiecore PXE server
 	pxeServer = &pixiecore.Server{
 		Booter: bootHandler{
 			kernelPath: *kernelPath,
@@ -139,32 +143,44 @@ func main() {
 		HTTPPort:   8080,
 		Ipxe:       ipxeMap,
 		Debug: func(subsystem, msg string) {
-			log.Printf("[DEBUG] %s: %s", subsystem, msg)
+			coloredSubsystem := getSubsystemStyle(subsystem).Render(fmt.Sprintf("[%s]", subsystem))
+			log.Debugf("%s %s", coloredSubsystem, msg)
 		},
 		Log: func(subsystem, msg string) {
-			log.Printf("[INFO] %s: %s", subsystem, msg)
+			coloredSubsystem := getSubsystemStyle(subsystem).Render(fmt.Sprintf("[%s]", subsystem))
+			log.Infof("%s %s", coloredSubsystem, msg)
 		},
 	}
 
 	go func() {
 		if err := pxeServer.Serve(); err != nil {
-			log.Fatalf("PXE server error: %v", err)
+			log.Fatal("PXE server error", "error", err)
 		}
 	}()
 
-	// Start HTTP phone-home server
 	mux := http.NewServeMux()
 	mux.HandleFunc("/report", reportHandler)
 	server = &http.Server{Addr: ":5000", Handler: mux}
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("HTTP server error: %v", err)
+			log.Fatal("HTTP server error", "error", err)
 		}
 	}()
 
-	fmt.Println("PXE server listening on port 8080")
-	fmt.Println("Phone-home server listening on port 5000")
+	// These ports can technically be set for testing, but the
+	// protocols burned in firmware on the client side hardcode these,
+	// so if you change them in production, nothing will work.
+	log.Info(
+		"Running on ports",
+		"DHCP", 67,
+		"TFTP", 69,
+		"PXE", 4001,
+		"HTTP", 8080,
+		"CALLBACK", 5000,
+	)
+
+	log.Info("Servers to install", "hosts", hostMap)
 
 	// Handle SIGINT for cleanup
 	sigCh := make(chan os.Signal, 1)
@@ -196,44 +212,50 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("Got phone-home from %s at %s\n", mac, ip)
+	coloredSubsystem := getSubsystemStyle("CALLBACK").Render("[CALLBACK]")
+	log.Infof("%s Got callback mac=%s ip=%s", coloredSubsystem, mac, ip)
 
 	mu.Lock()
 	defer mu.Unlock()
 
 	if flake, ok := hostMap[mac]; ok {
 		if !installed[mac] && !inFlight[mac] {
-			fmt.Printf("→ Starting nixos-anywhere for %s on %s\n", flake, ip)
+			coloredSubsystem := getSubsystemStyle("INSTALL").Render("[INSTALL]")
+			log.Infof("%s Starting installation flake=%s ip=%s", coloredSubsystem, flake, ip)
 			inFlight[mac] = true
 
 			go monitorInstall(mac, ip, flake)
 		} else {
-			fmt.Printf("%s already installed or in progress, ignoring\n", mac)
+			log.Warn("Host already installed or in progress", "mac", mac)
 		}
 	} else {
-		fmt.Println("Unknown MAC, ignoring")
+		log.Warn("Unknown MAC, ignoring", "mac", mac)
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
 func monitorInstall(mac, ip, flake string) {
-	fmt.Printf("Running nixos-anywhere install of %s on %s\n", flake, ip)
+	coloredSubsystem := getSubsystemStyle("INSTALL").Render("[INSTALL]")
+	log.Infof("%s Running installation flake=%s ip=%s", coloredSubsystem, flake, ip)
 
-	// Run nixos-anywhere with password authentication
 	cmd := exec.Command("nixos-anywhere",
 		"--env-password",
 		"--no-substitute-on-destination",
 		"--flake", flake,
 		fmt.Sprintf("root@%s", ip),
 	)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	// Set SSHPASS environment variable with the hardcoded installer password
+
 	cmd.Env = append(os.Environ(), "SSHPASS=nixos-installer")
 
+	if *debug {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+	}
+
 	if err := cmd.Run(); err != nil {
-		fmt.Printf("Error installing %s: %v\n", mac, err)
+		coloredSubsystem := getSubsystemStyle("INSTALL").Render("[INSTALL]")
+		log.Errorf("%s Error installing host mac=%s error=%v", coloredSubsystem, mac, err)
 		mu.Lock()
 		delete(inFlight, mac)
 		mu.Unlock()
@@ -245,8 +267,9 @@ func monitorInstall(mac, ip, flake string) {
 	delete(inFlight, mac)
 	installed[mac] = true
 
-	fmt.Printf("Successfully installed %s\n", mac)
-	fmt.Printf("Installed servers: %+v\n", installed)
+	coloredSubsystem = getSubsystemStyle("INSTALL").Render("[INSTALL]")
+	log.Infof("%s Successfully installed host mac=%s", coloredSubsystem, mac)
+	log.Infof("%s Installation status: installed=%v", coloredSubsystem, installed)
 
 	pending := make(map[string]struct{})
 	for k := range hostMap {
@@ -254,23 +277,23 @@ func monitorInstall(mac, ip, flake string) {
 			pending[k] = struct{}{}
 		}
 	}
-	fmt.Printf("Pending servers: %+v\n", pending)
+	log.Infof("%s Pending servers: %v", coloredSubsystem, pending)
 
 	if len(pending) == 0 {
-		fmt.Println("All servers installed, shutting down.")
+		log.Infof("%s All servers installed, shutting down", coloredSubsystem)
 		close(shutdownCh)
 	}
 }
 
 func stopServer() {
-	fmt.Println("Stopping servers...")
+	log.Info("Stopping servers...")
 	if server != nil {
 		server.Close()
-		fmt.Println("HTTP server shutdown complete.")
+		log.Info("HTTP server shutdown complete")
 	}
 	if pxeServer != nil {
 		pxeServer.Shutdown()
-		fmt.Println("PXE server stopped.")
+		log.Info("PXE server stopped")
 	}
 	os.Exit(0)
 }
