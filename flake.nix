@@ -29,7 +29,8 @@
           pname = "homelab-install";
           version = "0.1.0";
           src = ./tools;
-          vendorHash = "sha256-cYS7Jel5ARf+FioPxP5/Wu+LHQLX1U94kfMQ+K26Rnk=";
+          # TODO better way to build this shit
+          vendorHash = "sha256-rTJt3UWRUyhRDx1Sdno0fFBYMb4RPtzB7Z7sg45ZJ8o=";
 
           postInstall = ''
             wrapProgram $out/bin/homelab-install \

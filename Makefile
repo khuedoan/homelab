@@ -12,13 +12,8 @@ configure:
 	git status
 
 metal:
-	make -C metal
-	# TODO new install flow
-	# sudo -v
-	# sudo nix run .#nixosPxeServer
-	# echo 'waiting until installer is booted' && sleep 30
-	# ssh root@192.168.1.2 cat /etc/os-release | grep VARIANT_ID=installer && nixos-anywhere --flake .#metal1 --target-host root@192.168.1.2
-	# nixos-rebuild --flake . --target-host root@metal1.local switch
+	@echo 'Running PXE server as root for privileged ports'
+	sudo nix run .#homelabInstall
 
 system:
 	make -C system
