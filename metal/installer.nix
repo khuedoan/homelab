@@ -50,7 +50,23 @@
 
         mac=$(cat /sys/class/net/$iface/address)
 
-        ${pkgs.curl}/bin/curl -sf -X POST "http://192.168.1.15:5000/report" \
+        # Get PXE API server from kernel command line
+        if [ ! -f /proc/cmdline ]; then
+          echo "Error: /proc/cmdline not found"
+          exit 1
+        fi
+
+        pxe_api=$(${pkgs.gnugrep}/bin/grep -oP 'pxe_api=\K[^ ]+' /proc/cmdline || true)
+
+        if [ -z "$pxe_api" ]; then
+          echo "Error: pxe_api parameter not found in kernel command line"
+          echo "Kernel command line: $(cat /proc/cmdline)"
+          exit 1
+        fi
+
+        echo "Using PXE API server from kernel cmdline: $pxe_api"
+
+        ${pkgs.curl}/bin/curl -sf -X POST "http://$pxe_api/report" \
           --data-urlencode "mac=$mac" \
           --data-urlencode "ip=$ip"
       '';
