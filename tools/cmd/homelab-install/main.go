@@ -1,9 +1,11 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -57,6 +59,7 @@ var (
 	initrdPath = flag.String("initrd", "", "Path to initrd")
 	initPath   = flag.String("init", "", "Path to init in the system")
 	address    = flag.String("address", "0.0.0.0", "Address to listen on (default: 0.0.0.0 for all interfaces)")
+	apiAddr    = flag.String("api-addr", "", "API server address for callbacks (auto-detected if not specified)")
 	debug      = flag.Bool("debug", false, "Enable debug mode")
 )
 
@@ -69,6 +72,7 @@ type bootHandler struct {
 	kernelPath string
 	initrdPath string
 	initPath   string
+	serverIP   string
 }
 
 func (b bootHandler) BootSpec(m pixiecore.Machine) (*pixiecore.Spec, error) {
@@ -77,7 +81,7 @@ func (b bootHandler) BootSpec(m pixiecore.Machine) (*pixiecore.Spec, error) {
 		return &pixiecore.Spec{
 			Kernel:  pixiecore.ID("kernel"),
 			Initrd:  []pixiecore.ID{"initrd"},
-			Cmdline: fmt.Sprintf("init=%s loglevel=4", b.initPath),
+			Cmdline: fmt.Sprintf("init=%s loglevel=4 pxe_api=%s:5000", b.initPath, b.serverIP),
 		}, nil
 	}
 	return nil, fmt.Errorf("unknown MAC address: %s", mac)
@@ -112,6 +116,41 @@ func (b bootHandler) WriteBootFile(id pixiecore.ID, body io.Reader) error {
 	return fmt.Errorf("WriteBootFile not supported")
 }
 
+// interfaceIP returns a usable IPv4 address from the given interface.
+// This is copied from pixiecore's dhcp.go to ensure we use the same
+// IP selection logic as the DHCP/TFTP/HTTP servers.
+func interfaceIP(intf *net.Interface) (net.IP, error) {
+	addrs, err := intf.Addrs()
+	if err != nil {
+		return nil, err
+	}
+
+	// Try to find an IPv4 address to use, in the following order:
+	// global unicast (includes rfc1918), link-local unicast,
+	// loopback.
+	fs := [](func(net.IP) bool){
+		net.IP.IsGlobalUnicast,
+		net.IP.IsLinkLocalUnicast,
+	}
+	for _, f := range fs {
+		for _, a := range addrs {
+			ipaddr, ok := a.(*net.IPNet)
+			if !ok {
+				continue
+			}
+			ip := ipaddr.IP.To4()
+			if ip == nil {
+				continue
+			}
+			if f(ip) {
+				return ip, nil
+			}
+		}
+	}
+
+	return nil, errors.New("no usable unicast address configured on interface")
+}
+
 func main() {
 	flag.Parse()
 
@@ -122,6 +161,32 @@ func main() {
 	if *debug {
 		log.SetLevel(log.DebugLevel)
 	}
+
+	// Auto-detect API address if not specified
+	if *apiAddr == "" {
+		if *address != "0.0.0.0" {
+			*apiAddr = *address
+		} else {
+			// Get all network interfaces and find a usable IP using the same
+			// logic as pixiecore's interfaceIP() function
+			ifaces, err := net.Interfaces()
+			if err != nil {
+				log.Fatal("Failed to get network interfaces", "error", err)
+			}
+
+			for _, iface := range ifaces {
+				if ip, err := interfaceIP(&iface); err == nil {
+					*apiAddr = ip.String()
+					break
+				}
+			}
+
+			if *apiAddr == "" {
+				log.Fatal("Could not auto-detect API address, please specify with -api-addr")
+			}
+		}
+	}
+	log.Info("Using API address for callbacks", "address", *apiAddr)
 
 	ipxeMap := make(map[pixiecore.Firmware][]byte)
 
@@ -137,6 +202,7 @@ func main() {
 			kernelPath: *kernelPath,
 			initrdPath: *initrdPath,
 			initPath:   *initPath,
+			serverIP:   *apiAddr,
 		},
 		Address:    *address,
 		DHCPNoBind: true,
