@@ -34,14 +34,13 @@
       reportScript = pkgs.writeShellScript "installer-callback.sh" ''
         set -euo pipefail
 
-        # Wait for default route and IP address to be ready
+        # Wait for default route to be ready
         echo "Waiting for network to be ready..."
         while true; do
           if ${pkgs.iproute2}/bin/ip route show default > /dev/null 2>&1; then
             iface=$(${pkgs.iproute2}/bin/ip route show default | ${pkgs.coreutils}/bin/cut -d ' ' -f 5)
-            ip=$(${pkgs.iproute2}/bin/ip route show default | ${pkgs.coreutils}/bin/cut -d ' ' -f 9)
-            if [ -n "$iface" ] && [ -n "$ip" ] && [ "$ip" != "0.0.0.0" ]; then
-              echo "Network is ready: interface=$iface ip=$ip"
+            if [ -n "$iface" ]; then
+              echo "Network is ready: interface=$iface"
               break
             fi
           fi
@@ -65,10 +64,10 @@
         fi
 
         echo "Using PXE API server from kernel cmdline: $pxe_api"
+        echo "Reporting MAC address: $mac"
 
         ${pkgs.curl}/bin/curl -sf -X POST "http://$pxe_api/report" \
-          --data-urlencode "mac=$mac" \
-          --data-urlencode "ip=$ip"
+          --data-urlencode "mac=$mac"
       '';
     in
     {
