@@ -271,11 +271,17 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mac := r.FormValue("mac")
-	ip := r.FormValue("ip")
 
-	if mac == "" || ip == "" {
-		http.Error(w, "missing mac or ip", http.StatusBadRequest)
+	if mac == "" {
+		http.Error(w, "missing mac", http.StatusBadRequest)
 		return
+	}
+
+	// Extract IP from the request's remote address
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		// If SplitHostPort fails, use RemoteAddr as-is (might be just an IP without port)
+		ip = r.RemoteAddr
 	}
 
 	coloredSubsystem := getSubsystemStyle("CALLBACK").Render("[CALLBACK]")
