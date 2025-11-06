@@ -5,14 +5,15 @@
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
 
-default: metal system external smoke-test post-install clean
+default: metal system external smoke-test post-install clean fmt
 
 configure:
 	./scripts/configure
 	git status
 
 metal:
-	make -C metal
+	@echo 'Running PXE server as root for privileged ports'
+	sudo nix run .#homelabInstall
 
 system:
 	make -C system
@@ -38,11 +39,12 @@ restore:
 test:
 	make -C test
 
-clean:
-	docker compose --project-directory ./metal/roles/pxe_server/files down
-
 docs:
 	mkdocs serve
 
 git-hooks:
 	pre-commit install
+
+fmt:
+	treefmt
+	cd tools && go fmt ./...

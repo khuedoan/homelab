@@ -19,6 +19,10 @@ They are not permanent, we can change them in the future if better alternatives 
 
     - CHANGEME
 
+## Switching from Fedora and Ansible to NixOS
+
+TODO
+
 ## Remove the Docker wrapper for Nix shell
 
 **Context**

@@ -1,60 +1,75 @@
 {
-  description = "Homelab";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-25.05";
+    };
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      disko,
+    }:
+    (flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
+        installer = (import ./metal { inherit nixpkgs disko; }).installer;
+        build = installer.config.system.build;
+        homelabInstall = pkgs.buildGoModule {
+          pname = "homelab-install";
+          version = "0.1.0";
+          src = ./tools;
+          # TODO better way to build this shit
+          vendorHash = "sha256-rTJt3UWRUyhRDx1Sdno0fFBYMb4RPtzB7Z7sg45ZJ8o=";
+
+          postInstall = ''
+            wrapProgram $out/bin/homelab-install \
+              --add-flags "-kernel ${build.kernel}/bzImage" \
+              --add-flags "-initrd ${build.netbootRamdisk}/initrd" \
+              --add-flags "-init ${build.toplevel}/init" \
+              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nixos-anywhere ]}
+          '';
+
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+        };
       in
-      with pkgs;
       {
-        devShells.default = mkShell {
-          packages = [
-            ansible
-            ansible-lint
-            bmake
-            diffutils
-            docker
-            docker-compose
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
             dyff
-            git
-            glibcLocales
+            gnumake
             go
             gotestsum
-            iproute2
-            jq
-            k9s
-            kanidm
-            kube3d
             kubectl
             kubernetes-helm
-            kustomize
-            libisoburn
-            neovim
+            nixfmt-tree
+            nixos-anywhere
+            nixos-rebuild
             openssh
-            opentofu # Drop-in replacement for Terraform
-            p7zip
-            pre-commit
-            qrencode
-            shellcheck
-            wireguard-tools
-            yamllint
-
-            (python3.withPackages (p: with p; [
-              jinja2
-              kubernetes
-              mkdocs-material
-              netaddr
-              pexpect
-              rich
-            ]))
+            opentofu
           ];
         };
+
+        packages = {
+          homelabInstall = homelabInstall;
+          nixosPxeServer = homelabInstall; # Alias for backwards compatibility
+          default = homelabInstall;
+        };
       }
-    );
+    ))
+    // {
+      nixosConfigurations = import ./metal {
+        inherit nixpkgs disko;
+      };
+    };
 }
