@@ -7,3 +7,5 @@ book/
 *.tgz
 *kubeconfig.yaml
 Chart.lock
+
+.env
