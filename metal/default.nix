@@ -1,9 +1,10 @@
-{ nixpkgs, disko }:
+{ nixpkgs, disko, nixie }:
 
 {
   installer = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = [
+      nixie.nixosModules.nixie-agent
       ./installer.nix
     ];
   };

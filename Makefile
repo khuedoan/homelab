@@ -4,16 +4,28 @@
 
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
+PXE_INTERFACE ?= eth0
+PXE_ADDRESS = $(shell ip -4 -o address show dev $(PXE_INTERFACE) scope global | awk '{ sub(/\/.*/, "", $$4); print $$4 }')
+SSH_KEY = ${HOME}/.ssh/id_ed25519
 
-default: metal system external smoke-test post-install clean fmt
+default: metal system external smoke-test post-install fmt
 
 configure:
 	./scripts/configure
 	git status
 
 metal:
-	@echo 'Running PXE server as root for privileged ports'
-	sudo nix run .#homelabInstall
+	@test -n "${PXE_ADDRESS}" || { \
+		echo "${PXE_INTERFACE} has no IPv4 address" >&2; \
+		exit 1; \
+	}
+	sudo env "PATH=$$PATH" nixie \
+		--address "${PXE_ADDRESS}" \
+		--installer .#nixosConfigurations.installer \
+		--flake . \
+		--hosts metal/hosts.json \
+		--install-ssh-key "${SSH_KEY}" \
+		--deployment-ssh-key "${SSH_KEY}"
 
 system:
 	make -C system
@@ -47,4 +59,3 @@ git-hooks:
 
 fmt:
 	treefmt
-	cd tools && go fmt ./...
