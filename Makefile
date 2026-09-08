@@ -4,9 +4,10 @@
 
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
-PXE_INTERFACE ?= eth0
-PXE_ADDRESS = $(shell ip -4 -o address show dev $(PXE_INTERFACE) scope global | awk '{ sub(/\/.*/, "", $$4); print $$4 }')
-SSH_KEY = ${HOME}/.ssh/id_ed25519
+PXE_INTERFACE ?= $(shell ip -4 route show default | awk '/default/ { print $$5; exit }')
+PXE_ADDRESS := $(shell ip -4 -o address show dev $(PXE_INTERFACE) scope global | awk '{ sub(/\/.*/, "", $$4); print $$4 }')
+SSH_KEY := ${HOME}/.ssh/id_ed25519
+INSTALL_KEY := $(shell grep -o 'ssh-ed25519 AAAA[A-Za-z0-9+/=]*' metal/installer.nix | head -1)
 
 default: metal system external smoke-test post-install fmt
 
@@ -15,8 +16,16 @@ configure:
 	git status
 
 metal:
+	@test -n "${PXE_INTERFACE}" || { \
+		echo "no default-route interface for PXE, set PXE_INTERFACE" >&2; \
+		exit 1; \
+	}
 	@test -n "${PXE_ADDRESS}" || { \
 		echo "${PXE_INTERFACE} has no IPv4 address" >&2; \
+		exit 1; \
+	}
+	@test "$$(ssh-keygen -y -f '${SSH_KEY}')" = "${INSTALL_KEY}" || { \
+		echo "${SSH_KEY} does not match the authorized key in metal/installer.nix" >&2; \
 		exit 1; \
 	}
 	sudo env "PATH=$$PATH" nixie \
