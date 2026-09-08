@@ -26,6 +26,9 @@ By using this project you agree to [the license](../../reference/license.md).
     The initial controller is the machine used to bootstrap the cluster, we only need it once, you can use your laptop or desktop
 
 - A **Linux** machine with Nix and root access to run the [Nixie](https://github.com/khuedoan/nixie) PXE server, which binds privileged network ports.
+- The development shell (`nix develop`) provides `nixie` and the other install tools.
+- The Makefile picks the PXE interface from the default route. Set `PXE_INTERFACE` when the nodes are not reachable through that interface.
+- The SSH private key passed to `make metal` (default `~/.ssh/id_ed25519`) must be authorized in `metal/installer.nix` and `metal/configuration.nix`.
 
 ### Servers
 

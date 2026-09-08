@@ -45,8 +45,9 @@ configuration is built from `metal/configuration.nix`.
   and [homecloud](https://github.com/khuedoan/homecloud), instead of being
   embedded in this repository.
 - The migration is still in progress. Nodes run the base NixOS configuration
-  only, and k3s clustering, secrets management, and GitOps bootstrap are not
-  implemented yet.
+  only. k3s clustering, secrets management, and GitOps bootstrap are not
+  implemented yet, and `make` still chains the cluster stages (`system`,
+  `external`, `smoke-test`) that this branch does not provision.
 
 ## Remove the Docker wrapper for Nix shell
 
@@ -217,6 +218,8 @@ Migrate documentation from mdBook to MkDocs (see commit `cd41343`).
 - We can no longer include only a portion of a file, see [facelessuser/pymdown-extensions#1462](https://github.com/facelessuser/pymdown-extensions/issues/1462).
 
 ## Choosing the base OS
+
+**Status**: superseded by [Switch metal provisioning from Fedora and Ansible to NixOS](#switch-metal-provisioning-from-fedora-and-ansible-to-nixos)
 
 **Context**
 
