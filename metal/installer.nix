@@ -5,9 +5,11 @@
     (modulesPath + "/installer/netboot/netboot-minimal.nix")
   ];
 
-  services.openssh.enable = true;
+  installer.cloneConfig = false;
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5ue4np7cF34f6dwqH1262fPjkowHQ8irfjVC156PCG"
   ];
+
+  system.stateVersion = "25.05";
 }
