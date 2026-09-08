@@ -19,9 +19,34 @@ They are not permanent, we can change them in the future if better alternatives 
 
     - CHANGEME
 
-## Switching from Fedora and Ansible to NixOS
+## Switch metal provisioning from Fedora and Ansible to NixOS
 
-TODO
+**Context**
+
+The metal nodes previously ran Fedora, provisioned with Ansible playbooks for
+PXE boot, k3s, Cilium, automatic upgrades, and wake-on-LAN. Procedural
+provisioning drifts from the running systems, and the Fedora nodes require
+manual maintenance.
+
+**Decision**
+
+Provision the metal nodes with NixOS instead. The PXE installer and
+orchestration engine lives in a dedicated repository,
+[nixie](https://github.com/khuedoan/nixie), which this repository consumes as
+a flake input. Host identities are declared in `metal/hosts.json`, the
+installer image is built from `metal/installer.nix`, and each node's
+configuration is built from `metal/configuration.nix`.
+
+**Consequences**
+
+- NixOS configuration is declarative, atomic, and reproducible, consistent
+  with the GitOps model of the rest of the cluster.
+- The installer is shared with other projects, [dotfiles](https://github.com/khuedoan/dotfiles)
+  and [homecloud](https://github.com/khuedoan/homecloud), instead of being
+  embedded in this repository.
+- The migration is still in progress. Nodes run the base NixOS configuration
+  only, and k3s clustering, secrets management, and GitOps bootstrap are not
+  implemented yet.
 
 ## Remove the Docker wrapper for Nix shell
 
