@@ -1,0 +1,19 @@
+{
+  "homelab-1": {
+    "mac_address": "00:23:24:d1:f5:69"
+  },
+  "homelab-2": {
+    "mac_address": "00:23:24:d1:f3:f0"
+  },
+  "homelab-3": {
+    "mac_address": "00:23:24:e7:04:60"
+  },
+  "homelab-4": {
+    "mac_address": "00:23:24:d1:f4:d6"
+  },
+  "hetzner-1": {
+    "ipv6_address": "2a01:4f9:3a:20ef::2",
+    "network_interface": "enp35s0",
+    "disk": "/dev/disk/by-id/ata-WDC_WD2000FYYZ-01UL1B1_WD-WCC1P0935477"
+  }
+}

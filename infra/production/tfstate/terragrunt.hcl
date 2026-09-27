@@ -6,7 +6,7 @@ include "root" {
 locals {
   api_token  = get_env("CLOUDFLARE_TFSTATE_API_TOKEN", "")
   account_id = get_env("CLOUDFLARE_ACCOUNT_ID", "")
-  bucket     = get_env("TFSTATE_BUCKET", "tfstate-homelab")
+  bucket     = get_env("TFSTATE_BUCKET", "tfstate-${include.root.locals.env}")
 }
 
 terraform {
