@@ -10,3 +10,5 @@ book/
 .terragrunt-cache/
 Chart.lock
 result
+
+infra/nixos/hosts.json

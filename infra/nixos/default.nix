@@ -5,21 +5,24 @@
 }:
 
 let
-  hosts = builtins.fromJSON (builtins.readFile ../metal/hosts.json);
+  hosts = builtins.fromJSON (builtins.readFile ./hosts.json);
 in
 {
   installer = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = [
       nixie.nixosModules.nixie-agent
-      ./installer.nix
+      ./profiles/installer.nix
     ];
   };
 }
 // nixpkgs.lib.mapAttrs (
-  name: _:
+  name: hostConfig:
   nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
+    specialArgs = {
+      inherit hostConfig;
+    };
     modules = [
       disko.nixosModules.disko
       ./configuration.nix
