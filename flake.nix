@@ -26,24 +26,32 @@
     in
     {
       devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          dyff
-          gnumake
-          go
-          gotestsum
-          kubectl
-          kubernetes-helm
-          nixfmt-tree
-          nixos-anywhere
-          nixos-rebuild
-          openssh
-          opentofu
-        ] ++ [
-          nixie.packages.${system}.default
-        ];
+        packages =
+          with pkgs;
+          [
+            dyff
+            gnumake
+            go
+            gotestsum
+            kubectl
+            kubernetes-helm
+            nixfmt-tree
+            nixos-anywhere
+            nixos-rebuild
+            openssh
+            opentofu
+            terragrunt
+            (python3.withPackages (pythonPackages: [
+              pythonPackages.mkdocs-material
+              pythonPackages.rich
+            ]))
+          ]
+          ++ [
+            nixie.packages.${system}.default
+          ];
       };
 
-      nixosConfigurations = import ./metal {
+      nixosConfigurations = import ./infra/nixos {
         inherit nixpkgs disko nixie;
       };
     };
