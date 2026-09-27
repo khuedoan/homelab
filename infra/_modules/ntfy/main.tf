@@ -9,7 +9,7 @@ resource "kubernetes_secret" "ntfy_auth" {
   }
 
   data = {
-    NTFY_URL   = var.auth.url
-    NTFY_TOPIC = var.auth.topic
+    NTFY_URL   = var.ntfy.url
+    NTFY_TOPIC = var.ntfy.topic
   }
 }

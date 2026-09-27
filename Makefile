@@ -9,7 +9,7 @@ PXE_ADDRESS := $(shell ip -4 -o address show dev $(PXE_INTERFACE) scope global |
 SSH_KEY := ${HOME}/.ssh/id_ed25519
 INSTALL_KEY := $(shell grep -o 'ssh-ed25519 AAAA[A-Za-z0-9+/=]*' metal/installer.nix | head -1)
 
-default: metal system external smoke-test post-install fmt
+default: metal fmt
 
 metal:
 	@test -n "${PXE_INTERFACE}" || { \
@@ -31,9 +31,6 @@ metal:
 		--hosts metal/hosts.json \
 		--install-ssh-key "${SSH_KEY}" \
 		--deployment-ssh-key "${SSH_KEY}"
-
-system:
-	make -C system
 
 external:
 	make -C external
@@ -58,9 +55,6 @@ test:
 
 docs:
 	mkdocs serve
-
-git-hooks:
-	pre-commit install
 
 fmt:
 	treefmt
