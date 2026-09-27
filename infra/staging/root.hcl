@@ -3,11 +3,16 @@ locals {
   r2_access_key = get_env("CLOUDFLARE_TFSTATE_ACCESS_KEY", "")
   r2_secret_key = get_env("CLOUDFLARE_TFSTATE_SECRET_KEY", "")
   r2_account_id = get_env("CLOUDFLARE_ACCOUNT_ID", "")
+  # Metal only writes a local file and converges on every run, so it keeps local
+  # state instead of the shared S3 backend.
+  stateless = path_relative_to_include() == "metal"
 }
 
 generate "backend" {
   path              = "backend.tf.json"
   if_exists         = "overwrite"
+  disable           = local.stateless
+  if_disabled       = "remove_terragrunt"
   disable_signature = true
   contents = jsonencode({
     terraform = {
@@ -36,6 +41,6 @@ generate "backend" {
 terraform {
   before_hook "unsupported_destroy" {
     commands = ["destroy"]
-    execute  = ["sh", "${get_repo_root()}/infra/pending", "Infrastructure teardown"]
+    execute  = ["sh", "-c", "echo 'Infrastructure teardown is unsupported' >&2; exit 1"]
   }
 }
