@@ -2,10 +2,6 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-include "state" {
-  path = find_in_parent_folders("_managed-state.hcl")
-}
-
 include "kubernetes" {
   path = find_in_parent_folders("_kubernetes.hcl")
 }
@@ -15,5 +11,5 @@ dependencies {
 }
 
 terraform {
-  source = "../_modules/ntfy"
+  source = "../_modules/cloudflare"
 }
