@@ -2,10 +2,6 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-include "state" {
-  path = find_in_parent_folders("_local-state.hcl")
-}
-
 dependencies {
   paths = ["../metal", "../hetzner-metal"]
 }
