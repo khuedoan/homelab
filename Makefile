@@ -11,10 +11,6 @@ INSTALL_KEY := $(shell grep -o 'ssh-ed25519 AAAA[A-Za-z0-9+/=]*' metal/installer
 
 default: metal system external smoke-test post-install fmt
 
-configure:
-	./scripts/configure
-	git status
-
 metal:
 	@test -n "${PXE_INTERFACE}" || { \
 		echo "no default-route interface for PXE, set PXE_INTERFACE" >&2; \
