@@ -1,14 +1,7 @@
 {
   "homelab-1": {
-    "mac_address": "10:66:6a:ba:b4:8d"
-  },
-  "homelab-2": {
-    "mac_address": "10:66:6a:30:d7:34"
-  },
-  "homelab-3": {
-    "mac_address": "10:66:6a:18:fa:1b"
-  },
-  "homelab-4": {
-    "mac_address": "10:66:6a:48:e7:0b"
+    "mac_address": "10:66:6a:ba:b4:8d",
+    "ip": "192.168.1.61",
+    "machine_id_hash": "c248603349578906624f8c18aca365a69a05e4b95d0c31f23c6ba930e0308197"
   }
 }
