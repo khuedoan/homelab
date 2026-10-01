@@ -17,6 +17,17 @@ steps:
           include:
             - 'flake.*'
     depends_on: []
+  unit-tests:
+    image: nixery.dev/shell/git/go/gcc/gnumake
+    commands:
+      - make -C toolbox test
+    when:
+      - event: pull_request
+        path:
+          include:
+            - 'toolbox/**'
+            - '.woodpecker/static-checks.yaml'
+    depends_on: []
   pre-commit:
     image: nixery.dev/shell/git/pre-commit # TODO replace with nix develop
     commands:
