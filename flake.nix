@@ -23,8 +23,20 @@
       system = "x86_64-linux";
 
       pkgs = import nixpkgs { inherit system; };
+      toolbox = pkgs.buildGoModule {
+        pname = "toolbox";
+        version = "0.1.0";
+        src = builtins.path {
+          path = ./toolbox;
+          name = "toolbox-src";
+        };
+        vendorHash = "sha256-BDyg4x042o2XcYRdbkNpX3q3xHssbtgYNTv/LE4zvoQ=";
+        nativeCheckInputs = [ pkgs.git ];
+      };
     in
     {
+      packages.${system}.toolbox = toolbox;
+
       devShells.${system}.default = pkgs.mkShell {
         packages =
           with pkgs;
@@ -43,11 +55,11 @@
             terragrunt
             (python3.withPackages (pythonPackages: [
               pythonPackages.mkdocs-material
-              pythonPackages.rich
             ]))
           ]
           ++ [
             nixie.packages.${system}.default
+            toolbox
           ];
       };
 
