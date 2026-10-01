@@ -23,18 +23,19 @@ smoke-test:
 	make -C test filter=Smoke
 
 post-install:
-	@./scripts/hacks
+	toolbox integrations setup
 
 # TODO maybe there's a better way to manage backup with GitOps?
 backup:
-	./scripts/backup --action setup --namespace=actualbudget --pvc=actualbudget-data
-	./scripts/backup --action setup --namespace=jellyfin --pvc=jellyfin-data
+	toolbox backup setup --namespace=actualbudget --pvc=actualbudget-data
+	toolbox backup setup --namespace=jellyfin --pvc=jellyfin-data
 
 restore:
-	./scripts/backup --action restore --namespace=actualbudget --pvc=actualbudget-data
-	./scripts/backup --action restore --namespace=jellyfin --pvc=jellyfin-data
+	toolbox backup restore --namespace=actualbudget --pvc=actualbudget-data
+	toolbox backup restore --namespace=jellyfin --pvc=jellyfin-data
 
 test:
+	make -C toolbox test
 	make -C test
 
 docs:

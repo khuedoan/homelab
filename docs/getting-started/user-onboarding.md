@@ -25,10 +25,10 @@
 
 === "For admin"
 
-    Run the following script:
+    In the development shell, create the account:
 
     ```sh
-    ./scripts/onboard-user johndoe "John Doe" "johndoe@example.com"
+    toolbox users create johndoe "John Doe" "johndoe@example.com"
     ```
 
     Let the user scan the QR code or follow the link to set up passkeys or password + TOTP.

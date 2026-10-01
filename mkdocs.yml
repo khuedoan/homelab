@@ -74,6 +74,7 @@ nav:
       - reference/architecture/overview.md
       - reference/architecture/networking.md
       - reference/architecture/decision-records.md
+    - reference/toolbox.md
     - reference/license.md
     - reference/changelog.md
     - reference/roadmap.md
