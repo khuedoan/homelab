@@ -35,6 +35,8 @@
       disko.nixosModules.disko
       ./configuration.nix
       ./profiles/network.nix
+      ./profiles/k3s-server.nix
+      ./profiles/rook-ceph.nix
       {
         networking.hostName = name;
       }
