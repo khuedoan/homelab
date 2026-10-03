@@ -1,4 +1,4 @@
-package cmd
+package charts
 
 import (
 	"bytes"
@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/khuedoan/homelab/toolbox/internal/process"
 )
 
 func helmDiffWrite(t *testing.T, path, data string, mode os.FileMode) {
@@ -85,12 +87,9 @@ printf '\n'
 			if tc.fail == "dyff" {
 				t.Setenv("DYFF_FAIL", "yes")
 			}
-			cmd := newHelmDiffCmd()
 			var output, stderr bytes.Buffer
-			cmd.SetOut(&output)
-			cmd.SetErr(&stderr)
-			cmd.SetArgs([]string{"--repository", repo, "--source", tc.source, "--target", tc.target, "--subpath", "system"})
-			err := cmd.Execute()
+			run := process.New("", nil, &output, &stderr)
+			err := Diff(t.Context(), run, DiffOptions{Repository: repo, Source: tc.source, Target: tc.target, Subpath: "system"})
 			if tc.message != "" {
 				if err == nil || !strings.Contains(err.Error(), tc.message) {
 					t.Fatalf("want %q failure, got %v", tc.message, err)
@@ -105,21 +104,5 @@ printf '\n'
 				t.Fatalf("temporary files remain: %v, %v", entries, err)
 			}
 		})
-	}
-}
-
-func TestHelmDiffFlags(t *testing.T) {
-	for _, args := range [][]string{
-		{},
-		{"--repository", "repo", "--source", "source", "--target", "target"},
-		{"--repository", "repo", "--source", "source", "--target", "target", "--subpath", "../escape"},
-	} {
-		cmd := newHelmDiffCmd()
-		cmd.SetOut(&bytes.Buffer{})
-		cmd.SetErr(&bytes.Buffer{})
-		cmd.SetArgs(args)
-		if err := cmd.Execute(); err == nil {
-			t.Fatalf("expected invalid arguments to fail: %v", args)
-		}
 	}
 }
