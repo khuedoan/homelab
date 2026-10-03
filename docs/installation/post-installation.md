@@ -33,14 +33,18 @@ Save the following files to a safe location like a password manager (if you're u
 Now is a good time to set up backups for your homelab.
 Follow the [backup and restore guide](../how-to-guides/backup-and-restore.md) to get started.
 
-## Run the full test suite
+## Test in staging
 
-After the homelab has been stabilized, you can run the full test suite to ensure that everything is working properly:
+Run live tests against staging. Each staging node needs a recorded management
+IP and MAC in the inventory.
 
 ```sh
-make test
+make -C tests e2e config=config/staging.json
 ```
 
-!!! info
+Run offline checks with `make test`. See `tests/README.md` for prerequisites
+and individual test commands.
 
-    The "full" test suit is still in its early stages, so any contribution is greatly appreciated.
+The staging suite checks cluster membership through the control-plane VIP,
+networking, and external load balancing. Storage, registry, and application
+checks run when configured for staging.

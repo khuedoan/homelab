@@ -20,7 +20,7 @@ external:
 	make -C external
 
 smoke-test:
-	make -C test filter=Smoke
+	make -C tests e2e filter='^Apps$$' config='$(TEST_CONFIG)'
 
 post-install:
 	toolbox integrations setup
@@ -36,7 +36,7 @@ restore:
 
 test:
 	make -C toolbox test
-	make -C test
+	make -C tests test
 
 docs:
 	mkdocs serve
