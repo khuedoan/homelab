@@ -1,60 +1,74 @@
 {
-  description = "Homelab";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-26.05";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixie = {
+      url = "github:khuedoan/nixie";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      with pkgs;
-      {
-        devShells.default = mkShell {
-          packages = [
-            ansible
-            ansible-lint
-            bmake
-            diffutils
-            docker
-            docker-compose
+  outputs =
+    {
+      nixpkgs,
+      disko,
+      nixie,
+      ...
+    }:
+    let
+      system = "x86_64-linux";
+
+      pkgs = import nixpkgs { inherit system; };
+      toolbox = pkgs.buildGoModule {
+        pname = "toolbox";
+        version = "0.1.0";
+        src = builtins.path {
+          path = ./toolbox;
+          name = "toolbox-src";
+        };
+        vendorHash = "sha256-b/zHEjDp2LoaoOvIc+3+eUS14JVms8hWJ9fS2uPaN+o=";
+        nativeCheckInputs = [ pkgs.git ];
+        preCheck = ''
+          export SFTP_SERVER="${pkgs.openssh}/libexec/sftp-server"
+        '';
+      };
+    in
+    {
+      packages.${system}.toolbox = toolbox;
+
+      devShells.${system}.default = pkgs.mkShell {
+        SFTP_SERVER = "${pkgs.openssh}/libexec/sftp-server";
+        packages =
+          with pkgs;
+          [
             dyff
-            git
-            glibcLocales
+            gnumake
             go
             gotestsum
-            iproute2
-            jq
-            k9s
-            kanidm
-            kube3d
             kubectl
             kubernetes-helm
-            kustomize
-            libisoburn
-            neovim
-            openssh_gssapi
-            opentofu # Drop-in replacement for Terraform
-            p7zip
-            pre-commit
-            qrencode
-            shellcheck
-            wireguard-tools
-            yamllint
-
-            (python3.withPackages (p: with p; [
-              jinja2
-              kubernetes
-              mkdocs-material
-              netaddr
-              pexpect
-              rich
+            nixfmt-tree
+            nixos-anywhere
+            nixos-rebuild
+            openssh
+            opentofu
+            terragrunt
+            (python3.withPackages (pythonPackages: [
+              pythonPackages.mkdocs-material
             ]))
+          ]
+          ++ [
+            nixie.packages.${system}.default
+            toolbox
           ];
-        };
-      }
-    );
+      };
+
+      nixosConfigurations = import ./infra/nixos {
+        inherit nixpkgs disko nixie;
+      };
+    };
 }

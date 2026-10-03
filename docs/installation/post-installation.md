@@ -6,7 +6,7 @@ Save the following files to a safe location like a password manager (if you're u
 
 - `~/.ssh/id_ed25519`
 - `~/.ssh/id_ed25519.pub`
-- `./metal/kubeconfig.yaml`
+- `./infra/kubeconfig.yaml`
 - `~/.terraform.d/credentials.tfrc.json`
 - `./external/terraform.tfvars`
 
@@ -14,31 +14,37 @@ Save the following files to a safe location like a password manager (if you're u
 
 - ArgoCD:
     - Username: `admin`
-    - Password: run `./scripts/argocd-admin-password`
+    - Password: run `toolbox argocd admin-password`
 - Gitea:
     - Username: `gitea_admin`
     - Password: get from `global-secrets` namespace
 - Kanidm:
     - Usernames: `admin` and `idm_admin`
-    - Password: run `./scripts/kanidm-reset-password admin` and `./scripts/kanidm-reset-password idm_admin`
+    - Password: run `toolbox users reset-password admin` and `toolbox users reset-password idm_admin`
 - Jellyfin and other applications in the \*arr stack: see the [dedicated guide for media management](../how-to-guides/media-management.md)
 - Other apps:
     - Username: `admin`
     - Password: get from `global-secrets` namespace
+
+`toolbox` is available in `nix develop`. See the [command reference](../reference/toolbox.md) for all commands and kubeconfig options.
 
 ## Backup
 
 Now is a good time to set up backups for your homelab.
 Follow the [backup and restore guide](../how-to-guides/backup-and-restore.md) to get started.
 
-## Run the full test suite
+## Test in staging
 
-After the homelab has been stabilized, you can run the full test suite to ensure that everything is working properly:
+Run live tests against staging. Each staging node needs a recorded management
+IP and MAC in the inventory.
 
 ```sh
-make test
+make -C tests e2e config=config/staging.json
 ```
 
-!!! info
+Run offline checks with `make test`. See `tests/README.md` for prerequisites
+and individual test commands.
 
-    The "full" test suit is still in its early stages, so any contribution is greatly appreciated.
+The staging suite checks cluster membership through the control-plane VIP,
+networking, and external load balancing. Storage, registry, and application
+checks run when configured for staging.

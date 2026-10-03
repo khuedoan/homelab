@@ -1,4 +1,0 @@
-ansible_user: root
-ansible_ssh_private_key_file: ~/.ssh/id_ed25519
-ssh_public_key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
-dns_server: "8.8.8.8"

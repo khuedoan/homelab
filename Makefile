@@ -2,47 +2,44 @@
 .PHONY: *
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
+KUBECONFIG = $(shell pwd)/infra/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
+ENV ?= production
+HOSTS_FILE := infra/$(ENV)/metal/hosts.json
+NIXOS_HOSTS := infra/nixos/hosts.json
 
-default: metal system external smoke-test post-install clean
+default: metal fmt
 
-configure:
-	./scripts/configure
-	git status
+$(NIXOS_HOSTS): $(HOSTS_FILE)
+	cp $(HOSTS_FILE) $(NIXOS_HOSTS)
 
-metal:
-	make -C metal
-
-system:
-	make -C system
+metal: $(NIXOS_HOSTS)
+	./infra/_modules/nixos/nixie "$(CURDIR)" "$(HOSTS_FILE)"
 
 external:
 	make -C external
 
 smoke-test:
-	make -C test filter=Smoke
+	make -C tests e2e filter='^Apps$$' config='$(TEST_CONFIG)'
 
 post-install:
-	@./scripts/hacks
+	toolbox integrations setup
 
 # TODO maybe there's a better way to manage backup with GitOps?
 backup:
-	./scripts/backup --action setup --namespace=actualbudget --pvc=actualbudget-data
-	./scripts/backup --action setup --namespace=jellyfin --pvc=jellyfin-data
+	toolbox backup setup --namespace=actualbudget --pvc=actualbudget-data
+	toolbox backup setup --namespace=jellyfin --pvc=jellyfin-data
 
 restore:
-	./scripts/backup --action restore --namespace=actualbudget --pvc=actualbudget-data
-	./scripts/backup --action restore --namespace=jellyfin --pvc=jellyfin-data
+	toolbox backup restore --namespace=actualbudget --pvc=actualbudget-data
+	toolbox backup restore --namespace=jellyfin --pvc=jellyfin-data
 
 test:
-	make -C test
-
-clean:
-	docker compose --project-directory ./metal/roles/pxe_server/files down
+	make -C toolbox test
+	make -C tests test
 
 docs:
 	mkdocs serve
 
-git-hooks:
-	pre-commit install
+fmt:
+	treefmt

@@ -19,6 +19,36 @@ They are not permanent, we can change them in the future if better alternatives 
 
     - CHANGEME
 
+## Switch metal provisioning from Fedora and Ansible to NixOS
+
+**Context**
+
+The metal nodes previously ran Fedora, provisioned with Ansible playbooks for
+PXE boot, k3s, Cilium, automatic upgrades, and wake-on-LAN. Procedural
+provisioning drifts from the running systems, and the Fedora nodes require
+manual maintenance.
+
+**Decision**
+
+Provision the metal nodes with NixOS instead. The PXE installer and
+orchestration engine lives in a dedicated repository,
+[nixie](https://github.com/khuedoan/nixie), which this repository consumes as
+a flake input. Host identities are declared in `metal/hosts.json`, the
+installer image is built from `metal/installer.nix`, and each node's
+configuration is built from `metal/configuration.nix`.
+
+**Consequences**
+
+- NixOS configuration is declarative, atomic, and reproducible, consistent
+  with the GitOps model of the rest of the cluster.
+- The installer is shared with other projects, [dotfiles](https://github.com/khuedoan/dotfiles)
+  and [homecloud](https://github.com/khuedoan/homecloud), instead of being
+  embedded in this repository.
+- The migration is still in progress. Nodes run the base NixOS configuration
+  only. k3s clustering, secrets management, and GitOps bootstrap are not
+  implemented yet, and `make` still chains the cluster stages (`system`,
+  `external`, `smoke-test`) that this branch does not provision.
+
 ## Remove the Docker wrapper for Nix shell
 
 **Context**
@@ -188,6 +218,8 @@ Migrate documentation from mdBook to MkDocs (see commit `cd41343`).
 - We can no longer include only a portion of a file, see [facelessuser/pymdown-extensions#1462](https://github.com/facelessuser/pymdown-extensions/issues/1462).
 
 ## Choosing the base OS
+
+**Status**: superseded by [Switch metal provisioning from Fedora and Ansible to NixOS](#switch-metal-provisioning-from-fedora-and-ansible-to-nixos)
 
 **Context**
 
