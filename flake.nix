@@ -35,6 +35,9 @@
             ps.pyyaml
             ps.requests
           ]))
+          go
+          golangci-lint
+          gotestsum
           jq
           kanidm_1_11
           kubectl
