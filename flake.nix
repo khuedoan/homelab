@@ -30,14 +30,18 @@
           path = ./toolbox;
           name = "toolbox-src";
         };
-        vendorHash = "sha256-BDyg4x042o2XcYRdbkNpX3q3xHssbtgYNTv/LE4zvoQ=";
+        vendorHash = "sha256-b/zHEjDp2LoaoOvIc+3+eUS14JVms8hWJ9fS2uPaN+o=";
         nativeCheckInputs = [ pkgs.git ];
+        preCheck = ''
+          export SFTP_SERVER="${pkgs.openssh}/libexec/sftp-server"
+        '';
       };
     in
     {
       packages.${system}.toolbox = toolbox;
 
       devShells.${system}.default = pkgs.mkShell {
+        SFTP_SERVER = "${pkgs.openssh}/libexec/sftp-server";
         packages =
           with pkgs;
           [
