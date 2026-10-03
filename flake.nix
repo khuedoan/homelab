@@ -1,36 +1,30 @@
 {
   inputs = {
-    nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-26.05";
-    };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixie = {
-      url = "github:khuedoan/nixie";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixie.url = "github:khuedoan/nixie";
   };
 
   outputs =
     {
       nixpkgs,
-      disko,
+      nixpkgs-unstable,
       nixie,
       ...
     }:
     let
       system = "x86_64-linux";
 
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = nixpkgs.legacyPackages.${system};
     in
     {
+
+      formatter.${system} = pkgs.nixfmt-tree;
+
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
-          dyff
-          gnumake
-          go
-          gotestsum
+          nixie.packages.${system}.default
+          (python3.withPackages (ps: [ ps.pyyaml ]))
           kubectl
           kubernetes-helm
           nixfmt-tree
@@ -38,13 +32,8 @@
           nixos-rebuild
           openssh
           opentofu
-        ] ++ [
-          nixie.packages.${system}.default
+          terragrunt
         ];
-      };
-
-      nixosConfigurations = import ./metal {
-        inherit nixpkgs disko nixie;
       };
     };
 }

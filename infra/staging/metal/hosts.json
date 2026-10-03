@@ -1,0 +1,14 @@
+{
+  "homelab-1": {
+    "mac_address": "10:66:6a:ba:b4:8d",
+    "ip": "192.168.1.61"
+  },
+  "homelab-2": {
+    "mac_address": "02:66:6a:ba:b4:8e",
+    "ip": "192.168.1.21"
+  },
+  "homelab-3": {
+    "mac_address": "02:66:6a:ba:b4:8f",
+    "ip": "192.168.1.22"
+  }
+}
