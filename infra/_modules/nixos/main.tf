@@ -17,3 +17,9 @@ resource "local_file" "hosts" {
   filename        = "${var.flake}/hosts.json"
   file_permission = "600"
 }
+
+resource "local_file" "cluster" {
+  content         = jsonencode(var.cluster)
+  filename        = "${var.flake}/cluster.json"
+  file_permission = "600"
+}

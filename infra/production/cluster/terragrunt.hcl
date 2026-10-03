@@ -3,15 +3,18 @@ include "root" {
 }
 
 dependencies {
-  paths = ["../metal", "../hetzner-metal"]
+  paths = ["../metal"]
 }
 
 terraform {
-  source = "../_modules/command"
+  source = "${find_in_parent_folders("_modules")}//cluster"
 
-  after_hook "ready" {
+  after_hook "kubeconfig" {
     commands = ["apply"]
-    # TODO
-    # execute  = ["sh", "${get_repo_root()}/infra/getkubectlsomething", "Cluster readiness and kubeconfig export"]
+    execute  = ["sh", "-c", "cd \"$1\" && exec toolbox cluster kubeconfig --environment production --output infra/kubeconfig.yaml", "kubeconfig", get_repo_root()]
   }
+}
+
+inputs = {
+  kubeconfig = "${get_repo_root()}/infra/kubeconfig.yaml"
 }
