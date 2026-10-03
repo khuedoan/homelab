@@ -1,4 +1,4 @@
-package cmd
+package cli
 
 import (
 	"fmt"
@@ -41,7 +41,7 @@ func newScreenshotsCmd() *cobra.Command {
 					args = append(args, "--profile", profile)
 				}
 				args = append(args, "--screenshot", path, app.url)
-				if err := runCommand(cmd, nil, "firefox", args...); err != nil {
+				if err := commandRunner(cmd).Run(cmd.Context(), nil, "firefox", args...); err != nil {
 					return err
 				}
 				fmt.Fprintf(cmd.OutOrStdout(), "Screenshot saved to %s\n", path)

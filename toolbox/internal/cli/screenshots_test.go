@@ -1,4 +1,4 @@
-package cmd
+package cli
 
 import (
 	"bytes"
@@ -9,17 +9,15 @@ import (
 )
 
 func TestScreenshotsFirefox(t *testing.T) {
-	bin := t.TempDir()
 	log := filepath.Join(t.TempDir(), "firefox.log")
-	helmDiffWrite(t, filepath.Join(bin, "firefox"), `#!/bin/sh
+	operationFake(t, "firefox", `
 printf '%s\n' "$@" >> "$FIREFOX_LOG"
 if [ "$FIREFOX_FAIL" = yes ]; then exit 41; fi
 while [ "$#" -gt 0 ]; do
   if [ "$1" = --screenshot ]; then shift; printf 'PNG' > "$1"; break; fi
   shift
 done
-`, 0755)
-	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+`)
 	t.Setenv("FIREFOX_LOG", log)
 	for _, profile := range []string{"", filepath.Join(t.TempDir(), "profile with spaces")} {
 		t.Run("profile="+profile, func(t *testing.T) {

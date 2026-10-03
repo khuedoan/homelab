@@ -1,4 +1,4 @@
-package cmd
+package cli
 
 import (
 	"context"
@@ -19,26 +19,18 @@ func newRootCmd() *cobra.Command {
 		SilenceErrors: true,
 	}
 	root.PersistentFlags().String("kubeconfig", os.Getenv("KUBECONFIG"), "Kubeconfig path (defaults to infra/kubeconfig.yaml)")
-	root.PersistentPreRunE = func(cmd *cobra.Command, _ []string) error {
-		kubeconfig, err := cmd.Flags().GetString("kubeconfig")
-		if err != nil {
-			return err
-		}
-		if kubeconfig == "" {
-			kubeconfig = "infra/kubeconfig.yaml"
-		}
-		return os.Setenv("KUBECONFIG", kubeconfig)
-	}
 	root.AddCommand(newStatusCmd(), newBackupCmd())
 	for _, group := range []struct {
 		name, description string
 		commands          []*cobra.Command
 	}{
-		{"apps", "Manage application charts", []*cobra.Command{newServiceCmd()}},
+		{"apps", "Manage application charts", []*cobra.Command{newAppCreateCmd()}},
 		{"argocd", "Manage Argo CD", []*cobra.Command{newArgoCDPasswordCmd()}},
+		{"cluster", "Manage k3s cluster access and enrollment", []*cobra.Command{newClusterEnrollCmd(), newClusterKubeconfigCmd()}},
 		{"dns", "Inspect DNS records", []*cobra.Command{newDNSConfigCmd()}},
 		{"helm", "Inspect Helm charts", []*cobra.Command{newHelmDiffCmd()}},
-		{"integrations", "Configure Gitea and Kanidm integrations", []*cobra.Command{newPostInstallCmd()}},
+		{"infra", "Manage infrastructure prerequisites", []*cobra.Command{newInfraStateCmd()}},
+		{"integrations", "Configure Gitea and Kanidm integrations", []*cobra.Command{newIntegrationsSetupCmd()}},
 		{"screenshots", "Capture application screenshots", []*cobra.Command{newScreenshotsCmd()}},
 		{"users", "Manage Kanidm accounts", []*cobra.Command{newOnboardUserCmd(), newKanidmPasswordCmd()}},
 		{"wireguard", "Inspect WireGuard peers", []*cobra.Command{newWireguardConfigCmd()}},

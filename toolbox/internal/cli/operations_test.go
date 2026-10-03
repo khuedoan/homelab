@@ -1,31 +1,11 @@
-package cmd
+package cli
 
 import (
 	"bytes"
 	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 )
-
-func operationFake(t *testing.T, name, script string) {
-	t.Helper()
-	dir := t.TempDir()
-	if err := os.WriteFile(filepath.Join(dir, name), []byte("#!/bin/sh\n"+script), 0755); err != nil {
-		t.Fatal(err)
-	}
-	t.Setenv("PATH", dir+":"+os.Getenv("PATH"))
-}
-
-func operationExecute(args ...string) (string, string, error) {
-	cmd := newRootCmd()
-	var out, stderr bytes.Buffer
-	cmd.SetOut(&out)
-	cmd.SetErr(&stderr)
-	cmd.SetArgs(args)
-	err := cmd.Execute()
-	return out.String(), stderr.String(), err
-}
 
 func TestOperationCommands(t *testing.T) {
 	operationFake(t, "kubectl", `if [ "$FAIL" = yes ]; then echo failed >&2; exit 17; fi
@@ -87,20 +67,51 @@ func TestOnboardUser(t *testing.T) {
 
 func TestOperationKubeconfig(t *testing.T) {
 	operationFake(t, "kubectl", `printf '%s\n' "$KUBECONFIG"`)
-	for _, tc := range []struct{ env, flag, want string }{{"", "", "infra/kubeconfig.yaml"}, {"env.yaml", "", "env.yaml"}, {"env.yaml", "flag.yaml", "flag.yaml"}} {
+	for _, tc := range []struct {
+		env, want string
+		flags     []string
+	}{
+		{"", "infra/kubeconfig.yaml", nil},
+		{"env.yaml", "env.yaml", nil},
+		{"env.yaml", "flag.yaml", []string{"--kubeconfig", "flag.yaml"}},
+		{"env.yaml", "infra/kubeconfig.yaml", []string{"--kubeconfig="}},
+	} {
 		t.Setenv("KUBECONFIG", tc.env)
-		args := []string{"dns", "list"}
-		if tc.flag != "" {
-			args = append(args, "--kubeconfig", tc.flag)
-		}
+		args := append([]string{"dns", "list"}, tc.flags...)
 		out, _, err := operationExecute(args...)
 		if err != nil || out != tc.want+"\n" {
 			t.Fatalf("%q, %v", out, err)
 		}
+		if os.Getenv("KUBECONFIG") != tc.env {
+			t.Fatal("command changed the parent kubeconfig environment")
+		}
 	}
 }
 
-func TestServiceScaffold(t *testing.T) {
+func TestIndependentCommandKubeconfigs(t *testing.T) {
+	operationFake(t, "kubectl", `printf '%s\n' "$KUBECONFIG"`)
+	t.Setenv("KUBECONFIG", "ambient.yaml")
+	first, second := newRootCmd(), newRootCmd()
+	first.SetArgs([]string{"dns", "list", "--kubeconfig", "first.yaml"})
+	second.SetArgs([]string{"dns", "list", "--kubeconfig", "second.yaml"})
+	var out bytes.Buffer
+	first.SetOut(&out)
+	second.SetOut(&out)
+	if err := first.Execute(); err != nil {
+		t.Fatal(err)
+	}
+	if err := second.Execute(); err != nil {
+		t.Fatal(err)
+	}
+	if err := first.Execute(); err != nil {
+		t.Fatal(err)
+	}
+	if out.String() != "first.yaml\nsecond.yaml\nfirst.yaml\n" || os.Getenv("KUBECONFIG") != "ambient.yaml" {
+		t.Fatalf("commands shared kubeconfig state: %q", out.String())
+	}
+}
+
+func TestAppScaffold(t *testing.T) {
 	t.Chdir(t.TempDir())
 	if _, _, err := operationExecute("apps", "create", "example"); err != nil {
 		t.Fatal(err)

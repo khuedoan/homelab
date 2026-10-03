@@ -1,7 +1,7 @@
 package main
 
-import "github.com/khuedoan/homelab/toolbox/cmd"
+import "github.com/khuedoan/homelab/toolbox/internal/cli"
 
 func main() {
-	cmd.Execute()
+	cli.Execute()
 }

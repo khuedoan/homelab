@@ -1,8 +1,7 @@
-package cmd
+package identity
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -12,10 +11,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/spf13/cobra"
+	"github.com/khuedoan/homelab/toolbox/internal/process"
 )
 
-func postInstallFake(t *testing.T, name, script string) string {
+func integrationFake(t *testing.T, name, script string) string {
 	t.Helper()
 	dir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(dir, name), []byte("#!/bin/sh\n"+script), 0700); err != nil {
@@ -25,18 +24,12 @@ func postInstallFake(t *testing.T, name, script string) string {
 	return dir
 }
 
-func postInstallTestCmd() *cobra.Command {
-	cmd := newPostInstallCmd()
-	cmd.SetContext(context.Background())
-	return cmd
-}
-
-func TestPostInstallGitea(t *testing.T) {
+func TestGiteaIntegrations(t *testing.T) {
 	for _, existing := range []bool{false, true} {
 		t.Run(fmt.Sprint(existing), func(t *testing.T) {
 			file := filepath.Join(t.TempDir(), "secrets")
 			t.Setenv("SECRET_FILE", file)
-			postInstallFake(t, "kubectl", `cat >> "$SECRET_FILE"; printf '\n' >> "$SECRET_FILE"`)
+			integrationFake(t, "kubectl", `cat >> "$SECRET_FILE"; printf '\n' >> "$SECRET_FILE"`)
 			posts := 0
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				u, p, ok := r.BasicAuth()
@@ -73,8 +66,8 @@ func TestPostInstallGitea(t *testing.T) {
 				}
 			}))
 			defer server.Close()
-			g := postInstallGitea{server.URL, "admin", "password", server.Client()}
-			if err := g.integrations(postInstallTestCmd(), "woodpecker.test"); err != nil {
+			g := giteaClient{server.URL, "admin", "password", server.Client()}
+			if err := g.integrations(t.Context(), process.New("", nil, nil, nil), "woodpecker.test"); err != nil {
 				t.Fatal(err)
 			}
 			if existing {
@@ -114,7 +107,7 @@ func TestPostInstallGitea(t *testing.T) {
 	}
 }
 
-func TestPostInstallHTTPErrorsHideSecrets(t *testing.T) {
+func TestGiteaErrorsHideCredentials(t *testing.T) {
 	for _, response := range []string{"error", "invalid", "empty"} {
 		t.Run(response, func(t *testing.T) {
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -135,8 +128,8 @@ func TestPostInstallHTTPErrorsHideSecrets(t *testing.T) {
 				fmt.Fprint(w, "{}")
 			}))
 			defer server.Close()
-			g := postInstallGitea{server.URL, "admin", "private-password", server.Client()}
-			err := g.integrations(postInstallTestCmd(), "woodpecker.test")
+			g := giteaClient{server.URL, "admin", "private-password", server.Client()}
+			err := g.integrations(t.Context(), process.New("", nil, nil, nil), "woodpecker.test")
 			if err == nil || strings.Contains(err.Error(), "private-password") {
 				t.Fatalf("unsafe error: %v", err)
 			}
@@ -144,66 +137,12 @@ func TestPostInstallHTTPErrorsHideSecrets(t *testing.T) {
 	}
 }
 
-func TestPostInstallKanidm(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Error("unexpected creation of existing Gitea integration")
-		}
-		fmt.Fprint(w, `[{"name":"renovate"},{"name":"woodpecker"}]`)
-	}))
-	defer server.Close()
-	t.Setenv("GITEA_HOST", strings.TrimPrefix(server.URL, "http://"))
-	file := filepath.Join(t.TempDir(), "secret")
-	t.Setenv("SECRET_FILE", file)
-	postInstallFake(t, "kubectl", `case "$1" in
-get) case "$2 $5" in
-"ingress gitea") printf '%s' "$GITEA_HOST";;
-"ingress kanidm") printf kanidm.test;;
-"ingress dex") printf dex.test;;
-"ingress woodpecker-server") printf woodpecker.test;;
-"secret gitea-admin-secret") printf '{"data":{"username":"YWRtaW4=","password":"cGFzc3dvcmQ="}}';;
-"secret dex.gitea") printf '{"data":{"client_secret":"ZGV4LXNlY3JldA=="}}';;
-"pods --selector=app=gitea") printf gitea-0;;
-*) exit 9;; esac;;
-exec) if [ "$3" = gitea ]; then
-  [ "$*" = 'exec --namespace gitea gitea-0 -- gitea admin auth add-oauth --name Dex --provider openidConnect --key gitea --secret dex-secret --auto-discover-url https://dex.test/.well-known/openid-configuration' ] || exit 8
-else printf 'recovery output\n{"password":"private-password"}\n'; fi;;
-apply) cat > "$SECRET_FILE";;
-*) exit 9;; esac`)
-	postInstallFake(t, "kanidm", `case "$1 $2 $3" in
-"login --url "*) printf 'Password:'; read -r password; [ "$password" = private-password ] || exit 8;;
-"group create --url") [ "$7" = editor ] || exit 8;;
-"system oauth2 create") [ "$8" = dex ] && [ "${10}" = https://dex.test/callback ] || exit 8;;
-"system oauth2 warning-insecure-client-disable-pkce") :;;
-"system oauth2 create-scope-map") [ "$*" = 'system oauth2 create-scope-map --url https://kanidm.test --name idm_admin dex editor openid profile email groups' ] || exit 8;;
-"system oauth2 show-basic-secret") printf '{"secret":"oauth-secret"}';;
-*) exit 9;; esac`)
-	cmd := postInstallTestCmd()
+func TestCredentialOutputFailure(t *testing.T) {
+	integrationFake(t, "kubectl", `echo private-password >&2; exit 17`)
 	var logs bytes.Buffer
-	cmd.SetOut(&logs)
-	cmd.SetErr(&logs)
-	cmd.SetArgs(nil)
-	if err := cmd.Execute(); err != nil {
-		t.Fatal(err)
-	}
-	data, err := os.ReadFile(file)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !strings.Contains(string(data), `"client_secret":"oauth-secret"`) || !strings.Contains(string(data), `"name":"kanidm.dex"`) {
-		t.Fatal("missing OAuth Secret")
-	}
-	if logs.Len() != 0 {
-		t.Fatalf("credential output leaked: %s", &logs)
-	}
-}
+	run := process.New("", nil, &logs, &logs)
 
-func TestPostInstallSubprocessFailure(t *testing.T) {
-	postInstallFake(t, "kubectl", `echo private-password >&2; exit 17`)
-	cmd := postInstallTestCmd()
-	var logs bytes.Buffer
-	cmd.SetErr(&logs)
-	_, err := postInstallSecret(cmd, "gitea", "gitea-admin-secret")
+	_, err := readSecret(t.Context(), run, "gitea", "gitea-admin-secret")
 	if err == nil || strings.Contains(err.Error(), "private-password") || logs.Len() != 0 {
 		t.Fatalf("unsafe failure: %v, %s", err, &logs)
 	}
