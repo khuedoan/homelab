@@ -1,0 +1,6 @@
+{
+  "environment": "staging",
+  "exclude_environments": ["production"],
+  "apps": [],
+  "storage": []
+}
