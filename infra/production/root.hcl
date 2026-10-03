@@ -3,9 +3,17 @@ locals {
   r2_access_key = get_env("CLOUDFLARE_TFSTATE_ACCESS_KEY", "")
   r2_secret_key = get_env("CLOUDFLARE_TFSTATE_SECRET_KEY", "")
   r2_account_id = get_env("CLOUDFLARE_ACCOUNT_ID", "")
+  state_bucket  = get_env("TFSTATE_BUCKET", "tfstate-${local.env}")
   # Metal only writes a local file and converges on every run, so it keeps local
   # state instead of the shared S3 backend.
   stateless = path_relative_to_include() == "metal"
+
+  bootstrap_tfstate = [for bucket in(!local.stateless && contains(["init", "plan", "apply"], get_terraform_command()) ? [local.state_bucket] : []) : run_cmd(
+    "--terragrunt-global-cache",
+    "toolbox", "infra", "state", "ensure",
+    "--account-id", local.r2_account_id,
+    "--bucket", bucket,
+  )]
 }
 
 generate "backend" {
@@ -18,7 +26,7 @@ generate "backend" {
     terraform = {
       backend = {
         s3 = {
-          bucket                      = "tfstate-${local.env}"
+          bucket                      = local.state_bucket
           key                         = "${path_relative_to_include()}/tfstate.json"
           region                      = "auto"
           skip_credentials_validation = true
