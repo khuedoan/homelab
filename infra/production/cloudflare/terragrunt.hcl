@@ -7,9 +7,9 @@ include "kubernetes" {
 }
 
 dependencies {
-  paths = ["../namespaces"]
+  paths = ["../cluster"]
 }
 
 terraform {
-  source = "../_modules/cloudflare"
+  source = "${find_in_parent_folders("_modules")}//cloudflare"
 }
