@@ -36,6 +36,7 @@
       ./configuration.nix
       ./profiles/network.nix
       ./profiles/k3s-server.nix
+      ./profiles/kube-vip.nix
       ./profiles/rook-ceph.nix
       {
         networking.hostName = name;
