@@ -73,97 +73,138 @@ func TestKubeconfigUsesSelectedContextAndVIP(t *testing.T) {
 	}
 }
 
-func TestNativeKubeconfigExportReadinessIdentityAndRetry(t *testing.T) {
+func testClientKubeconfig(t *testing.T, server *httptest.Server) ([]byte, []byte) {
+	t.Helper()
+	certificate := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: server.Certificate().Raw})
+	key, err := x509.MarshalPKCS8PrivateKey(server.TLS.Certificates[0].PrivateKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	privateKey := pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: key})
+	input, err := clientcmd.Write(clientapi.Config{
+		CurrentContext: "default",
+		Contexts:       map[string]*clientapi.Context{"default": {Cluster: "default", AuthInfo: "default"}},
+		Clusters:       map[string]*clientapi.Cluster{"default": {Server: localAPI, CertificateAuthorityData: certificate}},
+		AuthInfos:      map[string]*clientapi.AuthInfo{"default": {ClientCertificateData: certificate, ClientKeyData: privateKey}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return input, privateKey
+}
+
+type exportScenario struct {
+	hostname string
+	vipUID   string
+	status   int
+	retry    bool
+}
+
+type exportFixture struct {
+	node       host
+	remote     sshServers
+	endpoint   string
+	privateKey []byte
+	requests   *atomic.Int32
+}
+
+func testKubeconfigExport(t *testing.T, scenario exportScenario) exportFixture {
+	t.Helper()
+	requests := &atomic.Int32{}
+	vip := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/readyz" {
+			status := scenario.status
+			if requests.Add(1) == 1 && scenario.retry {
+				status = http.StatusServiceUnavailable
+			}
+			w.WriteHeader(status)
+			testWriteResponse(t, w, "CANARY_SECRET")
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		testWriteResponse(t, w, `{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"`+scenario.vipUID+`"}}`)
+	}))
+	vip.TLS = &tls.Config{ClientAuth: tls.RequireAnyClientCert}
+	vip.StartTLS()
+	t.Cleanup(vip.Close)
+	local := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/readyz" {
+			testWriteResponse(t, w, "ready")
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		testWriteResponse(t, w, `{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"intended-cluster"}}`)
+	}))
+	local.TLS = &tls.Config{Certificates: vip.TLS.Certificates, ClientAuth: tls.RequireAnyClientCert}
+	local.StartTLS()
+	t.Cleanup(local.Close)
+	input, privateKey := testClientKubeconfig(t, vip)
+	node, remote, _ := testSSHServer(t, testRemoteFiles{"/etc/hostname": []byte(scenario.hostname), "/etc/rancher/k3s/k3s.yaml": input}, map[string]string{"127.0.0.1:6443": local.Listener.Addr().String()})
+	return exportFixture{node, remote, vip.URL, privateKey, requests}
+}
+
+func (fixture exportFixture) checkExport(t *testing.T, output []byte) {
+	t.Helper()
+	cfg, err := clientcmd.Load(output)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Clusters["default"].Server != fixture.endpoint || !bytes.Equal(cfg.AuthInfos["default"].ClientKeyData, fixture.privateKey) {
+		t.Fatal("exported SSH/local endpoint or wrong credentials")
+	}
+}
+
+func TestNativeKubeconfigExportsAuthenticatedVIP(t *testing.T) {
+	fixture := testKubeconfigExport(t, exportScenario{"test", "intended-cluster", http.StatusOK, false})
+	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
+	defer cancel()
+	output, err := fixture.remote.kubeconfig(ctx, fixture.node, fixture.endpoint)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture.checkExport(t, output)
+}
+
+func TestNativeKubeconfigRejectsWrongIdentityAndUnreadyVIP(t *testing.T) {
 	for _, tc := range []struct {
-		name     string
-		hostname string
-		vipUID   string
-		status   int
-		retry    bool
-		valid    bool
+		name string
+		exportScenario
 	}{
-		{"authenticated VIP", "test", "intended-cluster", http.StatusOK, false, true},
-		{"wrong initializer", "other", "intended-cluster", http.StatusOK, false, false},
-		{"foreign VIP", "test", "other-cluster", http.StatusOK, false, false},
-		{"unready VIP", "test", "intended-cluster", http.StatusServiceUnavailable, false, false},
-		{"unauthorized VIP", "test", "intended-cluster", http.StatusUnauthorized, false, false},
-		{"readiness retry", "test", "intended-cluster", http.StatusOK, true, true},
+		{"wrong initializer", exportScenario{"other", "intended-cluster", http.StatusOK, false}},
+		{"foreign VIP", exportScenario{"test", "other-cluster", http.StatusOK, false}},
+		{"unready VIP", exportScenario{"test", "intended-cluster", http.StatusServiceUnavailable, false}},
+		{"unauthorized VIP", exportScenario{"test", "intended-cluster", http.StatusUnauthorized, false}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			var requests atomic.Int32
-			vip := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if r.URL.Path == "/readyz" {
-					status := tc.status
-					if requests.Add(1) == 1 && tc.retry {
-						status = http.StatusServiceUnavailable
-					}
-					w.WriteHeader(status)
-					w.Write([]byte("CANARY_SECRET"))
-					return
-				}
-				w.Header().Set("Content-Type", "application/json")
-				w.Write([]byte(`{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"` + tc.vipUID + `"}}`))
-			}))
-			vip.TLS = &tls.Config{ClientAuth: tls.RequireAnyClientCert}
-			vip.StartTLS()
-			defer vip.Close()
-			local := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if r.URL.Path == "/readyz" {
-					w.Write([]byte("ready"))
-					return
-				}
-				w.Header().Set("Content-Type", "application/json")
-				w.Write([]byte(`{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"intended-cluster"}}`))
-			}))
-			local.TLS = &tls.Config{Certificates: vip.TLS.Certificates, ClientAuth: tls.RequireAnyClientCert}
-			local.StartTLS()
-			defer local.Close()
-			certificate := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: vip.Certificate().Raw})
-			key, err := x509.MarshalPKCS8PrivateKey(vip.TLS.Certificates[0].PrivateKey)
-			if err != nil {
-				t.Fatal(err)
-			}
-			privateKey := pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: key})
-			input, err := clientcmd.Write(clientapi.Config{
-				CurrentContext: "default",
-				Contexts:       map[string]*clientapi.Context{"default": {Cluster: "default", AuthInfo: "default"}},
-				Clusters:       map[string]*clientapi.Cluster{"default": {Server: localAPI, CertificateAuthorityData: certificate}},
-				AuthInfos:      map[string]*clientapi.AuthInfo{"default": {ClientCertificateData: certificate, ClientKeyData: privateKey}},
-			})
-			if err != nil {
-				t.Fatal(err)
-			}
-			node, remote, _ := testSSHServer(t, testRemoteFiles{"/etc/hostname": []byte(tc.hostname), "/etc/rancher/k3s/k3s.yaml": input}, map[string]string{"127.0.0.1:6443": local.Listener.Addr().String()})
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			fixture := testKubeconfigExport(t, tc.exportScenario)
+			ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
 			defer cancel()
-			var output []byte
-			if tc.retry {
-				err = wait(ctx, "VIP readiness", func() error { var err error; output, err = remote.kubeconfig(ctx, node, vip.URL); return err })
-			} else {
-				output, err = remote.kubeconfig(ctx, node, vip.URL)
+			output, err := fixture.remote.kubeconfig(ctx, fixture.node, fixture.endpoint)
+			if err == nil || len(output) != 0 || strings.Contains(err.Error(), "CANARY_SECRET") || strings.Contains(err.Error(), string(fixture.privateKey)) {
+				t.Fatalf("accepted invalid export or leaked credentials: %v", err)
 			}
-			if !tc.valid {
-				if err == nil || len(output) != 0 || strings.Contains(err.Error(), "CANARY_SECRET") || strings.Contains(err.Error(), string(privateKey)) {
-					t.Fatalf("accepted invalid export or leaked credentials: %v", err)
-				}
-				if tc.hostname != "test" && requests.Load() != 0 {
-					t.Fatal("contacted VIP for the wrong initializer")
-				}
-				return
-			}
-			if err != nil {
-				t.Fatal(err)
-			}
-			cfg, err := clientcmd.Load(output)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if cfg.Clusters["default"].Server != vip.URL || !bytes.Equal(cfg.AuthInfos["default"].ClientKeyData, privateKey) {
-				t.Fatal("exported SSH/local endpoint or wrong credentials")
-			}
-			if tc.retry && requests.Load() < 2 {
-				t.Fatal("did not retry failed readiness")
+			if tc.hostname != "test" && fixture.requests.Load() != 0 {
+				t.Fatal("contacted VIP for the wrong initializer")
 			}
 		})
+	}
+}
+
+func TestNativeKubeconfigRetriesVIPReadiness(t *testing.T) {
+	fixture := testKubeconfigExport(t, exportScenario{"test", "intended-cluster", http.StatusOK, true})
+	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
+	defer cancel()
+	var output []byte
+	err := wait(ctx, "VIP readiness", func() error {
+		var err error
+		output, err = fixture.remote.kubeconfig(ctx, fixture.node, fixture.endpoint)
+		return err
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture.checkExport(t, output)
+	if fixture.requests.Load() < 2 {
+		t.Fatal("did not retry failed readiness")
 	}
 }
