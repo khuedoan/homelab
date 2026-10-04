@@ -27,12 +27,12 @@ func newClusterEnrollCmd() *cobra.Command {
 			if err := cluster.Enroll(ctx, environment, cmd.ErrOrStderr()); err != nil {
 				return err
 			}
-			fmt.Fprintln(cmd.OutOrStdout(), "All configured servers are Ready in the intended cluster. Export kubeconfig through the cluster stage next.")
-			return nil
+			_, err := fmt.Fprintln(cmd.OutOrStdout(), "All configured servers are Ready in the intended cluster. Export kubeconfig through the cluster stage next.")
+			return err
 		},
 	}
 	command.Flags().StringVar(&environment, "environment", "", "Environment to enroll: staging or production (required)")
 	command.Flags().DurationVar(&timeout, "timeout", 10*time.Minute, "Maximum time for enrollment and readiness checks")
-	_ = command.MarkFlagRequired("environment")
+	requireFlags(command, "environment")
 	return command
 }

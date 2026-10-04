@@ -25,10 +25,20 @@
 
 === "For admin"
 
-    In the development shell, create the account:
+    Use a Kanidm CLI compatible with the deployed server. Replace
+    `https://kanidm.example.com` with your server URL, then log in as `idm_admin`:
 
     ```sh
-    toolbox users create johndoe "John Doe" "johndoe@example.com"
+    kanidm login --url https://kanidm.example.com --name idm_admin
+    ```
+
+    Create the account and issue a credential reset token:
+
+    ```sh
+    kanidm person create johndoe "John Doe" --url https://kanidm.example.com --name idm_admin
+    kanidm person update johndoe --mail johndoe@example.com --url https://kanidm.example.com --name idm_admin
+    kanidm group add-members editor johndoe --url https://kanidm.example.com --name idm_admin
+    kanidm person credential create-reset-token johndoe --url https://kanidm.example.com --name idm_admin
     ```
 
     Let the user scan the QR code or follow the link to set up passkeys or password + TOTP.

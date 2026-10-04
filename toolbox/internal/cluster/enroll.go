@@ -42,7 +42,9 @@ func enroll(ctx context.Context, cfg config, remote servers, progress io.Writer)
 			return err
 		}
 	}
-	fmt.Fprintf(progress, "Waiting for %s and VIP %s...\n", cfg.seed.name, cfg.vip)
+	if _, err := fmt.Fprintf(progress, "Waiting for %s and VIP %s...\n", cfg.seed.name, cfg.vip); err != nil {
+		return fmt.Errorf("write enrollment progress: %w", err)
+	}
 	var source credentials
 	if err := wait(ctx, "initializer readiness", func() error {
 		var err error
@@ -56,29 +58,39 @@ func enroll(ctx context.Context, cfg config, remote servers, progress io.Writer)
 		if err != nil {
 			return fmt.Errorf("inspect %s: %w", node.name, err)
 		}
-		fmt.Fprintf(progress, "%s: %s\n", node.name, state)
+		if _, err := fmt.Fprintf(progress, "%s: %s\n", node.name, state); err != nil {
+			return fmt.Errorf("write enrollment progress: %w", err)
+		}
 	}
 	for _, node := range cfg.joiners {
-		current, err := remote.source(ctx, cfg.seed, cfg.vip)
-		if err != nil {
-			return err
-		}
-		if current != source {
-			return fmt.Errorf("initializer identity or credentials changed; enrollment stopped")
-		}
-		if err := remote.join(ctx, node, cfg.vip, source); err != nil {
-			return fmt.Errorf("enroll %s: %w; completed joins are preserved", node.name, err)
-		}
-		fmt.Fprintf(progress, "Waiting for %s to join...\n", node.name)
-		if err := wait(ctx, node.name+" local API readiness", func() error {
-			return remote.ready(ctx, node, source.clusterID)
-		}); err != nil {
+		if err := enrollJoiner(ctx, cfg, remote, node, source, progress); err != nil {
 			return err
 		}
 	}
-	fmt.Fprintln(progress, "Waiting for all expected control-plane nodes to become Ready...")
+	if _, err := fmt.Fprintln(progress, "Waiting for all expected control-plane nodes to become Ready..."); err != nil {
+		return fmt.Errorf("write enrollment progress: %w", err)
+	}
 	return wait(ctx, "cluster membership", func() error {
 		return remote.verify(ctx, cfg, source)
+	})
+}
+
+func enrollJoiner(ctx context.Context, cfg config, remote servers, node host, source credentials, progress io.Writer) error {
+	current, err := remote.source(ctx, cfg.seed, cfg.vip)
+	if err != nil {
+		return err
+	}
+	if current != source {
+		return fmt.Errorf("initializer identity or credentials changed; enrollment stopped")
+	}
+	if err := remote.join(ctx, node, cfg.vip, source); err != nil {
+		return fmt.Errorf("enroll %s: %w; completed joins are preserved", node.name, err)
+	}
+	if _, err := fmt.Fprintf(progress, "Waiting for %s to join...\n", node.name); err != nil {
+		return fmt.Errorf("write enrollment progress: %w", err)
+	}
+	return wait(ctx, node.name+" local API readiness", func() error {
+		return remote.ready(ctx, node, source.clusterID)
 	})
 }
 

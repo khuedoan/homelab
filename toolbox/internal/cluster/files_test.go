@@ -1,6 +1,7 @@
 package cluster
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -36,12 +37,24 @@ func testSFTP(t *testing.T) *sftp.Client {
 	if err := process.Start(); err != nil {
 		t.Fatal(err)
 	}
-	t.Cleanup(func() { input.Close(); process.Wait() })
+	t.Cleanup(func() {
+		// The SFTP client normally closes its input pipe first.
+		if err := input.Close(); err != nil && !errors.Is(err, os.ErrClosed) {
+			t.Error(err)
+		}
+		if err := process.Wait(); err != nil {
+			t.Errorf("sftp-server failed: %v", err)
+		}
+	})
 	client, err := sftp.NewClientPipe(output, input)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Cleanup(func() { client.Close() })
+	t.Cleanup(func() {
+		if err := client.Close(); err != nil {
+			t.Error(err)
+		}
+	})
 	return client
 }
 

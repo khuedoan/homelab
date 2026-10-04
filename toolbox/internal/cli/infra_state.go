@@ -23,7 +23,7 @@ func newInfraStateCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			token := os.Getenv("CLOUDFLARE_TFSTATE_API_TOKEN")
 			if token == "" || account == "" || bucket == "" {
-				return fmt.Errorf("CLOUDFLARE_TFSTATE_API_TOKEN, --account-id (or CLOUDFLARE_ACCOUNT_ID), and --bucket are required")
+				return fmt.Errorf("missing required CLOUDFLARE_TFSTATE_API_TOKEN, --account-id (or CLOUDFLARE_ACCOUNT_ID), or --bucket")
 			}
 			api, err := cloudflare.NewWithAPIToken(token)
 			if err != nil {
@@ -34,13 +34,13 @@ func newInfraStateCmd() *cobra.Command {
 			if err := state.EnsureR2Bucket(ctx, api, account, bucket); err != nil {
 				return err
 			}
-			fmt.Fprintf(cmd.OutOrStdout(), "State bucket %s is ready.\n", bucket)
-			return nil
+			_, err = fmt.Fprintf(cmd.OutOrStdout(), "State bucket %s is ready.\n", bucket)
+			return err
 		},
 	}
 	ensure.Flags().StringVar(&account, "account-id", os.Getenv("CLOUDFLARE_ACCOUNT_ID"), "Cloudflare account ID (defaults to CLOUDFLARE_ACCOUNT_ID)")
 	ensure.Flags().StringVar(&bucket, "bucket", "", "R2 bucket name (required)")
-	_ = ensure.MarkFlagRequired("bucket")
+	requireFlags(ensure, "bucket")
 	group.AddCommand(ensure)
 	return group
 }

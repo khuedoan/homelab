@@ -118,6 +118,45 @@ func TestEnrollmentRejectsChangedInitializer(t *testing.T) {
 	}
 }
 
+type failingProgress struct {
+	writesLeft int
+	err        error
+}
+
+func (progress *failingProgress) Write(data []byte) (int, error) {
+	progress.writesLeft--
+	if progress.writesLeft == 0 {
+		return 0, progress.err
+	}
+	return len(data), nil
+}
+
+func TestEnrollmentReportsProgressFailureWithoutUndoingJoins(t *testing.T) {
+	for _, tc := range []struct {
+		name       string
+		writesLeft int
+		wantStarts int
+	}{
+		{"initializer progress", 1, 0},
+		{"preflight progress", 2, 0},
+		{"join progress", 3, 1},
+		{"membership progress", 4, 1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			remote := &testServers{credentials: credentials{"secret", "cluster"}, nodes: map[string]snapshot{"joiner": {}}, starts: make(map[string]int)}
+			writeErr := errors.New("progress writer disconnected")
+			progress := &failingProgress{tc.writesLeft, writeErr}
+			err := enroll(t.Context(), config{joiners: []host{{name: "joiner"}}}, remote, progress)
+			if !errors.Is(err, writeErr) {
+				t.Fatalf("progress failure was lost: %v", err)
+			}
+			if remote.starts["joiner"] != tc.wantStarts || remote.nodes["joiner"].hasToken != (tc.wantStarts == 1) {
+				t.Fatalf("unexpected enrollment state after progress failure: %#v", remote)
+			}
+		})
+	}
+}
+
 func TestWaitCancellation(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()

@@ -1,18 +1,22 @@
 # Toolbox
 
-Toolbox is the administrative CLI for the homelab. Run it from the repository
-root so inventory and chart paths resolve correctly.
+Toolbox bootstraps infrastructure state storage, enrolls k3s servers, and exports
+cluster credentials. Run it from the repository root so inventory paths resolve
+correctly.
 
 ```sh
 toolbox --help
 toolbox cluster enroll --help
-toolbox cluster kubeconfig --environment staging
+toolbox cluster enroll --environment staging
+toolbox cluster kubeconfig --environment staging --output infra/staging/kubeconfig.yaml
+toolbox infra state ensure --account-id "$CLOUDFLARE_ACCOUNT_ID" --bucket tfstate-production
 ```
 
-`--kubeconfig` takes precedence over `KUBECONFIG`. An empty value selects
-`infra/kubeconfig.yaml`. Each subprocess receives that selection without changing
-the parent environment. Cluster enrollment and kubeconfig export use their explicit
-`--environment` inventory rather than the ambient Kubernetes context.
+Cluster commands use the explicit `--environment` inventory, not `KUBECONFIG`.
+Kubeconfig export defaults to `infra/kubeconfig.yaml`. Use `--output` to select
+another destination or `--output -` to send credentials to stdout.
+State storage uses `CLOUDFLARE_TFSTATE_API_TOKEN` for authentication.
+Terragrunt invokes these operations through the infrastructure hooks.
 
 ## Code ownership
 
@@ -26,35 +30,16 @@ toolbox/
 └── internal/
     ├── cli/
     ├── cluster/
-    ├── identity/
-    ├── charts/
-    ├── backup/
-    ├── state/
-    └── process/
+    └── state/
 ```
 
-`internal/cli/` owns Cobra commands, flag validation, warnings, and output routing.
-`root.go` lists the command tree. `process.go` converts parsed flags and streams
-into command-local subprocess configuration. Each command family has a named
-file. Short status, DNS, WireGuard, Argo CD password, and screenshot operations stay direct.
+`internal/cli/` owns Cobra commands, flag validation, and output routing.
+`root.go` lists the command tree. The CLI imports `cluster/` and `state/`.
+These packages accept contexts and explicit inputs, not Cobra commands.
+They do not import each other.
 
-The operation packages accept contexts and explicit inputs, not Cobra commands:
-
-- `identity/` owns Gitea and Kanidm integration setup, Kanidm account creation,
-  and account recovery. Ingress lookup, Secret publication, and PTY login are private.
-- `charts/` owns chart scaffolding and revision comparison, including temporary
-  files, rendering, and cleanup.
-- `backup/` owns PVC backup and restore policy and ordered resource application.
-- `state/` owns R2 bucket provisioning through the Cloudflare SDK.
-- `process/` owns child environment and stream handling. `Run` forwards output,
-  `Output` captures stdout and forwards diagnostics, and `PrivateOutput` captures
-  credentials without forwarding or retaining stderr. `Command` leaves streams
-  unset for private Secret writes and PTY use.
-
-The CLI imports operation packages. Identity, charts, and backup import process.
-Operation packages do not import the CLI or each other. Kubernetes subprocess
-helpers stay private to their workflow owner. Inventory-driven cluster access
-uses native SSH, SFTP, and Kubernetes clients.
+`internal/state/` owns R2 bucket provisioning through the Cloudflare SDK.
+It leaves existing buckets unchanged and handles concurrent creation.
 
 `internal/cluster/` owns enrollment and authenticated cluster access:
 
@@ -75,12 +60,21 @@ It does not install machines, reset datastores, or overwrite conflicting credent
 
 ```sh
 make -C toolbox test
+make -C toolbox lint
 ```
 
-The target runs vet and race-enabled tests. Tests use temporary files, subprocess
-fixtures, and local HTTP, TLS, SSH, and SFTP servers. They do not enroll real nodes
-or create real Cloudflare buckets. Workflow tests live beside their owner. CLI
-tests cover flags, routing, streams, and credential handling across package boundaries.
+The test target runs vet and race-enabled tests. Tests use temporary files,
+subprocess fixtures, and local HTTP, TLS, SSH, and SFTP servers. They do not
+enroll real nodes or create real Cloudflare buckets. Tests live beside their
+owner and cover enrollment safety, kubeconfig publication, and state bootstrap.
+
+The lint target uses the repository's shared `.golangci.yml` and includes test
+files. `nix develop` provides golangci-lint. Checks cover formatting, selected Go
+style conventions, correctness, and cognitive complexity above 20.
+That complexity threshold is a project policy, not a Google style requirement.
+Lint exits unsuccessfully when findings exist and does not rewrite code.
+The configuration does not enforce the entire Google Go style guide or impose
+a line-length limit. Existing findings are not suppressed by a baseline.
 
 Put `terragrunt` on `PATH` to run the local state-bootstrap contract test. It uses
 fake toolbox and OpenTofu executables and skips if Terragrunt is absent.

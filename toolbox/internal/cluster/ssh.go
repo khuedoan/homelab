@@ -2,6 +2,7 @@ package cluster
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net"
@@ -51,9 +52,9 @@ func newSSHServers(ctx context.Context) (sshServers, func(), error) {
 		if err != nil {
 			return sshServers{}, nil, fmt.Errorf("connect to SSH agent: %w", err)
 		}
-		stop := context.AfterFunc(ctx, func() { conn.Close() })
+		stop := context.AfterFunc(ctx, func() { closeTransport(conn) })
 		auth = append(auth, ssh.PublicKeysCallback(agent.NewClient(conn).Signers))
-		cleanup = func() { stop(); conn.Close() }
+		cleanup = func() { stop(); closeTransport(conn) }
 	} else {
 		key := os.Getenv("SSH_KEY")
 		if key == "" {
@@ -79,20 +80,28 @@ func (remote sshServers) connect(ctx context.Context, node host) (*connection, e
 	if err != nil {
 		return nil, fmt.Errorf("connect to %s: %w", node.name, err)
 	}
-	stop := context.AfterFunc(ctx, func() { socket.Close() })
-	socket.SetDeadline(time.Now().Add(10 * time.Second))
+	stop := context.AfterFunc(ctx, func() { closeTransport(socket) })
+	if err := socket.SetDeadline(time.Now().Add(10 * time.Second)); err != nil {
+		stop()
+		closeTransport(socket)
+		return nil, fmt.Errorf("set SSH handshake deadline on %s: %w", node.name, err)
+	}
 	clientConn, channels, requests, err := ssh.NewClientConn(socket, address, remote.config)
 	if err != nil {
 		stop()
-		socket.Close()
+		closeTransport(socket)
 		return nil, fmt.Errorf("authenticate %s: %w", node.name, err)
 	}
-	socket.SetDeadline(time.Time{})
+	if err := socket.SetDeadline(time.Time{}); err != nil {
+		stop()
+		closeTransport(clientConn)
+		return nil, fmt.Errorf("clear SSH handshake deadline on %s: %w", node.name, err)
+	}
 	client := ssh.NewClient(clientConn, channels, requests)
 	files, err := sftp.NewClient(client)
 	if err != nil {
 		stop()
-		client.Close()
+		closeTransport(client)
 		return nil, fmt.Errorf("open SFTP on %s: %w", node.name, err)
 	}
 	return &connection{client, files, stop}, nil
@@ -100,8 +109,13 @@ func (remote sshServers) connect(ctx context.Context, node host) (*connection, e
 
 func (conn *connection) close() {
 	conn.stop()
-	conn.ssh.Close()
-	conn.files.Close()
+	closeTransport(conn.files)
+	closeTransport(conn.ssh)
+}
+
+func closeTransport(transport io.Closer) {
+	// Teardown also runs after cancellation or peer closure. It cannot undo a completed operation.
+	_ = transport.Close()
 }
 
 func (conn *connection) run(command string) (string, error) {
@@ -109,7 +123,7 @@ func (conn *connection) run(command string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer session.Close()
+	defer closeTransport(session)
 	session.Stderr = io.Discard
 	output, err := session.Output(command)
 	if err != nil {
@@ -118,29 +132,37 @@ func (conn *connection) run(command string) (string, error) {
 	return string(output), nil
 }
 
-func (conn *connection) lock() (func(), error) {
+func (conn *connection) lock() (func() error, error) {
 	session, err := conn.ssh.NewSession()
 	if err != nil {
 		return nil, err
 	}
 	input, err := session.StdinPipe()
 	if err != nil {
-		session.Close()
+		closeTransport(session)
 		return nil, err
 	}
 	output, err := session.StdoutPipe()
 	if err != nil {
-		session.Close()
+		closeTransport(session)
 		return nil, err
 	}
 	if err := session.Start(`flock -x /run/lock/homelab-k3s-enroll.lock sh -c 'printf L; cat >/dev/null'`); err != nil {
-		session.Close()
+		closeTransport(session)
 		return nil, err
 	}
 	var ack [1]byte
 	if _, err := io.ReadFull(output, ack[:]); err != nil || ack[0] != 'L' {
-		session.Close()
+		closeTransport(session)
 		return nil, fmt.Errorf("could not acquire node enrollment lock")
 	}
-	return func() { input.Close(); session.Wait(); session.Close() }, nil
+	return func() error {
+		defer closeTransport(session)
+		err := input.Close()
+		if err != nil {
+			// Closing the channel releases the lock even if sending stdin EOF failed.
+			closeTransport(session)
+		}
+		return errors.Join(err, session.Wait())
+	}, nil
 }

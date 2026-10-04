@@ -26,7 +26,7 @@ You can add each subdomain one by one, or use a wildcard `*.example.com` and poi
 To acquire a list of subdomains and their addresses, use this command:
 
 ```sh
-toolbox dns list
+kubectl get ingress --all-namespaces
 ```
 
 ## Use [nip.io](https://nip.io)
