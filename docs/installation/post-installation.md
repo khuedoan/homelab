@@ -14,19 +14,20 @@ Save the following files to a safe location like a password manager (if you're u
 
 - ArgoCD:
     - Username: `admin`
-    - Password: run `toolbox argocd admin-password`
+    - Password: run `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d`
 - Gitea:
     - Username: `gitea_admin`
     - Password: get from `global-secrets` namespace
 - Kanidm:
     - Usernames: `admin` and `idm_admin`
-    - Password: run `toolbox users reset-password admin` and `toolbox users reset-password idm_admin`
+    - Password: run `kubectl -n kanidm exec kanidm-0 -- kanidmd recover-account admin` and `kubectl -n kanidm exec kanidm-0 -- kanidmd recover-account idm_admin`
 - Jellyfin and other applications in the \*arr stack: see the [dedicated guide for media management](../how-to-guides/media-management.md)
 - Other apps:
     - Username: `admin`
     - Password: get from `global-secrets` namespace
 
-`toolbox` is available in `nix develop`. See the [command reference](../reference/toolbox.md) for all commands and kubeconfig options.
+Set `KUBECONFIG` to the exported cluster configuration before running `kubectl`.
+See the [toolbox reference](../reference/toolbox.md) for kubeconfig export.
 
 ## Backup
 

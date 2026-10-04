@@ -2,6 +2,7 @@ package cluster
 
 import (
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -41,30 +42,35 @@ func securePath(files *sftp.Client, name string, mode os.FileMode, directory boo
 	return nil
 }
 
-func readFile(files *sftp.Client, name string) (string, error) {
+func readFile(files *sftp.Client, name string) (data string, err error) {
 	file, err := files.Open(name)
 	if err != nil {
 		return "", err
 	}
-	defer file.Close()
-	data, err := io.ReadAll(io.LimitReader(file, 1<<20))
+	defer func() { err = errors.Join(err, file.Close()) }()
+	contents, err := io.ReadAll(io.LimitReader(file, 1<<20))
 	if err != nil {
 		return "", err
 	}
-	if len(data) == 1<<20 {
+	if len(contents) == 1<<20 {
 		return "", fmt.Errorf("remote file %s exceeds size limit", name)
 	}
-	return string(data), nil
+	return string(contents), nil
 }
 
-func publishToken(files *sftp.Client, destination, token string) error {
+func publishToken(files *sftp.Client, destination, token string) (err error) {
 	stage := path.Join(path.Dir(destination), ".incoming-"+rand.Text())
 	file, err := files.OpenFile(stage, os.O_WRONLY|os.O_CREATE|os.O_EXCL)
 	if err != nil {
 		return err
 	}
-	defer files.Remove(stage)
-	defer file.Close()
+	defer func() { err = errors.Join(err, files.Remove(stage)) }()
+	closed := false
+	defer func() {
+		if !closed {
+			err = errors.Join(err, file.Close())
+		}
+	}()
 	if err := file.Chmod(0600); err != nil {
 		return err
 	}
@@ -74,7 +80,9 @@ func publishToken(files *sftp.Client, destination, token string) error {
 	if err := file.Sync(); err != nil {
 		return err
 	}
-	if err := file.Close(); err != nil {
+	err = file.Close()
+	closed = true
+	if err != nil {
 		return err
 	}
 	if err := files.Link(stage, destination); err != nil {
@@ -84,6 +92,6 @@ func publishToken(files *sftp.Client, destination, token string) error {
 	if err != nil {
 		return err
 	}
-	defer dir.Close()
+	defer func() { err = errors.Join(err, dir.Close()) }()
 	return dir.Sync()
 }

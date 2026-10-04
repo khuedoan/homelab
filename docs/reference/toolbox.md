@@ -1,41 +1,45 @@
 # Toolbox
 
-`toolbox` is a Go CLI packaged in the Nix development shell. Commands use a resource followed by an action.
+`toolbox` is a Go CLI packaged in the Nix development shell. It bootstraps
+infrastructure state storage, enrolls k3s servers, and exports kubeconfig.
+Commands use a resource followed by an action.
 
 ```sh
 nix develop
 toolbox --help
-toolbox users --help
-toolbox backup restore --help
+toolbox cluster enroll --help
+toolbox infra state ensure --help
 ```
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `toolbox status` | List Argo CD applications and cluster ingresses. |
-| `toolbox apps create NAME` | Create a Helm chart skeleton under `apps/NAME`. Existing directories are not overwritten. |
-| `toolbox argocd admin-password` | Print the initial Argo CD admin password. |
-| `toolbox dns list` | List ingress IP addresses and DNS names. |
-| `toolbox users create USERNAME FULL_NAME EMAIL` | Create a Kanidm account, add it to `editor`, and issue a credential reset token. |
-| `toolbox users reset-password ACCOUNT` | Recover a Kanidm account password through the server. |
-| `toolbox wireguard config PEER` | Print the peer QR code and WireGuard configuration. |
-| `toolbox backup setup --namespace NAMESPACE --pvc PVC` | Apply an ExternalSecret and scheduled VolSync ReplicationSource. |
-| `toolbox backup restore --namespace NAMESPACE --pvc PVC` | Apply an ExternalSecret and one-shot VolSync ReplicationDestination. This does not stop workloads or wait for the restore to finish. |
-| `toolbox integrations setup` | Configure the legacy Gitea, Dex, Woodpecker, and Kanidm integrations. This recovers admin passwords and is intended for initial setup. |
-| `toolbox helm diff --repository URL --source REF --target REF --subpath PATH` | Compare rendered Helm charts between Git revisions. |
-| `toolbox screenshots capture --output DIRECTORY` | Capture the five configured application pages using installed Firefox at 1920 × 1080. `--profile` selects a Firefox profile for authenticated pages. |
+| `toolbox infra state ensure --account-id ID --bucket NAME` | Ensure the Cloudflare R2 state bucket exists without changing existing buckets. |
+| `toolbox cluster enroll --environment ENV` | Join installed servers to the configured k3s cluster and verify Ready membership. |
+| `toolbox cluster kubeconfig --environment ENV --output PATH` | Export kubeconfig after verifying authenticated access through the control-plane VIP. |
 | `toolbox completion SHELL` | Generate shell completion for Bash, Zsh, Fish, or PowerShell. |
 
-Account creation and integration setup require an installed `kanidm` CLI compatible with the deployed Kanidm server. Screenshot capture requires Firefox.
+`ENV` is `staging` or `production`. Cluster commands run from the repository root
+and read `infra/ENV/metal/hosts.json` and `infra/ENV/cluster/config.json`.
+SSH requires an authorized key and trusted host keys in `known_hosts`.
 
-## Kubeconfig
+## State storage
 
-Kubeconfig selection has the following precedence:
+State storage authenticates through `CLOUDFLARE_TFSTATE_API_TOKEN`.
+`--account-id` defaults to `CLOUDFLARE_ACCOUNT_ID`. `--bucket` is required.
+The command does not require an existing Kubernetes cluster or Terraform state.
 
-1. `--kubeconfig PATH`
-2. `KUBECONFIG`
-3. `infra/kubeconfig.yaml`, relative to the current directory
+## Cluster access
+
+Enrollment uses verified root SSH connections. It does not install nodes,
+reset datastores, or overwrite conflicting credentials. `--timeout` defaults
+to `10m` for enrollment and `2m` for kubeconfig export.
+
+Kubeconfig export defaults to `infra/kubeconfig.yaml`. `--output PATH` selects
+another destination. Files are published atomically with mode `0600`.
+`--output -` sends credentials to stdout.
+Cluster commands use the explicit environment inventory, not `KUBECONFIG`.
 
 ## Development
 

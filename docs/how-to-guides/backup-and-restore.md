@@ -76,31 +76,18 @@ You may want to back up the `external/terraform.tfvars` file to a secure locatio
 
 !!! warning
 
-    Do not run the backup command when building a new cluster where you intend
-    to restore backups, as it may overwrite existing backup data. To restore
-    data on a new cluster, refer to the [restore from
-    backup](#restore-from-backup) section.
+    Restore existing backup data before enabling scheduled backups on a new
+    cluster. A backup of an empty volume may overwrite data you need to recover.
 
-For now, you need to run a command to opt-in volumes until we have a better
-GitOps solution:
-
-```sh
-make backup
-```
-
-This command will set up Restic repositories and back up the volumes configured
-in `./Makefile`. You can adjust the list there to add or remove volumes from the
-backup. You only need to run this command once, the backup configuration will
-be stored in the cluster and run on a schedule.
+Configure each volume with a VolSync `ReplicationSource` that specifies the
+source PVC, backup schedule, retention policy, and Restic repository Secret.
+The repository Secret needs `RESTIC_REPOSITORY`, `RESTIC_PASSWORD`,
+`AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY`.
+These resources require a running VolSync controller.
 
 ## Restore from backup
 
-The restore process is ad-hoc, you need to run a command to restore application volumes:
-
-```sh
-make restore
-```
-
-The command above will restore the latest backup of recommended volumes. Like
-with backups, you can modify `./Makefile` to adjust the list of volumes you
-want to restore.
+Stop workloads that write to the destination volume before restoring data.
+Configure a VolSync `ReplicationDestination` with the destination PVC, a manual
+trigger, and the repository Secret. Wait for the restore to complete and verify
+the restored data before restarting workloads or enabling scheduled backups.

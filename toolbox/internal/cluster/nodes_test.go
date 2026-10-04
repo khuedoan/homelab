@@ -2,7 +2,6 @@ package cluster
 
 import (
 	"context"
-	"crypto/x509"
 	"encoding/pem"
 	"net/http"
 	"net/http/httptest"
@@ -14,9 +13,38 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	coreclient "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
-	clientapi "k8s.io/client-go/tools/clientcmd/api"
 )
+
+func testNodeAPI(t *testing.T, clusterID string, missing bool) (host, sshServers) {
+	t.Helper()
+	server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/readyz":
+			testWriteResponse(t, w, "ready")
+		case "/api/v1/namespaces/kube-system":
+			testWriteResponse(t, w, `{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"cluster-uid"}}`)
+		case "/api/v1/nodes/test":
+			if clusterID != "cluster-uid" {
+				t.Error("queried node in a foreign cluster")
+			}
+			if missing {
+				w.WriteHeader(http.StatusNotFound)
+				return
+			}
+			testWriteResponse(t, w, `{"apiVersion":"v1","kind":"Node","metadata":{"name":"test","uid":"node-uid"}}`)
+		default:
+			t.Errorf("unexpected request: %s", r.URL.Path)
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(server.Close)
+	data, _ := testClientKubeconfig(t, server)
+	node, remote, _ := testSSHServer(t, testRemoteFiles{"/etc/rancher/k3s/k3s.yaml": data}, map[string]string{
+		"127.0.0.1:6443": server.Listener.Addr().String(),
+	})
+	return node, remote
+}
 
 func TestNodeUIDRequiresIntendedCluster(t *testing.T) {
 	for _, tc := range []struct {
@@ -29,48 +57,7 @@ func TestNodeUIDRequiresIntendedCluster(t *testing.T) {
 		{"missing node", "cluster-uid", true, ""},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				w.Header().Set("Content-Type", "application/json")
-				switch r.URL.Path {
-				case "/readyz":
-					w.Write([]byte("ready"))
-				case "/api/v1/namespaces/kube-system":
-					w.Write([]byte(`{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"cluster-uid"}}`))
-				case "/api/v1/nodes/test":
-					if tc.clusterID != "cluster-uid" {
-						t.Error("queried node in a foreign cluster")
-					}
-					if tc.missing {
-						w.WriteHeader(http.StatusNotFound)
-						return
-					}
-					w.Write([]byte(`{"apiVersion":"v1","kind":"Node","metadata":{"name":"test","uid":"node-uid"}}`))
-				default:
-					t.Errorf("unexpected request: %s", r.URL.Path)
-					w.WriteHeader(http.StatusNotFound)
-				}
-			}))
-			defer server.Close()
-			certificate := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: server.Certificate().Raw})
-			key, err := x509.MarshalPKCS8PrivateKey(server.TLS.Certificates[0].PrivateKey)
-			if err != nil {
-				t.Fatal(err)
-			}
-			data, err := clientcmd.Write(clientapi.Config{
-				CurrentContext: "default",
-				Contexts:       map[string]*clientapi.Context{"default": {Cluster: "default", AuthInfo: "default"}},
-				Clusters:       map[string]*clientapi.Cluster{"default": {Server: localAPI, CertificateAuthorityData: certificate}},
-				AuthInfos: map[string]*clientapi.AuthInfo{"default": {
-					ClientCertificateData: certificate,
-					ClientKeyData:         pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: key}),
-				}},
-			})
-			if err != nil {
-				t.Fatal(err)
-			}
-			node, remote, _ := testSSHServer(t, testRemoteFiles{"/etc/rancher/k3s/k3s.yaml": data}, map[string]string{
-				"127.0.0.1:6443": server.Listener.Addr().String(),
-			})
+			node, remote := testNodeAPI(t, tc.clusterID, tc.missing)
 			ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
 			defer cancel()
 			uid, err := remote.nodeUID(ctx, node, tc.clusterID)
@@ -100,10 +87,10 @@ func TestNativeAPIIdentityRequiresReadiness(t *testing.T) {
 				switch r.URL.Path {
 				case "/readyz":
 					w.WriteHeader(tc.status)
-					w.Write([]byte("ready"))
+					testWriteResponse(t, w, "ready")
 				case "/api/v1/namespaces/kube-system":
 					w.Header().Set("Content-Type", "application/json")
-					w.Write([]byte(`{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"` + tc.uid + `"}}`))
+					testWriteResponse(t, w, `{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system","uid":"`+tc.uid+`"}}`)
 				default:
 					t.Errorf("unexpected API request: %s", r.URL.Path)
 					w.WriteHeader(http.StatusNotFound)

@@ -30,8 +30,7 @@
           path = ./toolbox;
           name = "toolbox-src";
         };
-        vendorHash = "sha256-b/zHEjDp2LoaoOvIc+3+eUS14JVms8hWJ9fS2uPaN+o=";
-        nativeCheckInputs = [ pkgs.git ];
+        vendorHash = "sha256-E9k3y+b/cz35T6athMccHnWV+DCWXDvFKukSmnxMZCE=";
         preCheck = ''
           export SFTP_SERVER="${pkgs.openssh}/libexec/sftp-server"
         '';
@@ -45,9 +44,9 @@
         packages =
           with pkgs;
           [
-            dyff
             gnumake
             go
+            golangci-lint
             gotestsum
             kubectl
             kubernetes-helm
