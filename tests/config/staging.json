@@ -1,6 +1,15 @@
 {
   "environment": "staging",
   "exclude_environments": ["production"],
+  "dns_domain": "cluster.local",
   "apps": [],
-  "storage": []
+  "storage": [
+    {"class": "local-path", "access_mode": "ReadWriteOnce"}
+  ],
+  "load_balancer": {
+    "namespace": "ingress-nginx",
+    "service": "ingress-nginx-controller",
+    "ingress_class": "nginx"
+  },
+  "gitops_namespace": "argocd"
 }
