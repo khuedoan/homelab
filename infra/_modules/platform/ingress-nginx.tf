@@ -30,9 +30,6 @@ resource "kubectl_manifest" "ingress_nginx" {
                 timeoutSeconds = 30
               }
             }
-            tcp = {
-              "22" = "forgejo/forgejo-ssh:22"
-            }
           })
         }
       }]
