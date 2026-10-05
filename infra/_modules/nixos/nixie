@@ -30,10 +30,11 @@ if [ -n "${SSH_AUTH_SOCK:-}" ]; then
 	set -- "$@" --ssh-agent-socket "$SSH_AUTH_SOCK"
 else
 	ssh_key="${SSH_KEY:-$HOME/.ssh/id_ed25519}"
-	install_key="$(grep -o 'ssh-ed25519 AAAA[A-Za-z0-9+/=]*' "$flake_dir/infra/nixos/profiles/installer.nix" | head -1)"
+	module_dir="$(dirname "$(readlink -f "$0")")"
+	install_key="$(grep -o 'ssh-ed25519 AAAA[A-Za-z0-9+/=]*' "$module_dir/profiles/installer.nix" | head -1)"
 	actual_key="$(ssh-keygen -y -f "$ssh_key" 2>/dev/null || true)"
 	test "$actual_key" = "$install_key" || {
-		echo "$ssh_key does not match the authorized key in $flake_dir/infra/nixos/profiles/installer.nix" >&2
+		echo "$ssh_key does not match the authorized key in $module_dir/profiles/installer.nix" >&2
 		exit 1
 	}
 	set -- "$@" --install-ssh-key "$ssh_key" --deployment-ssh-key "$ssh_key"
