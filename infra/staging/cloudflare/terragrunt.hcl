@@ -6,6 +6,12 @@ include "kubernetes" {
   path = find_in_parent_folders("_kubernetes.hcl")
 }
 
+exclude {
+  if      = true
+  actions = ["all"]
+  no_run  = true
+}
+
 dependencies {
   paths = ["../cluster"]
 }

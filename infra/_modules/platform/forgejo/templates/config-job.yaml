@@ -1,0 +1,45 @@
+{{- if or .Values.configuration.organizations .Values.configuration.repositories }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: forgejo-config-{{ include (print $.Template.BasePath "/config-source.yaml") . | sha256sum | trunc 7 }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: apply
+          image: golang:1.26-alpine
+          env:
+            - name: FORGEJO_HOST
+              value: http://forgejo-http:3000
+            - name: FORGEJO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-admin
+                  key: username
+            - name: FORGEJO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-admin
+                  key: password
+          workingDir: /go/src/forgejo-config
+          command:
+            - sh
+            - -c
+          args:
+            - |
+              go run .
+          volumeMounts:
+            - name: source
+              mountPath: /go/src/forgejo-config
+      volumes:
+        - name: source
+          configMap:
+            name: forgejo-config-source
+{{- end }}
