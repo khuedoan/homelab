@@ -11,7 +11,7 @@ terraform {
 
   after_hook "nixie" {
     commands = ["apply"]
-    execute  = ["${get_repo_root()}/infra/_modules/nixos/nixie", "${get_repo_root()}", "${get_terragrunt_dir()}/hosts.json"]
+    execute  = ["./nixie", get_working_dir(), "${get_terragrunt_dir()}/hosts.json"]
   }
 
   after_hook "enroll" {
@@ -21,7 +21,6 @@ terraform {
 }
 
 inputs = {
-  flake   = "${get_repo_root()}/infra/nixos"
   hosts   = local.hosts
   cluster = jsondecode(file("${get_terragrunt_dir()}/../cluster/config.json"))
 }
