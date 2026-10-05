@@ -104,7 +104,7 @@ func (f stateBootstrapFixture) assertCalls(t *testing.T, minimum, maximum int) {
 	t.Logf("bootstrap command ran %d times", count)
 }
 
-func (f stateBootstrapFixture) assertBackend(t *testing.T, unit string) {
+func (f stateBootstrapFixture) assertBackend(t *testing.T, environment, unit string) {
 	t.Helper()
 	files, err := filepath.Glob(filepath.Join(f.dir, unit, ".terragrunt-cache", "*", "*", "backend.tf.json"))
 	if err != nil || len(files) != 1 {
@@ -126,15 +126,27 @@ func (f stateBootstrapFixture) assertBackend(t *testing.T, unit string) {
 		t.Fatal(err)
 	}
 	got := backend.Terraform.Backend
-	if got.S3.Bucket != "tfstate-override" || got.S3.Key != unit+"/tfstate.json" || got.Local.Path != "" {
-		t.Fatalf("wrong remote backend for %s: %+v", unit, got)
+	if environment == "production" {
+		if got.S3.Bucket != "tfstate-override" || got.S3.Key != unit+"/tfstate.json" || got.Local.Path != "" {
+			t.Fatalf("wrong remote backend for %s: %+v", unit, got)
+		}
+		return
+	}
+	if got.Local.Path != filepath.Join(f.dir, ".state", unit+".tfstate") || got.S3.Bucket != "" {
+		t.Fatalf("wrong local backend for %s: %+v", unit, got)
 	}
 }
 
 func TestTerragruntStateBootstrapRunAll(t *testing.T) {
-	for _, environment := range []string{"production", "staging"} {
-		t.Run(environment, func(t *testing.T) {
-			fixture := newStateBootstrapFixture(t, environment)
+	for _, tc := range []struct {
+		environment      string
+		minimum, maximum int
+	}{
+		{"production", 1, 10},
+		{"staging", 0, 0},
+	} {
+		t.Run(tc.environment, func(t *testing.T) {
+			fixture := newStateBootstrapFixture(t, tc.environment)
 			for i := 1; i < 10; i++ {
 				fixture.addUnit(t, fmt.Sprintf("unit-%02d", i))
 			}
@@ -147,10 +159,10 @@ func TestTerragruntStateBootstrapRunAll(t *testing.T) {
 				if output, err := fixture.run(t, "", args...); err != nil {
 					t.Fatalf("%s: %v\n%s", action, err, output)
 				}
-				fixture.assertCalls(t, 1, 10)
+				fixture.assertCalls(t, tc.minimum, tc.maximum)
 			}
 			for i := range 10 {
-				fixture.assertBackend(t, fmt.Sprintf("unit-%02d", i))
+				fixture.assertBackend(t, tc.environment, fmt.Sprintf("unit-%02d", i))
 			}
 		})
 	}
@@ -161,7 +173,7 @@ func TestTerragruntStateBootstrapSingleUnit(t *testing.T) {
 		environment, unit string
 		calls             int
 	}{
-		{"production", "unit-00", 1}, {"staging", "unit-00", 1},
+		{"production", "unit-00", 1}, {"staging", "unit-00", 0},
 		{"production", "metal", 0}, {"production", "cluster", 0},
 		{"staging", "metal", 0}, {"staging", "cluster", 0},
 	} {
@@ -189,21 +201,33 @@ func TestTerragruntStateRenderIsOffline(t *testing.T) {
 }
 
 func TestTerragruntStateBootstrapFailure(t *testing.T) {
-	for _, environment := range []string{"production", "staging"} {
-		t.Run(environment, func(t *testing.T) {
-			fixture := newStateBootstrapFixture(t, environment)
+	for _, tc := range []struct {
+		environment string
+		blocked     bool
+	}{
+		{"production", true}, {"staging", false},
+	} {
+		t.Run(tc.environment, func(t *testing.T) {
+			fixture := newStateBootstrapFixture(t, tc.environment)
 			t.Setenv("BOOTSTRAP_TEST_FAIL", "yes")
 			output, planErr := fixture.run(t, "unit-00", "run", "--", "plan", "-input=false")
-			if planErr == nil {
-				t.Fatalf("bootstrap failure did not block plan\n%s", output)
+			if (planErr != nil) != tc.blocked {
+				t.Fatalf("plan blocked = %v, want %v\n%s", planErr, tc.blocked, output)
 			}
 			data, err := os.ReadFile(fixture.tofuLog)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if len(data) != 0 {
-				t.Fatalf("OpenTofu ran after bootstrap failure: %q", data)
+			if tc.blocked {
+				if len(data) != 0 {
+					t.Fatalf("OpenTofu ran after bootstrap failure: %q", data)
+				}
+				return
 			}
+			if !strings.Contains(string(data), "plan -input=false") {
+				t.Fatalf("local-state plan never ran: %q", data)
+			}
+			fixture.assertCalls(t, 0, 0)
 		})
 	}
 }
