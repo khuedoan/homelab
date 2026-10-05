@@ -56,7 +56,10 @@ func checkStorage(t *testing.T, cluster fixture.Cluster) {
 				return false, err
 			})
 			require.NoError(t, err)
-			other := cluster.Target.Names[len(cluster.Target.Names)-1]
+			other := node
+			if storage.Mode == corev1.ReadWriteMany {
+				other = cluster.Target.Names[len(cluster.Target.Names)-1]
+			}
 			logs = runPod(t, cluster, namespace, storagePod("reader", other, claim.Name, "set -eu; cat /data/value"))
 			require.Equal(t, "homelab-persistent-data", logs, "data must survive deletion of the writer pod")
 			if storage.Mode == corev1.ReadWriteMany {

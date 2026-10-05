@@ -2,10 +2,8 @@ package e2e
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"net/http"
-	"os"
 	"testing"
 	"time"
 
@@ -18,10 +16,7 @@ import (
 
 func checkIngress(t *testing.T, cluster fixture.Cluster, app testenv.App, path string) http.Header {
 	t.Helper()
-	transport := &http.Transport{
-		Proxy:           http.ProxyFromEnvironment,
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: os.Getenv("INSECURE_SKIP_VERIFY") == "1"},
-	}
+	transport := &http.Transport{}
 	t.Cleanup(transport.CloseIdleConnections)
 	client := &http.Client{Transport: transport, Timeout: 10 * time.Second}
 	var lastError error
@@ -43,7 +38,9 @@ func checkIngress(t *testing.T, cluster fixture.Cluster, app testenv.App, path s
 			lastError = err
 			return false, nil
 		}
-		response.Body.Close()
+		if err := response.Body.Close(); err != nil {
+			return false, fmt.Errorf("close HTTPS response: %w", err)
+		}
 		if response.StatusCode != http.StatusOK {
 			lastError = fmt.Errorf("HTTP %d", response.StatusCode)
 			return false, nil

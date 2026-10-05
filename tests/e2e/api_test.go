@@ -1,30 +1,27 @@
 package e2e
 
 import (
-	"fmt"
+	"context"
 	"slices"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/gruntwork-io/terratest/modules/core/v2/retry"
 	"github.com/khuedoan/homelab/tests/internal/fixture"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
 )
 
 func checkAPI(t *testing.T, cluster fixture.Cluster) {
 	t.Helper()
 	ctx, client := t.Context(), cluster.Client
-	_, err := retry.DoWithRetryContextE(t, ctx, "API readiness", 35, 5*time.Second, func() (string, error) {
+	err := wait.PollUntilContextTimeout(ctx, 5*time.Second, 3*time.Minute, true, func(ctx context.Context) (bool, error) {
 		body, err := client.CoreV1().RESTClient().Get().AbsPath("/readyz").DoRaw(ctx)
-		if err != nil || strings.TrimSpace(string(body)) != "ok" {
-			return "", fmt.Errorf("VIP API is not ready")
-		}
-		return "ready", nil
+		return err == nil && strings.TrimSpace(string(body)) == "ok", nil
 	})
-	require.NoError(t, err)
+	require.NoError(t, err, "VIP API is not ready")
 	nodes, err := client.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
 	require.NoError(t, err)
 	names := make([]string, 0, len(nodes.Items))

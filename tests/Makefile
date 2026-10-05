@@ -1,5 +1,5 @@
 .POSIX:
-.PHONY: test e2e benchmarks
+.PHONY: test lint e2e benchmarks
 
 filter ?= .
 override filter := $(value filter)
@@ -8,6 +8,10 @@ config ?=
 test:
 	go vet ./...
 	go test -race -short -count=1 ./...
+
+lint:
+	golangci-lint fmt --config ../.golangci.yml --diff ./...
+	golangci-lint run --config ../.golangci.yml ./...
 
 e2e:
 	E2E=1 TEST_CONFIG='$(config)' go test -race -count=1 -timeout=30m -run '^TestCluster$$/$(filter)' -v ./e2e

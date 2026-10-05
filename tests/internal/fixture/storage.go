@@ -11,6 +11,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
+// Volume creates a PVC only when its storage class uses the Delete reclaim policy.
+// The caller must use Namespace so cleanup also waits for the backing PV's reclamation.
 func Volume(t *testing.T, client *kubernetes.Clientset, namespace string, storage testenv.Storage, size string) *corev1.PersistentVolumeClaim {
 	t.Helper()
 	class, err := client.StorageV1().StorageClasses().Get(t.Context(), storage.Class, metav1.GetOptions{})
