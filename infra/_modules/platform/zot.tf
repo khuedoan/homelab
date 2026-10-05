@@ -20,6 +20,7 @@ resource "kubectl_manifest" "zot" {
             zot = {
               # TODO: Revisit resource sizing after measuring usage.
               resources   = { requests = { cpu = "50m", memory = "128Mi" } }
+              strategy    = { type = "Recreate" }
               persistence = true
               pvc = {
                 create  = true

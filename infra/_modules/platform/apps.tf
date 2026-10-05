@@ -16,10 +16,10 @@ resource "kubectl_manifest" "apps" {
         repoURL        = var.repository.url
         targetRevision = var.repository.revision
         path           = each.value.path
-        helm = {
-          releaseName = each.key
-          values      = each.value.values
-        }
+        helm = merge(
+          { releaseName = each.key },
+          each.value.values == "" ? {} : { values = each.value.values },
+        )
       }]
       destination = {
         server    = "https://kubernetes.default.svc"

@@ -20,9 +20,16 @@ resource "kubectl_manifest" "kured" {
             # TODO: Revisit resource sizing after measuring usage.
             resources = { requests = { cpu = "10m", memory = "32Mi" } }
             configuration = {
-              annotateNodes         = true
-              rebootSentinelCommand = "sh -c \"! needs-restarting --reboothint\""
-              timeZone              = "Asia/Ho_Chi_Minh"
+              annotateNodes = true
+              rebootCommand = "/run/current-system/sw/bin/systemctl reboot"
+              rebootSentinelCommand = join(" ", [
+                "/bin/sh -c 'for part in kernel initrd kernel-modules; do",
+                "booted=$(/run/current-system/sw/bin/readlink \"/run/booted-system/$part\") || exit 2;",
+                "desired=$(/run/current-system/sw/bin/readlink \"/nix/var/nix/profiles/system/$part\") || exit 2;",
+                "[ \"$booted\" = \"$desired\" ] || exit 0;",
+                "done; exit 1'",
+              ])
+              timeZone = "Asia/Ho_Chi_Minh"
             }
           })
         }
