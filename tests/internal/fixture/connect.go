@@ -11,15 +11,20 @@ import (
 	"github.com/gruntwork-io/terratest/modules/core/v2/shell"
 	"github.com/khuedoan/homelab/tests/internal/testenv"
 	"github.com/stretchr/testify/require"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
+// Cluster binds the validated target to clients using only its exported kubeconfig.
 type Cluster struct {
-	Target testenv.Target
-	Client *kubernetes.Clientset
+	Target  testenv.Target
+	Client  *kubernetes.Clientset
+	Dynamic dynamic.Interface
 }
 
+// Connect verifies host identities over trusted SSH before exporting a private kubeconfig.
+// The export must select the target VIP, verify API TLS, and avoid credential plugins.
 func Connect(t *testing.T, target testenv.Target) Cluster {
 	t.Helper()
 	checkHosts(t, target)
@@ -56,7 +61,9 @@ func Connect(t *testing.T, target testenv.Target) Cluster {
 	config.Timeout = 10 * time.Second
 	client, err := kubernetes.NewForConfig(config)
 	require.NoError(t, err)
-	return Cluster{Target: target, Client: client}
+	dynamicClient, err := dynamic.NewForConfig(config)
+	require.NoError(t, err)
+	return Cluster{Target: target, Client: client, Dynamic: dynamicClient}
 }
 
 func run(t *testing.T, target testenv.Target, action, executable string, args ...string) string {
@@ -70,6 +77,8 @@ func run(t *testing.T, target testenv.Target, action, executable string, args ..
 	return strings.TrimSpace(output)
 }
 
+// SSH runs a bounded root command on a validated inventory host using trusted host keys.
+// Command failures withhold output to avoid exposing credentials.
 func SSH(t *testing.T, target testenv.Target, name, command string) string {
 	t.Helper()
 	args := []string{

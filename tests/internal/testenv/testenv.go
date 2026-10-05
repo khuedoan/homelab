@@ -14,36 +14,46 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation"
 )
 
+// Config selects an inventory and the capabilities expected from that environment.
+// ExcludeEnvironments names inventories whose known addresses and MACs must not overlap.
 type Config struct {
 	Environment         string        `json:"environment"`
 	ExcludeEnvironments []string      `json:"exclude_environments"`
+	DNSDomain           string        `json:"dns_domain"`
 	Apps                []App         `json:"apps"`
 	Storage             []Storage     `json:"storage"`
 	Registry            *App          `json:"registry,omitempty"`
 	LoadBalancer        *LoadBalancer `json:"load_balancer,omitempty"`
+	GitOpsNamespace     string        `json:"gitops_namespace,omitempty"`
 }
 
+// App identifies an existing Ingress whose HTTPS endpoint must respond successfully.
 type App struct {
 	Namespace string `json:"namespace"`
 	Ingress   string `json:"ingress"`
 }
 
+// LoadBalancer selects an existing ingress controller instead of a temporary LoadBalancer Service.
 type LoadBalancer struct {
 	Namespace    string `json:"namespace"`
 	Service      string `json:"service"`
 	IngressClass string `json:"ingress_class"`
 }
 
+// Storage specifies a provisioner and the PVC access mode to exercise.
 type Storage struct {
 	Class string                            `json:"class"`
 	Mode  corev1.PersistentVolumeAccessMode `json:"access_mode"`
 }
 
+// Cluster identifies the inventory member that initializes the API and its IPv4 VIP.
 type Cluster struct {
 	Initializer string `json:"init_host"`
 	VIP         string `json:"vip"`
 }
 
+// Host records management addresses and identities checked over trusted SSH.
+// Machine is an optional enrollment machine-ID digest, not the raw machine ID.
 type Host struct {
 	MAC     string `json:"mac_address"`
 	IP      string `json:"ip"`
@@ -51,6 +61,7 @@ type Host struct {
 	Machine string `json:"machine_id_hash"`
 }
 
+// Target is a validated, normalized inventory with host names in sorted order.
 type Target struct {
 	Root    string
 	Config  Config
@@ -59,6 +70,7 @@ type Target struct {
 	Names   []string
 }
 
+// Root finds the repository containing tests/go.mod and infra above the working directory.
 func Root() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
@@ -131,38 +143,46 @@ func loadInventory(root, environment string) (inventory, error) {
 	}
 	sort.Strings(inv.names)
 	for _, name := range inv.names {
-		node := inv.hosts[name]
-		if len(validation.IsDNS1123Subdomain(name)) != 0 {
-			return inv, fmt.Errorf("invalid %s hostname %q", environment, name)
+		node, err := inv.normalizeHost(environment, name, vip)
+		if err != nil {
+			return inv, err
 		}
-		if node.IP == "" {
-			node.IP = node.IPv6
-		}
-		local := map[netip.Addr]bool{}
-		for i, field := range []*string{&node.IP, &node.IPv6} {
-			if i == 1 && *field == "" {
-				continue
-			}
-			address, err := managementAddress(*field)
-			if err != nil || address == vip || inv.addresses[address] {
-				return inv, fmt.Errorf("%s/%s needs a unique management IP distinct from the VIP", environment, name)
-			}
-			*field = address.String()
-			local[address] = true
-		}
-		for address := range local {
-			inv.addresses[address] = true
-		}
-		mac, err := net.ParseMAC(node.MAC)
-		if err != nil || len(mac) != 6 || mac[0]&1 != 0 || inv.macs[mac.String()] {
-			return inv, fmt.Errorf("%s/%s needs a unique unicast MAC address", environment, name)
-		}
-		node.MAC = mac.String()
-		inv.macs[node.MAC] = true
 		inv.hosts[name] = node
 	}
 	inv.addresses[vip] = true
 	return inv, nil
+}
+
+func (inv inventory) normalizeHost(environment, name string, vip netip.Addr) (Host, error) {
+	node := inv.hosts[name]
+	if len(validation.IsDNS1123Subdomain(name)) != 0 {
+		return node, fmt.Errorf("invalid %s hostname %q", environment, name)
+	}
+	if node.IP == "" {
+		node.IP = node.IPv6
+	}
+	local := map[netip.Addr]bool{}
+	for i, field := range []*string{&node.IP, &node.IPv6} {
+		if i == 1 && *field == "" {
+			continue
+		}
+		address, err := managementAddress(*field)
+		if err != nil || address == vip || inv.addresses[address] {
+			return node, fmt.Errorf("%s/%s needs a unique management IP distinct from the VIP", environment, name)
+		}
+		*field = address.String()
+		local[address] = true
+	}
+	for address := range local {
+		inv.addresses[address] = true
+	}
+	mac, err := net.ParseMAC(node.MAC)
+	if err != nil || len(mac) != 6 || mac[0]&1 != 0 || inv.macs[mac.String()] {
+		return node, fmt.Errorf("%s/%s needs a unique unicast MAC address", environment, name)
+	}
+	node.MAC = mac.String()
+	inv.macs[node.MAC] = true
+	return node, nil
 }
 
 func loadExcluded(root, environment string) (inventory, error) {
@@ -198,6 +218,92 @@ func loadExcluded(root, environment string) (inventory, error) {
 	return inv, nil
 }
 
+func (config Config) validate() error {
+	environments := append([]string{config.Environment}, config.ExcludeEnvironments...)
+	seen := map[string]bool{}
+	for _, environment := range environments {
+		if len(validation.IsDNS1123Label(environment)) != 0 {
+			return fmt.Errorf("invalid environment name %q", environment)
+		}
+		if seen[environment] {
+			return fmt.Errorf("duplicate environment %q", environment)
+		}
+		seen[environment] = true
+	}
+	if err := config.validateIngresses(); err != nil {
+		return err
+	}
+	classes := map[string]bool{}
+	for _, storage := range config.Storage {
+		if len(validation.IsDNS1123Subdomain(storage.Class)) != 0 || classes[storage.Class] {
+			return fmt.Errorf("storage class must be valid and unique: %q", storage.Class)
+		}
+		if storage.Mode != corev1.ReadWriteOnce && storage.Mode != corev1.ReadWriteMany {
+			return fmt.Errorf("storage class %s requires ReadWriteOnce or ReadWriteMany", storage.Class)
+		}
+		classes[storage.Class] = true
+	}
+	if lb := config.LoadBalancer; lb != nil {
+		if len(validation.IsDNS1123Label(lb.Namespace)) != 0 || len(validation.IsDNS1035Label(lb.Service)) != 0 || len(validation.IsDNS1123Subdomain(lb.IngressClass)) != 0 {
+			return fmt.Errorf("load_balancer requires a valid namespace, service, and ingress_class")
+		}
+	}
+	if namespace := config.GitOpsNamespace; namespace != "" && len(validation.IsDNS1123Label(namespace)) != 0 {
+		return fmt.Errorf("invalid GitOps namespace %q", namespace)
+	}
+	if len(validation.IsDNS1123Subdomain(config.DNSDomain)) != 0 {
+		return fmt.Errorf("invalid DNS domain %q", config.DNSDomain)
+	}
+	return nil
+}
+
+func (config Config) validateIngresses() error {
+	apps := map[App]bool{}
+	ingresses := append([]App(nil), config.Apps...)
+	if config.Registry != nil {
+		ingresses = append(ingresses, *config.Registry)
+	}
+	for _, app := range ingresses {
+		if len(validation.IsDNS1123Label(app.Namespace)) != 0 {
+			return fmt.Errorf("invalid app namespace %q", app.Namespace)
+		}
+		if len(validation.IsDNS1123Subdomain(app.Ingress)) != 0 {
+			return fmt.Errorf("invalid app ingress %q", app.Ingress)
+		}
+		if apps[app] {
+			return fmt.Errorf("duplicate app target %s/%s", app.Namespace, app.Ingress)
+		}
+		apps[app] = true
+	}
+	return nil
+}
+
+func loadIsolatedInventory(root string, config Config) (inventory, error) {
+	selected, err := loadInventory(root, config.Environment)
+	if err != nil {
+		return selected, err
+	}
+	for _, environment := range config.ExcludeEnvironments {
+		excluded, err := loadExcluded(root, environment)
+		if err != nil {
+			return selected, err
+		}
+		for address := range selected.addresses {
+			if excluded.addresses[address] {
+				return selected, fmt.Errorf("%s overlaps %s inventory at address %s", config.Environment, environment, address)
+			}
+		}
+		for mac := range selected.macs {
+			if excluded.macs[mac] {
+				return selected, fmt.Errorf("%s overlaps %s inventory at MAC %s", config.Environment, environment, mac)
+			}
+		}
+	}
+	return selected, nil
+}
+
+// Load reads a config relative to tests/ or by absolute path and rejects unsafe inventories.
+// Excluded inventories may lack discovery data, but every known address and MAC is checked.
 func Load(root, configFile string) (Target, error) {
 	target := Target{Root: root}
 	if configFile == "" {
@@ -209,73 +315,19 @@ func Load(root, configFile string) (Target, error) {
 	if err := readJSON(configFile, &target.Config); err != nil {
 		return target, err
 	}
-	environments := append([]string{target.Config.Environment}, target.Config.ExcludeEnvironments...)
-	seen := map[string]bool{}
-	for _, environment := range environments {
-		if len(validation.IsDNS1123Label(environment)) != 0 {
-			return target, fmt.Errorf("invalid environment name %q", environment)
-		}
-		if seen[environment] {
-			return target, fmt.Errorf("duplicate environment %q", environment)
-		}
-		seen[environment] = true
-	}
-	apps := map[App]bool{}
-	ingresses := append([]App(nil), target.Config.Apps...)
-	if target.Config.Registry != nil {
-		ingresses = append(ingresses, *target.Config.Registry)
-	}
-	for _, app := range ingresses {
-		if len(validation.IsDNS1123Label(app.Namespace)) != 0 {
-			return target, fmt.Errorf("invalid app namespace %q", app.Namespace)
-		}
-		if len(validation.IsDNS1123Subdomain(app.Ingress)) != 0 {
-			return target, fmt.Errorf("invalid app ingress %q", app.Ingress)
-		}
-		if apps[app] {
-			return target, fmt.Errorf("duplicate app target %s/%s", app.Namespace, app.Ingress)
-		}
-		apps[app] = true
-	}
-	classes := map[string]bool{}
-	for _, storage := range target.Config.Storage {
-		if len(validation.IsDNS1123Subdomain(storage.Class)) != 0 || classes[storage.Class] {
-			return target, fmt.Errorf("storage class must be valid and unique: %q", storage.Class)
-		}
-		if storage.Mode != corev1.ReadWriteOnce && storage.Mode != corev1.ReadWriteMany {
-			return target, fmt.Errorf("storage class %s requires ReadWriteOnce or ReadWriteMany", storage.Class)
-		}
-		classes[storage.Class] = true
-	}
-	if lb := target.Config.LoadBalancer; lb != nil {
-		if len(validation.IsDNS1123Label(lb.Namespace)) != 0 || len(validation.IsDNS1035Label(lb.Service)) != 0 || len(validation.IsDNS1123Subdomain(lb.IngressClass)) != 0 {
-			return target, fmt.Errorf("load_balancer requires a valid namespace, service, and ingress_class")
-		}
-	}
-	selected, err := loadInventory(root, target.Config.Environment)
-	if err != nil {
+	if err := target.Config.validate(); err != nil {
 		return target, err
 	}
-	for _, environment := range target.Config.ExcludeEnvironments {
-		excluded, err := loadExcluded(root, environment)
-		if err != nil {
-			return target, err
-		}
-		for address := range selected.addresses {
-			if excluded.addresses[address] {
-				return target, fmt.Errorf("%s overlaps %s inventory at address %s", target.Config.Environment, environment, address)
-			}
-		}
-		for mac := range selected.macs {
-			if excluded.macs[mac] {
-				return target, fmt.Errorf("%s overlaps %s inventory at MAC %s", target.Config.Environment, environment, mac)
-			}
-		}
+	selected, err := loadIsolatedInventory(root, target.Config)
+	if err != nil {
+		return target, err
 	}
 	target.Cluster, target.Hosts, target.Names = selected.cluster, selected.hosts, selected.names
 	return target, nil
 }
 
+// ForTest skips before loading config unless E2E=1 and short mode is disabled.
+// Live tests must supply TEST_CONFIG explicitly; invalid targets fail the test.
 func ForTest(t *testing.T) Target {
 	t.Helper()
 	if os.Getenv("E2E") != "1" || testing.Short() {

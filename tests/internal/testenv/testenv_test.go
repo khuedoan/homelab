@@ -28,7 +28,7 @@ type fixture struct {
 
 func newFixture() fixture {
 	return fixture{
-		config:   Config{Environment: "dev", ExcludeEnvironments: []string{"prod"}, Apps: []App{{Namespace: "web", Ingress: "frontend"}}},
+		config:   Config{Environment: "dev", ExcludeEnvironments: []string{"prod"}, DNSDomain: "unit.invalid", Apps: []App{{Namespace: "web", Ingress: "frontend"}}, GitOpsNamespace: "cd"},
 		selected: Cluster{Initializer: "node-a", VIP: "192.0.2.100"},
 		excluded: Cluster{Initializer: "node-b", VIP: "192.0.2.200"},
 		hosts:    map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}},
@@ -99,6 +99,9 @@ func TestConfigValidation(t *testing.T) {
 		{"invalid registry ingress", Config{Environment: "dev", Registry: &App{Namespace: "images", Ingress: "../registry"}}, "invalid app ingress"},
 		{"empty load balancer", Config{Environment: "dev", LoadBalancer: &LoadBalancer{}}, "load_balancer requires a valid namespace, service, and ingress_class"},
 		{"invalid load balancer service", Config{Environment: "dev", LoadBalancer: &LoadBalancer{Namespace: "edge", Service: "../lb", IngressClass: "edge"}}, "load_balancer requires a valid namespace, service, and ingress_class"},
+		{"invalid GitOps namespace", Config{Environment: "dev", GitOpsNamespace: "../cd"}, "invalid GitOps namespace"},
+		{"missing DNS domain", Config{Environment: "dev"}, "invalid DNS domain"},
+		{"invalid DNS domain", Config{Environment: "dev", DNSDomain: "../cluster.local"}, "invalid DNS domain"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			root := t.TempDir()
@@ -127,6 +130,9 @@ func TestInventoryValidation(t *testing.T) {
 		{"excluded unsafe address", func(f *fixture) { f.excluded.VIP = "127.0.0.1" }, "prod has an invalid excluded address"},
 		{"excluded unsafe MAC", func(f *fixture) { h := f.others["node-b"]; h.MAC = "invalid"; f.others["node-b"] = h }, "prod has an invalid excluded MAC"},
 		{"selected IP equals excluded VIP", func(f *fixture) { h := f.hosts["node-a"]; h.IP = "192.0.2.200"; f.hosts["node-a"] = h }, "overlaps prod inventory at address 192.0.2.200"},
+		{"primary overlaps another secondary", func(f *fixture) {
+			f.hosts["node-c"] = Host{IP: "192.0.2.30", IPv6: "::ffff:192.0.2.10", MAC: "02:00:00:00:00:30"}
+		}, "dev/node-c needs a unique management IP distinct from the VIP"},
 		{"excluded secondary IPv6 overlap", func(f *fixture) {
 			h := f.hosts["node-a"]
 			h.IPv6 = "2001:db8::20"
@@ -147,17 +153,48 @@ func TestInventoryValidation(t *testing.T) {
 	}
 }
 
-func TestCapabilities(t *testing.T) {
+func TestMappedIPv4Inventory(t *testing.T) {
 	f, root := newFixture(), t.TempDir()
-	f.config.Storage = []Storage{{Class: "block", Mode: "ReadWriteOnce"}, {Class: "shared", Mode: "ReadWriteMany"}}
-	f.config.Registry = &App{Namespace: "images", Ingress: "registry"}
-	f.config.LoadBalancer = &LoadBalancer{Namespace: "edge", Service: "controller", IngressClass: "edge"}
+	f.selected.VIP = "::ffff:192.0.2.100"
+	f.hosts["node-a"] = Host{IP: "192.0.2.10", IPv6: "::ffff:192.0.2.10", MAC: "02-AB-00-00-00-10"}
 	f.write(t, root)
 	target, err := Load(root, "config/target.json")
 	require.NoError(t, err)
-	require.Equal(t, []Storage{{Class: "block", Mode: "ReadWriteOnce"}, {Class: "shared", Mode: "ReadWriteMany"}}, target.Config.Storage)
-	require.Equal(t, &App{Namespace: "images", Ingress: "registry"}, target.Config.Registry)
-	require.Equal(t, &LoadBalancer{Namespace: "edge", Service: "controller", IngressClass: "edge"}, target.Config.LoadBalancer)
+	require.Equal(t, Cluster{Initializer: "node-a", VIP: "192.0.2.100"}, target.Cluster)
+	require.Equal(t, map[string]Host{"node-a": {IP: "192.0.2.10", IPv6: "192.0.2.10", MAC: "02:ab:00:00:00:10"}}, target.Hosts)
+	f.excluded.VIP = "::ffff:192.0.2.10"
+	f.write(t, root)
+	_, err = Load(root, "config/target.json")
+	require.EqualError(t, err, "dev overlaps prod inventory at address 192.0.2.10")
+}
+
+func TestCapabilities(t *testing.T) {
+	f, root := newFixture(), t.TempDir()
+	f.write(t, root)
+	writeJSON(t, root, "tests/config/target.json", json.RawMessage(`{
+		"environment": "dev",
+		"exclude_environments": ["prod"],
+		"dns_domain": "unit.invalid",
+		"apps": [{"namespace": "web", "ingress": "frontend"}],
+		"storage": [
+			{"class": "block", "access_mode": "ReadWriteOnce"},
+			{"class": "shared", "access_mode": "ReadWriteMany"}
+		],
+		"registry": {"namespace": "images", "ingress": "registry"},
+		"load_balancer": {"namespace": "edge", "service": "controller", "ingress_class": "edge"},
+		"gitops_namespace": "cd"
+	}`))
+	target, err := Load(root, "config/target.json")
+	require.NoError(t, err)
+	require.Equal(t, Config{
+		Environment: "dev", ExcludeEnvironments: []string{"prod"},
+		DNSDomain:       "unit.invalid",
+		Apps:            []App{{Namespace: "web", Ingress: "frontend"}},
+		Storage:         []Storage{{Class: "block", Mode: "ReadWriteOnce"}, {Class: "shared", Mode: "ReadWriteMany"}},
+		Registry:        &App{Namespace: "images", Ingress: "registry"},
+		LoadBalancer:    &LoadBalancer{Namespace: "edge", Service: "controller", IngressClass: "edge"},
+		GitOpsNamespace: "cd",
+	}, target.Config)
 }
 
 func TestExcludedInventoryWithoutDiscovery(t *testing.T) {

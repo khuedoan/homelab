@@ -13,6 +13,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
+// Namespace creates an isolated namespace and registers UID-guarded cleanup.
+// Cleanup waits for namespace deletion and reclamation of all PVs bound to its claims.
 func Namespace(t *testing.T, client *kubernetes.Clientset) string {
 	t.Helper()
 	namespace, err := client.CoreV1().Namespaces().Create(t.Context(), &corev1.Namespace{
@@ -41,21 +43,24 @@ func Namespace(t *testing.T, client *kubernetes.Clientset) string {
 			t.Errorf("wait for namespace %s deletion: %v", namespace.Name, err)
 			return
 		}
-		err = wait.PollUntilContextCancel(ctx, 2*time.Second, true, func(ctx context.Context) (bool, error) {
-			volumes, err := client.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
-			if err != nil {
-				return false, err
-			}
-			for _, volume := range volumes.Items {
-				if volume.Spec.ClaimRef != nil && volume.Spec.ClaimRef.Namespace == namespace.Name {
-					return false, nil
-				}
-			}
-			return true, nil
-		})
-		if err != nil {
+		if err := waitForVolumeReclamation(ctx, client, namespace.Name); err != nil {
 			t.Errorf("volumes for namespace %s were not reclaimed: %v", namespace.Name, err)
 		}
 	})
 	return namespace.Name
+}
+
+func waitForVolumeReclamation(ctx context.Context, client *kubernetes.Clientset, namespace string) error {
+	return wait.PollUntilContextCancel(ctx, 2*time.Second, true, func(ctx context.Context) (bool, error) {
+		volumes, err := client.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
+		if err != nil {
+			return false, err
+		}
+		for _, volume := range volumes.Items {
+			if volume.Spec.ClaimRef != nil && volume.Spec.ClaimRef.Namespace == namespace {
+				return false, nil
+			}
+		}
+		return true, nil
+	})
 }

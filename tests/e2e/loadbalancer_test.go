@@ -2,10 +2,13 @@ package e2e
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
+	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
@@ -18,6 +21,27 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/utils/ptr"
 )
+
+func externalHTTP(ctx context.Context, client *http.Client, address, hostname string) error {
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://"+address, nil)
+	if err != nil {
+		return err
+	}
+	request.Host = hostname
+	response, err := client.Do(request)
+	if err != nil {
+		return err
+	}
+	body, readErr := io.ReadAll(io.LimitReader(response.Body, 1024))
+	err = errors.Join(readErr, response.Body.Close())
+	if err != nil {
+		return fmt.Errorf("read or close external HTTP response: %w", err)
+	}
+	if response.StatusCode != http.StatusOK || string(body) != "homelab-e2e" {
+		return fmt.Errorf("external HTTP returned %d with body %q", response.StatusCode, body)
+	}
+	return nil
+}
 
 func checkLoadBalancer(t *testing.T, cluster fixture.Cluster) {
 	t.Helper()
@@ -78,24 +102,42 @@ func checkLoadBalancer(t *testing.T, cluster fixture.Cluster) {
 			if host == "" {
 				host = ingress.Hostname
 			}
-			request, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://"+net.JoinHostPort(host, "80"), nil)
-			if err != nil {
-				return false, err
-			}
-			request.Host = hostname
-			response, err := client.Do(request)
-			if err != nil {
+			if err := externalHTTP(ctx, client, net.JoinHostPort(host, "80"), hostname); err != nil {
 				lastError = err
-				return false, nil
-			}
-			body, err := io.ReadAll(io.LimitReader(response.Body, 1024))
-			response.Body.Close()
-			if err != nil || response.StatusCode != http.StatusOK || string(body) != "homelab-e2e" {
-				lastError = fmt.Errorf("external HTTP returned %d with body %q: %v", response.StatusCode, body, err)
 				return false, nil
 			}
 		}
 		return true, nil
 	})
 	require.NoError(t, err, "LoadBalancer is not reachable from the test runner: %v", lastError)
+}
+
+func TestExternalHTTP(t *testing.T) {
+	for _, tc := range []struct {
+		name, body, wantError string
+		status                int
+	}{
+		{"echo", "homelab-e2e", "", http.StatusOK},
+		{"wrong backend", "another-backend", `external HTTP returned 200 with body "another-backend"`, http.StatusOK},
+		{"unavailable", "homelab-e2e", `external HTTP returned 503 with body "homelab-e2e"`, http.StatusServiceUnavailable},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.Host != "probe.invalid" || r.Method != http.MethodGet {
+					t.Errorf("request = %s %s; want GET probe.invalid", r.Method, r.Host)
+				}
+				w.WriteHeader(tc.status)
+				if _, err := io.WriteString(w, tc.body); err != nil {
+					t.Errorf("write response: %v", err)
+				}
+			}))
+			t.Cleanup(server.Close)
+			err := externalHTTP(t.Context(), server.Client(), strings.TrimPrefix(server.URL, "http://"), "probe.invalid")
+			if tc.wantError != "" {
+				require.ErrorContains(t, err, tc.wantError)
+				return
+			}
+			require.NoError(t, err)
+		})
+	}
 }
