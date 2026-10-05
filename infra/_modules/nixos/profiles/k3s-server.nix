@@ -49,8 +49,8 @@
     clusterInit = k3s.clusterInit;
     serverAddr = if k3s.clusterInit then "" else "https://${k3s.vip}:6443";
     tokenFile = if k3s.clusterInit then null else "/var/lib/rancher/k3s/enrollment/token";
+    # TODO: Replace the built-in local-path provisioner with replicated storage.
     disable = [
-      "local-storage" # storage is provided by Rook Ceph
       "traefik" # ingress is provided by NGINX
     ];
     extraFlags = [

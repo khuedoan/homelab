@@ -2,18 +2,17 @@
   nixpkgs,
   disko,
   nixie,
+  hosts ? { },
+  cluster ? null,
 }:
 
 let
-  hosts = builtins.fromJSON (builtins.readFile ./hosts.json);
-  cluster = builtins.fromJSON (builtins.readFile ./cluster.json);
   initHost =
     if builtins.hasAttr cluster.init_host hosts then
       cluster.init_host
     else
       throw "Cluster init_host '${cluster.init_host}' is not present in hosts.json";
 in
-assert builtins.seq initHost true;
 {
   installer = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
@@ -25,6 +24,7 @@ assert builtins.seq initHost true;
 }
 // nixpkgs.lib.mapAttrs (
   name: hostConfig:
+  assert builtins.seq initHost true;
   nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {

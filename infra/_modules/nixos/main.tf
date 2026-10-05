@@ -14,12 +14,12 @@ locals {
 
 resource "local_file" "hosts" {
   content         = jsonencode(local.inventory)
-  filename        = "${var.flake}/hosts.json"
+  filename        = "${path.module}/hosts.json"
   file_permission = "600"
 }
 
 resource "local_file" "cluster" {
   content         = jsonencode(var.cluster)
-  filename        = "${var.flake}/cluster.json"
+  filename        = "${path.module}/cluster.json"
   file_permission = "600"
 }
