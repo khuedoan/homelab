@@ -1,21 +1,12 @@
 {
   inputs = {
-    nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-26.05";
-    };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixie = {
-      url = "github:khuedoan/nixie";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixie.url = "github:khuedoan/nixie";
   };
 
   outputs =
     {
       nixpkgs,
-      disko,
       nixie,
       ...
     }:
@@ -64,10 +55,6 @@
             nixie.packages.${system}.default
             toolbox
           ];
-      };
-
-      nixosConfigurations = import ./infra/nixos {
-        inherit nixpkgs disko nixie;
       };
     };
 }
