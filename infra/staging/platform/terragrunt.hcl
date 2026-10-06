@@ -19,11 +19,5 @@ inputs = {
     url      = get_env("GITOPS_REPOSITORY_URL", "http://forgejo-http.forgejo:3000/forgejo_admin/staging-apps.git")
     revision = get_env("GITOPS_REVISION", "main")
   }
-  apps = {
-    pairdrop = {
-      path      = "apps/pairdrop"
-      namespace = "pairdrop"
-      values    = ""
-    }
-  }
+  apps = ["pairdrop"]
 }
