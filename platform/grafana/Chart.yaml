@@ -1,7 +1,0 @@
-apiVersion: v2
-name: grafana
-version: 0.0.0
-dependencies:
-  - name: grafana
-    repository: https://grafana.github.io/helm-charts
-    version: 7.3.3
