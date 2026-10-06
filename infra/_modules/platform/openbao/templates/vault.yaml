@@ -1,0 +1,78 @@
+apiVersion: vault.banzaicloud.com/v1alpha1
+kind: Vault
+metadata:
+  name: openbao
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  size: 1
+  image: quay.io/openbao/openbao:2.7.1
+  bankVaultsImage: ghcr.io/bank-vaults/bank-vaults:v1.33.2
+  configPath: /openbao/config
+  serviceAccount: openbao
+  statsdDisabled: true
+  unsealConfig:
+    kubernetes:
+      secretNamespace: {{ .Release.Namespace }}
+      secretName: openbao-unseal
+  config:
+    api_addr: http://openbao.{{ .Release.Namespace }}.svc.cluster.local:8200
+    cluster_addr: https://openbao.{{ .Release.Namespace }}.svc.cluster.local:8201
+    disable_mlock: true
+    listener:
+      tcp:
+        address: "[::]:8200"
+        # TODO: Use verified TLS for in-cluster clients.
+        tls_disable: true
+    storage:
+      raft:
+        path: /openbao/data
+    ui: true
+  volumeMounts:
+    - name: data
+      mountPath: /openbao/data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: openbao-data
+  externalConfig:
+    auth:
+      - type: kubernetes
+        path: kubernetes
+        config:
+          kubernetes_host: https://kubernetes.default.svc.cluster.local:443
+        roles:
+          {{- range $namespace, $paths := .Values.readers }}
+          - name: {{ $namespace }}
+            bound_service_account_names: [default]
+            bound_service_account_namespaces: [{{ $namespace }}]
+            audience: https://kubernetes.default.svc
+            policies: [{{ $namespace }}]
+            ttl: 5m
+          {{- end }}
+    policies:
+      {{- range $namespace, $paths := .Values.readers }}
+      - name: {{ $namespace }}
+        rules: |
+          {{- range $paths }}
+          path "secret/data/{{ . }}" {
+            capabilities = ["read"]
+          }
+          {{- end }}
+      {{- end }}
+    secrets:
+      - path: secret
+        type: kv
+        options:
+          version: "2"
+        configuration:
+          data:
+            {{- range $record, $key := .Values.generatedSecrets }}
+            - name: {{ $record }}
+              create_only: true
+              options:
+                cas: 0
+              data:
+                {{ $key }}: '${randAlphaNum 32}'
+            {{- end }}
