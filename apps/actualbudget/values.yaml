@@ -8,30 +8,32 @@ app-template:
             tag: 24.12.0-alpine
   service:
     main:
+      controller: main
       ports:
         http:
           port: 5006
           protocol: HTTP
-  ingress:
+  route:
     main:
       enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-      hosts:
-        - host: &host budget.khuedoan.com
-          paths:
-            - path: /
-              pathType: Prefix
-              service:
-                name: main
-                port: http
-      tls:
-        - hosts:
-            - *host
-          secretName: actualbudget-tls-certificate
+      kind: HTTPRoute
+      parentRefs:
+        - name: gateway
+          namespace: istio-system
+          sectionName: https
+      hostnames:
+        - budget.khuedoan.com
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - identifier: main
+              port: 5006
   persistence:
     data:
+      suffix: data
       accessMode: ReadWriteOnce
       size: 1Gi
       globalMounts:
