@@ -1,15 +1,12 @@
-# TODO https://github.com/kanidm/kanidm/issues/1227
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: kanidm-selfsigned
+  name: kanidm-backend
   namespace: {{ .Release.Namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
 spec:
-  secretName: kanidm-selfsigned-certificate
+  secretName: kanidm-backend-tls
   issuerRef:
-    kind: Issuer
-    name: kanidm-selfsigned
+    kind: ClusterIssuer
+    name: letsencrypt-prod
   dnsNames:
-    - home.arpa
+    - auth.khuedoan.com

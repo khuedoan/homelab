@@ -39,29 +39,12 @@ resource "kubectl_manifest" "woodpecker" {
                   storageClass = "local-path"
                 }
                 env = {
-                  WOODPECKER_ADMIN        = "forgejo_admin"
-                  WOODPECKER_GITEA        = true
-                  WOODPECKER_GITEA_URL    = "https://git.khuedoan.com"
-                  WOODPECKER_HOST         = "https://ci.khuedoan.com"
-                  WOODPECKER_OPEN         = true
-                  WOODPECKER_WEBHOOK_HOST = "http://woodpecker-server.woodpecker"
-                }
-                ingress = {
-                  annotations = {
-                    "cert-manager.io/cluster-issuer" = "letsencrypt-prod"
-                  }
-                  enabled = true
-                  hosts = [{
-                    host = "ci.khuedoan.com"
-                    paths = [{
-                      path = "/"
-                    }]
-                  }]
-                  ingressClassName = "nginx"
-                  tls = [{
-                    hosts      = ["ci.khuedoan.com"]
-                    secretName = "woodpecker-tls-certificate"
-                  }]
+                  WOODPECKER_ADMIN               = "forgejo_admin"
+                  WOODPECKER_GITEA               = true
+                  WOODPECKER_GITEA_URL           = "https://git.khuedoan.com"
+                  WOODPECKER_HOST                = "https://ci.khuedoan.com"
+                  WOODPECKER_OPEN                = true
+                  WOODPECKER_EXPERT_WEBHOOK_HOST = "http://woodpecker-server.woodpecker"
                 }
               }
             }

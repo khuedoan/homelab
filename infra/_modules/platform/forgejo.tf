@@ -71,20 +71,14 @@ resource "kubectl_manifest" "forgejo" {
                 # TODO: Replace temporary local-path storage with replicated storage.
                 storageClass = "local-path"
               }
-              ingress = {
-                enabled   = true
-                className = "nginx"
-                annotations = {
-                  "cert-manager.io/cluster-issuer" = "letsencrypt-prod"
-                }
-                hosts = [{
-                  host  = "git.khuedoan.com"
-                  paths = [{ path = "/", pathType = "Prefix" }]
+              httpRoute = {
+                enabled = true
+                parentRefs = [{
+                  name        = "gateway"
+                  namespace   = "istio-system"
+                  sectionName = "https"
                 }]
-                tls = [{
-                  hosts      = ["git.khuedoan.com"]
-                  secretName = "forgejo-tls"
-                }]
+                hostnames = ["git.khuedoan.com"]
               }
             }
           })
