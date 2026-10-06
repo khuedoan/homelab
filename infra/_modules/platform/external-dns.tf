@@ -13,7 +13,7 @@ resource "kubectl_manifest" "external_dns" {
       sources = [{
         repoURL        = "https://kubernetes-sigs.github.io/external-dns"
         chart          = "external-dns"
-        targetRevision = "1.14.3"
+        targetRevision = "1.23.0"
         helm = {
           releaseName = "external-dns"
           values = yamlencode({
@@ -28,15 +28,12 @@ resource "kubectl_manifest" "external_dns" {
                 }
               }
             }]
-            extraArgs = ["--annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)"]
-            interval  = "5m"
-            metrics = {
-              enabled = true
-              serviceMonitor = {
-                enabled = true
-              }
-            }
-            provider           = "cloudflare"
+            extraArgs          = ["--annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)"]
+            interval           = "5m"
+            policy             = "upsert-only"
+            serviceMonitor     = { enabled = true }
+            provider           = { name = "cloudflare" }
+            sources            = ["service", "gateway-httproute"]
             triggerLoopOnEvent = true
             txtOwnerId         = "homelab"
           })

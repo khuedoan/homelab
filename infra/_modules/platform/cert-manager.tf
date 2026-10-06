@@ -21,7 +21,12 @@ resource "kubectl_manifest" "cert_manager" {
               enabled = true
             }
             cert-manager = {
-              installCRDs = true
+              crds = { enabled = true }
+              config = {
+                apiVersion = "controller.config.cert-manager.io/v1alpha1"
+                kind       = "ControllerConfiguration"
+                gatewayAPI = { enabled = true }
+              }
               # TODO: Revisit resource sizing after measuring usage.
               resources       = { requests = { cpu = "10m", memory = "64Mi" } }
               webhook         = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }

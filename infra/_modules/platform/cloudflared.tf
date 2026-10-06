@@ -26,11 +26,17 @@ credentials-file: /etc/cloudflared/credentials.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
 ingress:
+  - hostname: www.khuedoan.com
+    service: https://public-istio.istio-system
+  - hostname: draw.khuedoan.com
+    service: https://public-istio.istio-system
+  - hostname: chat.khuedoan.com
+    service: https://public-istio.istio-system
   - hostname: '*.khuedoan.com'
-    service: https://ingress-nginx-controller.ingress-nginx
-    originRequest:
-      noTLSVerify: true
+    service: https://gateway-istio.istio-system
   - service: http_status:404
+originRequest:
+  originServerName: tunnel.khuedoan.com
 EOT
 
                 }

@@ -19,32 +19,25 @@ resource "kubectl_manifest" "zot" {
           values = yamlencode({
             zot = {
               # TODO: Revisit resource sizing after measuring usage.
-              resources   = { requests = { cpu = "50m", memory = "128Mi" } }
-              strategy    = { type = "Recreate" }
-              persistence = true
+              resources       = { requests = { cpu = "50m", memory = "128Mi" } }
+              persistence     = true
+              serviceHeadless = { enabled = true }
               pvc = {
                 create  = true
                 storage = "2Gi"
                 # TODO: Replace temporary local-path storage with replicated storage.
                 storageClassName = "local-path"
               }
-              ingress = {
-                annotations = {
-                  "cert-manager.io/cluster-issuer"              = "letsencrypt-prod"
-                  "nginx.ingress.kubernetes.io/proxy-body-size" = "0"
-                }
-                className = "nginx"
-                enabled   = true
-                hosts = [{
-                  host = "registry.khuedoan.com"
-                  paths = [{
-                    path = "/"
-                  }]
+              httproute = {
+                enabled = true
+                parentRefs = [{
+                  name        = "gateway"
+                  namespace   = "istio-system"
+                  sectionName = "https"
                 }]
-                tls = [{
-                  hosts      = ["registry.khuedoan.com"]
-                  secretName = "zot-tls-certificate"
-                }]
+                hostnames = ["registry.khuedoan.com"]
+                pathType  = "PathPrefix"
+                path      = "/"
               }
             }
           })

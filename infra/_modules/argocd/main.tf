@@ -39,11 +39,14 @@ resource "helm_release" "release" {
       }
     }
     server = {
-      ingress = {
-        enabled          = true
-        ingressClassName = "nginx"
-        annotations      = { "cert-manager.io/cluster-issuer" = "letsencrypt-prod" }
-        tls              = true
+      httproute = {
+        enabled = true
+        parentRefs = [{
+          name        = "gateway"
+          namespace   = "istio-system"
+          sectionName = "https"
+        }]
+        hostnames = ["argocd.khuedoan.com"]
       }
       metrics = { enabled = true, serviceMonitor = { enabled = false } }
     }

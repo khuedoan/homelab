@@ -60,23 +60,15 @@ resource "kubectl_manifest" "dex" {
                   name = "dex-secrets"
                 }
               }]
-              ingress = {
-                annotations = {
-                  "cert-manager.io/cluster-issuer" = "letsencrypt-prod"
-                }
-                className = "nginx"
-                enabled   = true
-                hosts = [{
-                  host = "dex.khuedoan.com"
-                  paths = [{
-                    path     = "/"
-                    pathType = "ImplementationSpecific"
-                  }]
+              httpRoute = {
+                enabled = true
+                parentRefs = [{
+                  name        = "gateway"
+                  namespace   = "istio-system"
+                  sectionName = "https"
                 }]
-                tls = [{
-                  hosts      = ["dex.khuedoan.com"]
-                  secretName = "dex-tls-certificate"
-                }]
+                hostnames = ["dex.khuedoan.com"]
+                rules     = [{ matches = [{ path = { type = "PathPrefix", value = "/" } }] }]
               }
             }
           })

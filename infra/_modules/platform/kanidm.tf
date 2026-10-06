@@ -20,14 +20,15 @@ resource "kubectl_manifest" "kanidm" {
             app-template = {
               configMaps = {
                 config = {
+                  suffix = "config"
                   data = {
                     "server.toml" = <<-EOT
 bindaddress = "[::]:443"
 ldapbindaddress = "[::]:636"
 trust_x_forward_for = true
 db_path = "/data/kanidm.db"
-tls_chain = "/data/ca.crt"
-tls_key = "/data/tls.key"
+tls_chain = "/tls/tls.crt"
+tls_key = "/tls/tls.key"
 domain = "auth.khuedoan.com"
 origin = "https://auth.khuedoan.com"
 EOT
@@ -76,22 +77,18 @@ EOT
                 tls = {
                   enabled = true
                   globalMounts = [{
-                    path    = "/data/ca.crt"
-                    subPath = "ca.crt"
-                    }, {
-                    path    = "/data/tls.key"
-                    subPath = "tls.key"
+                    path     = "/tls"
+                    readOnly = true
                   }]
-                  name = "kanidm-selfsigned-certificate"
+                  # TODO: Automate Kanidm's certificate reload after renewal.
+                  name = "kanidm-backend-tls"
                   type = "secret"
                 }
               }
               service = {
                 main = {
+                  controller = "main"
                   ports = {
-                    http = {
-                      enabled = false
-                    }
                     https = {
                       port     = 443
                       protocol = "HTTPS"
@@ -103,28 +100,21 @@ EOT
                   }
                 }
               }
-              ingress = {
+              route = {
                 main = {
-                  annotations = {
-                    "cert-manager.io/cluster-issuer"               = "letsencrypt-prod"
-                    "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
-                  }
-                  className = "nginx"
-                  enabled   = true
-                  hosts = [{
-                    host = "auth.khuedoan.com"
-                    paths = [{
-                      path     = "/"
-                      pathType = "Prefix"
-                      service = {
-                        name = "main"
-                        port = "https"
-                      }
-                    }]
+                  enabled = true
+                  kind    = "HTTPRoute"
+                  parentRefs = [{
+                    name        = "gateway"
+                    namespace   = "istio-system"
+                    sectionName = "https"
                   }]
-                  tls = [{
-                    hosts      = ["auth.khuedoan.com"]
-                    secretName = "kanidm-tls-certificate"
+                  hostnames = ["auth.khuedoan.com"]
+                  rules = [{
+                    backendRefs = [{
+                      identifier = "main"
+                      port       = "https"
+                    }]
                   }]
                 }
               }
