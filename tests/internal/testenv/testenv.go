@@ -27,17 +27,18 @@ type Config struct {
 	GitOpsNamespace     string        `json:"gitops_namespace,omitempty"`
 }
 
-// App identifies an existing Ingress whose HTTPS endpoint must respond successfully.
+// App identifies an existing HTTPRoute whose HTTPS endpoints must respond successfully.
 type App struct {
 	Namespace string `json:"namespace"`
-	Ingress   string `json:"ingress"`
+	Route     string `json:"route"`
 }
 
-// LoadBalancer selects an existing ingress controller instead of a temporary LoadBalancer Service.
+// LoadBalancer selects an existing Gateway and its LoadBalancer Service.
 type LoadBalancer struct {
-	Namespace    string `json:"namespace"`
-	Service      string `json:"service"`
-	IngressClass string `json:"ingress_class"`
+	Namespace string `json:"namespace"`
+	Service   string `json:"service"`
+	Gateway   string `json:"gateway"`
+	Listener  string `json:"listener"`
 }
 
 // Storage specifies a provisioner and the PVC access mode to exercise.
@@ -230,7 +231,7 @@ func (config Config) validate() error {
 		}
 		seen[environment] = true
 	}
-	if err := config.validateIngresses(); err != nil {
+	if err := config.validateRoutes(); err != nil {
 		return err
 	}
 	classes := map[string]bool{}
@@ -244,8 +245,8 @@ func (config Config) validate() error {
 		classes[storage.Class] = true
 	}
 	if lb := config.LoadBalancer; lb != nil {
-		if len(validation.IsDNS1123Label(lb.Namespace)) != 0 || len(validation.IsDNS1035Label(lb.Service)) != 0 || len(validation.IsDNS1123Subdomain(lb.IngressClass)) != 0 {
-			return fmt.Errorf("load_balancer requires a valid namespace, service, and ingress_class")
+		if len(validation.IsDNS1123Label(lb.Namespace)) != 0 || len(validation.IsDNS1035Label(lb.Service)) != 0 || len(validation.IsDNS1123Subdomain(lb.Gateway)) != 0 || len(validation.IsDNS1123Label(lb.Listener)) != 0 {
+			return fmt.Errorf("load_balancer requires a valid namespace, service, gateway, and listener")
 		}
 	}
 	if namespace := config.GitOpsNamespace; namespace != "" && len(validation.IsDNS1123Label(namespace)) != 0 {
@@ -257,21 +258,21 @@ func (config Config) validate() error {
 	return nil
 }
 
-func (config Config) validateIngresses() error {
+func (config Config) validateRoutes() error {
 	apps := map[App]bool{}
-	ingresses := append([]App(nil), config.Apps...)
+	routes := append([]App(nil), config.Apps...)
 	if config.Registry != nil {
-		ingresses = append(ingresses, *config.Registry)
+		routes = append(routes, *config.Registry)
 	}
-	for _, app := range ingresses {
+	for _, app := range routes {
 		if len(validation.IsDNS1123Label(app.Namespace)) != 0 {
 			return fmt.Errorf("invalid app namespace %q", app.Namespace)
 		}
-		if len(validation.IsDNS1123Subdomain(app.Ingress)) != 0 {
-			return fmt.Errorf("invalid app ingress %q", app.Ingress)
+		if len(validation.IsDNS1123Subdomain(app.Route)) != 0 {
+			return fmt.Errorf("invalid app route %q", app.Route)
 		}
 		if apps[app] {
-			return fmt.Errorf("duplicate app target %s/%s", app.Namespace, app.Ingress)
+			return fmt.Errorf("duplicate app target %s/%s", app.Namespace, app.Route)
 		}
 		apps[app] = true
 	}
