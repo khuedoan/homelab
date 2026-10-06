@@ -1,0 +1,41 @@
+vault-operator:
+  watchNamespace: openbao
+
+secrets-webhook:
+  autoscaling:
+    hpa:
+      enabled: false
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+  env:
+    BAO_ADDR: http://openbao.openbao.svc.cluster.local:8200
+    BAO_PATH: kubernetes
+    BAO_ADDR_ALLOWLIST: http://openbao.openbao.svc.cluster.local:8200
+    BAO_ALLOW_OBJECT_SKIP_VERIFY: "false"
+  secretsFailurePolicy: Fail
+  secrets:
+    objectSelector:
+      matchLabels:
+        homelab.khuedoan.com/bao-secret: "true"
+  pods:
+    objectSelector:
+      matchLabels:
+        homelab.khuedoan.com/bao-pod: "true"
+
+readers:
+  dex: [kanidm.dex, dex.grafana, dex.forgejo]
+  forgejo: [forgejo.admin]
+  grafana: [dex.grafana]
+  renovate: [forgejo.renovate]
+  woodpecker: [forgejo.woodpecker, woodpecker.agent]
+  zot: [registry.admin]
+
+generatedSecrets:
+  forgejo.admin: password
+  dex.grafana: client_secret
+  dex.forgejo: client_secret
+  registry.admin: password
+  woodpecker.agent: secret
+  paperless.admin: PAPERLESS_ADMIN_PASSWORD
