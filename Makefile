@@ -1,23 +1,14 @@
 .POSIX:
-.PHONY: *
+.PHONY: default infra smoke-test test lint docs fmt
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG = $(shell pwd)/infra/kubeconfig.yaml
-KUBE_CONFIG_PATH = $(KUBECONFIG)
-ENV ?= production
-HOSTS_FILE := infra/$(ENV)/metal/hosts.json
-NIXOS_HOSTS := infra/nixos/hosts.json
+env ?=
 
-default: metal fmt
+default: infra
 
-$(NIXOS_HOSTS): $(HOSTS_FILE)
-	cp $(HOSTS_FILE) $(NIXOS_HOSTS)
-
-metal: $(NIXOS_HOSTS)
-	./infra/_modules/nixos/nixie "$(CURDIR)" "$(HOSTS_FILE)"
-
-external:
-	make -C external
+infra:
+	@test -n "$(env)" || { echo 'Usage: make infra env=production (or staging)' >&2; exit 1; }
+	cd "infra/$(env)" && terragrunt run --all apply
 
 smoke-test:
 	make -C tests e2e filter='^Apps$$' config='$(TEST_CONFIG)'
