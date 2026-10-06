@@ -19,9 +19,10 @@ inputs = {
     url      = get_env("GITOPS_REPOSITORY_URL", "https://github.com/khuedoan/homelab")
     revision = get_env("GITOPS_REVISION", "master")
   }
-  apps = { for chart in fileset("${get_repo_root()}/apps", "*/Chart.yaml") : dirname(chart) => {
-    path      = "apps/${dirname(chart)}"
-    namespace = dirname(chart)
-    values    = ""
-  } }
+  # OpenBao derives reader roles from the app catalog, so the platform module
+  # still receives the list of apps.
+  apps = [
+    for file in fileset("${get_repo_root()}/apps", "*.yaml") :
+    trimsuffix(file, ".yaml")
+  ]
 }

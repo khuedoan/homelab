@@ -10,10 +10,6 @@ variable "repository" {
 }
 
 variable "apps" {
-  type = map(object({
-    path      = string
-    namespace = string
-    values    = string
-  }))
-  default = {}
+  type    = set(string)
+  default = []
 }
