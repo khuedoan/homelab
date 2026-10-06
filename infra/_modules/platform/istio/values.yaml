@@ -1,0 +1,6 @@
+istiod:
+  # TODO: Revisit resource sizing after measuring usage.
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi

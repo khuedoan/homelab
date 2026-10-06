@@ -51,7 +51,7 @@
     tokenFile = if k3s.clusterInit then null else "/var/lib/rancher/k3s/enrollment/token";
     # TODO: Replace the built-in local-path provisioner with replicated storage.
     disable = [
-      "traefik" # ingress is provided by NGINX
+      "traefik" # Gateway API traffic is handled by Istio.
     ];
     extraFlags = [
       "--tls-san=${k3s.vip}"
