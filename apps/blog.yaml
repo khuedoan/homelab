@@ -1,0 +1,34 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: registry.khuedoan.com/blog
+          tag: latest
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 3000
+        protocol: HTTP
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    annotations:
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
+    parentRefs:
+      - name: public
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - www.khuedoan.com
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - identifier: main
+            port: 3000
