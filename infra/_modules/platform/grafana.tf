@@ -57,17 +57,19 @@ resource "kubectl_manifest" "grafana" {
                 }
               }
               envFromSecret = "grafana-secrets"
-              ingress = {
-                annotations = {
-                  "cert-manager.io/cluster-issuer" = "letsencrypt-prod"
+              route = {
+                main = {
+                  enabled    = true
+                  apiVersion = "gateway.networking.k8s.io/v1"
+                  kind       = "HTTPRoute"
+                  parentRefs = [{
+                    name        = "gateway"
+                    namespace   = "istio-system"
+                    sectionName = "https"
+                  }]
+                  hostnames = ["grafana.khuedoan.com"]
+                  matches   = [{ path = { type = "PathPrefix", value = "/" } }]
                 }
-                enabled          = true
-                hosts            = ["grafana.khuedoan.com"]
-                ingressClassName = "nginx"
-                tls = [{
-                  hosts      = ["grafana.khuedoan.com"]
-                  secretName = "grafana-general-tls"
-                }]
               }
             }
           })
