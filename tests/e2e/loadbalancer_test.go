@@ -15,11 +15,11 @@ import (
 	"github.com/khuedoan/homelab/tests/internal/fixture"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
-	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/utils/ptr"
 )
 
 func externalHTTP(ctx context.Context, client *http.Client, address, hostname string) error {
@@ -65,23 +65,28 @@ func checkLoadBalancer(t *testing.T, cluster fixture.Cluster) {
 		service, err = cluster.Client.CoreV1().Services(lb.Namespace).Get(t.Context(), lb.Service, metav1.GetOptions{})
 		require.NoError(t, err)
 		require.Equal(t, corev1.ServiceTypeLoadBalancer, service.Spec.Type)
-		_, err = cluster.Client.NetworkingV1().Ingresses(namespace).Create(t.Context(), &networkingv1.Ingress{
-			ObjectMeta: metav1.ObjectMeta{Name: "echo", Annotations: map[string]string{
-				"nginx.ingress.kubernetes.io/ssl-redirect":       "false",
-				"nginx.ingress.kubernetes.io/force-ssl-redirect": "false",
-			}},
-			Spec: networkingv1.IngressSpec{
-				IngressClassName: &lb.IngressClass,
-				Rules: []networkingv1.IngressRule{{Host: hostname, IngressRuleValue: networkingv1.IngressRuleValue{
-					HTTP: &networkingv1.HTTPIngressRuleValue{Paths: []networkingv1.HTTPIngressPath{{
-						Path: "/", PathType: ptr.To(networkingv1.PathTypePrefix),
-						Backend: networkingv1.IngressBackend{Service: &networkingv1.IngressServiceBackend{
-							Name: "echo", Port: networkingv1.ServiceBackendPort{Number: 80},
-						}},
-					}}},
-				}}},
+		_, err = cluster.Dynamic.Resource(schema.GroupVersionResource{
+			Group: "gateway.networking.k8s.io", Version: "v1", Resource: "httproutes",
+		}).Namespace(namespace).Create(t.Context(), &unstructured.Unstructured{Object: map[string]any{
+			"apiVersion": "gateway.networking.k8s.io/v1",
+			"kind":       "HTTPRoute",
+			"metadata": map[string]any{
+				"name": "echo",
+				"annotations": map[string]any{
+					"external-dns.alpha.kubernetes.io/exclude": "true",
+				},
 			},
-		}, metav1.CreateOptions{})
+			"spec": map[string]any{
+				"parentRefs": []any{map[string]any{
+					"group": "gateway.networking.k8s.io", "kind": "Gateway",
+					"name": lb.Gateway, "namespace": lb.Namespace, "sectionName": lb.Listener,
+				}},
+				"hostnames": []any{hostname},
+				"rules": []any{map[string]any{
+					"backendRefs": []any{map[string]any{"name": "echo", "port": int64(80)}},
+				}},
+			},
+		}}, metav1.CreateOptions{})
 		require.NoError(t, err)
 	}
 	transport := &http.Transport{Proxy: nil}

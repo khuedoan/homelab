@@ -28,7 +28,7 @@ type fixture struct {
 
 func newFixture() fixture {
 	return fixture{
-		config:   Config{Environment: "dev", ExcludeEnvironments: []string{"prod"}, DNSDomain: "unit.invalid", Apps: []App{{Namespace: "web", Ingress: "frontend"}}, GitOpsNamespace: "cd"},
+		config:   Config{Environment: "dev", ExcludeEnvironments: []string{"prod"}, DNSDomain: "unit.invalid", Apps: []App{{Namespace: "web", Route: "frontend"}}, GitOpsNamespace: "cd"},
 		selected: Cluster{Initializer: "node-a", VIP: "192.0.2.100"},
 		excluded: Cluster{Initializer: "node-b", VIP: "192.0.2.200"},
 		hosts:    map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}},
@@ -87,18 +87,17 @@ func TestConfigValidation(t *testing.T) {
 		{"excluded traversal", Config{Environment: "dev", ExcludeEnvironments: []string{"../prod"}}, "invalid environment name"},
 		{"self exclusion", Config{Environment: "dev", ExcludeEnvironments: []string{"dev"}}, "duplicate environment"},
 		{"duplicate exclusion", Config{Environment: "dev", ExcludeEnvironments: []string{"prod", "prod"}}, "duplicate environment"},
-		{"bad namespace", Config{Environment: "dev", Apps: []App{{Namespace: "bad.name", Ingress: "web"}}}, "invalid app namespace"},
-		{"bad ingress", Config{Environment: "dev", Apps: []App{{Namespace: "web", Ingress: "../web"}}}, "invalid app ingress"},
-		{"empty ingress", Config{Environment: "dev", Apps: []App{{Namespace: "web"}}}, "invalid app ingress"},
-		{"duplicate app", Config{Environment: "dev", Apps: []App{{Namespace: "web", Ingress: "web"}, {Namespace: "web", Ingress: "web"}}}, "duplicate app target web/web"},
+		{"bad namespace", Config{Environment: "dev", Apps: []App{{Namespace: "bad.name", Route: "web"}}}, "invalid app namespace"},
+		{"bad route", Config{Environment: "dev", Apps: []App{{Namespace: "web", Route: "../web"}}}, "invalid app route"},
+		{"empty route", Config{Environment: "dev", Apps: []App{{Namespace: "web"}}}, "invalid app route"},
+		{"duplicate app", Config{Environment: "dev", Apps: []App{{Namespace: "web", Route: "web"}, {Namespace: "web", Route: "web"}}}, "duplicate app target web/web"},
 		{"invalid storage class", Config{Environment: "dev", Storage: []Storage{{Class: "../disk", Mode: "ReadWriteOnce"}}}, "storage class must be valid and unique"},
 		{"empty storage mode", Config{Environment: "dev", Storage: []Storage{{Class: "disk"}}}, "requires ReadWriteOnce or ReadWriteMany"},
 		{"unknown storage mode", Config{Environment: "dev", Storage: []Storage{{Class: "disk", Mode: "RWX"}}}, "requires ReadWriteOnce or ReadWriteMany"},
 		{"duplicate storage class", Config{Environment: "dev", Storage: []Storage{{Class: "disk", Mode: "ReadWriteOnce"}, {Class: "disk", Mode: "ReadWriteMany"}}}, "storage class must be valid and unique"},
 		{"empty registry", Config{Environment: "dev", Registry: &App{}}, "invalid app namespace"},
-		{"invalid registry ingress", Config{Environment: "dev", Registry: &App{Namespace: "images", Ingress: "../registry"}}, "invalid app ingress"},
-		{"empty load balancer", Config{Environment: "dev", LoadBalancer: &LoadBalancer{}}, "load_balancer requires a valid namespace, service, and ingress_class"},
-		{"invalid load balancer service", Config{Environment: "dev", LoadBalancer: &LoadBalancer{Namespace: "edge", Service: "../lb", IngressClass: "edge"}}, "load_balancer requires a valid namespace, service, and ingress_class"},
+		{"invalid registry route", Config{Environment: "dev", Registry: &App{Namespace: "images", Route: "../registry"}}, "invalid app route"},
+		{"empty load balancer", Config{Environment: "dev", LoadBalancer: &LoadBalancer{}}, "load_balancer requires a valid namespace, service, gateway, and listener"},
 		{"invalid GitOps namespace", Config{Environment: "dev", GitOpsNamespace: "../cd"}, "invalid GitOps namespace"},
 		{"missing DNS domain", Config{Environment: "dev"}, "invalid DNS domain"},
 		{"invalid DNS domain", Config{Environment: "dev", DNSDomain: "../cluster.local"}, "invalid DNS domain"},
@@ -108,6 +107,30 @@ func TestConfigValidation(t *testing.T) {
 			writeJSON(t, root, "tests/config/target.json", tc.config)
 			_, err := Load(root, "config/target.json")
 			require.ErrorContains(t, err, tc.wantError)
+		})
+	}
+}
+
+func TestLoadBalancerValidation(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		lb   LoadBalancer
+	}{
+		{"empty namespace", LoadBalancer{Service: "controller", Gateway: "edge", Listener: "http"}},
+		{"invalid namespace", LoadBalancer{Namespace: "bad.name", Service: "controller", Gateway: "edge", Listener: "http"}},
+		{"empty service", LoadBalancer{Namespace: "edge", Gateway: "edge", Listener: "http"}},
+		{"invalid service", LoadBalancer{Namespace: "edge", Service: "../lb", Gateway: "edge", Listener: "http"}},
+		{"empty gateway", LoadBalancer{Namespace: "edge", Service: "controller", Listener: "http"}},
+		{"invalid gateway", LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "../edge", Listener: "http"}},
+		{"empty listener", LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "edge"}},
+		{"invalid listener", LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "edge", Listener: "bad.name"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			f, root := newFixture(), t.TempDir()
+			f.config.LoadBalancer = &tc.lb
+			f.write(t, root)
+			_, err := Load(root, "config/target.json")
+			require.EqualError(t, err, "load_balancer requires a valid namespace, service, gateway, and listener")
 		})
 	}
 }
@@ -175,13 +198,13 @@ func TestCapabilities(t *testing.T) {
 		"environment": "dev",
 		"exclude_environments": ["prod"],
 		"dns_domain": "unit.invalid",
-		"apps": [{"namespace": "web", "ingress": "frontend"}],
+		"apps": [{"namespace": "web", "route": "frontend"}],
 		"storage": [
 			{"class": "block", "access_mode": "ReadWriteOnce"},
 			{"class": "shared", "access_mode": "ReadWriteMany"}
 		],
-		"registry": {"namespace": "images", "ingress": "registry"},
-		"load_balancer": {"namespace": "edge", "service": "controller", "ingress_class": "edge"},
+		"registry": {"namespace": "images", "route": "registry"},
+		"load_balancer": {"namespace": "edge", "service": "controller", "gateway": "edge", "listener": "http"},
 		"gitops_namespace": "cd"
 	}`))
 	target, err := Load(root, "config/target.json")
@@ -189,10 +212,10 @@ func TestCapabilities(t *testing.T) {
 	require.Equal(t, Config{
 		Environment: "dev", ExcludeEnvironments: []string{"prod"},
 		DNSDomain:       "unit.invalid",
-		Apps:            []App{{Namespace: "web", Ingress: "frontend"}},
+		Apps:            []App{{Namespace: "web", Route: "frontend"}},
 		Storage:         []Storage{{Class: "block", Mode: "ReadWriteOnce"}, {Class: "shared", Mode: "ReadWriteMany"}},
-		Registry:        &App{Namespace: "images", Ingress: "registry"},
-		LoadBalancer:    &LoadBalancer{Namespace: "edge", Service: "controller", IngressClass: "edge"},
+		Registry:        &App{Namespace: "images", Route: "registry"},
+		LoadBalancer:    &LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "edge", Listener: "http"},
 		GitOpsNamespace: "cd",
 	}, target.Config)
 }
