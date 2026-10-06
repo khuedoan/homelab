@@ -8,27 +8,28 @@ app-template:
             tag: latest
   service:
     main:
+      controller: main
       ports:
         http:
           port: 80
           protocol: HTTP
-  ingress:
+  route:
     main:
       enabled: true
-      className: nginx
+      kind: HTTPRoute
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        external-dns.alpha.kubernetes.io/target: homelab-tunnel.khuedoan.com
         external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
-      hosts:
-        - host: &host draw.khuedoan.com
-          paths:
-            - path: /
-              pathType: Prefix
-              service:
-                name: main
-                port: http
-      tls:
-        - hosts:
-            - *host
-          secretName: excalidraw-tls-certificate
+      parentRefs:
+        - name: public
+          namespace: istio-system
+          sectionName: https
+      hostnames:
+        - draw.khuedoan.com
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - identifier: main
+              port: 80
