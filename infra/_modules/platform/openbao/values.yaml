@@ -25,17 +25,14 @@ secrets-webhook:
         homelab.khuedoan.com/bao-pod: "true"
 
 readers:
-  dex: [kanidm.dex, dex.grafana, dex.forgejo]
   forgejo: [forgejo.admin]
-  grafana: [dex.grafana]
+  grafana: [kanidm.grafana]
   renovate: [forgejo.renovate]
   woodpecker: [forgejo.woodpecker, woodpecker.agent]
   zot: [registry.admin]
 
 generatedSecrets:
   forgejo.admin: password
-  dex.grafana: client_secret
-  dex.forgejo: client_secret
   registry.admin: password
   woodpecker.agent: secret
   paperless.admin: PAPERLESS_ADMIN_PASSWORD
