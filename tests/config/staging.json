@@ -7,9 +7,10 @@
     {"class": "local-path", "access_mode": "ReadWriteOnce"}
   ],
   "load_balancer": {
-    "namespace": "ingress-nginx",
-    "service": "ingress-nginx-controller",
-    "ingress_class": "nginx"
+    "namespace": "istio-system",
+    "service": "gateway-istio",
+    "gateway": "gateway",
+    "listener": "http"
   },
   "gitops_namespace": "argocd"
 }
