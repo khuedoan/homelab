@@ -1,12 +1,3 @@
-locals {
-  tunnel_credentials = jsonencode({
-    AccountTag   = var.cloudflare_account_id
-    TunnelName   = cloudflare_tunnel.homelab.name
-    TunnelID     = cloudflare_tunnel.homelab.id
-    TunnelSecret = base64encode(random_password.tunnel_secret.result)
-  })
-}
-
 data "cloudflare_zone" "zone" {
   name = "khuedoan.com"
 }
@@ -59,50 +50,5 @@ resource "cloudflare_api_token" "cert_manager" {
     resources = {
       "com.cloudflare.api.account.zone.*" = "*"
     }
-  }
-}
-
-resource "kubernetes_secret" "cloudflared_credentials" {
-  metadata {
-    name      = "cloudflared-credentials"
-    namespace = "cloudflared"
-
-    annotations = {
-      "app.kubernetes.io/managed-by" = "Terraform"
-    }
-  }
-
-  data = {
-    "credentials.json" = local.tunnel_credentials
-  }
-}
-
-resource "kubernetes_secret" "external_dns_token" {
-  metadata {
-    name      = "cloudflare-api-token"
-    namespace = "external-dns"
-
-    annotations = {
-      "app.kubernetes.io/managed-by" = "Terraform"
-    }
-  }
-
-  data = {
-    "value" = cloudflare_api_token.external_dns.value
-  }
-}
-
-resource "kubernetes_secret" "cert_manager_token" {
-  metadata {
-    name      = "cloudflare-api-token"
-    namespace = "cert-manager"
-
-    annotations = {
-      "app.kubernetes.io/managed-by" = "Terraform"
-    }
-  }
-
-  data = {
-    "api-token" = cloudflare_api_token.cert_manager.value
   }
 }

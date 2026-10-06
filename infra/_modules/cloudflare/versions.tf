@@ -5,11 +5,6 @@ terraform {
       version = "~> 4.30.0"
     }
 
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.26.0"
-    }
-
     random = {
       source  = "hashicorp/random"
       version = "~> 3.6"
