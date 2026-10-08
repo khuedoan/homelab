@@ -29,13 +29,14 @@ resource "kubectl_manifest" "external_dns" {
               }
             }]
             extraArgs          = ["--annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)"]
+            domainFilters      = [var.domain]
             interval           = "5m"
             policy             = "upsert-only"
             serviceMonitor     = { enabled = true }
             provider           = { name = "cloudflare" }
             sources            = ["service", "gateway-httproute"]
             triggerLoopOnEvent = true
-            txtOwnerId         = "homelab"
+            txtOwnerId         = var.resource_prefix
           })
         }
       }]

@@ -13,3 +13,11 @@ variable "apps" {
   type    = set(string)
   default = []
 }
+
+variable "domain" {
+  type = string
+}
+
+variable "resource_prefix" {
+  type = string
+}

@@ -15,6 +15,8 @@ terraform {
 }
 
 inputs = {
+  domain          = "khuedoan.com"
+  resource_prefix = "homelab-production"
   repository = {
     url      = get_env("GITOPS_REPOSITORY_URL", "https://github.com/khuedoan/homelab")
     revision = get_env("GITOPS_REVISION", "master")

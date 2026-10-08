@@ -34,7 +34,7 @@ resource "kubectl_manifest" "zot" {
                 namespace   = "istio-system"
                 sectionName = "https"
               }]
-              hostnames = ["registry.khuedoan.com"]
+              hostnames = ["registry.${var.domain}"]
               pathType  = "PathPrefix"
               path      = "/"
             }

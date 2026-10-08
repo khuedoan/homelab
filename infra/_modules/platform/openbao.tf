@@ -225,7 +225,7 @@ resource "kubectl_manifest" "openbao_resources" {
                   }
                   spec = {
                     parentRefs = [{ name = "gateway", namespace = "istio-system", sectionName = "https" }]
-                    hostnames  = ["openbao.khuedoan.com"]
+                    hostnames  = ["openbao.${var.domain}"]
                     rules      = [{ backendRefs = [{ name = "openbao", port = 8200 }] }]
                   }
                 }

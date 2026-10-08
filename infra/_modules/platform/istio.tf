@@ -91,7 +91,7 @@ resource "kubectl_manifest" "istio_resources" {
                       allowedRoutes = { namespaces = { from = "All" } }
                       }, {
                       name          = "https"
-                      hostname      = "*.khuedoan.com"
+                      hostname      = "*.${var.domain}"
                       port          = 443
                       protocol      = "HTTPS"
                       tls           = { mode = "Terminate", certificateRefs = [{ name = "wildcard-tls" }] }
@@ -107,14 +107,14 @@ resource "kubectl_manifest" "istio_resources" {
                   kind       = "Gateway"
                   metadata = {
                     namespace   = "istio-system"
-                    annotations = { "external-dns.alpha.kubernetes.io/target" = "homelab-tunnel.khuedoan.com" }
+                    annotations = { "external-dns.alpha.kubernetes.io/target" = "${var.resource_prefix}-tunnel.${var.domain}" }
                   }
                   spec = {
                     gatewayClassName = "istio"
                     infrastructure   = { parametersRef = { group = "", kind = "ConfigMap", name = "public-gateway" } }
                     listeners = [{
                       name          = "https"
-                      hostname      = "*.khuedoan.com"
+                      hostname      = "*.${var.domain}"
                       port          = 443
                       protocol      = "HTTPS"
                       tls           = { mode = "Terminate", certificateRefs = [{ name = "wildcard-tls" }] }

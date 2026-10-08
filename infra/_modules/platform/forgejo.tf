@@ -33,8 +33,8 @@ resource "kubectl_manifest" "forgejo" {
                 }
                 "service.explore" = { DISABLE_USERS_PAGE = true }
                 server = {
-                  DOMAIN       = "git.khuedoan.com"
-                  ROOT_URL     = "https://git.khuedoan.com"
+                  DOMAIN       = "git.${var.domain}"
+                  ROOT_URL     = "https://git.${var.domain}"
                   LANDING_PAGE = "explore"
                   OFFLINE_MODE = true
                 }
@@ -54,7 +54,7 @@ resource "kubectl_manifest" "forgejo" {
                 namespace   = "istio-system"
                 sectionName = "https"
               }]
-              hostnames = ["git.khuedoan.com"]
+              hostnames = ["git.${var.domain}"]
             }
           })
         }

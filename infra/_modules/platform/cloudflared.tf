@@ -21,22 +21,22 @@ resource "kubectl_manifest" "cloudflared" {
               config = {
                 data = {
                   "config.yaml" = <<-EOT
-tunnel: homelab
+tunnel: ${var.resource_prefix}-tunnel
 credentials-file: /etc/cloudflared/credentials.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
 ingress:
-  - hostname: www.khuedoan.com
+  - hostname: www.${var.domain}
     service: https://public-istio.istio-system
-  - hostname: draw.khuedoan.com
+  - hostname: draw.${var.domain}
     service: https://public-istio.istio-system
-  - hostname: chat.khuedoan.com
+  - hostname: chat.${var.domain}
     service: https://public-istio.istio-system
-  - hostname: '*.khuedoan.com'
+  - hostname: '*.${var.domain}'
     service: https://gateway-istio.istio-system
   - service: http_status:404
 originRequest:
-  originServerName: tunnel.khuedoan.com
+  originServerName: tunnel.${var.domain}
 EOT
 
                 }
