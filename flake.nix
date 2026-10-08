@@ -140,7 +140,7 @@
           path = ./toolbox;
           name = "toolbox-src";
         };
-        vendorHash = "sha256-E9k3y+b/cz35T6athMccHnWV+DCWXDvFKukSmnxMZCE=";
+        vendorHash = "sha256-9CIsbRiYaECE1uUqqnq0yzDG+0LCxbOUkdRCSmk+Hxo=";
         preCheck = ''
           export SFTP_SERVER="${pkgs.openssh}/libexec/sftp-server"
         '';
