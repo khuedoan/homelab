@@ -13,3 +13,7 @@ dependencies {
 terraform {
   source = "${find_in_parent_folders("_modules")}//argocd"
 }
+
+inputs = {
+  domain = "khuedoan.com"
+}
