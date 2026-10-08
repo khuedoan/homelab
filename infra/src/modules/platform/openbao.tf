@@ -10,6 +10,7 @@ locals {
 }
 
 resource "kubectl_manifest" "openbao" {
+  depends_on        = [kubectl_manifest.cert_manager]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
@@ -36,6 +37,7 @@ resource "kubectl_manifest" "openbao" {
         helm = {
           releaseName = "openbao"
           values = yamlencode({
+            certificate = { generate = false, useCertManager = true }
             autoscaling = { hpa = { enabled = false } }
             resources   = { requests = { cpu = "10m", memory = "32Mi" } }
             env = {
@@ -58,9 +60,24 @@ resource "kubectl_manifest" "openbao" {
   lifecycle {
     prevent_destroy = true
   }
+  wait_for {
+    field {
+      key   = "status.sync.status"
+      value = "Synced"
+    }
+    field {
+      key   = "status.health.status"
+      value = "Healthy"
+    }
+  }
+  timeouts {
+    create = "15m"
+    update = "15m"
+  }
 }
 
 resource "kubectl_manifest" "openbao_resources" {
+  depends_on        = [kubectl_manifest.openbao]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
@@ -199,7 +216,10 @@ resource "kubectl_manifest" "openbao_resources" {
                 manifest = {
                   apiVersion = "gateway.networking.k8s.io/v1"
                   kind       = "HTTPRoute"
-                  metadata   = { namespace = "openbao" }
+                  metadata = {
+                    namespace   = "openbao"
+                    annotations = { "argocd.argoproj.io/sync-wave" = "2" }
+                  }
                   spec = {
                     parentRefs = [{ name = "gateway", namespace = "istio-system", sectionName = "https" }]
                     hostnames  = ["openbao.khuedoan.com"]

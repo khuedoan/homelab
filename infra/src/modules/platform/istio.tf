@@ -27,9 +27,18 @@ resource "kubectl_manifest" "istio" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "istio-system" }
-      ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      destination = { server = "https://kubernetes.default.svc", namespace = "istio-system" }
+      ignoreDifferences = concat(local.ignore_differences, [
+        for name in ["istio-validator-istio-system", "istiod-default-validator"] : {
+          group             = "admissionregistration.k8s.io"
+          kind              = "ValidatingWebhookConfiguration"
+          name              = name
+          jqPathExpressions = [".webhooks[].failurePolicy", ".webhooks[].clientConfig.caBundle"]
+        }
+      ])
+      syncPolicy = merge(local.sync_policy, {
+        syncOptions = concat(local.sync_policy.syncOptions, ["RespectIgnoreDifferences=true"])
+      })
     }
   })
   lifecycle {

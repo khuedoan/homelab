@@ -45,6 +45,20 @@ resource "kubectl_manifest" "cert_manager" {
   lifecycle {
     prevent_destroy = true
   }
+  wait_for {
+    field {
+      key   = "status.sync.status"
+      value = "Synced"
+    }
+    field {
+      key   = "status.health.status"
+      value = "Healthy"
+    }
+  }
+  timeouts {
+    create = "15m"
+    update = "15m"
+  }
 }
 
 resource "kubectl_manifest" "cert_manager_resources" {
