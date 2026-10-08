@@ -40,8 +40,8 @@ resource "kubectl_manifest" "woodpecker" {
               env = {
                 WOODPECKER_ADMIN               = "forgejo_admin"
                 WOODPECKER_GITEA               = true
-                WOODPECKER_GITEA_URL           = "https://git.khuedoan.com"
-                WOODPECKER_HOST                = "https://ci.khuedoan.com"
+                WOODPECKER_GITEA_URL           = "https://git.${var.domain}"
+                WOODPECKER_HOST                = "https://ci.${var.domain}"
                 WOODPECKER_OPEN                = true
                 WOODPECKER_EXPERT_WEBHOOK_HOST = "http://woodpecker-server.woodpecker"
               }
@@ -114,7 +114,7 @@ resource "kubectl_manifest" "woodpecker_resources" {
                       namespace   = "istio-system"
                       sectionName = "https"
                     }]
-                    hostnames = ["ci.khuedoan.com"]
+                    hostnames = ["ci.${var.domain}"]
                     rules     = [{ backendRefs = [{ name = "woodpecker-server", port = 80 }] }]
                   }
                 }

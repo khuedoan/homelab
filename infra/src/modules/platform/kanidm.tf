@@ -28,8 +28,8 @@ trust_x_forward_for = true
 db_path = "/data/kanidm.db"
 tls_chain = "/tls/tls.crt"
 tls_key = "/tls/tls.key"
-domain = "auth.khuedoan.com"
-origin = "https://auth.khuedoan.com"
+domain = "auth.${var.domain}"
+origin = "https://auth.${var.domain}"
 EOT
 
                 }
@@ -108,7 +108,7 @@ EOT
                   namespace   = "istio-system"
                   sectionName = "https"
                 }]
-                hostnames = ["auth.khuedoan.com"]
+                hostnames = ["auth.${var.domain}"]
                 rules = [{
                   backendRefs = [{
                     identifier = "main"
@@ -160,7 +160,7 @@ resource "kubectl_manifest" "kanidm_resources" {
                   spec = {
                     secretName = "kanidm-backend-tls"
                     issuerRef  = { kind = "ClusterIssuer", name = "letsencrypt-prod" }
-                    dnsNames   = ["auth.khuedoan.com"]
+                    dnsNames   = ["auth.${var.domain}"]
                   }
                 }
               }
@@ -178,9 +178,9 @@ resource "kubectl_manifest" "kanidm_resources" {
                       sectionName = "https"
                     }]
                     validation = {
-                      hostname                = "auth.khuedoan.com"
+                      hostname                = "auth.${var.domain}"
                       wellKnownCACertificates = "System"
-                      subjectAltNames         = [{ type = "Hostname", hostname = "auth.khuedoan.com" }]
+                      subjectAltNames         = [{ type = "Hostname", hostname = "auth.${var.domain}" }]
                     }
                   }
                 }
