@@ -27,8 +27,9 @@ resource "helm_release" "release" {
     global = { domain = "argocd.khuedoan.com" }
     configs = {
       params = {
-        "server.insecure"             = true
-        "controller.diff.server.side" = true
+        "server.insecure"              = true
+        "controller.diff.server.side"  = true
+        "reposerver.parallelism.limit" = 1
       }
       cm = {
         "resource.ignoreResourceUpdatesEnabled"             = true
