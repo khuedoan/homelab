@@ -16,15 +16,20 @@
       system = "x86_64-linux";
 
       pkgs = nixpkgs.legacyPackages.${system};
+      # TODO use cf on nixpkgs stable
+      inherit (nixpkgs-unstable.legacyPackages.${system}) cf;
     in
     {
+      packages.${system}.cf = cf;
 
       formatter.${system} = pkgs.nixfmt-tree;
 
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
+          cf
           nixie.packages.${system}.default
           (python3.withPackages (ps: [ ps.pyyaml ]))
+          jq
           kubectl
           kubernetes-helm
           nixfmt-tree
