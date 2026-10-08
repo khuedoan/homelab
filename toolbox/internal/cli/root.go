@@ -21,7 +21,7 @@ func newRootCmd() *cobra.Command {
 	cluster := &cobra.Command{Use: "cluster", Short: "Manage k3s cluster access and enrollment"}
 	cluster.AddCommand(newClusterEnrollCmd(), newClusterKubeconfigCmd())
 	infra := &cobra.Command{Use: "infra", Short: "Manage infrastructure prerequisites"}
-	infra.AddCommand(newInfraStateCmd())
+	infra.AddCommand(newInfraStateCmd(), newInfraSecretsCmd())
 	root.AddCommand(cluster, infra)
 	return root
 }
