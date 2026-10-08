@@ -92,6 +92,7 @@ resource "kubectl_manifest" "cert_manager_resources" {
                       server              = "https://acme-v02.api.letsencrypt.org/directory"
                       privateKeySecretRef = { name = "letsencrypt-prod" }
                       solvers = [{
+                        selector = { dnsZones = [var.domain] }
                         dns01 = {
                           cloudflare = {
                             apiTokenSecretRef = { name = "cloudflare-api-token", key = "api-token" }

@@ -27,7 +27,7 @@ resource "kubectl_manifest" "renovate" {
               config = <<-EOT
 {
   "platform": "gitea",
-  "endpoint": "https://git.khuedoan.com/api/v1",
+  "endpoint": "https://git.${var.domain}/api/v1",
   "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
   "autodiscover": true
 }

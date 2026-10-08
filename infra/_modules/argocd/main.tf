@@ -7,6 +7,10 @@ terraform {
   }
 }
 
+variable "domain" {
+  type = string
+}
+
 variable "kubeconfig" {
   type = string
 }
@@ -24,7 +28,7 @@ resource "helm_release" "release" {
   chart      = "argo-cd"
   version    = "10.9.6"
   values = [yamlencode({
-    global = { domain = "argocd.khuedoan.com" }
+    global = { domain = "argocd.${var.domain}" }
     configs = {
       params = {
         "server.insecure"              = true
@@ -47,7 +51,7 @@ resource "helm_release" "release" {
           namespace   = "istio-system"
           sectionName = "https"
         }]
-        hostnames = ["argocd.khuedoan.com"]
+        hostnames = ["argocd.${var.domain}"]
       }
       metrics = { enabled = true, serviceMonitor = { enabled = false } }
     }

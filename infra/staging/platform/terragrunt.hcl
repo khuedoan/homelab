@@ -15,6 +15,8 @@ terraform {
 }
 
 inputs = {
+  domain          = "staging.khuedoan.com"
+  resource_prefix = "homelab-staging"
   repository = {
     url      = get_env("GITOPS_REPOSITORY_URL", "http://forgejo-http.forgejo:3000/forgejo_admin/staging-apps.git")
     revision = get_env("GITOPS_REVISION", "main")

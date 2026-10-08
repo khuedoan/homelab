@@ -42,18 +42,18 @@ resource "kubectl_manifest" "grafana" {
             "grafana.ini" = {
               "auth.generic_oauth" = {
                 allow_sign_up = true
-                api_url       = "https://auth.khuedoan.com/oauth2/openid/grafana/userinfo"
-                auth_url      = "https://auth.khuedoan.com/ui/oauth2"
+                api_url       = "https://auth.${var.domain}/oauth2/openid/grafana/userinfo"
+                auth_url      = "https://auth.${var.domain}/ui/oauth2"
                 client_id     = "grafana"
                 client_secret = "$__env{GRAFANA_SSO_CLIENT_SECRET}"
                 enabled       = true
                 name          = "Kanidm"
                 scopes        = "openid profile email groups"
-                token_url     = "https://auth.khuedoan.com/oauth2/token"
+                token_url     = "https://auth.${var.domain}/oauth2/token"
                 use_pkce      = true
               }
               server = {
-                root_url = "https://grafana.khuedoan.com"
+                root_url = "https://grafana.${var.domain}"
               }
             }
             envFromSecret = "grafana-secrets"
@@ -67,7 +67,7 @@ resource "kubectl_manifest" "grafana" {
                   namespace   = "istio-system"
                   sectionName = "https"
                 }]
-                hostnames = ["grafana.khuedoan.com"]
+                hostnames = ["grafana.${var.domain}"]
                 matches   = [{ path = { type = "PathPrefix", value = "/" } }]
               }
             }
