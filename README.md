@@ -307,4 +307,10 @@ If you feel you're missing from this list, please feel free to add yourself in a
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/khuedoan/homelab.svg)](https://starchart.cc/khuedoan/homelab)
+<a href="https://www.star-history.com/?repos=khuedoan%2Fhomelab&type=date&logscale=&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=khuedoan/homelab&type=date&legend=top-left" />
+ </picture>
+</a>
