@@ -70,6 +70,7 @@ resource "kubectl_manifest" "forgejo" {
 }
 
 resource "kubectl_manifest" "forgejo_resources" {
+  depends_on        = [kubectl_manifest.openbao]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
@@ -108,77 +109,6 @@ resource "kubectl_manifest" "forgejo_resources" {
                   data = {
                     username = base64encode("forgejo_admin")
                     password = base64encode("bao:secret/data/forgejo.admin#password")
-                  }
-                }
-              }
-              source = {
-                forceRename = "forgejo-config-source"
-                manifest = {
-                  apiVersion = "v1"
-                  kind       = "ConfigMap"
-                  data = merge(
-                    { for filename in fileset("${path.module}/forgejo/files/config", "*") : filename => file("${path.module}/forgejo/files/config/${filename}") },
-                    {
-                      "config.yaml" = yamlencode({
-                        organizations = [{
-                          name        = "ops"
-                          description = "Operations"
-                        }]
-                        repositories = [
-                          {
-                            name    = "homelab"
-                            owner   = "ops"
-                            private = false
-                            migrate = { source = "https://github.com/khuedoan/homelab", mirror = false }
-                          },
-                          {
-                            name    = "blog"
-                            owner   = "khuedoan"
-                            migrate = { source = "https://github.com/khuedoan/blog", mirror = true }
-                          },
-                          {
-                            name    = "backstage"
-                            owner   = "khuedoan"
-                            migrate = { source = "https://github.com/khuedoan/backstage", mirror = true }
-                          },
-                        ]
-                      })
-                    }
-                  )
-                }
-              }
-              configuration = {
-                forceRename = "forgejo-config"
-                manifest = {
-                  apiVersion = "batch/v1"
-                  kind       = "Job"
-                  metadata = {
-                    annotations = {
-                      "argocd.argoproj.io/hook"               = "PostSync"
-                      "argocd.argoproj.io/hook-delete-policy" = "BeforeHookCreation,HookSucceeded"
-                    }
-                  }
-                  spec = {
-                    backoffLimit = 10
-                    template = {
-                      spec = {
-                        restartPolicy = "Never"
-                        containers = [{
-                          name  = "apply"
-                          image = "golang:1.26-alpine"
-                          env = [
-                            { name = "FORGEJO_HOST", value = "http://forgejo-http:3000" },
-                            { name = "FORGEJO_USER", valueFrom = { secretKeyRef = { name = "forgejo-admin", key = "username" } } },
-                            { name = "FORGEJO_PASSWORD", valueFrom = { secretKeyRef = { name = "forgejo-admin", key = "password" } } },
-                          ]
-                          workingDir   = "/go/src/forgejo-config"
-                          command      = ["sh", "-c"]
-                          args         = ["go run ."]
-                          volumeMounts = [{ name = "source", mountPath = "/go/src/forgejo-config" }]
-                        }]
-                        volumes = [{ name = "source", configMap = { name = "forgejo-config-source" } }]
-                      }
-                    }
                   }
                 }
               }

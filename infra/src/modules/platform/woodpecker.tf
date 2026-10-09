@@ -18,6 +18,8 @@ resource "kubectl_manifest" "woodpecker" {
           releaseName = "woodpecker"
           values = yamlencode({
             agent = {
+              mapAgentSecret             = false
+              extraSecretNamesForEnvFrom = ["woodpecker-agent-secret"]
               # TODO: Revisit resource sizing after measuring usage.
               resources = { requests = { cpu = "10m", memory = "64Mi" } }
               env = {
@@ -31,7 +33,9 @@ resource "kubectl_manifest" "woodpecker" {
               replicaCount = 2
             }
             server = {
-              resources = { requests = { cpu = "50m", memory = "128Mi" } }
+              createAgentSecret          = false
+              extraSecretNamesForEnvFrom = ["woodpecker-secret", "woodpecker-agent-secret"]
+              resources                  = { requests = { cpu = "50m", memory = "128Mi" } }
               persistentVolume = {
                 size = "2Gi"
                 # TODO: Replace temporary local-path storage with replicated storage.
@@ -60,6 +64,7 @@ resource "kubectl_manifest" "woodpecker" {
 }
 
 resource "kubectl_manifest" "woodpecker_resources" {
+  depends_on        = [kubectl_manifest.openbao]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
@@ -98,6 +103,25 @@ resource "kubectl_manifest" "woodpecker_resources" {
                   data = {
                     WOODPECKER_GITEA_CLIENT = base64encode("bao:secret/data/forgejo.woodpecker#client_id")
                     WOODPECKER_GITEA_SECRET = base64encode("bao:secret/data/forgejo.woodpecker#client_secret")
+                  }
+                }
+              }
+              agent = {
+                forceRename = "woodpecker-agent-secret"
+                manifest = {
+                  apiVersion = "v1"
+                  kind       = "Secret"
+                  metadata = {
+                    namespace = "woodpecker"
+                    labels    = { "homelab.khuedoan.com/bao-secret" = "true" }
+                    annotations = {
+                      "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
+                      "secrets-webhook.security.bank-vaults.io/bao-role"           = "woodpecker"
+                      "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
+                      "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
+                    }
+                  }
+                  data = {
                     WOODPECKER_AGENT_SECRET = base64encode("bao:secret/data/woodpecker.agent#secret")
                   }
                 }
