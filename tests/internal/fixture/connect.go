@@ -37,7 +37,7 @@ func Connect(t *testing.T, target testenv.Target) Cluster {
 		require.True(t, filepath.IsAbs(toolbox), "TOOLBOX_BIN must be an absolute path")
 	}
 	kubeconfig := filepath.Join(work, "kubeconfig.yaml")
-	run(t, target, "export kubeconfig", toolbox, "cluster", "kubeconfig", "--environment", target.Config.Environment, "--output", kubeconfig, "--timeout", "30s")
+	run(t, target, "export kubeconfig", toolbox, "cluster", "kubeconfig", "--environment", target.Environment, "--output", kubeconfig, "--timeout", "30s")
 	info, err := os.Stat(kubeconfig)
 	require.NoError(t, err)
 	require.Equal(t, os.FileMode(0600), info.Mode().Perm())

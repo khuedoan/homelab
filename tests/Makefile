@@ -3,7 +3,7 @@
 
 filter ?= .
 override filter := $(value filter)
-config ?=
+env ?=
 
 test:
 	go vet ./...
@@ -14,7 +14,7 @@ lint:
 	golangci-lint run --config ../.golangci.yml ./...
 
 e2e:
-	E2E=1 TEST_CONFIG='$(config)' go test -race -count=1 -timeout=30m -run '^TestCluster$$/$(filter)' -v ./e2e
+	E2E=1 TEST_ENV='$(env)' go test -race -count=1 -timeout=30m -run '^TestCluster$$/$(filter)' -v ./e2e
 
 benchmarks:
-	E2E=1 BENCHMARKS=1 TEST_CONFIG='$(config)' go test -race -count=1 -timeout=60m -run '^TestBenchmarks$$/$(filter)' -v ./benchmarks
+	E2E=1 BENCHMARKS=1 TEST_ENV='$(env)' go test -race -count=1 -timeout=60m -run '^TestBenchmarks$$/$(filter)' -v ./benchmarks
