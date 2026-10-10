@@ -36,7 +36,7 @@ func push(ctx context.Context, source, remote, password string) error {
 	if err := os.WriteFile(askpass, []byte("#!/bin/sh\ncase \"$1\" in\n *Username*) printf '%s\\n' forgejo_admin ;;\n *) printf '%s\\n' \"$HOMELAB_FORGEJO_PASSWORD\" ;;\nesac\n"), 0700); err != nil {
 		return err
 	}
-	command := exec.CommandContext(ctx, "git", "-c", "credential.helper=", "push", remote, "HEAD:refs/heads/main")
+	command := exec.CommandContext(ctx, "git", "-c", "credential.helper=", "push", remote, "HEAD:refs/heads/master")
 	command.Dir = source
 	command.Env = append(os.Environ(), "GIT_TERMINAL_PROMPT=0", "GIT_ASKPASS="+askpass, "HOMELAB_FORGEJO_PASSWORD="+password)
 	command.Stdout, command.Stderr = os.Stdout, os.Stderr

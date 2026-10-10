@@ -27,14 +27,14 @@ func TestPushPublishesOnlyCommits(t *testing.T) {
 		if err := push(ctx, source, remote, ""); err != nil {
 			t.Fatal(err)
 		}
-		if got := gitTest(t, remote, "rev-parse", "main"); got != first {
+		if got := gitTest(t, remote, "rev-parse", "master"); got != first {
 			t.Fatal("did not push the original commit")
 		}
 	}
-	if got := gitTest(t, remote, "show", "main:program.txt"); got != "committed version\n" {
+	if got := gitTest(t, remote, "show", "master:program.txt"); got != "committed version\n" {
 		t.Fatalf("published content=%q", got)
 	}
-	if files := gitTest(t, remote, "ls-tree", "--name-only", "main"); files != "program.txt\n" {
+	if files := gitTest(t, remote, "ls-tree", "--name-only", "master"); files != "program.txt\n" {
 		t.Fatalf("published uncommitted files: %s", files)
 	}
 	if after := gitTest(t, source, "status", "--porcelain"); after != before {
@@ -44,7 +44,7 @@ func TestPushPublishesOnlyCommits(t *testing.T) {
 	if err := push(ctx, source, remote, ""); err != nil {
 		t.Fatal(err)
 	}
-	if got := gitTest(t, remote, "rev-parse", "main"); got != gitTest(t, source, "rev-parse", "HEAD") {
+	if got := gitTest(t, remote, "rev-parse", "master"); got != gitTest(t, source, "rev-parse", "HEAD") {
 		t.Fatal("did not push the updated commit")
 	}
 	gitTest(t, source, "reset", "--soft", "HEAD^")

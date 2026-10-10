@@ -72,7 +72,7 @@ func syncGitOps(c *sdk.Client) error {
 		if response == nil || response.StatusCode != http.StatusNotFound {
 			return err
 		}
-		if _, _, err := c.CreateOrgRepo("ops", sdk.CreateRepoOption{Name: "homelab", Private: false, DefaultBranch: "main"}); err != nil {
+		if _, _, err := c.CreateOrgRepo("ops", sdk.CreateRepoOption{Name: "homelab", Private: false, DefaultBranch: "master"}); err != nil {
 			return err
 		}
 	}
