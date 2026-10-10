@@ -26,8 +26,6 @@ resource "kubectl_manifest" "loki" {
               persistence = {
                 enabled = true
                 size    = "2Gi"
-                # TODO: Replace temporary local-path storage with replicated storage.
-                storageClassName = "local-path"
               }
             }
             promtail = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }

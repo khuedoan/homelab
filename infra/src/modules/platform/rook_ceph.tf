@@ -42,7 +42,7 @@ resource "kubectl_manifest" "rook_ceph" {
               storageClass = {
                 allowVolumeExpansion = true
                 enabled              = true
-                isDefault            = false
+                isDefault            = true
                 name                 = "standard-rwo"
                 parameters = {
                   "csi.storage.k8s.io/controller-expand-secret-name"      = "rook-csi-rbd-provisioner"

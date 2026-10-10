@@ -26,10 +26,6 @@ resource "kubectl_manifest" "woodpecker" {
                 WOODPECKER_BACKEND_K8S_STORAGE_RWX = false
                 WOODPECKER_MAX_WORKFLOWS           = 10
               }
-              persistence = {
-                # TODO: Replace temporary local-path storage with replicated storage.
-                storageClass = "local-path"
-              }
               replicaCount = 2
             }
             server = {
@@ -38,8 +34,6 @@ resource "kubectl_manifest" "woodpecker" {
               resources                  = { requests = { cpu = "50m", memory = "128Mi" } }
               persistentVolume = {
                 size = "2Gi"
-                # TODO: Replace temporary local-path storage with replicated storage.
-                storageClass = "local-path"
               }
               env = {
                 WOODPECKER_ADMIN               = "forgejo_admin"

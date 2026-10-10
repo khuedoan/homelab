@@ -77,8 +77,6 @@ resource "kubectl_manifest" "monitoring_system" {
                           storage = "2Gi"
                         }
                       }
-                      # TODO: Replace temporary local-path storage with replicated storage.
-                      storageClassName = "local-path"
                     }
                   }
                 }
