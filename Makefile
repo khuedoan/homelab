@@ -1,5 +1,5 @@
 .POSIX:
-.PHONY: default infra sso smoke-test test lint docs fmt
+.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test lint docs fmt
 .EXPORT_ALL_VARIABLES:
 
 env ?=
@@ -11,6 +11,26 @@ default: infra
 infra:
 	@test -n "$(env)" || { echo 'Usage: make infra env=production (or staging)' >&2; exit 1; }
 	cd "infra/$(env)" && terragrunt run --all apply
+	$(MAKE) sync
+
+sync:
+	@test -n "$(env)" || { echo 'Usage: make sync env=production (or staging)' >&2; exit 1; }
+	$(MAKE) sync-secrets
+	$(MAKE) sync-forgejo
+	$(MAKE) push-forgejo
+	$(MAKE) sso
+
+sync-secrets:
+	@test -n "$(env)" || { echo 'Usage: make sync-secrets env=production (or staging)' >&2; exit 1; }
+	toolbox infra secrets sync --environment "$(env)" --kubeconfig "$(kubeconfig)"
+
+sync-forgejo:
+	@test -n "$(env)" || { echo 'Usage: make sync-forgejo env=production (or staging)' >&2; exit 1; }
+	toolbox infra forgejo sync --kubeconfig "$(kubeconfig)" --domain "$$(cd infra/$(env)/platform && terragrunt render --json | jq -r '.inputs.domain')"
+
+push-forgejo:
+	@test -n "$(env)" || { echo 'Usage: make push-forgejo env=production (or staging)' >&2; exit 1; }
+	toolbox infra forgejo push --kubeconfig "$(kubeconfig)" --domain "$$(cd infra/$(env)/platform && terragrunt render --json | jq -r '.inputs.domain')"
 
 sso:
 	@test -n "$(env)" || { echo 'Usage: make sso env=production (or staging)' >&2; exit 1; }
