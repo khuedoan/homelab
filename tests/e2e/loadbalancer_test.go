@@ -47,48 +47,42 @@ func checkLoadBalancer(t *testing.T, cluster fixture.Cluster) {
 	t.Helper()
 	namespace := fixture.Namespace(t, cluster.Client)
 	echoServer(t, cluster, namespace)
-	serviceType := corev1.ServiceTypeLoadBalancer
-	if cluster.Target.Config.LoadBalancer != nil {
-		serviceType = corev1.ServiceTypeClusterIP
-	}
-	service, err := cluster.Client.CoreV1().Services(namespace).Create(t.Context(), &corev1.Service{
+	_, err := cluster.Client.CoreV1().Services(namespace).Create(t.Context(), &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{Name: "echo"},
 		Spec: corev1.ServiceSpec{
-			Type:     serviceType,
+			Type:     corev1.ServiceTypeClusterIP,
 			Selector: map[string]string{"app": "echo"},
 			Ports:    []corev1.ServicePort{{Port: 80, TargetPort: intstr.FromInt32(8080)}},
 		},
 	}, metav1.CreateOptions{})
 	require.NoError(t, err)
 	hostname := namespace + ".invalid"
-	if lb := cluster.Target.Config.LoadBalancer; lb != nil {
-		service, err = cluster.Client.CoreV1().Services(lb.Namespace).Get(t.Context(), lb.Service, metav1.GetOptions{})
-		require.NoError(t, err)
-		require.Equal(t, corev1.ServiceTypeLoadBalancer, service.Spec.Type)
-		_, err = cluster.Dynamic.Resource(schema.GroupVersionResource{
-			Group: "gateway.networking.k8s.io", Version: "v1", Resource: "httproutes",
-		}).Namespace(namespace).Create(t.Context(), &unstructured.Unstructured{Object: map[string]any{
-			"apiVersion": "gateway.networking.k8s.io/v1",
-			"kind":       "HTTPRoute",
-			"metadata": map[string]any{
-				"name": "echo",
-				"annotations": map[string]any{
-					"external-dns.alpha.kubernetes.io/exclude": "true",
-				},
+	service, err := cluster.Client.CoreV1().Services("istio-system").Get(t.Context(), "gateway-istio", metav1.GetOptions{})
+	require.NoError(t, err)
+	require.Equal(t, corev1.ServiceTypeLoadBalancer, service.Spec.Type)
+	_, err = cluster.Dynamic.Resource(schema.GroupVersionResource{
+		Group: "gateway.networking.k8s.io", Version: "v1", Resource: "httproutes",
+	}).Namespace(namespace).Create(t.Context(), &unstructured.Unstructured{Object: map[string]any{
+		"apiVersion": "gateway.networking.k8s.io/v1",
+		"kind":       "HTTPRoute",
+		"metadata": map[string]any{
+			"name": "echo",
+			"annotations": map[string]any{
+				"external-dns.alpha.kubernetes.io/exclude": "true",
 			},
-			"spec": map[string]any{
-				"parentRefs": []any{map[string]any{
-					"group": "gateway.networking.k8s.io", "kind": "Gateway",
-					"name": lb.Gateway, "namespace": lb.Namespace, "sectionName": lb.Listener,
-				}},
-				"hostnames": []any{hostname},
-				"rules": []any{map[string]any{
-					"backendRefs": []any{map[string]any{"name": "echo", "port": int64(80)}},
-				}},
-			},
-		}}, metav1.CreateOptions{})
-		require.NoError(t, err)
-	}
+		},
+		"spec": map[string]any{
+			"parentRefs": []any{map[string]any{
+				"group": "gateway.networking.k8s.io", "kind": "Gateway",
+				"name": "gateway", "namespace": "istio-system", "sectionName": "http",
+			}},
+			"hostnames": []any{hostname},
+			"rules": []any{map[string]any{
+				"backendRefs": []any{map[string]any{"name": "echo", "port": int64(80)}},
+			}},
+		},
+	}}, metav1.CreateOptions{})
+	require.NoError(t, err)
 	transport := &http.Transport{Proxy: nil}
 	t.Cleanup(transport.CloseIdleConnections)
 	client := &http.Client{Transport: transport, Timeout: 10 * time.Second}

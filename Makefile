@@ -40,7 +40,7 @@ sso:
 	toolbox sso $(sso_args) secrets sync
 
 smoke-test:
-	make -C tests e2e filter='^Apps$$' config='$(TEST_CONFIG)'
+	make -C tests e2e filter='^Apps$$' env='$(env)'
 
 test:
 	make -C toolbox test

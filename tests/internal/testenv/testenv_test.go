@@ -19,7 +19,6 @@ func writeJSON(t *testing.T, root, path string, value any) {
 }
 
 type fixture struct {
-	config   Config
 	selected Cluster
 	excluded Cluster
 	hosts    map[string]Host
@@ -28,7 +27,6 @@ type fixture struct {
 
 func newFixture() fixture {
 	return fixture{
-		config:   Config{Environment: "dev", ExcludeEnvironments: []string{"prod"}, DNSDomain: "unit.invalid", GitOpsNamespace: "cd"},
 		selected: Cluster{Initializer: "node-a", VIP: "192.0.2.100"},
 		excluded: Cluster{Initializer: "node-b", VIP: "192.0.2.200"},
 		hosts:    map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}},
@@ -38,11 +36,13 @@ func newFixture() fixture {
 
 func (f fixture) write(t *testing.T, root string) {
 	t.Helper()
-	writeJSON(t, root, "tests/config/target.json", f.config)
 	writeJSON(t, root, "infra/dev/cluster/config.json", f.selected)
 	writeJSON(t, root, "infra/dev/metal/hosts.json", f.hosts)
 	writeJSON(t, root, "infra/prod/cluster/config.json", f.excluded)
 	writeJSON(t, root, "infra/prod/metal/hosts.json", f.others)
+	for _, environment := range []string{"dev", "prod"} {
+		require.NoError(t, os.WriteFile(filepath.Join(root, "infra", environment, "root.hcl"), nil, 0600))
+	}
 }
 
 func TestSafetyCases(t *testing.T) {
@@ -64,63 +64,13 @@ func TestSafetyCases(t *testing.T) {
 			f.selected = Cluster{Initializer: tc.initializer, VIP: tc.vip}
 			f.hosts["node-a"] = Host{IP: tc.address, MAC: tc.mac}
 			f.write(t, root)
-			target, err := Load(root, "config/target.json")
+			target, err := Load(root, "dev")
 			if tc.wantError != "" {
 				require.ErrorContains(t, err, tc.wantError)
 				return
 			}
 			require.NoError(t, err)
-			require.Equal(t, Target{Root: root, Config: f.config, Cluster: Cluster{Initializer: "node-a", VIP: "192.0.2.100"}, Hosts: map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}}, Names: []string{"node-a"}}, target)
-		})
-	}
-}
-
-func TestConfigValidation(t *testing.T) {
-	for _, tc := range []struct {
-		name      string
-		config    Config
-		wantError string
-	}{
-		{"missing environment", Config{}, "invalid environment name"},
-		{"traversal", Config{Environment: "../dev"}, "invalid environment name"},
-		{"absolute environment", Config{Environment: "/dev"}, "invalid environment name"},
-		{"excluded traversal", Config{Environment: "dev", ExcludeEnvironments: []string{"../prod"}}, "invalid environment name"},
-		{"self exclusion", Config{Environment: "dev", ExcludeEnvironments: []string{"dev"}}, "duplicate environment"},
-		{"duplicate exclusion", Config{Environment: "dev", ExcludeEnvironments: []string{"prod", "prod"}}, "duplicate environment"},
-		{"empty load balancer", Config{Environment: "dev", LoadBalancer: &LoadBalancer{}}, "load_balancer requires a valid namespace, service, gateway, and listener"},
-		{"invalid GitOps namespace", Config{Environment: "dev", GitOpsNamespace: "../cd"}, "invalid GitOps namespace"},
-		{"missing DNS domain", Config{Environment: "dev"}, "invalid DNS domain"},
-		{"invalid DNS domain", Config{Environment: "dev", DNSDomain: "../cluster.local"}, "invalid DNS domain"},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			root := t.TempDir()
-			writeJSON(t, root, "tests/config/target.json", tc.config)
-			_, err := Load(root, "config/target.json")
-			require.ErrorContains(t, err, tc.wantError)
-		})
-	}
-}
-
-func TestLoadBalancerValidation(t *testing.T) {
-	for _, tc := range []struct {
-		name string
-		lb   LoadBalancer
-	}{
-		{"empty namespace", LoadBalancer{Service: "controller", Gateway: "edge", Listener: "http"}},
-		{"invalid namespace", LoadBalancer{Namespace: "bad.name", Service: "controller", Gateway: "edge", Listener: "http"}},
-		{"empty service", LoadBalancer{Namespace: "edge", Gateway: "edge", Listener: "http"}},
-		{"invalid service", LoadBalancer{Namespace: "edge", Service: "../lb", Gateway: "edge", Listener: "http"}},
-		{"empty gateway", LoadBalancer{Namespace: "edge", Service: "controller", Listener: "http"}},
-		{"invalid gateway", LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "../edge", Listener: "http"}},
-		{"empty listener", LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "edge"}},
-		{"invalid listener", LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "edge", Listener: "bad.name"}},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			f, root := newFixture(), t.TempDir()
-			f.config.LoadBalancer = &tc.lb
-			f.write(t, root)
-			_, err := Load(root, "config/target.json")
-			require.EqualError(t, err, "load_balancer requires a valid namespace, service, gateway, and listener")
+			require.Equal(t, Target{Root: root, Environment: "dev", Cluster: Cluster{Initializer: "node-a", VIP: "192.0.2.100"}, Hosts: map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}}, Names: []string{"node-a"}}, target)
 		})
 	}
 }
@@ -160,7 +110,7 @@ func TestInventoryValidation(t *testing.T) {
 			f, root := newFixture(), t.TempDir()
 			tc.change(&f)
 			f.write(t, root)
-			_, err := Load(root, "config/target.json")
+			_, err := Load(root, "dev")
 			require.ErrorContains(t, err, tc.wantError)
 		})
 	}
@@ -171,34 +121,14 @@ func TestMappedIPv4Inventory(t *testing.T) {
 	f.selected.VIP = "::ffff:192.0.2.100"
 	f.hosts["node-a"] = Host{IP: "192.0.2.10", IPv6: "::ffff:192.0.2.10", MAC: "02-AB-00-00-00-10"}
 	f.write(t, root)
-	target, err := Load(root, "config/target.json")
+	target, err := Load(root, "dev")
 	require.NoError(t, err)
 	require.Equal(t, Cluster{Initializer: "node-a", VIP: "192.0.2.100"}, target.Cluster)
 	require.Equal(t, map[string]Host{"node-a": {IP: "192.0.2.10", IPv6: "192.0.2.10", MAC: "02:ab:00:00:00:10"}}, target.Hosts)
 	f.excluded.VIP = "::ffff:192.0.2.10"
 	f.write(t, root)
-	_, err = Load(root, "config/target.json")
+	_, err = Load(root, "dev")
 	require.EqualError(t, err, "dev overlaps prod inventory at address 192.0.2.10")
-}
-
-func TestCapabilities(t *testing.T) {
-	f, root := newFixture(), t.TempDir()
-	f.write(t, root)
-	writeJSON(t, root, "tests/config/target.json", json.RawMessage(`{
-		"environment": "dev",
-		"exclude_environments": ["prod"],
-		"dns_domain": "unit.invalid",
-		"load_balancer": {"namespace": "edge", "service": "controller", "gateway": "edge", "listener": "http"},
-		"gitops_namespace": "cd"
-	}`))
-	target, err := Load(root, "config/target.json")
-	require.NoError(t, err)
-	require.Equal(t, Config{
-		Environment: "dev", ExcludeEnvironments: []string{"prod"},
-		DNSDomain:       "unit.invalid",
-		LoadBalancer:    &LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "edge", Listener: "http"},
-		GitOpsNamespace: "cd",
-	}, target.Config)
 }
 
 func TestExcludedInventoryWithoutDiscovery(t *testing.T) {
@@ -208,42 +138,46 @@ func TestExcludedInventoryWithoutDiscovery(t *testing.T) {
 		"cloud": {IPv6: "2001:db8::20"},
 	}
 	f.write(t, root)
-	target, err := Load(root, "config/target.json")
+	target, err := Load(root, "dev")
 	require.NoError(t, err)
 	require.Equal(t, []string{"node-a"}, target.Names)
 	host := f.hosts["node-a"]
 	host.MAC = "02:00:00:00:00:20"
 	f.hosts["node-a"] = host
 	f.write(t, root)
-	_, err = Load(root, "config/target.json")
+	_, err = Load(root, "dev")
 	require.ErrorContains(t, err, "overlaps prod inventory at MAC 02:00:00:00:00:20")
 }
 
-func TestNormalizationAndPaths(t *testing.T) {
+func TestEnvironmentValidation(t *testing.T) {
+	for _, environment := range []string{"", "../dev", "/dev", "bad.name"} {
+		_, err := Load(t.TempDir(), environment)
+		require.ErrorContains(t, err, "invalid environment name")
+	}
+}
+
+func TestNormalizationAndInventoryErrors(t *testing.T) {
 	f, root := newFixture(), t.TempDir()
 	f.hosts["node-a"] = Host{IPv6: "2001:0db8:0:0::10", MAC: "02-AB-00-00-00-10", Machine: "machine-hash"}
 	f.hosts["aaa"] = Host{IP: "192.0.2.30", MAC: "02:00:00:00:00:30"}
 	f.write(t, root)
-	for _, path := range []string{"config/target.json", filepath.Join(root, "tests/config/target.json")} {
-		target, err := Load(root, path)
-		require.NoError(t, err)
-		require.Equal(t, []string{"aaa", "node-a"}, target.Names)
-		require.Equal(t, Host{IP: "2001:db8::10", IPv6: "2001:db8::10", MAC: "02:ab:00:00:00:10", Machine: "machine-hash"}, target.Hosts["node-a"])
-	}
-	_, err := Load(root, "")
-	require.EqualError(t, err, "config file must be nonempty")
-	_, err = Load(root, "missing.json")
-	require.ErrorContains(t, err, "read "+filepath.Join(root, "tests/missing.json"))
-	require.NoError(t, os.WriteFile(filepath.Join(root, "tests/config/target.json"), []byte("{"), 0600))
-	_, err = Load(root, "config/target.json")
-	require.ErrorContains(t, err, "parse "+filepath.Join(root, "tests/config/target.json"))
+	target, err := Load(root, "dev")
+	require.NoError(t, err)
+	require.Equal(t, []string{"aaa", "node-a"}, target.Names)
+	require.Equal(t, Host{IP: "2001:db8::10", IPv6: "2001:db8::10", MAC: "02:ab:00:00:00:10", Machine: "machine-hash"}, target.Hosts["node-a"])
+	_, err = Load(root, "missing")
+	require.ErrorContains(t, err, "infra/missing/cluster/config.json")
+	require.NoError(t, os.WriteFile(filepath.Join(root, "infra/dev/cluster/config.json"), []byte("{"), 0600))
+	_, err = Load(root, "dev")
+	require.ErrorContains(t, err, "parse "+filepath.Join(root, "infra/dev/cluster/config.json"))
 }
 
 func TestMissingExcludedInventory(t *testing.T) {
 	f, root := newFixture(), t.TempDir()
-	f.config.ExcludeEnvironments = append(f.config.ExcludeEnvironments, "other")
 	f.write(t, root)
-	_, err := Load(root, "config/target.json")
+	require.NoError(t, os.Mkdir(filepath.Join(root, "infra/other"), 0700))
+	require.NoError(t, os.WriteFile(filepath.Join(root, "infra/other/root.hcl"), nil, 0600))
+	_, err := Load(root, "dev")
 	require.ErrorContains(t, err, "infra/other/cluster/config.json")
 }
 
@@ -268,10 +202,10 @@ func TestForTestSkipsOffline(t *testing.T) {
 				t.Skip("this case requires -short")
 			}
 			t.Setenv("E2E", e2e)
-			t.Setenv("TEST_CONFIG", "does-not-exist.json")
+			t.Setenv("TEST_ENV", "does-not-exist")
 			reached := false
 			t.Run("gate", func(t *testing.T) { ForTest(t); reached = true })
-			require.False(t, reached, "offline gate must skip before config loading")
+			require.False(t, reached, "offline gate must skip before inventory loading")
 		})
 	}
 }

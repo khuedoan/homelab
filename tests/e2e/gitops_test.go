@@ -17,13 +17,10 @@ import (
 
 func checkGitOps(t *testing.T, cluster fixture.Cluster) {
 	t.Helper()
-	if cluster.Target.Config.GitOpsNamespace == "" {
-		t.Skip("no GitOps controller configured")
-	}
 	namespace := fixture.Namespace(t, cluster.Client)
 	applications := cluster.Dynamic.Resource(schema.GroupVersionResource{
 		Group: "argoproj.io", Version: "v1alpha1", Resource: "applications",
-	}).Namespace(cluster.Target.Config.GitOpsNamespace)
+	}).Namespace("argocd")
 	const revision = "8088f4c0d970abb09e250248cc97e35623447cb5"
 	app, err := applications.Create(t.Context(), &unstructured.Unstructured{Object: map[string]any{
 		"apiVersion": "argoproj.io/v1alpha1",
