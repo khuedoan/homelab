@@ -21,7 +21,7 @@ route:
         namespace: istio-system
         sectionName: https
     hostnames:
-      - drop.khuedoan.com
+      - 'drop.{{ .Values.global.domain }}'
     rules:
       - matches:
           - path:
