@@ -2,7 +2,6 @@
   "environment": "staging",
   "exclude_environments": ["production"],
   "dns_domain": "cluster.local",
-  "apps": [],
   "storage": [
     {"class": "local-path", "access_mode": "ReadWriteOnce"}
   ],
