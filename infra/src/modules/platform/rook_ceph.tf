@@ -34,8 +34,9 @@ resource "kubectl_manifest" "rook_ceph" {
             cephBlockPools = [{
               name = "standard-rwo"
               spec = {
+                requireSafeReplicaSize = var.ceph_replica_count > 1
                 replicated = {
-                  size = 2
+                  size = var.ceph_replica_count
                 }
               }
               storageClass = {
@@ -66,10 +67,10 @@ resource "kubectl_manifest" "rook_ceph" {
                 enabled = false
               }
               mgr = {
-                count = 2
+                count = min(2, var.ceph_replica_count)
               }
               mon = {
-                count = 3
+                count = var.ceph_replica_count == 1 ? 1 : 3
               }
               removeOSDsIfOutAndSafeToRemove = true
               # TODO: Revisit resource sizing after measuring usage.
@@ -111,19 +112,21 @@ resource "kubectl_manifest" "rook_ceph" {
               name = "standard-rwx"
               spec = {
                 dataPools = [{
-                  name = "data0"
+                  name                   = "data0"
+                  requireSafeReplicaSize = var.ceph_replica_count > 1
                   replicated = {
-                    size = 2
+                    size = var.ceph_replica_count
                   }
                 }]
                 metadataPool = {
+                  requireSafeReplicaSize = var.ceph_replica_count > 1
                   replicated = {
-                    size = 2
+                    size = var.ceph_replica_count
                   }
                 }
                 metadataServer = {
                   activeCount       = 1
-                  activeStandby     = true
+                  activeStandby     = var.ceph_replica_count > 1
                   priorityClassName = "system-cluster-critical"
                   resources = {
                     limits = {
