@@ -47,7 +47,7 @@ resource "kubectl_manifest" "grafana" {
                 client_id     = "grafana"
                 client_secret = "$__env{GRAFANA_SSO_CLIENT_SECRET}"
                 enabled       = true
-                name          = "Kanidm"
+                name          = "SSO"
                 scopes        = "openid profile email groups"
                 token_url     = "https://auth.${var.domain}/oauth2/token"
                 use_pkce      = true
@@ -85,6 +85,7 @@ resource "kubectl_manifest" "grafana" {
 }
 
 resource "kubectl_manifest" "grafana_resources" {
+  depends_on        = [kubectl_manifest.openbao]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
@@ -121,7 +122,7 @@ resource "kubectl_manifest" "grafana_resources" {
                     }
                   }
                   data = {
-                    GRAFANA_SSO_CLIENT_SECRET = base64encode("bao:secret/data/kanidm.grafana#client_secret")
+                    GRAFANA_SSO_CLIENT_SECRET = base64encode("bao:secret/data/sso/grafana#client_secret")
                   }
                 }
               }

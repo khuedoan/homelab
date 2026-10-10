@@ -4,7 +4,7 @@ locals {
     external-dns = ["infra/cloudflare/external_dns_token", "infra/cloudflare/zone_id"]
     cloudflared  = ["infra/cloudflare/tunnel_credentials"]
     forgejo      = ["forgejo.admin"]
-    grafana      = ["kanidm.grafana"]
+    grafana      = ["sso/grafana"]
     renovate     = ["forgejo.renovate"]
     woodpecker   = ["forgejo.woodpecker", "woodpecker.agent"]
     zot          = ["registry.admin"]
