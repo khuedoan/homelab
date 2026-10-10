@@ -85,7 +85,7 @@ func TestGitOpsCreatesOnlyMissingResources(t *testing.T) {
 			if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 				t.Fatal(err)
 			}
-			if input["name"] != "homelab" || input["default_branch"] != "main" || input["private"] != false {
+			if input["name"] != "homelab" || input["default_branch"] != "master" || input["private"] != false {
 				t.Errorf("unexpected repository: %v", input)
 			}
 			repo = true
