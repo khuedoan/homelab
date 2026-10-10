@@ -14,11 +14,12 @@
       system = "x86_64-linux";
 
       pkgs = import nixpkgs { inherit system; };
+      # TODO remove this after https://github.com/NixOS/nixpkgs/pull/569193
       cf =
         with pkgs;
         stdenv.mkDerivation (finalAttrs: {
           pname = "cloudflare-cf";
-          version = "1.0.0-beta.10";
+          version = "1.0.0-beta.13";
 
           __structuredAttrs = true;
           strictDeps = true;
@@ -27,7 +28,7 @@
             owner = "cloudflare";
             repo = "cf";
             tag = "cf@${finalAttrs.version}";
-            hash = "sha256-rq6cBYVqPktI3Vh4mRosUV2LnvuyY3H3YY0vUimSzmg=";
+            hash = "sha256-L6MFPxXmzWSzYoBndfz4RxyFNjLAq+PxQvUstFkjsYY=";
           };
 
           pnpmWorkspaces = [ "cf" ];
@@ -41,7 +42,7 @@
               ;
             pnpm = pnpm_11;
             fetcherVersion = 4;
-            hash = "sha256-ou0IkiSEDsUHjYgr86BRjWSHzRygFMxrMwtNgFCxUY4=";
+            hash = "sha256-CiYS4yIrbCwenPs6Tc9Z3FkjuhZHdKw/uWbnF3D9yuA=";
           };
 
           nativeBuildInputs = [
@@ -62,6 +63,12 @@
           buildInputs = lib.optionals stdenv.hostPlatform.isLinux [ stdenv.cc.cc.lib ];
 
           env.NODE_OPTIONS = "--max-old-space-size=4096";
+
+          # Use the generated SDK and commands checked into the pinned source.
+          postPatch = ''
+            substituteInPlace packages/cli/vite.config.ts \
+              --replace-fail 'command: "tsx generate.ts"' 'command: "true"'
+          '';
 
           buildPhase = ''
             runHook preBuild
