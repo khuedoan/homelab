@@ -17,21 +17,21 @@ func newInfraStateCmd() *cobra.Command {
 	ensure := &cobra.Command{
 		Use:     "ensure",
 		Short:   "Create the Cloudflare R2 state bucket if absent",
-		Long:    "Ensure an R2 bucket exists without changing existing buckets. Authentication uses CLOUDFLARE_TFSTATE_API_TOKEN. No Kubernetes cluster or Terraform state is required.",
-		Example: "  toolbox infra state ensure --bucket tfstate-production",
+		Long:    "Ensure an R2 bucket exists without changing existing buckets. Authentication uses the cf CLI OAuth login, matching the Cloudflare Terraform provider. Requires cf on PATH. No Kubernetes cluster or Terraform state is required.",
+		Example: "  toolbox infra state ensure --bucket homelab-production-tfstate",
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			token := os.Getenv("CLOUDFLARE_TFSTATE_API_TOKEN")
-			if token == "" || account == "" || bucket == "" {
-				return fmt.Errorf("missing required CLOUDFLARE_TFSTATE_API_TOKEN, --account-id (or CLOUDFLARE_ACCOUNT_ID), or --bucket")
+			ctx, cancel := context.WithTimeout(cmd.Context(), time.Minute)
+			defer cancel()
+			token, accountID, err := cloudflareLogin(ctx, account)
+			if err != nil {
+				return err
 			}
 			api, err := cloudflare.NewWithAPIToken(token)
 			if err != nil {
 				return err
 			}
-			ctx, cancel := context.WithTimeout(cmd.Context(), time.Minute)
-			defer cancel()
-			if err := state.EnsureR2Bucket(ctx, api, account, bucket); err != nil {
+			if err := state.EnsureR2Bucket(ctx, api, accountID, bucket); err != nil {
 				return err
 			}
 			_, err = fmt.Fprintf(cmd.OutOrStdout(), "State bucket %s is ready.\n", bucket)
