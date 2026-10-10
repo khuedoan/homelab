@@ -148,6 +148,7 @@
           name = "toolbox-src";
         };
         vendorHash = "sha256-eWp5wsaHvrNDTbRRSmbUdn7gaHbCRhyeLoElZWCu9Co=";
+        nativeCheckInputs = [ pkgs.git ];
         preCheck = ''
           export SFTP_SERVER="${pkgs.openssh}/libexec/sftp-server"
         '';
