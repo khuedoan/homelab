@@ -21,5 +21,6 @@ inputs = {
     url      = get_env("GITOPS_REPOSITORY_URL", "http://forgejo-http.forgejo:3000/ops/homelab.git")
     revision = get_env("GITOPS_REVISION", "master")
   }
-  apps = ["pairdrop"]
+  apps               = ["pairdrop"]
+  ceph_replica_count = 1
 }
