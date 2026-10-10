@@ -16,3 +16,7 @@ terraform {
     }
   }
 }
+
+inputs = {
+  cloudflare_account_id = local.root.locals.r2_account_id
+}
