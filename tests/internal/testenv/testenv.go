@@ -13,24 +13,6 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation"
 )
 
-// Config selects an inventory and the capabilities expected from that environment.
-// ExcludeEnvironments names inventories whose known addresses and MACs must not overlap.
-type Config struct {
-	Environment         string        `json:"environment"`
-	ExcludeEnvironments []string      `json:"exclude_environments"`
-	DNSDomain           string        `json:"dns_domain"`
-	LoadBalancer        *LoadBalancer `json:"load_balancer,omitempty"`
-	GitOpsNamespace     string        `json:"gitops_namespace,omitempty"`
-}
-
-// LoadBalancer selects an existing Gateway and its LoadBalancer Service.
-type LoadBalancer struct {
-	Namespace string `json:"namespace"`
-	Service   string `json:"service"`
-	Gateway   string `json:"gateway"`
-	Listener  string `json:"listener"`
-}
-
 // Cluster identifies the inventory member that initializes the API and its IPv4 VIP.
 type Cluster struct {
 	Initializer string `json:"init_host"`
@@ -48,11 +30,11 @@ type Host struct {
 
 // Target is a validated, normalized inventory with host names in sorted order.
 type Target struct {
-	Root    string
-	Config  Config
-	Cluster Cluster
-	Hosts   map[string]Host
-	Names   []string
+	Root        string
+	Environment string
+	Cluster     Cluster
+	Hosts       map[string]Host
+	Names       []string
 }
 
 // Root finds the repository containing tests/go.mod and infra above the working directory.
@@ -203,96 +185,59 @@ func loadExcluded(root, environment string) (inventory, error) {
 	return inv, nil
 }
 
-func (config Config) validate() error {
-	environments := append([]string{config.Environment}, config.ExcludeEnvironments...)
-	seen := map[string]bool{}
-	for _, environment := range environments {
-		if len(validation.IsDNS1123Label(environment)) != 0 {
-			return fmt.Errorf("invalid environment name %q", environment)
-		}
-		if seen[environment] {
-			return fmt.Errorf("duplicate environment %q", environment)
-		}
-		seen[environment] = true
+// Load validates an environment inventory and rejects overlap with other environments.
+func Load(root, environment string) (Target, error) {
+	target := Target{Root: root, Environment: environment}
+	if len(validation.IsDNS1123Label(environment)) != 0 {
+		return target, fmt.Errorf("invalid environment name %q", environment)
 	}
-	if lb := config.LoadBalancer; lb != nil {
-		if len(validation.IsDNS1123Label(lb.Namespace)) != 0 || len(validation.IsDNS1035Label(lb.Service)) != 0 || len(validation.IsDNS1123Subdomain(lb.Gateway)) != 0 || len(validation.IsDNS1123Label(lb.Listener)) != 0 {
-			return fmt.Errorf("load_balancer requires a valid namespace, service, gateway, and listener")
-		}
-	}
-	if namespace := config.GitOpsNamespace; namespace != "" && len(validation.IsDNS1123Label(namespace)) != 0 {
-		return fmt.Errorf("invalid GitOps namespace %q", namespace)
-	}
-	if len(validation.IsDNS1123Subdomain(config.DNSDomain)) != 0 {
-		return fmt.Errorf("invalid DNS domain %q", config.DNSDomain)
-	}
-	return nil
-}
-
-func loadIsolatedInventory(root string, config Config) (inventory, error) {
-	selected, err := loadInventory(root, config.Environment)
+	selected, err := loadInventory(root, environment)
 	if err != nil {
-		return selected, err
+		return target, err
 	}
-	for _, environment := range config.ExcludeEnvironments {
-		excluded, err := loadExcluded(root, environment)
+	environments, err := filepath.Glob(filepath.Join(root, "infra", "*", "root.hcl"))
+	if err != nil {
+		return target, err
+	}
+	for _, path := range environments {
+		other := filepath.Base(filepath.Dir(path))
+		if other == environment {
+			continue
+		}
+		excluded, err := loadExcluded(root, other)
 		if err != nil {
-			return selected, err
+			return target, err
 		}
 		for address := range selected.addresses {
 			if excluded.addresses[address] {
-				return selected, fmt.Errorf("%s overlaps %s inventory at address %s", config.Environment, environment, address)
+				return target, fmt.Errorf("%s overlaps %s inventory at address %s", environment, other, address)
 			}
 		}
 		for mac := range selected.macs {
 			if excluded.macs[mac] {
-				return selected, fmt.Errorf("%s overlaps %s inventory at MAC %s", config.Environment, environment, mac)
+				return target, fmt.Errorf("%s overlaps %s inventory at MAC %s", environment, other, mac)
 			}
 		}
-	}
-	return selected, nil
-}
-
-// Load reads a config relative to tests/ or by absolute path and rejects unsafe inventories.
-// Excluded inventories may lack discovery data, but every known address and MAC is checked.
-func Load(root, configFile string) (Target, error) {
-	target := Target{Root: root}
-	if configFile == "" {
-		return target, fmt.Errorf("config file must be nonempty")
-	}
-	if !filepath.IsAbs(configFile) {
-		configFile = filepath.Join(root, "tests", configFile)
-	}
-	if err := readJSON(configFile, &target.Config); err != nil {
-		return target, err
-	}
-	if err := target.Config.validate(); err != nil {
-		return target, err
-	}
-	selected, err := loadIsolatedInventory(root, target.Config)
-	if err != nil {
-		return target, err
 	}
 	target.Cluster, target.Hosts, target.Names = selected.cluster, selected.hosts, selected.names
 	return target, nil
 }
 
-// ForTest skips before loading config unless E2E=1 and short mode is disabled.
-// Live tests must supply TEST_CONFIG explicitly; invalid targets fail the test.
+// ForTest requires an explicit environment for live tests and skips offline runs.
 func ForTest(t *testing.T) Target {
 	t.Helper()
 	if os.Getenv("E2E") != "1" || testing.Short() {
 		t.Skip("live tests require E2E=1 without -short")
 	}
-	config := os.Getenv("TEST_CONFIG")
-	if config == "" {
-		t.Fatal("TEST_CONFIG must be nonempty")
+	environment := os.Getenv("TEST_ENV")
+	if environment == "" {
+		t.Fatal("TEST_ENV must be nonempty")
 	}
 	root, err := Root()
 	if err != nil {
 		t.Fatal(err)
 	}
-	target, err := Load(root, config)
+	target, err := Load(root, environment)
 	if err != nil {
 		t.Fatal(err)
 	}

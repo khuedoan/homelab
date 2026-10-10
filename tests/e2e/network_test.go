@@ -46,10 +46,10 @@ func checkNetworking(t *testing.T, cluster fixture.Cluster) {
 	require.NoError(t, err)
 	require.NotEmpty(t, server.Status.PodIP)
 	probe := fmt.Sprintf(`set -eu
-nslookup kubernetes.default.svc.%s >/dev/null
+nslookup kubernetes.default.svc.cluster.local >/dev/null
 test "$(wget -T 10 -qO- http://%s)" = homelab-e2e
 test "$(wget -T 10 -qO- http://echo:8080)" = homelab-e2e
-printf 'network-ok\n'`, cluster.Target.Config.DNSDomain, net.JoinHostPort(server.Status.PodIP, "8080"))
+printf 'network-ok\n'`, net.JoinHostPort(server.Status.PodIP, "8080"))
 	logs := runPod(t, cluster, namespace, &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "probe"},
 		Spec: corev1.PodSpec{
