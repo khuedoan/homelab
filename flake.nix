@@ -168,6 +168,7 @@
             go
             golangci-lint
             gotestsum
+            jq
             kubectl
             kubernetes-helm
             nixfmt-tree
