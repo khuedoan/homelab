@@ -23,7 +23,7 @@ route:
         namespace: istio-system
         sectionName: https
     hostnames:
-      - draw.khuedoan.com
+      - 'draw.{{ .Values.global.domain }}'
     rules:
       - matches:
           - path:
