@@ -21,7 +21,7 @@ route:
         namespace: istio-system
         sectionName: https
     hostnames:
-      - home.khuedoan.com
+      - 'home.{{ .Values.global.domain }}'
     rules:
       - matches:
           - path:

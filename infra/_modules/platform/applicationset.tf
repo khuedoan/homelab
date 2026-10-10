@@ -16,7 +16,7 @@ resource "kubectl_manifest" "apps" {
         git = {
           repoURL  = var.repository.url
           revision = var.repository.revision
-          files    = [{ path = "apps/*.yaml" }]
+          files    = [for app in var.apps : { path = "apps/${app}.yaml" }]
         }
       }]
       template = {
@@ -33,6 +33,10 @@ resource "kubectl_manifest" "apps" {
             helm = {
               releaseName = "{{ .path.filename | trimSuffix \".yaml\" }}"
               valueFiles  = ["$values/apps/{{ .path.filename }}"]
+              parameters = [{
+                name  = "global.domain"
+                value = var.domain
+              }]
             }
             }, {
             repoURL        = var.repository.url
