@@ -195,7 +195,7 @@ func Load(root, environment string) (Target, error) {
 	if err != nil {
 		return target, err
 	}
-	environments, err := filepath.Glob(filepath.Join(root, "infra", "*", "root.hcl"))
+	environments, err := filepath.Glob(filepath.Join(root, "infra", "*", "metal"))
 	if err != nil {
 		return target, err
 	}

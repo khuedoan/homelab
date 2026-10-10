@@ -22,7 +22,7 @@ func TestSecretsSyncArguments(t *testing.T) {
 
 func TestSecretsSyncReadsAllOutputsBeforeWriting(t *testing.T) {
 	t.Chdir(t.TempDir())
-	for _, file := range []string{"infra/test/root.hcl", "infra/test/a/terragrunt.hcl", "infra/test/b/terragrunt.hcl"} {
+	for _, file := range []string{"infra/test/a/terragrunt.hcl", "infra/test/b/terragrunt.hcl"} {
 		if err := os.MkdirAll(filepath.Dir(file), 0700); err != nil {
 			t.Fatal(err)
 		}

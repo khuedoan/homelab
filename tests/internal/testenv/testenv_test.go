@@ -40,9 +40,6 @@ func (f fixture) write(t *testing.T, root string) {
 	writeJSON(t, root, "infra/dev/metal/hosts.json", f.hosts)
 	writeJSON(t, root, "infra/prod/cluster/config.json", f.excluded)
 	writeJSON(t, root, "infra/prod/metal/hosts.json", f.others)
-	for _, environment := range []string{"dev", "prod"} {
-		require.NoError(t, os.WriteFile(filepath.Join(root, "infra", environment, "root.hcl"), nil, 0600))
-	}
 }
 
 func TestSafetyCases(t *testing.T) {
@@ -175,8 +172,7 @@ func TestNormalizationAndInventoryErrors(t *testing.T) {
 func TestMissingExcludedInventory(t *testing.T) {
 	f, root := newFixture(), t.TempDir()
 	f.write(t, root)
-	require.NoError(t, os.Mkdir(filepath.Join(root, "infra/other"), 0700))
-	require.NoError(t, os.WriteFile(filepath.Join(root, "infra/other/root.hcl"), nil, 0600))
+	require.NoError(t, os.MkdirAll(filepath.Join(root, "infra/other/metal"), 0700))
 	_, err := Load(root, "dev")
 	require.ErrorContains(t, err, "infra/other/cluster/config.json")
 }

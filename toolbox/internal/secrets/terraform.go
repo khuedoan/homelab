@@ -18,7 +18,7 @@ func EnvironmentRecords(ctx context.Context, environment string) (map[string]map
 		return nil, fmt.Errorf("--environment must be an environment directory name")
 	}
 	root := filepath.Join("infra", environment)
-	if _, err := os.Stat(filepath.Join(root, "root.hcl")); err != nil {
+	if _, err := os.Stat(root); err != nil {
 		return nil, fmt.Errorf("read environment %s: %w", environment, err)
 	}
 	units, err := terragruntUnits(root)

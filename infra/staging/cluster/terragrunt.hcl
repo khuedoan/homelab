@@ -14,7 +14,3 @@ terraform {
     execute  = ["sh", "-c", "cd \"$1\" && exec toolbox cluster kubeconfig --environment staging --output infra/staging/kubeconfig.yaml", "kubeconfig", get_repo_root()]
   }
 }
-
-inputs = {
-  kubeconfig = "${get_repo_root()}/infra/staging/kubeconfig.yaml"
-}
