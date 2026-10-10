@@ -5,9 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"time"
 
 	bao "github.com/openbao/openbao/api/v2"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
 	coreclient "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -25,13 +28,20 @@ func openBaoKV(ctx context.Context, kubeconfig string) (*bao.KVv2, error) {
 	if err != nil {
 		return nil, err
 	}
-	secret, err := client.Secrets("openbao").Get(ctx, "openbao-unseal", metav1.GetOptions{})
+	var token string
+	err = wait.PollUntilContextCancel(ctx, time.Second, true, func(ctx context.Context) (bool, error) {
+		secret, err := client.Secrets("openbao").Get(ctx, "openbao-unseal", metav1.GetOptions{})
+		if apierrors.IsNotFound(err) {
+			return false, nil
+		}
+		if err != nil {
+			return false, err
+		}
+		token = string(secret.Data["vault-root"])
+		return token != "", nil
+	})
 	if err != nil {
 		return nil, fmt.Errorf("read OpenBao bootstrap credentials: %w", err)
-	}
-	token := string(secret.Data["vault-root"])
-	if token == "" {
-		return nil, fmt.Errorf("OpenBao bootstrap secret has no vault-root key")
 	}
 	httpClient, err := rest.HTTPClientFor(config)
 	if err != nil {
@@ -45,7 +55,33 @@ func openBaoKV(ctx context.Context, kubeconfig string) (*bao.KVv2, error) {
 		return nil, fmt.Errorf("create OpenBao client failed")
 	}
 	baoClient.SetToken(token)
+	err = wait.PollUntilContextCancel(ctx, time.Second, true, func(ctx context.Context) (bool, error) {
+		return openBaoReady(ctx, baoClient)
+	})
+	if err != nil {
+		return nil, fmt.Errorf("wait for OpenBao readiness: %w", err)
+	}
 	return baoClient.KVv2("secret"), nil
+}
+
+func openBaoReady(ctx context.Context, baoClient *bao.Client) (bool, error) {
+	health, err := baoClient.Sys().HealthWithContext(ctx)
+	if err != nil {
+		var responseError *bao.ResponseError
+		if errors.As(err, &responseError) && responseError.StatusCode == 503 {
+			return false, nil
+		}
+		return false, fmt.Errorf("check OpenBao health failed")
+	}
+	if !health.Initialized || health.Sealed {
+		return false, nil
+	}
+	mounts, err := baoClient.Sys().ListMountsWithContext(ctx)
+	if err != nil {
+		return false, fmt.Errorf("check OpenBao KV mount failed")
+	}
+	mount := mounts["secret/"]
+	return mount != nil && mount.Type == "kv" && mount.Options["version"] == "2", nil
 }
 
 // Read returns a KV record, or nil when the record does not exist.
