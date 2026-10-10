@@ -37,7 +37,7 @@ func newInfraForgejoPushCmd() *cobra.Command {
 	var kubeconfig, domain, source string
 	command := &cobra.Command{
 		Use: "push", Short: "Push the current commit to the Forgejo GitOps repository",
-		Long: "Run git push to publish HEAD to ops/homelab on main. Uncommitted changes are excluded. Requires git, an explicit cluster-admin kubeconfig, and a trusted HTTPS Forgejo endpoint.",
+		Long: "Run git push to publish HEAD to ops/homelab on master. Uncommitted changes are excluded. Requires git, an explicit cluster-admin kubeconfig, and a trusted HTTPS Forgejo endpoint.",
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
