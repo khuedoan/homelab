@@ -2,8 +2,8 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-include "cloudflare" {
-  path = find_in_parent_folders("cloudflare.hcl")
+terraform {
+  source = "${find_in_parent_folders("_modules")}//cloudflare"
 }
 
 inputs = {

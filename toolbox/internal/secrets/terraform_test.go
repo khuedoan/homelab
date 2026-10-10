@@ -44,7 +44,7 @@ func TestOutputRecords(t *testing.T) {
 func TestEnvironmentRecords(t *testing.T) {
 	root := t.TempDir()
 	t.Chdir(root)
-	for _, file := range []string{"infra/test/root.hcl", "infra/test/foo/bar/terragrunt.hcl", "infra/test/empty/terragrunt.hcl", "infra/test/.terragrunt-cache/copied/terragrunt.hcl", "infra/other/root.hcl", "infra/other/unit/terragrunt.hcl"} {
+	for _, file := range []string{"infra/test/foo/bar/terragrunt.hcl", "infra/test/empty/terragrunt.hcl", "infra/test/.terragrunt-cache/copied/terragrunt.hcl", "infra/other/unit/terragrunt.hcl"} {
 		if err := os.MkdirAll(filepath.Dir(file), 0700); err != nil {
 			t.Fatal(err)
 		}

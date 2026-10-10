@@ -2,10 +2,6 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-include "kubernetes" {
-  path = find_in_parent_folders("kubernetes.hcl")
-}
-
 dependencies {
   paths = ["../argocd"]
 }
