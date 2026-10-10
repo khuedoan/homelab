@@ -52,6 +52,7 @@ resource "kubectl_manifest" "zot" {
 }
 
 resource "kubectl_manifest" "zot_resources" {
+  depends_on        = [kubectl_manifest.openbao]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
