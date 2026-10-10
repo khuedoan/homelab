@@ -1,48 +1,53 @@
 .POSIX:
-.PHONY: *
+.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test docs fmt
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
-KUBE_CONFIG_PATH = $(KUBECONFIG)
+env ?=
+kubeconfig ?= infra/$(env)/kubeconfig.yaml
+sso_args = --kubeconfig "$(kubeconfig)" --url "https://auth.$$domain" --bootstrap
 
-default: metal system external smoke-test post-install clean
+default: infra
 
-configure:
-	./scripts/configure
-	git status
+infra:
+	@test -n "$(env)" || { echo 'Usage: make infra env=production (or staging)' >&2; exit 1; }
+	cd "infra/$(env)" && terragrunt run --all apply
+	$(MAKE) sync
 
-metal:
-	make -C metal
+sync:
+	@test -n "$(env)" || { echo 'Usage: make sync env=production (or staging)' >&2; exit 1; }
+	$(MAKE) sync-secrets
+	$(MAKE) sync-forgejo
+	$(MAKE) push-forgejo
+	$(MAKE) sso
 
-system:
-	make -C system
+sync-secrets:
+	@test -n "$(env)" || { echo 'Usage: make sync-secrets env=production (or staging)' >&2; exit 1; }
+	toolbox infra secrets sync --environment "$(env)" --kubeconfig "$(kubeconfig)"
 
-external:
-	make -C external
+sync-forgejo:
+	@test -n "$(env)" || { echo 'Usage: make sync-forgejo env=production (or staging)' >&2; exit 1; }
+	toolbox infra forgejo sync --kubeconfig "$(kubeconfig)" --domain "$$(cd infra/$(env)/platform && terragrunt render --json | jq -r '.inputs.domain')"
+
+push-forgejo:
+	@test -n "$(env)" || { echo 'Usage: make push-forgejo env=production (or staging)' >&2; exit 1; }
+	toolbox infra forgejo push --kubeconfig "$(kubeconfig)" --domain "$$(cd infra/$(env)/platform && terragrunt render --json | jq -r '.inputs.domain')"
+
+sso:
+	@test -n "$(env)" || { echo 'Usage: make sso env=production (or staging)' >&2; exit 1; }
+	@set -eu; \
+	domain=$$(cd infra/$(env)/platform && terragrunt render --json | jq -er '.inputs.domain'); \
+	toolbox sso $(sso_args) client ensure grafana --display-name Grafana --redirect-uri "https://grafana.$$domain/login/generic_oauth"; \
+	toolbox sso $(sso_args) secrets sync
 
 smoke-test:
-	make -C test filter=Smoke
-
-post-install:
-	@./scripts/hacks
-
-# TODO maybe there's a better way to manage backup with GitOps?
-backup:
-	./scripts/backup --action setup --namespace=actualbudget --pvc=actualbudget-data
-	./scripts/backup --action setup --namespace=jellyfin --pvc=jellyfin-data
-
-restore:
-	./scripts/backup --action restore --namespace=actualbudget --pvc=actualbudget-data
-	./scripts/backup --action restore --namespace=jellyfin --pvc=jellyfin-data
+	make -C tests e2e filter='^Apps$$' env='$(env)'
 
 test:
-	make -C test
-
-clean:
-	docker compose --project-directory ./metal/roles/pxe_server/files down
+	make -C toolbox test
+	make -C tests test
 
 docs:
 	mkdocs serve
 
-git-hooks:
-	pre-commit install
+fmt:
+	treefmt

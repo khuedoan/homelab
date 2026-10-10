@@ -1,0 +1,47 @@
+version: "2"
+
+run:
+  tests: true
+  modules-download-mode: readonly
+  timeout: 5m
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - gocognit
+    - govet
+    - ineffassign
+    - revive
+    - staticcheck
+    - unused
+  settings:
+    gocognit:
+      min-complexity: 20
+    revive:
+      rules:
+        - name: context-as-argument
+        - name: context-keys-type
+        - name: error-naming
+        - name: error-return
+        - name: error-strings
+        - name: errorf
+        - name: exported
+        - name: indent-error-flow
+        - name: receiver-naming
+        - name: superfluous-else
+        - name: time-naming
+        - name: var-declaration
+        - name: var-naming
+  exclusions:
+    presets: []
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  uniq-by-line: false

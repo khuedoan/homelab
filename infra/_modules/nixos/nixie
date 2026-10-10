@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+set -eu
+
+# Install NixOS on the metal nodes over the network with nixie.
+#
+# Usage: nixie <flake-dir> <hosts-file>
+
+flake_dir="$(readlink -f "${1:?usage: nixie <flake-dir> <hosts-file>}")"
+hosts_file="$(readlink -f "${2:?usage: nixie <flake-dir> <hosts-file>}")"
+
+interface="${PXE_INTERFACE:-$(ip -4 route show default | awk '/default/ { print $5; exit }')}"
+test -n "$interface" || {
+	echo "no default-route interface for PXE, set PXE_INTERFACE" >&2
+	exit 1
+}
+
+address="${PXE_ADDRESS:-$(ip -4 -o address show dev "$interface" scope global | awk '{ sub(/\/.*/, "", $4); print $4 }')}"
+test -n "$address" || {
+	echo "$interface has no IPv4 address, set PXE_ADDRESS" >&2
+	exit 1
+}
+
+set -- \
+	--address "$address" \
+	--installer "path:.#nixosConfigurations.installer" \
+	--flake "path:." \
+	--hosts "$hosts_file"
+
+if [ -n "${SSH_AUTH_SOCK:-}" ]; then
+	set -- "$@" --ssh-agent-socket "$SSH_AUTH_SOCK"
+else
+	ssh_key="${SSH_KEY:-$HOME/.ssh/id_ed25519}"
+	module_dir="$(dirname "$(readlink -f "$0")")"
+	install_key="$(grep -o 'ssh-ed25519 AAAA[A-Za-z0-9+/=]*' "$module_dir/profiles/installer.nix" | head -1)"
+	actual_key="$(ssh-keygen -y -f "$ssh_key" 2>/dev/null || true)"
+	test "$actual_key" = "$install_key" || {
+		echo "$ssh_key does not match the authorized key in $module_dir/profiles/installer.nix" >&2
+		exit 1
+	}
+	set -- "$@" --install-ssh-key "$ssh_key" --deployment-ssh-key "$ssh_key"
+fi
+
+cd "$flake_dir"
+sudo env "PATH=$PATH" nixie "$@"

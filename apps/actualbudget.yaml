@@ -1,0 +1,39 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: docker.io/actualbudget/actual-server
+          tag: 24.12.0-alpine
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 5006
+        protocol: HTTP
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'budget.{{ .Values.global.domain }}'
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - identifier: main
+            port: 5006
+persistence:
+  data:
+    suffix: data
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    globalMounts:
+      - path: /data

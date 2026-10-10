@@ -1,0 +1,34 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: docker.io/excalidraw/excalidraw
+          tag: latest
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 80
+        protocol: HTTP
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    annotations:
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
+    parentRefs:
+      - name: public
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'draw.{{ .Values.global.domain }}'
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - identifier: main
+            port: 80
