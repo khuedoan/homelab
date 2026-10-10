@@ -24,8 +24,6 @@ resource "kubectl_manifest" "zot" {
             pvc = {
               create  = true
               storage = "2Gi"
-              # TODO: Replace temporary local-path storage with replicated storage.
-              storageClassName = "local-path"
             }
             httproute = {
               enabled = true
