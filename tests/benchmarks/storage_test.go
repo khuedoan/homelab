@@ -11,10 +11,9 @@ import (
 
 func benchmarkStorage(t *testing.T, cluster fixture.Cluster) {
 	t.Helper()
-	if len(cluster.Target.Config.Storage) == 0 {
-		t.Skip("no storage classes configured")
-	}
-	for _, storage := range cluster.Target.Config.Storage {
+	classes, err := fixture.DiscoverStorage(t.Context(), cluster.Client)
+	require.NoError(t, err)
+	for _, storage := range classes {
 		t.Run(storage.Class, func(t *testing.T) {
 			namespace := fixture.Namespace(t, cluster.Client)
 			claim := fixture.Volume(t, cluster.Client, namespace, storage, "1Gi")

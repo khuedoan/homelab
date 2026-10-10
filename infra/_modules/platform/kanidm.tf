@@ -56,8 +56,6 @@ EOT
                     }]
                     name = "data"
                     size = "1Gi"
-                    # TODO: Replace temporary local-path storage with replicated storage.
-                    storageClass = "local-path"
                   }]
                 }
                 type = "statefulset"

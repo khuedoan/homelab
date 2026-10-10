@@ -10,7 +10,6 @@ import (
 	"sort"
 	"testing"
 
-	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/validation"
 )
 
@@ -20,7 +19,6 @@ type Config struct {
 	Environment         string        `json:"environment"`
 	ExcludeEnvironments []string      `json:"exclude_environments"`
 	DNSDomain           string        `json:"dns_domain"`
-	Storage             []Storage     `json:"storage"`
 	LoadBalancer        *LoadBalancer `json:"load_balancer,omitempty"`
 	GitOpsNamespace     string        `json:"gitops_namespace,omitempty"`
 }
@@ -31,12 +29,6 @@ type LoadBalancer struct {
 	Service   string `json:"service"`
 	Gateway   string `json:"gateway"`
 	Listener  string `json:"listener"`
-}
-
-// Storage specifies a provisioner and the PVC access mode to exercise.
-type Storage struct {
-	Class string                            `json:"class"`
-	Mode  corev1.PersistentVolumeAccessMode `json:"access_mode"`
 }
 
 // Cluster identifies the inventory member that initializes the API and its IPv4 VIP.
@@ -222,16 +214,6 @@ func (config Config) validate() error {
 			return fmt.Errorf("duplicate environment %q", environment)
 		}
 		seen[environment] = true
-	}
-	classes := map[string]bool{}
-	for _, storage := range config.Storage {
-		if len(validation.IsDNS1123Subdomain(storage.Class)) != 0 || classes[storage.Class] {
-			return fmt.Errorf("storage class must be valid and unique: %q", storage.Class)
-		}
-		if storage.Mode != corev1.ReadWriteOnce && storage.Mode != corev1.ReadWriteMany {
-			return fmt.Errorf("storage class %s requires ReadWriteOnce or ReadWriteMany", storage.Class)
-		}
-		classes[storage.Class] = true
 	}
 	if lb := config.LoadBalancer; lb != nil {
 		if len(validation.IsDNS1123Label(lb.Namespace)) != 0 || len(validation.IsDNS1035Label(lb.Service)) != 0 || len(validation.IsDNS1123Subdomain(lb.Gateway)) != 0 || len(validation.IsDNS1123Label(lb.Listener)) != 0 {

@@ -87,10 +87,6 @@ func TestConfigValidation(t *testing.T) {
 		{"excluded traversal", Config{Environment: "dev", ExcludeEnvironments: []string{"../prod"}}, "invalid environment name"},
 		{"self exclusion", Config{Environment: "dev", ExcludeEnvironments: []string{"dev"}}, "duplicate environment"},
 		{"duplicate exclusion", Config{Environment: "dev", ExcludeEnvironments: []string{"prod", "prod"}}, "duplicate environment"},
-		{"invalid storage class", Config{Environment: "dev", Storage: []Storage{{Class: "../disk", Mode: "ReadWriteOnce"}}}, "storage class must be valid and unique"},
-		{"empty storage mode", Config{Environment: "dev", Storage: []Storage{{Class: "disk"}}}, "requires ReadWriteOnce or ReadWriteMany"},
-		{"unknown storage mode", Config{Environment: "dev", Storage: []Storage{{Class: "disk", Mode: "RWX"}}}, "requires ReadWriteOnce or ReadWriteMany"},
-		{"duplicate storage class", Config{Environment: "dev", Storage: []Storage{{Class: "disk", Mode: "ReadWriteOnce"}, {Class: "disk", Mode: "ReadWriteMany"}}}, "storage class must be valid and unique"},
 		{"empty load balancer", Config{Environment: "dev", LoadBalancer: &LoadBalancer{}}, "load_balancer requires a valid namespace, service, gateway, and listener"},
 		{"invalid GitOps namespace", Config{Environment: "dev", GitOpsNamespace: "../cd"}, "invalid GitOps namespace"},
 		{"missing DNS domain", Config{Environment: "dev"}, "invalid DNS domain"},
@@ -192,10 +188,6 @@ func TestCapabilities(t *testing.T) {
 		"environment": "dev",
 		"exclude_environments": ["prod"],
 		"dns_domain": "unit.invalid",
-		"storage": [
-			{"class": "block", "access_mode": "ReadWriteOnce"},
-			{"class": "shared", "access_mode": "ReadWriteMany"}
-		],
 		"load_balancer": {"namespace": "edge", "service": "controller", "gateway": "edge", "listener": "http"},
 		"gitops_namespace": "cd"
 	}`))
@@ -204,7 +196,6 @@ func TestCapabilities(t *testing.T) {
 	require.Equal(t, Config{
 		Environment: "dev", ExcludeEnvironments: []string{"prod"},
 		DNSDomain:       "unit.invalid",
-		Storage:         []Storage{{Class: "block", Mode: "ReadWriteOnce"}, {Class: "shared", Mode: "ReadWriteMany"}},
 		LoadBalancer:    &LoadBalancer{Namespace: "edge", Service: "controller", Gateway: "edge", Listener: "http"},
 		GitOpsNamespace: "cd",
 	}, target.Config)

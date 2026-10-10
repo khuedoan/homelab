@@ -49,9 +49,9 @@
     clusterInit = k3s.clusterInit;
     serverAddr = if k3s.clusterInit then "" else "https://${k3s.vip}:6443";
     tokenFile = if k3s.clusterInit then null else "/var/lib/rancher/k3s/enrollment/token";
-    # TODO: Replace the built-in local-path provisioner with replicated storage.
     disable = [
-      "traefik" # Gateway API traffic is handled by Istio.
+      "traefik" # Use Istio for Gateway API
+      "local-storage" # use Rook Ceph for storage
     ];
     extraFlags = [
       "--tls-san=${k3s.vip}"
