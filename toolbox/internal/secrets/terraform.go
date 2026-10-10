@@ -27,7 +27,7 @@ func EnvironmentRecords(ctx context.Context, environment string) (map[string]map
 	}
 	records := make(map[string]map[string]string)
 	for _, unit := range units {
-		command := exec.CommandContext(ctx, "terragrunt", "run", "--no-auto-init", "--non-interactive", "--no-color", "--no-filters-file", "--tf-forward-stdout", "--", "output", "-json")
+		command := exec.CommandContext(ctx, "terragrunt", "run", "--non-interactive", "--no-color", "--no-filters-file", "--tf-forward-stdout", "--", "output", "-json")
 		command.Dir = filepath.Join(root, unit)
 		output, err := command.Output()
 		if err != nil {
