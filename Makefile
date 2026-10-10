@@ -1,5 +1,5 @@
 .POSIX:
-.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test lint docs fmt
+.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test docs fmt
 .EXPORT_ALL_VARIABLES:
 
 env ?=

@@ -15,10 +15,3 @@ steps:
             - 'tests/**'
             - '.woodpecker/static-checks.yaml'
     depends_on: []
-  pre-commit:
-    image: nixery.dev/shell/git/pre-commit # TODO replace with nix develop
-    commands:
-      - pre-commit run --color=always
-    when:
-      - event: pull_request
-    depends_on: []

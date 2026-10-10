@@ -20,17 +20,9 @@ type Config struct {
 	Environment         string        `json:"environment"`
 	ExcludeEnvironments []string      `json:"exclude_environments"`
 	DNSDomain           string        `json:"dns_domain"`
-	Apps                []App         `json:"apps"`
 	Storage             []Storage     `json:"storage"`
-	Registry            *App          `json:"registry,omitempty"`
 	LoadBalancer        *LoadBalancer `json:"load_balancer,omitempty"`
 	GitOpsNamespace     string        `json:"gitops_namespace,omitempty"`
-}
-
-// App identifies an existing HTTPRoute whose HTTPS endpoints must respond successfully.
-type App struct {
-	Namespace string `json:"namespace"`
-	Route     string `json:"route"`
 }
 
 // LoadBalancer selects an existing Gateway and its LoadBalancer Service.
@@ -231,9 +223,6 @@ func (config Config) validate() error {
 		}
 		seen[environment] = true
 	}
-	if err := config.validateRoutes(); err != nil {
-		return err
-	}
 	classes := map[string]bool{}
 	for _, storage := range config.Storage {
 		if len(validation.IsDNS1123Subdomain(storage.Class)) != 0 || classes[storage.Class] {
@@ -254,27 +243,6 @@ func (config Config) validate() error {
 	}
 	if len(validation.IsDNS1123Subdomain(config.DNSDomain)) != 0 {
 		return fmt.Errorf("invalid DNS domain %q", config.DNSDomain)
-	}
-	return nil
-}
-
-func (config Config) validateRoutes() error {
-	apps := map[App]bool{}
-	routes := append([]App(nil), config.Apps...)
-	if config.Registry != nil {
-		routes = append(routes, *config.Registry)
-	}
-	for _, app := range routes {
-		if len(validation.IsDNS1123Label(app.Namespace)) != 0 {
-			return fmt.Errorf("invalid app namespace %q", app.Namespace)
-		}
-		if len(validation.IsDNS1123Subdomain(app.Route)) != 0 {
-			return fmt.Errorf("invalid app route %q", app.Route)
-		}
-		if apps[app] {
-			return fmt.Errorf("duplicate app target %s/%s", app.Namespace, app.Route)
-		}
-		apps[app] = true
 	}
 	return nil
 }
