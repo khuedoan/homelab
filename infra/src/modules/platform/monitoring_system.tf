@@ -21,46 +21,15 @@ resource "kubectl_manifest" "monitoring_system" {
               alertmanagerSpec = {
                 # TODO: Revisit resource sizing after measuring usage.
                 resources = { requests = { cpu = "10m", memory = "64Mi" } }
-                containers = [{
-                  args = ["--port=8081", "--config=/config/alertmanager-to-ntfy.jsonnet", "--upstream-host=https://ntfy.sh"]
-                  envFrom = [{
-                    secretRef = {
-                      name = "webhook-transformer"
-                    }
-                  }]
-                  image     = "ghcr.io/khuedoan/webhook-transformer:v0.0.3"
-                  name      = "ntfy-relay"
-                  resources = { requests = { cpu = "10m", memory = "32Mi" } }
-                  volumeMounts = [{
-                    mountPath = "/config"
-                    name      = "config"
-                  }]
-                }]
-                volumes = [{
-                  configMap = {
-                    name = "webhook-transformer"
-                  }
-                  name = "config"
-                }]
               }
               config = {
-                receivers = [{
-                  name = "ntfy"
-                  webhook_configs = [{
-                    send_resolved = true
-                    url           = "http://localhost:8081"
-                  }]
-                }]
+                receivers = [{ name = "null" }]
                 route = {
                   group_by        = ["namespace"]
                   group_interval  = "5m"
                   group_wait      = "30s"
-                  receiver        = "ntfy"
+                  receiver        = "null"
                   repeat_interval = "12h"
-                  routes = [{
-                    matchers = ["alertname = \"Watchdog\""]
-                    receiver = "ntfy"
-                  }]
                 }
               }
             }
@@ -115,49 +84,6 @@ resource "kubectl_manifest" "monitoring_system" {
                 }
                 podMonitorSelectorNilUsesHelmValues = false
                 probeSelectorNilUsesHelmValues      = false
-              }
-            }
-          })
-        }
-      }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "monitoring-system" }
-      ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
-    }
-  })
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "kubectl_manifest" "monitoring_system_resources" {
-  server_side_apply = true
-  yaml_body = yamlencode({
-    apiVersion = "argoproj.io/v1alpha1"
-    kind       = "Application"
-    metadata = {
-      name      = "monitoring-system-resources"
-      namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
-    }
-    spec = {
-      project = "default"
-      sources = [{
-        repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
-        chart          = "app-template"
-        helm = {
-          releaseName = "monitoring-system-resources"
-          values = yamlencode({
-            global = { createDefaultServiceAccount = false }
-            rawResources = {
-              webhook-transformer = {
-                forceRename = "webhook-transformer"
-                manifest = {
-                  apiVersion = "v1"
-                  kind       = "ConfigMap"
-                  data       = { for filename in fileset("${path.module}/monitoring-system/files/webhook-transformer", "*") : filename => file("${path.module}/monitoring-system/files/webhook-transformer/${filename}") }
-                }
               }
             }
           })
