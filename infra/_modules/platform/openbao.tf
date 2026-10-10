@@ -135,8 +135,7 @@ resource "kubectl_manifest" "openbao_resources" {
                 type        = "persistentVolumeClaim"
                 accessMode  = "ReadWriteOnce"
                 size        = "2Gi"
-                # TODO: Move secrets storage to replicated storage with tested backups.
-                storageClass = "local-path"
+                # TODO: Add tested backups for secrets storage.
                 annotations = {
                   "argocd.argoproj.io/sync-wave"    = "1"
                   "argocd.argoproj.io/sync-options" = "Delete=false,Prune=false"

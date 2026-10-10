@@ -44,8 +44,6 @@ resource "kubectl_manifest" "forgejo" {
             persistence = {
               claimName = "forgejo-data"
               size      = "2Gi"
-              # TODO: Replace temporary local-path storage with replicated storage.
-              storageClass = "local-path"
             }
             httpRoute = {
               enabled = true
