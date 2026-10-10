@@ -1,10 +1,13 @@
 locals {
   openbao_readers = merge({
-    forgejo    = ["forgejo.admin"]
-    grafana    = ["kanidm.grafana"]
-    renovate   = ["forgejo.renovate"]
-    woodpecker = ["forgejo.woodpecker", "woodpecker.agent"]
-    zot        = ["registry.admin"]
+    cert-manager = ["infra/cloudflare/cert_manager_token"]
+    external-dns = ["infra/cloudflare/external_dns_token", "infra/cloudflare/zone_id"]
+    cloudflared  = ["infra/cloudflare/tunnel_credentials"]
+    forgejo      = ["forgejo.admin"]
+    grafana      = ["kanidm.grafana"]
+    renovate     = ["forgejo.renovate"]
+    woodpecker   = ["forgejo.woodpecker", "woodpecker.agent"]
+    zot          = ["registry.admin"]
     }, {
     for name in var.apps : name => [name == "paperless" ? "paperless.admin" : "${name}.auth"]
     if contains(["paperless", "tailscale", "wireguard"], name)

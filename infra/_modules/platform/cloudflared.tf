@@ -90,3 +90,50 @@ EOT
     prevent_destroy = true
   }
 }
+
+resource "kubectl_manifest" "cloudflared_resources" {
+  depends_on        = [kubectl_manifest.openbao]
+  server_side_apply = true
+  yaml_body = yamlencode({
+    apiVersion = "argoproj.io/v1alpha1"
+    kind       = "Application"
+    metadata = {
+      name      = "cloudflared-resources"
+      namespace = "argocd"
+      labels    = { "app.kubernetes.io/part-of" = "homelab" }
+    }
+    spec = {
+      project = "default"
+      sources = [{
+        repoURL        = "https://bjw-s-labs.github.io/helm-charts"
+        targetRevision = "5.2.1"
+        chart          = "app-template"
+        helm = {
+          releaseName = "cloudflared-resources"
+          values = yamlencode({
+            global = { createDefaultServiceAccount = false }
+            secrets = {
+              cloudflare = {
+                forceRename = "cloudflared-credentials"
+                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
+                annotations = {
+                  "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
+                  "secrets-webhook.security.bank-vaults.io/bao-role"           = "cloudflared"
+                  "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
+                  "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
+                }
+                stringData = { "credentials.json" = "bao:secret/data/infra/cloudflare/tunnel_credentials#value" }
+              }
+            }
+          })
+        }
+      }]
+      destination       = { server = "https://kubernetes.default.svc", namespace = "cloudflared" }
+      ignoreDifferences = local.ignore_differences
+      syncPolicy        = local.sync_policy
+    }
+  })
+  lifecycle {
+    prevent_destroy = true
+  }
+}
