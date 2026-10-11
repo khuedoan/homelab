@@ -29,14 +29,13 @@ resource "kubectl_manifest" "grafana" {
                 searchNamespace = "monitoring-system"
               }
             }
-            # TODO: Revisit resource sizing after measuring usage.
             resources = {
               limits = {
-                memory = "512Mi"
+                memory = "1Gi"
               }
               requests = {
                 cpu    = "50m"
-                memory = "128Mi"
+                memory = "256Mi"
               }
             }
             "grafana.ini" = {
