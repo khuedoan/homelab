@@ -34,9 +34,9 @@ resource "kubectl_manifest" "rook_ceph" {
             cephBlockPools = [{
               name = "standard-rwo"
               spec = {
-                requireSafeReplicaSize = var.ceph_replica_count > 1
                 replicated = {
-                  size = var.ceph_replica_count
+                  requireSafeReplicaSize = var.ceph_replica_count > 1
+                  size                   = var.ceph_replica_count
                 }
               }
               storageClass = {
@@ -112,16 +112,16 @@ resource "kubectl_manifest" "rook_ceph" {
               name = "standard-rwx"
               spec = {
                 dataPools = [{
-                  name                   = "data0"
-                  requireSafeReplicaSize = var.ceph_replica_count > 1
+                  name = "data0"
                   replicated = {
-                    size = var.ceph_replica_count
+                    requireSafeReplicaSize = var.ceph_replica_count > 1
+                    size                   = var.ceph_replica_count
                   }
                 }]
                 metadataPool = {
-                  requireSafeReplicaSize = var.ceph_replica_count > 1
                   replicated = {
-                    size = var.ceph_replica_count
+                    requireSafeReplicaSize = var.ceph_replica_count > 1
+                    size                   = var.ceph_replica_count
                   }
                 }
                 metadataServer = {
