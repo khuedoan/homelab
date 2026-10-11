@@ -57,14 +57,13 @@ resource "kubectl_manifest" "monitoring_system" {
               prometheusSpec = {
                 ruleSelectorNilUsesHelmValues           = false
                 serviceMonitorSelectorNilUsesHelmValues = false
-                # TODO: Revisit resource sizing and retention after measuring usage.
                 resources = {
                   limits = {
-                    memory = "1Gi"
+                    memory = "2Gi"
                   }
                   requests = {
                     cpu    = "100m"
-                    memory = "256Mi"
+                    memory = "1Gi"
                   }
                 }
                 retention = "6h"
