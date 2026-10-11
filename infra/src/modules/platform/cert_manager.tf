@@ -96,6 +96,14 @@ resource "kubectl_manifest" "cert_manager_resources" {
               }
             }
             rawResources = {
+              selfsigned = {
+                forceRename = "selfsigned"
+                manifest = {
+                  apiVersion = "cert-manager.io/v1"
+                  kind       = "ClusterIssuer"
+                  spec       = { selfSigned = {} }
+                }
+              }
               letsencrypt-prod = {
                 forceRename = "letsencrypt-prod"
                 manifest = {
