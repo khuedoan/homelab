@@ -116,13 +116,7 @@ resource "kubectl_manifest" "cloudflared_resources" {
               cloudflare = {
                 forceRename = "cloudflared-credentials"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
-                annotations = {
-                  "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
-                  "secrets-webhook.security.bank-vaults.io/bao-role"           = "cloudflared"
-                  "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
-                  "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
-                }
-                stringData = { "credentials.json" = "bao:secret/data/infra/cloudflare/tunnel_credentials#value" }
+                stringData  = { "credentials.json" = "bao:secret/data/infra/cloudflare/tunnel_credentials#value" }
               }
             }
           })

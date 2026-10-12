@@ -88,26 +88,14 @@ resource "kubectl_manifest" "forgejo_resources" {
           releaseName = "forgejo-resources"
           values = yamlencode({
             global = { createDefaultServiceAccount = false }
-            rawResources = {
+            secrets = {
               admin = {
                 forceRename = "forgejo-admin"
-                manifest = {
-                  apiVersion = "v1"
-                  kind       = "Secret"
-                  metadata = {
-                    labels = { "homelab.khuedoan.com/bao-secret" = "true" }
-                    annotations = {
-                      "argocd.argoproj.io/sync-wave"                               = "-1"
-                      "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
-                      "secrets-webhook.security.bank-vaults.io/bao-role"           = "forgejo"
-                      "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
-                      "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
-                    }
-                  }
-                  data = {
-                    username = base64encode("forgejo_admin")
-                    password = base64encode("bao:secret/data/forgejo.admin#password")
-                  }
+                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
+                annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
+                stringData = {
+                  username = "forgejo_admin"
+                  password = "bao:secret/data/forgejo.admin#password"
                 }
               }
             }
