@@ -37,7 +37,9 @@ sso:
 	@set -eu; \
 	domain=$$(cd infra/$(env)/platform && terragrunt render --json | jq -er '.inputs.domain'); \
 	toolbox sso $(sso_args) client ensure grafana --display-name Grafana --redirect-uri "https://grafana.$$domain/login/generic_oauth"; \
-	toolbox sso $(sso_args) secrets sync
+	toolbox sso $(sso_args) client ensure openbao --display-name OpenBao --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"; \
+	toolbox sso $(sso_args) secrets sync; \
+	toolbox sso $(sso_args) openbao configure --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"
 
 smoke-test:
 	make -C tests e2e filter='^Apps$$' env='$(env)'

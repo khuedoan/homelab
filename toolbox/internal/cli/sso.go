@@ -3,9 +3,11 @@ package cli
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/khuedoan/homelab/toolbox/internal/kanidm"
+	"github.com/khuedoan/homelab/toolbox/internal/secrets"
 	"github.com/spf13/cobra"
 )
 
@@ -59,6 +61,24 @@ func newSSOCmd() *cobra.Command {
 		},
 	}
 	secretGroup.AddCommand(sync)
-	group.AddCommand(clients, secretGroup)
+	openbao := &cobra.Command{Use: "openbao", Short: "Configure OpenBao SSO"}
+	var callback string
+	configure := &cobra.Command{
+		Use: "configure", Short: "Enable OpenBao UI SSO with the default token policy",
+		Args: cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
+			defer cancel()
+			if err := secrets.ConfigureOIDC(ctx, options.Kubeconfig, strings.TrimRight(options.URL, "/")+"/oauth2/openid/openbao", callback); err != nil {
+				return err
+			}
+			_, err := fmt.Fprintln(cmd.OutOrStdout(), "OpenBao SSO is ready.")
+			return err
+		},
+	}
+	configure.Flags().StringVar(&callback, "redirect-uri", "", "OpenBao HTTPS UI callback URI (required)")
+	requireFlags(configure, "redirect-uri")
+	openbao.AddCommand(configure)
+	group.AddCommand(clients, secretGroup, openbao)
 	return group
 }
