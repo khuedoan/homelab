@@ -64,11 +64,15 @@
       "traefik" # Use Istio for Gateway API
       "local-storage" # use Rook Ceph for storage
     ];
+    # First PXE installation has only a MAC address. Let K3s discover its
+    # primary address until Nixie records the IP for subsequent rebuilds.
     extraFlags = [
-      "--node-ip=${hostConfig.ip}"
       "--tls-san=${k3s.vip}"
       "--cluster-cidr=10.42.0.0/16"
       "--service-cidr=10.43.0.0/16"
+    ]
+    ++ lib.optionals ((hostConfig.ip or null) != null && (hostConfig.ip or "") != "") [
+      "--node-ip=${hostConfig.ip}"
     ];
   };
 }

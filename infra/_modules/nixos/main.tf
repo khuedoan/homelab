@@ -1,6 +1,7 @@
 locals {
   # nixie records the installation identity after installing. Exclude it from
-  # the flake input to avoid drift; the node IP is required by K3s.
+  # the flake input to avoid drift. K3s autodetects its IP on the first install;
+  # a discovered IP is retained here for subsequent rebuilds.
   nixie_state_fields = ["machine_id_hash"]
   inventory = {
     for name, host in var.hosts : name => {
