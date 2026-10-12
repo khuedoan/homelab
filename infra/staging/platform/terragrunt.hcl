@@ -18,5 +18,5 @@ inputs = {
     revision = get_env("GITOPS_REVISION", "master")
   }
   apps               = ["pairdrop"]
-  ceph_replica_count = 1
+  ceph_replica_count = 3
 }
