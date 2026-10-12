@@ -16,6 +16,9 @@
     }
   ];
 
+  # TODO revisit THP after HA testing
+  boot.kernelParams = [ "transparent_hugepage=never" ];
+
   # k3s requires these to route traffic between pods and services.
   boot.kernelModules = [ "br_netfilter" ];
   boot.kernel.sysctl = {
