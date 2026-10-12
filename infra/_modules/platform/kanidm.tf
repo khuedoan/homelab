@@ -42,7 +42,7 @@ EOT
                   main = {
                     image = {
                       repository = "docker.io/kanidm/server"
-                      tag        = "1.3.3"
+                      tag        = "1.11.2"
                     }
                     # TODO: Revisit resource sizing after measuring usage.
                     resources = { requests = { cpu = "50m", memory = "128Mi" } }
