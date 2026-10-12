@@ -31,7 +31,8 @@ in
       inherit hostConfig;
       k3s = {
         clusterInit = name == initHost;
-        vip = cluster.vip;
+        vip         = cluster.vip;
+        nodeIPs     = nixpkgs.lib.mapAttrsToList (_: host: host.ip) hosts;
       };
     };
     modules = [

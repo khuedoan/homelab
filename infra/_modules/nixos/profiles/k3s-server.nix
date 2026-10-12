@@ -40,6 +40,11 @@
     allowedUDPPorts = [
       8472 # flannel VXLAN
     ];
+    # Metrics are reachable only from cluster pods and nodes.
+    extraCommands = lib.concatMapStringsSep "\n" (
+      source:
+      "iptables -A nixos-fw -s ${source} -p tcp -m multiport --dports 9100,2381,10257,10259 -j nixos-fw-accept"
+    ) ([ "10.42.0.0/16" ] ++ k3s.nodeIPs);
   };
 
   systemd.services.k3s.unitConfig = lib.mkIf (!k3s.clusterInit) {
@@ -65,6 +70,9 @@
       "local-storage" # use Rook Ceph for storage
     ];
     extraFlags = [
+      "--etcd-expose-metrics"
+      "--kube-controller-manager-arg=bind-address=0.0.0.0"
+      "--kube-scheduler-arg=bind-address=0.0.0.0"
       "--node-ip=${hostConfig.ip}"
       "--tls-san=${k3s.vip}"
       "--cluster-cidr=10.42.0.0/16"
