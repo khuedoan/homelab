@@ -39,6 +39,7 @@ sso:
 	toolbox sso $(sso_args) client ensure grafana --display-name Grafana --redirect-uri "https://grafana.$$domain/login/generic_oauth"; \
 	toolbox sso $(sso_args) client ensure forgejo --display-name Forgejo --redirect-uri "https://git.$$domain/user/oauth2/SSO/callback"; \
 	toolbox sso $(sso_args) client ensure argocd --display-name 'Argo CD' --redirect-uri "https://argocd.$$domain/auth/callback"; \
+	toolbox sso $(sso_args) client ensure actualbudget --display-name 'Actual Budget' --redirect-uri "https://budget.$$domain/openid/callback"; \
 	toolbox sso $(sso_args) client ensure openbao --display-name OpenBao --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"; \
 	toolbox sso $(sso_args) secrets sync; \
 	toolbox sso $(sso_args) openbao configure --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"

@@ -10,8 +10,8 @@ locals {
     woodpecker   = ["forgejo.woodpecker", "woodpecker.agent"]
     zot          = ["registry.admin"]
     }, {
-    for name in var.apps : name => [name == "paperless" ? "paperless.admin" : "${name}.auth"]
-    if contains(["paperless", "tailscale", "wireguard"], name)
+    for name in var.apps : name => [name == "actualbudget" ? "sso/actualbudget" : name == "paperless" ? "paperless.admin" : "${name}.auth"]
+    if contains(["actualbudget", "paperless", "tailscale", "wireguard"], name)
   })
 }
 
