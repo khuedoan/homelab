@@ -31,11 +31,6 @@ variable "ceph_replica_count" {
   }
 }
 
-variable "prometheus_replicas" {
-  type    = number
-  default = 1
-}
-
 variable "log_collection_enabled" {
   type    = bool
   default = true

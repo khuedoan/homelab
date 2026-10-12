@@ -21,6 +21,5 @@ inputs = {
 
   # TODO remove these workload overrides when staging has enough resources
   apps                   = []
-  prometheus_replicas     = 0
   log_collection_enabled = false
 }
