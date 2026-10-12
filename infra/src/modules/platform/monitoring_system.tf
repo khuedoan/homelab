@@ -55,18 +55,17 @@ resource "kubectl_manifest" "monitoring_system" {
             prometheus-node-exporter = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }
             prometheus = {
               prometheusSpec = {
-                replicas                                = var.prometheus_replicas
                 ruleSelectorNilUsesHelmValues           = false
                 serviceMonitorSelectorNilUsesHelmValues = false
                 resources = {
-                  limits = {
-                    memory = "2Gi"
-                  }
-                  requests = {
-                    cpu    = "100m"
-                    memory = "1Gi"
-                  }
+                  limits   = { memory = "1Gi" }
+                  requests = { cpu = "100m", memory = "512Mi" }
                 }
+                scrapeInterval = "60s"
+                containers = [{
+                  name = "prometheus"
+                  env  = [{ name = "GOMEMLIMIT", value = "768MiB" }]
+                }]
                 retention = "6h"
                 storageSpec = {
                   volumeClaimTemplate = {
