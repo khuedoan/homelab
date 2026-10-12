@@ -33,7 +33,7 @@ locals {
       selfHeal = true
     }
     retry = {
-      limit = 10
+      limit = -1
       backoff = {
         duration    = "10s"
         factor      = 2
