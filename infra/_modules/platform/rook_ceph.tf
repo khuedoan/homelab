@@ -19,6 +19,35 @@ resource "kubectl_manifest" "rook_ceph" {
           values = yamlencode({
             # TODO: Revisit resource sizing after measuring usage.
             resources = { requests = { cpu = "10m", memory = "64Mi" } }
+            csi = {
+              for setting, containers in {
+                csiRBDPluginResource = {
+                  driver-registrar = "64Mi", csi-rbdplugin = "128Mi"
+                }
+                csiCephFSPluginResource = {
+                  driver-registrar = "64Mi", csi-cephfsplugin = "128Mi"
+                }
+                csiRBDProvisionerResource = {
+                  csi-provisioner = "64Mi", csi-resizer = "64Mi", csi-attacher = "64Mi",
+                  csi-snapshotter = "64Mi", csi-rbdplugin = "128Mi"
+                }
+                csiCephFSProvisionerResource = {
+                  csi-provisioner = "64Mi", csi-resizer = "64Mi", csi-attacher = "64Mi",
+                  csi-snapshotter = "64Mi", csi-cephfsplugin = "128Mi"
+                }
+                } : setting => yamlencode([
+                  for name, memory in containers : {
+                    name = name
+                    resource = {
+                      requests = {
+                        cpu    = endswith(name, "plugin") ? "50m" : "10m"
+                        memory = memory
+                      }
+                      limits = { memory = endswith(name, "plugin") ? "1Gi" : "256Mi" }
+                    }
+                  }
+              ])
+            }
             monitoring = {
               enabled = true
             }
