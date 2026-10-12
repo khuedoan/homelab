@@ -12,7 +12,7 @@ resource "kubectl_manifest" "zot" {
       project = "default"
       sources = [{
         repoURL        = "https://zotregistry.dev/helm-charts"
-        targetRevision = "0.1.126"
+        targetRevision = "0.1.128"
         chart          = "zot"
         helm = {
           releaseName = "zot"
@@ -25,6 +25,37 @@ resource "kubectl_manifest" "zot" {
               create  = true
               storage = "2Gi"
             }
+            mountConfig = true
+            configFiles = { "config.json" = jsonencode({
+              storage = { rootDirectory = "/var/lib/registry" }
+              http = {
+                address     = "0.0.0.0"
+                port        = "5000"
+                externalUrl = "https://registry.${var.domain}"
+                auth = {
+                  openid = {
+                    providers = {
+                      oidc = {
+                        name     = "SSO"
+                        issuer   = "https://auth.${var.domain}/oauth2/openid/zot"
+                        clientid = "zot"
+                        scopes   = ["openid", "profile", "email", "groups"]
+                      }
+                    }
+                  }
+                }
+                accessControl = {
+                  repositories = {
+                    "**" = {
+                      anonymousPolicy = ["read"]
+                      defaultPolicy   = ["read", "create", "update", "delete"]
+                    }
+                  }
+                }
+              }
+              extensions = { search = { enable = true }, ui = { enable = true } }
+              log        = { level = "info" }
+            }) }
             httproute = {
               enabled = true
               parentRefs = [{
