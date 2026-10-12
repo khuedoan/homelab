@@ -21,7 +21,7 @@ func newSSOCmd() *cobra.Command {
 	if err := group.MarkPersistentFlagRequired("url"); err != nil {
 		panic(err)
 	}
-	var redirectURI, displayName string
+	var config kanidm.ClientConfig
 	clients := &cobra.Command{Use: "client", Short: "Manage SSO clients"}
 	ensure := &cobra.Command{
 		Use: "ensure NAME", Short: "Create or update a client and its NAME_users access group",
@@ -30,15 +30,17 @@ func newSSOCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
 			defer cancel()
-			if err := kanidm.EnsureClient(ctx, options, args[0], displayName, redirectURI); err != nil {
+			config.Name = args[0]
+			if err := kanidm.EnsureClient(ctx, options, config); err != nil {
 				return err
 			}
 			_, err := fmt.Fprintf(cmd.OutOrStdout(), "SSO client %s is ready.\n", args[0])
 			return err
 		},
 	}
-	ensure.Flags().StringVar(&redirectURI, "redirect-uri", "", "Application HTTPS callback URI (required)")
-	ensure.Flags().StringVar(&displayName, "display-name", "", "Client display name (defaults to NAME)")
+	ensure.Flags().StringVar(&config.RedirectURI, "redirect-uri", "", "Application HTTPS callback URI (required)")
+	ensure.Flags().StringVar(&config.DisplayName, "display-name", "", "Client display name (defaults to NAME)")
+	ensure.Flags().BoolVar(&config.Public, "public", false, "Create a public PKCE client without a client secret")
 	requireFlags(ensure, "redirect-uri")
 	clients.AddCommand(ensure)
 	secretGroup := &cobra.Command{Use: "secrets", Short: "Publish SSO client credentials to OpenBao"}
