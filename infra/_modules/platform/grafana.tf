@@ -41,8 +41,8 @@ resource "kubectl_manifest" "grafana" {
             "grafana.ini" = {
               auth = { disable_login_form = true }
               "auth.generic_oauth" = {
-                allow_assign_grafana_admin = true
                 # Kanidm's groups scope emits UUIDs and SPNs, not bare names.
+                allow_assign_grafana_admin = true
                 role_attribute_path        = "contains(groups[*], 'grafana_admins@auth.${var.domain}') && 'GrafanaAdmin' || 'Viewer'"
                 api_url                    = "https://auth.${var.domain}/oauth2/openid/grafana/userinfo"
                 auth_url                   = "https://auth.${var.domain}/ui/oauth2"
