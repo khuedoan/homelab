@@ -16,7 +16,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-func openBaoKV(ctx context.Context, kubeconfig string) (*bao.KVv2, error) {
+func openBaoClient(ctx context.Context, kubeconfig string) (*bao.Client, error) {
 	if kubeconfig == "" {
 		return nil, fmt.Errorf("an explicit kubeconfig path is required")
 	}
@@ -61,7 +61,7 @@ func openBaoKV(ctx context.Context, kubeconfig string) (*bao.KVv2, error) {
 	if err != nil {
 		return nil, fmt.Errorf("wait for OpenBao readiness: %w", err)
 	}
-	return baoClient.KVv2("secret"), nil
+	return baoClient, nil
 }
 
 func openBaoReady(ctx context.Context, baoClient *bao.Client) (bool, error) {
@@ -86,11 +86,11 @@ func openBaoReady(ctx context.Context, baoClient *bao.Client) (bool, error) {
 
 // Read returns a KV record, or nil when the record does not exist.
 func Read(ctx context.Context, kubeconfig, path string) (map[string]string, error) {
-	kv, err := openBaoKV(ctx, kubeconfig)
+	client, err := openBaoClient(ctx, kubeconfig)
 	if err != nil {
 		return nil, err
 	}
-	return readRecord(ctx, kv, path)
+	return readRecord(ctx, client.KVv2("secret"), path)
 }
 
 func readRecord(ctx context.Context, kv *bao.KVv2, path string) (map[string]string, error) {
@@ -114,10 +114,11 @@ func readRecord(ctx context.Context, kv *bao.KVv2, path string) (map[string]stri
 
 // Sync updates OpenBao through the Kubernetes service proxy, preserving unchanged records.
 func Sync(ctx context.Context, kubeconfig string, records map[string]map[string]string) error {
-	kv, err := openBaoKV(ctx, kubeconfig)
+	client, err := openBaoClient(ctx, kubeconfig)
 	if err != nil {
 		return err
 	}
+	kv := client.KVv2("secret")
 	for path, data := range records {
 		existing, err := readRecord(ctx, kv, path)
 		if err != nil {

@@ -12,6 +12,8 @@ func TestSSORequiredArguments(t *testing.T) {
 		{"sso", "client", "ensure", "grafana", "--kubeconfig", "absent", "--url", "https://auth.example.test"},
 		{"sso", "secrets", "sync"},
 		{"sso", "secrets", "sync", "--kubeconfig", "absent"},
+		{"sso", "openbao", "configure"},
+		{"sso", "openbao", "configure", "--kubeconfig", "absent", "--url", "https://auth.example.test"},
 	} {
 		if _, _, err := operationExecute(args...); err == nil {
 			t.Fatalf("accepted incomplete arguments: %v", args)
