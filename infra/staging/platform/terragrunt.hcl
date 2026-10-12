@@ -17,6 +17,10 @@ inputs = {
     url      = get_env("GITOPS_REPOSITORY_URL", "http://forgejo-http.forgejo:3000/ops/homelab.git")
     revision = get_env("GITOPS_REVISION", "master")
   }
-  apps               = ["pairdrop"]
   ceph_replica_count = 3
+
+  # TODO remove these workload overrides when staging has enough resources
+  apps                   = []
+  prometheus_replicas     = 0
+  log_collection_enabled = false
 }

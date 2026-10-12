@@ -30,3 +30,13 @@ variable "ceph_replica_count" {
     error_message = "Ceph replica count must be a positive integer."
   }
 }
+
+variable "prometheus_replicas" {
+  type    = number
+  default = 1
+}
+
+variable "log_collection_enabled" {
+  type    = bool
+  default = true
+}
