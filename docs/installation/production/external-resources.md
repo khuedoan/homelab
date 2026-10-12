@@ -2,14 +2,15 @@
 
 !!! info
 
-    These resources are optional, the homelab still works without them but will lack some features like trusted certificates and offsite backup
+    Most integrations are optional, but the checked-in infrastructure backend
+    requires Cloudflare R2 state storage. See the state guide below before deployment.
 
 Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
 Below is a list of external resources and why we need them (also see some [alternatives](#alternatives) below).
 
 | Provider        | Resource  | Purpose                                                                                                     |
 | --------        | --------  | -------                                                                                                     |
-| Terraform Cloud | Workspace | Terraform state backend                                                                                     |
+| Cloudflare      | R2        | OpenTofu state storage with native S3 state locking                                                         |
 | Cloudflare      | DNS       | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates |
 | Cloudflare      | Tunnel    | Public services to the internet without port forwarding                                                     |
 | ntfy            | Topic     | External notification service to receive alerts                                                             |
@@ -18,15 +19,16 @@ Below is a list of external resources and why we need them (also see some [alter
 
 You'll be asked to provide these credentials on first build.
 
-### Create Terraform workspace
+### Configure infrastructure state
 
-Terraform is stateful, which means it needs somewhere to store its state. Terraform Cloud is one option for a state backend with a generous free tier, perfect for a homelab.
+The checked-in backend stores OpenTofu state in Cloudflare R2, with an exclusive
+lock for each environment and unit. Follow the
+[infrastructure state guide](../../how-to-guides/infrastructure-state.md) to
+provide R2 S3 credentials. Existing HTTP-backend users must complete its
+coordinated transition procedure before running the new configuration.
 
-1. Sign up for a [Terraform Cloud](https://cloud.hashicorp.com/products/terraform) account
-2. Create a workspace named `homelab-external`, this is the workspace where your homelab state will be stored.
-3. Change the "Execution Mode" from "Remote" to "Local". This will ensure your local machine, which can access your lab, is the one executing the Terraform plan rather than the cloud runners.
-
-If you decide to use a [different Terraform backend](https://www.terraform.io/language/settings/backends#available-backends), you'll need to edit the `external/versions.tf` file as required.
+OpenTofu 1.10 or newer is required. The Cloudflare browser login used for bucket
+bootstrap and the provider does not replace the separate R2 S3 credentials.
 
 ### Cloudflare
 
@@ -64,8 +66,8 @@ If you decide to use a [different Terraform backend](https://www.terraform.io/la
 
 To avoid vendor lock-in, each external provider must have an equivalent alternative that is easy to replace:
 
-- Terraform Cloud:
-    - Any other [Terraform backends](https://www.terraform.io/language/settings/backends)
+- Cloudflare R2 state storage:
+    - Another [OpenTofu backend](https://opentofu.org/docs/language/settings/backends/) with shared locking and a separately planned state migration
 - Cloudflare DNS:
     - Update cert-manager and external-dns to use a different provider
     - [Alternate DNS setup](../../how-to-guides/alternate-dns-setup.md)

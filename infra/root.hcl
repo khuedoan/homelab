@@ -13,17 +13,38 @@ locals {
   state_bucket  = "homelab-${local.env}-tfstate"
 }
 
-remote_state {
-  backend = "http"
-  generate = {
-    path      = "backend.tf"
-    if_exists = "overwrite_terragrunt"
-  }
-  config = {
-    address       = "https://api.cloudflare.com/client/v4/accounts/${local.r2_account_id}/r2/buckets/${local.state_bucket}/objects/${local.state_key}/tfstate.json"
-    update_method = "PUT"
-    headers       = { Authorization = "Bearer ${local.access_token}" }
-  }
+# Native S3 lockfiles require OpenTofu >= 1.10. Use generate instead of
+# remote_state so Terragrunt does not try to manage R2 as an AWS S3 bucket.
+# Credentials come from the AWS SDK environment/profile, never backend.tf.
+terraform_binary             = "tofu"
+terraform_version_constraint = ">= 1.10.0"
+
+generate "backend" {
+  path      = "backend.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<-EOF
+    terraform {
+      required_version = ">= 1.10.0"
+
+      backend "s3" {
+        bucket       = "${local.state_bucket}"
+        key          = "${local.state_key}/tfstate.json"
+        region       = "auto"
+        use_lockfile = true
+
+        endpoints = {
+          s3 = "https://${local.r2_account_id}.r2.cloudflarestorage.com"
+        }
+
+        use_path_style              = true
+        skip_credentials_validation = true
+        skip_metadata_api_check     = true
+        skip_region_validation      = true
+        skip_requesting_account_id  = true
+        skip_s3_checksum            = true
+      }
+    }
+  EOF
 }
 
 terraform {
@@ -45,11 +66,6 @@ terraform {
       "--environment", local.env,
       "--output", local.kubeconfig,
     ]
-  }
-
-  extra_arguments "backend_credentials" {
-    commands  = ["init"]
-    arguments = ["-reconfigure"]
   }
 
   before_hook "bootstrap_tfstate" {

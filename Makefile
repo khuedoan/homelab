@@ -1,5 +1,5 @@
 .POSIX:
-.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test docs fmt
+.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test test-state-backend docs fmt
 .EXPORT_ALL_VARIABLES:
 
 env ?=
@@ -51,6 +51,9 @@ smoke-test:
 test:
 	make -C toolbox test
 	make -C tests test
+
+test-state-backend:
+	python3 -B -m unittest discover -s tests/backend -v
 
 docs:
 	mkdocs serve

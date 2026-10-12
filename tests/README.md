@@ -22,6 +22,17 @@ threshold is a project policy, not a Google style requirement. Findings fail
 the command without rewriting code. Lint does not contact a cluster.
 Run `make lint` from the repository root to check both Go modules.
 
+## Check infrastructure state locking
+
+```sh
+make test-state-backend
+```
+
+This separate offline integration check needs Python 3, OpenTofu >= 1.10,
+Terragrunt, and Git. It runs real OpenTofu clients against an in-memory S3 mock
+on loopback, with fake credentials and no external providers. See the
+[infrastructure state guide](../docs/how-to-guides/infrastructure-state.md).
+
 ## Validate a cluster
 
 Run live tests against staging. Tests never use your ambient Kubernetes context.

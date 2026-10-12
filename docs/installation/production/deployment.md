@@ -6,10 +6,14 @@ Open the development shell if you haven't already:
 nix develop
 ```
 
+Before applying, configure the [R2 state credentials](../../how-to-guides/infrastructure-state.md).
+If upgrading from the HTTP backend, complete the coordinated state transition
+in that guide before any plan or apply.
+
 Build the lab:
 
 ```sh
-make
+make infra env=production
 ```
 
 Yes it's that simple!
