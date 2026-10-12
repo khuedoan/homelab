@@ -175,7 +175,7 @@ resource "kubectl_manifest" "openbao_resources" {
                       policies = [{
                         name  = "apps"
                         rules = <<-EOT
-                          path "secret/data/{{ `{{identity.entity.aliases.$${ accessor "kubernetes" }.metadata.service_account_namespace}}` }}/*" {
+                          path "secret/data/{{ "{{" }}identity.entity.aliases.$${ accessor `kubernetes` }.metadata.service_account_namespace{{ "}}" }}/*" {
                             capabilities = ["read"]
                           }
                         EOT
