@@ -12,7 +12,7 @@ resource "kubectl_manifest" "monitoring_system" {
       project = "default"
       sources = [{
         repoURL        = "https://prometheus-community.github.io/helm-charts"
-        targetRevision = "56.19.0"
+        targetRevision = "92.3.0"
         chart          = "kube-prometheus-stack"
         helm = {
           releaseName = "monitoring-system"
