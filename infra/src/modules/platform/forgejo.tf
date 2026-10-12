@@ -12,7 +12,7 @@ resource "kubectl_manifest" "forgejo" {
       project = "default"
       sources = [{
         repoURL        = "code.forgejo.org/forgejo-helm"
-        targetRevision = "17.1.7"
+        targetRevision = "17.2.0"
         chart          = "forgejo"
         helm = {
           releaseName = "forgejo"
@@ -23,9 +23,17 @@ resource "kubectl_manifest" "forgejo" {
             resources = { requests = { cpu = "50m", memory = "128Mi" } }
             gitea = {
               admin = { existingSecret = "forgejo-admin" }
+              oauth = [{
+                name            = "SSO"
+                provider        = "openidConnect"
+                existingSecret  = "forgejo-sso"
+                autoDiscoverUrl = "https://auth.${var.domain}/oauth2/openid/forgejo/.well-known/openid-configuration"
+                scopes          = "openid,profile,email,groups"
+              }]
               config = {
-                database = { DB_TYPE = "sqlite3" }
-                actions  = { ENABLED = false }
+                database      = { DB_TYPE = "sqlite3" }
+                actions       = { ENABLED = false }
+                oauth2_client = { ENABLE_AUTO_REGISTRATION = true, USERNAME = "preferred_username" }
                 repository = {
                   DEFAULT_BRANCH      = "master"
                   DISABLED_REPO_UNITS = "repo.wiki,repo.projects,repo.packages"
@@ -96,6 +104,14 @@ resource "kubectl_manifest" "forgejo_resources" {
                 stringData = {
                   username = "forgejo_admin"
                   password = "bao:secret/data/forgejo.admin#password"
+                }
+              }
+              sso = {
+                forceRename = "forgejo-sso"
+                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
+                stringData = {
+                  key    = "forgejo"
+                  secret = "bao:secret/data/sso/forgejo#client_secret"
                 }
               }
             }
