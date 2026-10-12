@@ -1,3 +1,13 @@
+locals {
+  control_plane_service_monitor = {
+    metricRelabelings = [{
+      action       = "drop"
+      sourceLabels = ["__name__"]
+      regex        = "(apiserver|etcd|kubelet|container)_.+"
+    }]
+  }
+}
+
 resource "kubectl_manifest" "monitoring_system" {
   server_side_apply = true
   yaml_body = yamlencode({
@@ -53,6 +63,24 @@ resource "kubectl_manifest" "monitoring_system" {
             }
             kube-state-metrics       = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }
             prometheus-node-exporter = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }
+            kubeEtcd                 = { endpoints = var.control_plane_ips }
+            kubeControllerManager = {
+              endpoints      = var.control_plane_ips
+              serviceMonitor = local.control_plane_service_monitor
+            }
+            kubeScheduler = {
+              endpoints      = var.control_plane_ips
+              serviceMonitor = local.control_plane_service_monitor
+            }
+            kubelet = {
+              serviceMonitor = {
+                metricRelabelings = [{
+                  action       = "drop"
+                  sourceLabels = ["__name__"]
+                  regex        = "(apiserver|etcd)_.+"
+                }]
+              }
+            }
             prometheus = {
               prometheusSpec = {
                 ruleSelectorNilUsesHelmValues           = false

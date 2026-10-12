@@ -2,6 +2,10 @@ variable "kubeconfig" {
   type = string
 }
 
+variable "control_plane_ips" {
+  type = list(string)
+}
+
 variable "repository" {
   type = object({
     url      = string
