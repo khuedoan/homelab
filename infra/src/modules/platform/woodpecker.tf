@@ -12,7 +12,7 @@ resource "kubectl_manifest" "woodpecker" {
       project = "default"
       sources = [{
         repoURL        = "https://woodpecker-ci.org"
-        targetRevision = "3.7.4"
+        targetRevision = "3.7.5"
         chart          = "woodpecker"
         helm = {
           releaseName = "woodpecker"
