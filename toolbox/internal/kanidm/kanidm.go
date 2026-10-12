@@ -110,20 +110,19 @@ func connect(ctx context.Context, options Options) (*client, error) {
 }
 
 func recoverAdmin(ctx context.Context, kubeconfig string) (string, error) {
-	command := exec.CommandContext(ctx, "kubectl", "--kubeconfig", kubeconfig, "exec", "-n", "kanidm", "kanidm-0", "--", "/sbin/kanidmd", "recover-account", "-c", "/data/server.toml", "-o", "json", "idm_admin")
+	command := exec.CommandContext(ctx, "kubectl", "--kubeconfig", kubeconfig, "exec", "-n", "kanidm", "kanidm-0", "--", "/sbin/kanidmd", "scripting", "recover-account", "-c", "/data/server.toml", "idm_admin")
 	output, err := command.Output()
 	if err != nil {
 		return "", fmt.Errorf("recover Kanidm idm_admin failed")
 	}
-	for line := range bytes.SplitSeq(output, []byte("\n")) {
-		var record struct {
-			Password string `json:"password"`
-		}
-		if json.Unmarshal(line, &record) == nil && record.Password != "" {
-			return record.Password, nil
-		}
+	var record struct {
+		Status string `json:"status"`
+		Output string `json:"output"`
 	}
-	return "", fmt.Errorf("kanidm recovery returned no password")
+	if json.Unmarshal(output, &record) != nil || record.Status != "ok" || record.Output == "" {
+		return "", fmt.Errorf("kanidm recovery returned no password")
+	}
+	return record.Output, nil
 }
 
 func (c *client) request(ctx context.Context, method, path string, input, output any) error {
