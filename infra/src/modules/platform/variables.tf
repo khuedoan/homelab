@@ -56,3 +56,13 @@ variable "apps" {
   type = set(string)
   default = []
 }
+
+variable "log_collection_enabled" {
+  type = bool
+  default = true
+}
+
+variable "prometheus_replicas" {
+  type = number
+  default = 1
+}

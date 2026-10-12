@@ -55,6 +55,7 @@ resource "kubectl_manifest" "monitoring_system" {
             prometheus-node-exporter = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }
             prometheus = {
               prometheusSpec = {
+                replicas                                = var.prometheus_replicas
                 ruleSelectorNilUsesHelmValues           = false
                 serviceMonitorSelectorNilUsesHelmValues = false
                 resources = {
