@@ -47,8 +47,8 @@ func newSSOCmd() *cobra.Command {
 	clients.AddCommand(ensure)
 	secretGroup := &cobra.Command{Use: "secrets", Short: "Publish SSO client credentials to OpenBao"}
 	sync := &cobra.Command{
-		Use: "sync", Short: "Sync all confidential clients to sso/NAME in OpenBao",
-		Long: "Read client IDs and existing secrets from Kanidm and publish client_id and client_secret fields to sso/NAME. Does not create or change clients. Unchanged OpenBao records retain their versions. Requires kubectl on PATH. Secret values are never printed.",
+		Use: "sync", Short: "Sync all confidential clients to NAME/sso in OpenBao",
+		Long: "Read client IDs and existing secrets from Kanidm and publish client_id and client_secret fields to NAME/sso. Does not create or change clients. Unchanged OpenBao records retain their versions. Requires kubectl on PATH. Secret values are never printed.",
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)

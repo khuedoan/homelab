@@ -1,20 +1,3 @@
-locals {
-  openbao_readers = merge({
-    cert-manager = ["infra/cloudflare/cert_manager_token"]
-    external-dns = ["infra/cloudflare/external_dns_token", "infra/cloudflare/zone_id"]
-    cloudflared  = ["infra/cloudflare/tunnel_credentials"]
-    forgejo      = ["forgejo.admin", "sso/forgejo"]
-    argocd       = ["sso/argocd"]
-    grafana      = ["sso/grafana"]
-    renovate     = ["forgejo.renovate"]
-    woodpecker   = ["forgejo.woodpecker", "woodpecker.agent"]
-    zot          = ["registry.admin"]
-    }, {
-    for name in var.apps : name => [name == "actualbudget" ? "sso/actualbudget" : name == "paperless" ? "paperless.admin" : "${name}.auth"]
-    if contains(["actualbudget", "paperless", "tailscale", "wireguard"], name)
-  })
-}
-
 resource "kubectl_manifest" "openbao" {
   depends_on        = [kubectl_manifest.cert_manager]
   server_side_apply = true
@@ -48,7 +31,7 @@ resource "kubectl_manifest" "openbao" {
             resources   = { requests = { cpu = "10m", memory = "32Mi" } }
             env = {
               PROVIDER                     = "bao"
-              BAO_ROLE                     = "{{ .namespace }}"
+              BAO_ROLE                     = "apps"
               BAO_SERVICEACCOUNT           = "default"
               BAO_ADDR                     = "http://openbao.openbao.svc.cluster.local:8200"
               BAO_PATH                     = "kubernetes"
@@ -180,23 +163,22 @@ resource "kubectl_manifest" "openbao_resources" {
                         type   = "kubernetes"
                         path   = "kubernetes"
                         config = { kubernetes_host = "https://kubernetes.default.svc.cluster.local:443" }
-                        roles = [for namespace, paths in local.openbao_readers : {
-                          name                             = namespace
+                        roles = [{
+                          name                             = "apps"
                           bound_service_account_names      = ["default"]
-                          bound_service_account_namespaces = [namespace]
+                          bound_service_account_namespaces = ["*"]
                           audience                         = "https://kubernetes.default.svc"
-                          policies                         = [namespace]
+                          policies                         = ["apps"]
                           ttl                              = "5m"
                         }]
                       }]
-                      policies = [for namespace, paths in local.openbao_readers : {
-                        name = namespace
-                        rules = join("\n", [for path in paths : <<-EOT
-                          path "secret/data/${path}" {
+                      policies = [{
+                        name  = "apps"
+                        rules = <<-EOT
+                          path "secret/data/{{ `{{identity.entity.aliases.$${ accessor "kubernetes" }.metadata.service_account_namespace}}` }}/*" {
                             capabilities = ["read"]
                           }
                         EOT
-                        ])
                       }]
                       secrets = [{
                         path    = "secret"
@@ -204,10 +186,9 @@ resource "kubectl_manifest" "openbao_resources" {
                         options = { version = "2" }
                         configuration = {
                           data = [for record, key in {
-                            "forgejo.admin"    = "password"
-                            "registry.admin"   = "password"
-                            "woodpecker.agent" = "secret"
-                            "paperless.admin"  = "PAPERLESS_ADMIN_PASSWORD"
+                            "forgejo/admin"    = "password"
+                            "zot/admin"        = "password"
+                            "woodpecker/agent" = "secret"
                             } : {
                             name        = record
                             create_only = true

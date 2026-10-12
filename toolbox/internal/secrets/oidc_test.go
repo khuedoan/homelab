@@ -35,7 +35,7 @@ func (f *oidcServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte(`{"initialized":true,"sealed":false}`))
 	case "sys/mounts":
 		_, _ = w.Write([]byte(`{"data":{"secret/":{"type":"kv","options":{"version":"2"}}}}`))
-	case "secret/data/sso/openbao":
+	case "secret/data/openbao/sso":
 		if r.Method != http.MethodGet {
 			f.t.Error("changed SSO credentials")
 		}

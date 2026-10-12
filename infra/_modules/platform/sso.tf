@@ -26,7 +26,7 @@ resource "kubectl_manifest" "argocd_resources" {
                   "homelab.khuedoan.com/bao-secret" = "true"
                   "app.kubernetes.io/part-of"       = "argocd"
                 }
-                stringData = { client_secret = "bao:secret/data/sso/argocd#client_secret" }
+                stringData = { client_secret = "bao:secret/data/argocd/sso#client_secret" }
               }
             }
           })

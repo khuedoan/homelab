@@ -10,9 +10,11 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"k8s.io/apimachinery/pkg/util/validation"
 )
 
-// EnvironmentRecords reads every Terragrunt unit's outputs without applying changes.
+// EnvironmentRecords reads explicit secret exports from every Terragrunt unit.
 func EnvironmentRecords(ctx context.Context, environment string) (map[string]map[string]string, error) {
 	if !filepath.IsLocal(environment) || filepath.Base(environment) != environment {
 		return nil, fmt.Errorf("--environment must be an environment directory name")
@@ -41,6 +43,9 @@ func EnvironmentRecords(ctx context.Context, environment string) (map[string]map
 			return nil, err
 		}
 		for path, value := range values {
+			if _, exists := records[path]; exists {
+				return nil, fmt.Errorf("duplicate secret destination %s", path)
+			}
 			records[path] = value
 		}
 	}
@@ -76,27 +81,27 @@ func outputRecords(input []byte, unit string) (map[string]map[string]string, err
 	if json.Unmarshal(input, &outputs) != nil || outputs == nil {
 		return nil, fmt.Errorf("invalid Terraform output JSON for %s", unit)
 	}
-	records := make(map[string]map[string]string, len(outputs))
-	for name, output := range outputs {
-		if name == "" || name == "." || name == ".." || strings.ContainsAny(name, "/\\") {
-			return nil, fmt.Errorf("invalid Terraform output name for %s", unit)
+	output, exists := outputs["secrets"]
+	if !exists {
+		return nil, nil
+	}
+	var exports map[string]map[string]*string
+	if json.Unmarshal(output.Value, &exports) != nil || exports == nil {
+		return nil, fmt.Errorf("invalid secrets output for %s: expected a map of paths to string fields", unit)
+	}
+	records := make(map[string]map[string]string, len(exports))
+	for path, fields := range exports {
+		namespace, _, hasSecret := strings.Cut(path, "/")
+		if !hasSecret || len(validation.IsDNS1123Label(namespace)) != 0 || !filepath.IsLocal(path) || filepath.ToSlash(filepath.Clean(path)) != path || strings.Contains(path, "\\") || len(fields) == 0 {
+			return nil, fmt.Errorf("invalid secret record in output for %s", unit)
 		}
-		var value any
-		decoder := json.NewDecoder(bytes.NewReader(output.Value))
-		decoder.UseNumber()
-		if decoder.Decode(&value) != nil {
-			return nil, fmt.Errorf("invalid Terraform output %s/%s", unit, name)
-		}
-		text, ok := value.(string)
-		if !ok {
-			encoded, err := json.Marshal(value)
-			if err != nil {
-				return nil, fmt.Errorf("encode Terraform output %s/%s failed", unit, name)
+		records[path] = make(map[string]string, len(fields))
+		for key, value := range fields {
+			if key == "" || value == nil {
+				return nil, fmt.Errorf("invalid secret fields in output for %s", unit)
 			}
-			text = string(encoded)
+			records[path][key] = *value
 		}
-		path := filepath.ToSlash(filepath.Join("infra", unit, name))
-		records[path] = map[string]string{"value": text}
 	}
 	return records, nil
 }

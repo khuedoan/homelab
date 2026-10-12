@@ -29,7 +29,7 @@ func TestSyncWritesKVAndSkipsUnchangedRecords(t *testing.T) {
 		if bootstrap(w, r) {
 			return
 		}
-		if r.URL.Path != "/api/v1/namespaces/openbao/services/http:openbao:8200/proxy/v1/secret/data/infra/cloudflare/cert_manager_token" || r.Header.Get("X-Vault-Token") != "root-canary" {
+		if r.URL.Path != "/api/v1/namespaces/openbao/services/http:openbao:8200/proxy/v1/secret/data/cert-manager/cloudflare" || r.Header.Get("X-Vault-Token") != "root-canary" {
 			t.Errorf("unexpected request %s", r.URL.Path)
 			w.WriteHeader(403)
 			return
@@ -46,7 +46,7 @@ func TestSyncWritesKVAndSkipsUnchangedRecords(t *testing.T) {
 				_, _ = w.Write([]byte(`{"errors":["missing"]}`))
 				return
 			}
-			_, _ = w.Write([]byte(`{"data":{"data":{"value":"token-canary"},"metadata":{"version":1}}}`))
+			_, _ = w.Write([]byte(`{"data":{"data":{"api_token":"token-canary"},"metadata":{"version":1}}}`))
 			return
 		case "PUT":
 		default:
@@ -57,7 +57,7 @@ func TestSyncWritesKVAndSkipsUnchangedRecords(t *testing.T) {
 		var body struct {
 			Data map[string]string `json:"data"`
 		}
-		if err := json.NewDecoder(r.Body).Decode(&body); err != nil || body.Data["value"] != "token-canary" || len(body.Data) != 1 {
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil || body.Data["api_token"] != "token-canary" || len(body.Data) != 1 {
 			t.Errorf("incorrect KV write body")
 		}
 		existing = true
@@ -70,7 +70,7 @@ func TestSyncWritesKVAndSkipsUnchangedRecords(t *testing.T) {
 	if err := clientcmd.WriteToFile(config, path); err != nil {
 		t.Fatal(err)
 	}
-	records := map[string]map[string]string{"infra/cloudflare/cert_manager_token": {"value": "token-canary"}}
+	records := map[string]map[string]string{"cert-manager/cloudflare": {"api_token": "token-canary"}}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	for i := 0; i < 2; i++ {

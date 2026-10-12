@@ -157,11 +157,11 @@ func TestClientProvisioningAndSecretSync(t *testing.T) {
 	f.readingSecrets = true
 	before := f.mutations
 	want := map[string]map[string]string{
-		"sso/grafana":      {"client_id": "grafana", "client_secret": "grafana-canary"},
-		"sso/forgejo":      {"client_id": "forgejo", "client_secret": "forgejo-canary"},
-		"sso/argocd":       {"client_id": "argocd", "client_secret": "argocd-canary"},
-		"sso/actualbudget": {"client_id": "actualbudget", "client_secret": "actualbudget-canary"},
-		"sso/openbao":      {"client_id": "openbao", "client_secret": "openbao-canary"},
+		"grafana/sso":      {"client_id": "grafana", "client_secret": "grafana-canary"},
+		"forgejo/sso":      {"client_id": "forgejo", "client_secret": "forgejo-canary"},
+		"argocd/sso":       {"client_id": "argocd", "client_secret": "argocd-canary"},
+		"actualbudget/sso": {"client_id": "actualbudget", "client_secret": "actualbudget-canary"},
+		"openbao/sso":      {"client_id": "openbao", "client_secret": "openbao-canary"},
 	}
 	for range 2 {
 		got, err := c.clientRecords(ctx)

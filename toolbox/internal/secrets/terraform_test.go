@@ -11,30 +11,47 @@ import (
 
 func TestOutputRecords(t *testing.T) {
 	input := `{
-		"text":{"sensitive":true,"value":"plain-secret"},
-		"object":{"value":{"password":"secret","user":"example"}},
-		"number":{"value":9007199254740993},
-		"list":{"value":["a",2]},
-		"boolean":{"value":true},
-		"empty":{"value":""}
-	}`
-	got, err := outputRecords([]byte(input), "foo/bar")
+        "ordinary": {"value": "not-published"},
+        "secrets": {"sensitive":true,"value":{
+            "cert-manager/cloudflare":{"api_token":"token-canary"},
+            "external-dns/cloudflare":{"api_token":"dns-canary","zone_id":"zone-id"},
+            "example/nested/secret":{"empty":"","json":"{\"enabled\":true}"}
+        }}
+    }`
+	got, err := outputRecords([]byte(input), "cloudflare")
 	if err != nil {
 		t.Fatal(err)
 	}
 	want := map[string]map[string]string{
-		"infra/foo/bar/text":    {"value": "plain-secret"},
-		"infra/foo/bar/object":  {"value": `{"password":"secret","user":"example"}`},
-		"infra/foo/bar/number":  {"value": "9007199254740993"},
-		"infra/foo/bar/list":    {"value": `["a",2]`},
-		"infra/foo/bar/boolean": {"value": "true"},
-		"infra/foo/bar/empty":   {"value": ""},
+		"cert-manager/cloudflare": {"api_token": "token-canary"},
+		"external-dns/cloudflare": {"api_token": "dns-canary", "zone_id": "zone-id"},
+		"example/nested/secret":   {"empty": "", "json": `{"enabled":true}`},
 	}
 	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("unexpected output mapping: %v", got)
+		t.Fatalf("unexpected secret exports: %v", got)
 	}
-	for _, input := range []string{`null`, `[]`, `{"bad":{"sensitive":"secret-canary"}}`, `{"../bad":{"value":"secret-canary"}}`, `{} {"value":"secret-canary"}`} {
-		_, err := outputRecords([]byte(input), "foo/bar")
+	for _, input := range []string{`{}`, `{"ordinary":{"value":123}}`, `{"secrets":{"value":{}}}`} {
+		got, err := outputRecords([]byte(input), "module")
+		if err != nil || len(got) != 0 {
+			t.Fatalf("module without exports: %v, %v", got, err)
+		}
+	}
+	for _, input := range []string{
+		`null`, `[]`, `{} {"value":"secret-canary"}`,
+		`{"secrets":{"value":null}}`,
+		`{"secrets":{"value":{"namespace/secret":{"token":42}}}}`,
+		`{"secrets":{"value":{"namespace/secret":{"token":null}}}}`,
+		`{"secrets":{"value":{"namespace/secret":null}}}`,
+		`{"secrets":{"value":{"namespace/secret":{}}}}`,
+		`{"secrets":{"value":{"namespace/secret":{"":"secret-canary"}}}}`,
+		`{"secrets":{"value":{"../secret":{"token":"secret-canary"}}}}`,
+		`{"secrets":{"value":{"namespace/../other":{"token":"secret-canary"}}}}`,
+		`{"secrets":{"value":{"namespace//secret":{"token":"secret-canary"}}}}`,
+		`{"secrets":{"value":{"namespace/":{"token":"secret-canary"}}}}`,
+		`{"secrets":{"value":{"namespace":{"token":"secret-canary"}}}}`,
+		`{"secrets":{"value":{"Not-A-Namespace/secret":{"token":"secret-canary"}}}}`,
+	} {
+		_, err := outputRecords([]byte(input), "module")
 		if err == nil || strings.Contains(err.Error(), "secret-canary") {
 			t.Fatalf("unsafe malformed-output error: %v", err)
 		}
@@ -58,7 +75,7 @@ func TestEnvironmentRecords(t *testing.T) {
 	}
 	script := `#!/bin/sh
 case "$PWD" in
-  */foo/bar) printf '%s\n' '{"text":{"value":"secret-canary"}}' ;;
+  */foo/bar) printf '%s\n' '{"secrets":{"value":{"example/token":{"value":"secret-canary"}}}}' ;;
   */empty) printf '%s\n' '{}' ;;
   *) exit 91 ;;
 esac
@@ -71,8 +88,23 @@ esac
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(got, map[string]map[string]string{"infra/foo/bar/text": {"value": "secret-canary"}}) {
+	if !reflect.DeepEqual(got, map[string]map[string]string{"example/token": {"value": "secret-canary"}}) {
 		t.Fatalf("unexpected environment output mapping: %v", got)
+	}
+	duplicate := filepath.Join(root, "infra/test/duplicate")
+	if err := os.MkdirAll(duplicate, 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(duplicate, "terragrunt.hcl"), nil, 0600); err != nil {
+		t.Fatal(err)
+	}
+	duplicateScript := strings.Replace(script, "*/foo/bar)", "*/foo/bar|*/duplicate)", 1)
+	if err := os.WriteFile(filepath.Join(bin, "terragrunt"), []byte(duplicateScript), 0700); err != nil {
+		t.Fatal(err)
+	}
+	_, err = EnvironmentRecords(context.Background(), "test")
+	if err == nil || !strings.Contains(err.Error(), "duplicate secret destination example/token") {
+		t.Fatalf("duplicate destination accepted: %v", err)
 	}
 	if err := os.WriteFile(filepath.Join(bin, "terragrunt"), []byte("#!/bin/sh\nprintf 'secret-canary' >&2\nexit 1\n"), 0700); err != nil {
 		t.Fatal(err)
