@@ -86,7 +86,7 @@ resource "kubectl_manifest" "cert_manager_resources" {
               cloudflare = {
                 forceRename = "cloudflare-api-token"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
-                stringData  = { "api-token" = "bao:secret/data/infra/cloudflare/cert_manager_token#value" }
+                stringData  = { "api-token" = "bao:secret/data/cert-manager/cloudflare#api_token" }
               }
             }
             rawResources = {

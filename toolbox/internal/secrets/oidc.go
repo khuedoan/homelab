@@ -20,7 +20,7 @@ func ConfigureOIDC(ctx context.Context, kubeconfig, issuer, redirectURI string) 
 	if err != nil {
 		return err
 	}
-	credentials, err := readRecord(ctx, client.KVv2("secret"), "sso/openbao")
+	credentials, err := readRecord(ctx, client.KVv2("secret"), "openbao/sso")
 	if err != nil {
 		return err
 	}

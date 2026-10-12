@@ -18,7 +18,7 @@ func Sync(ctx context.Context, kubeconfig, domain string) error {
 	if len(validation.IsDNS1123Subdomain(domain)) != 0 {
 		return fmt.Errorf("--domain must be a DNS domain name")
 	}
-	admin, err := secrets.Read(ctx, kubeconfig, "forgejo.admin")
+	admin, err := secrets.Read(ctx, kubeconfig, "forgejo/admin")
 	if err != nil {
 		return err
 	}
@@ -48,7 +48,7 @@ func Sync(ctx context.Context, kubeconfig, domain string) error {
 	if err := syncGitOps(c); err != nil {
 		return err
 	}
-	existing, err := secrets.Read(ctx, kubeconfig, "forgejo.woodpecker")
+	existing, err := secrets.Read(ctx, kubeconfig, "woodpecker/forgejo")
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func Sync(ctx context.Context, kubeconfig, domain string) error {
 	if err != nil {
 		return err
 	}
-	return secrets.Sync(ctx, kubeconfig, map[string]map[string]string{"forgejo.woodpecker": credentials})
+	return secrets.Sync(ctx, kubeconfig, map[string]map[string]string{"woodpecker/forgejo": credentials})
 }
 
 func syncGitOps(c *sdk.Client) error {

@@ -16,7 +16,7 @@ func Push(ctx context.Context, kubeconfig, domain, source string) error {
 	if len(validation.IsDNS1123Subdomain(domain)) != 0 {
 		return fmt.Errorf("--domain must be a DNS domain name")
 	}
-	credentials, err := secrets.Read(ctx, kubeconfig, "forgejo.admin")
+	credentials, err := secrets.Read(ctx, kubeconfig, "forgejo/admin")
 	if err != nil {
 		return err
 	}

@@ -85,7 +85,7 @@ func connect(ctx context.Context, options Options) (*client, error) {
 	if err := validateURL(options.URL); err != nil {
 		return nil, fmt.Errorf("kanidm URL: %w", err)
 	}
-	credentials, err := secrets.Read(ctx, options.Kubeconfig, "kanidm.idm-admin")
+	credentials, err := secrets.Read(ctx, options.Kubeconfig, "kanidm/idm-admin")
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func connect(ctx context.Context, options Options) (*client, error) {
 		if err != nil {
 			return nil, err
 		}
-		if err := secrets.Sync(ctx, options.Kubeconfig, map[string]map[string]string{"kanidm.idm-admin": {"password": password}}); err != nil {
+		if err := secrets.Sync(ctx, options.Kubeconfig, map[string]map[string]string{"kanidm/idm-admin": {"password": password}}); err != nil {
 			return nil, err
 		}
 	}
@@ -270,7 +270,7 @@ func (c *client) clientRecords(ctx context.Context) (map[string]map[string]strin
 		if strings.TrimSpace(secret) == "" {
 			return nil, fmt.Errorf("SSO client %s has no basic secret", name)
 		}
-		records["sso/"+name] = map[string]string{"client_id": name, "client_secret": secret}
+		records[name+"/sso"] = map[string]string{"client_id": name, "client_secret": secret}
 	}
 	return records, nil
 }
