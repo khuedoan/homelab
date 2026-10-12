@@ -26,16 +26,26 @@ resource "helm_release" "release" {
   namespace  = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
-  version    = "10.9.6"
+  version    = "10.10.2"
   values = [yamlencode({
     global = { domain = "argocd.${var.domain}" }
     configs = {
+      rbac = { "policy.default" = "role:readonly" }
       params = {
         "server.insecure"              = true
         "controller.diff.server.side"  = true
         "reposerver.parallelism.limit" = 1
       }
       cm = {
+        "admin.enabled" = false
+        "oidc.config" = yamlencode({
+          name                     = "SSO"
+          issuer                   = "https://auth.${var.domain}/oauth2/openid/argocd"
+          clientID                 = "argocd"
+          clientSecret             = "$argocd-sso:client_secret"
+          requestedScopes          = ["openid", "profile", "email", "groups"]
+          enablePKCEAuthentication = true
+        })
         "resource.ignoreResourceUpdatesEnabled"             = true
         "resource.customizations.ignoreResourceUpdates.all" = <<-EOT
           jsonPointers:
