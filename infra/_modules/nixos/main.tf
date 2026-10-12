@@ -1,9 +1,7 @@
 locals {
-  # nixie annotates the tracked hosts.json with observed runtime state (ip,
-  # machine_id_hash) after installing. That state is not part of the flake
-  # input, so drop it before writing the flake's copy to avoid tofu seeing
-  # drift every time nixie records a host.
-  nixie_state_fields = ["ip", "machine_id_hash"]
+  # nixie records the installation identity after installing. Exclude it from
+  # the flake input to avoid drift; the node IP is required by K3s.
+  nixie_state_fields = ["machine_id_hash"]
   inventory = {
     for name, host in var.hosts : name => {
       for key, value in host : key => value

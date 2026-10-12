@@ -2,16 +2,16 @@
   "homelab-1": {
     "mac_address": "10:66:6a:ba:b4:8d",
     "ip": "192.168.1.61",
-    "machine_id_hash": "60786602b1556a8842dee67ecce0dd4c289464689d40585751bf84357bd103ef"
+    "machine_id_hash": "0d8ca4b8464befe4058c5acec0d9ac6bfe18eace508a3ccec35131a4b116be64"
   },
   "homelab-2": {
     "mac_address": "02:66:6a:ba:b4:8e",
     "ip": "192.168.1.21",
-    "machine_id_hash": "0d9d9c8cf026f60632ee1e1f3b56170e3198bd19da2231c59f7a0d2c4ae02f9c"
+    "machine_id_hash": "3ddaaf9ff820122883f9961a8e098f1b66928678c0b2a811d59137a12aefe3b2"
   },
   "homelab-3": {
     "mac_address": "02:66:6a:ba:b4:8f",
     "ip": "192.168.1.22",
-    "machine_id_hash": "f873d39607d10110e3c49d55ea55f485239cc8b0c4c07f4179320ddd506ab54f"
+    "machine_id_hash": "936c8c8902d1db5904c3f7479efd64df9a9caa85fceee07ab6b738526dd0ada7"
   }
 }
