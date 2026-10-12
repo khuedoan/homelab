@@ -116,7 +116,7 @@ resource "kubectl_manifest" "cloudflared_resources" {
               cloudflare = {
                 forceRename = "cloudflared-credentials"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
-                stringData  = { "credentials.json" = "bao:secret/data/infra/cloudflare/tunnel_credentials#value" }
+                stringData  = { "credentials.json" = "bao:secret/data/cloudflared/cloudflare#credentials.json" }
               }
             }
           })

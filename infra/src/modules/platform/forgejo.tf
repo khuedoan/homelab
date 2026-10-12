@@ -103,7 +103,7 @@ resource "kubectl_manifest" "forgejo_resources" {
                 annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
                 stringData = {
                   username = "forgejo_admin"
-                  password = "bao:secret/data/forgejo.admin#password"
+                  password = "bao:secret/data/forgejo/admin#password"
                 }
               }
               sso = {
@@ -111,7 +111,7 @@ resource "kubectl_manifest" "forgejo_resources" {
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   key    = "forgejo"
-                  secret = "bao:secret/data/sso/forgejo#client_secret"
+                  secret = "bao:secret/data/forgejo/sso#client_secret"
                 }
               }
             }

@@ -76,8 +76,8 @@ resource "kubectl_manifest" "external_dns_resources" {
                 forceRename = "cloudflare-api-token"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
-                  "api-token" = "bao:secret/data/infra/cloudflare/external_dns_token#value"
-                  "zone-id"   = "bao:secret/data/infra/cloudflare/zone_id#value"
+                  "api-token" = "bao:secret/data/external-dns/cloudflare#api_token"
+                  "zone-id"   = "bao:secret/data/external-dns/cloudflare#zone_id"
                 }
               }
             }

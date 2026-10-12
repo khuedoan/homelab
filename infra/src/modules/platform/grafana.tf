@@ -108,7 +108,7 @@ resource "kubectl_manifest" "grafana_resources" {
                 forceRename = "grafana-secrets"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
-                  GRAFANA_SSO_CLIENT_SECRET = "bao:secret/data/sso/grafana#client_secret"
+                  GRAFANA_SSO_CLIENT_SECRET = "bao:secret/data/grafana/sso#client_secret"
                 }
               }
             }

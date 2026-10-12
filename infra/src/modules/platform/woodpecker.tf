@@ -83,15 +83,15 @@ resource "kubectl_manifest" "woodpecker_resources" {
                 forceRename = "woodpecker-secret"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
-                  WOODPECKER_GITEA_CLIENT = "bao:secret/data/forgejo.woodpecker#client_id"
-                  WOODPECKER_GITEA_SECRET = "bao:secret/data/forgejo.woodpecker#client_secret"
+                  WOODPECKER_GITEA_CLIENT = "bao:secret/data/woodpecker/forgejo#client_id"
+                  WOODPECKER_GITEA_SECRET = "bao:secret/data/woodpecker/forgejo#client_secret"
                 }
               }
               agent = {
                 forceRename = "woodpecker-agent-secret"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
-                  WOODPECKER_AGENT_SECRET = "bao:secret/data/woodpecker.agent#secret"
+                  WOODPECKER_AGENT_SECRET = "bao:secret/data/woodpecker/agent#secret"
                 }
               }
             }

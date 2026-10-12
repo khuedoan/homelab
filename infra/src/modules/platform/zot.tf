@@ -107,7 +107,7 @@ resource "kubectl_manifest" "zot_resources" {
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   username = "admin"
-                  password = "bao:secret/data/registry.admin#password"
+                  password = "bao:secret/data/zot/admin#password"
                 }
               }
             }
