@@ -13,7 +13,13 @@ provider "kubectl" {
 }
 
 locals {
-  ignore_differences = [{
+  ignore_differences = concat([for kind in ["Deployment", "StatefulSet", "DaemonSet"] : {
+    group = "apps"
+    kind  = kind
+    jqPathExpressions = [
+      ".spec.template.metadata.annotations[\"homelab.khuedoan.com/bao-secrets-revision\"]",
+    ]
+    }], [{
     group = "apps"
     kind  = "StatefulSet"
     jqPathExpressions = [
@@ -26,7 +32,7 @@ locals {
       "select(.metadata.labels[\"homelab.khuedoan.com/bao-secret\"] == \"true\") | .data",
       "select(.metadata.labels[\"homelab.khuedoan.com/bao-secret\"] == \"true\") | .stringData",
     ]
-  }]
+  }])
   sync_policy = {
     automated = {
       prune    = true
@@ -40,7 +46,7 @@ locals {
         maxDuration = "3m"
       }
     }
-    syncOptions = ["CreateNamespace=true", "ServerSideApply=true"]
+    syncOptions = ["CreateNamespace=true", "ServerSideApply=true", "RespectIgnoreDifferences=true"]
     managedNamespaceMetadata = {
       annotations = { "volsync.backube/privileged-movers" = "true" }
     }

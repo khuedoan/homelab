@@ -14,7 +14,7 @@ func newInfraSecretsCmd() *cobra.Command {
 	group := &cobra.Command{Use: "secrets", Short: "Publish infrastructure secrets to OpenBao"}
 	sync := &cobra.Command{
 		Use: "sync", Short: "Sync every Terragrunt unit's secrets output in an environment",
-		Long:    "Run from the repository root. Read each module's secrets output, a map of namespace/secret paths to string fields, and publish it to OpenBao. Other outputs are ignored. Unchanged records and omitted paths are preserved. Requires terragrunt and an explicit cluster-admin kubeconfig. Secret values are never printed.",
+		Long:    "Run from the repository root. Read each module's secrets output, a map of namespace/secret paths to string fields, and publish it to OpenBao. Reconcile existing labeled Kubernetes Secrets and request reloads of their consuming workloads. Other outputs are ignored. Unchanged records and omitted paths are preserved. Requires terragrunt and an explicit cluster-admin kubeconfig. Secret values are never printed.",
 		Example: "  toolbox infra secrets sync --environment staging --kubeconfig infra/staging/kubeconfig.yaml",
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
@@ -29,7 +29,7 @@ func newInfraSecretsCmd() *cobra.Command {
 					return err
 				}
 			}
-			_, err = fmt.Fprintf(cmd.OutOrStdout(), "Synchronized %d infrastructure secrets to OpenBao.\n", len(records))
+			_, err = fmt.Fprintf(cmd.OutOrStdout(), "Synchronized %d infrastructure secrets to OpenBao and reconciled existing Kubernetes consumers.\n", len(records))
 			return err
 		},
 	}

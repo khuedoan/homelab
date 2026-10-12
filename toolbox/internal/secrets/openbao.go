@@ -11,6 +11,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
+	appsclient "k8s.io/client-go/kubernetes/typed/apps/v1"
 	coreclient "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -112,14 +113,16 @@ func readRecord(ctx context.Context, kv *bao.KVv2, path string) (map[string]stri
 	return data, nil
 }
 
-// Sync updates OpenBao through the Kubernetes service proxy, preserving unchanged records.
+// Sync updates OpenBao and reconciles existing managed Secrets and their consumers.
+// Reconciliation runs even when KV is unchanged, so retries repair partial failures.
 func Sync(ctx context.Context, kubeconfig string, records map[string]map[string]string) error {
 	client, err := openBaoClient(ctx, kubeconfig)
 	if err != nil {
 		return err
 	}
 	kv := client.KVv2("secret")
-	for path, data := range records {
+	for _, path := range sortedKeys(records) {
+		data := records[path]
 		existing, err := readRecord(ctx, kv, path)
 		if err != nil {
 			return err
@@ -135,5 +138,17 @@ func Sync(ctx context.Context, kubeconfig string, records map[string]map[string]
 			return fmt.Errorf("write OpenBao path %s failed", path)
 		}
 	}
-	return nil
+	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	if err != nil {
+		return fmt.Errorf("load kubeconfig for secret reconciliation failed")
+	}
+	core, err := coreclient.NewForConfig(config)
+	if err != nil {
+		return fmt.Errorf("create Kubernetes Secret client failed")
+	}
+	apps, err := appsclient.NewForConfig(config)
+	if err != nil {
+		return fmt.Errorf("create Kubernetes workload client failed")
+	}
+	return reconcileSecrets(ctx, core, apps, records)
 }

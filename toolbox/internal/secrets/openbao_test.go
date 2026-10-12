@@ -22,6 +22,7 @@ func TestReadRejectsAmbientKubeconfig(t *testing.T) {
 func TestSyncWritesKVAndSkipsUnchangedRecords(t *testing.T) {
 	existing := false
 	writes := 0
+	reconciliations := 0
 	mountReady := false
 	bootstrap := bootstrapHandler(&mountReady)
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -29,40 +30,15 @@ func TestSyncWritesKVAndSkipsUnchangedRecords(t *testing.T) {
 		if bootstrap(w, r) {
 			return
 		}
-		if r.URL.Path != "/api/v1/namespaces/openbao/services/http:openbao:8200/proxy/v1/secret/data/cert-manager/cloudflare" || r.Header.Get("X-Vault-Token") != "root-canary" {
-			t.Errorf("unexpected request %s", r.URL.Path)
-			w.WriteHeader(403)
-			return
-		}
-		if !mountReady {
-			w.WriteHeader(404)
-			_, _ = w.Write([]byte(`{"errors":["no handler for route"]}`))
-			return
-		}
-		switch r.Method {
-		case "GET":
-			if !existing {
-				w.WriteHeader(404)
-				_, _ = w.Write([]byte(`{"errors":["missing"]}`))
-				return
+		if r.URL.Path == "/api/v1/namespaces/cert-manager/secrets" {
+			if r.Method != http.MethodGet || r.URL.Query().Get("labelSelector") != managedSecretLabel+"=true" {
+				t.Error("expected a label-scoped Secret list")
 			}
-			_, _ = w.Write([]byte(`{"data":{"data":{"api_token":"token-canary"},"metadata":{"version":1}}}`))
-			return
-		case "PUT":
-		default:
-			t.Errorf("unexpected method %s", r.Method)
-			w.WriteHeader(405)
+			reconciliations++
+			_, _ = w.Write([]byte(`{"apiVersion":"v1","kind":"SecretList","items":[]}`))
 			return
 		}
-		var body struct {
-			Data map[string]string `json:"data"`
-		}
-		if err := json.NewDecoder(r.Body).Decode(&body); err != nil || body.Data["api_token"] != "token-canary" || len(body.Data) != 1 {
-			t.Errorf("incorrect KV write body")
-		}
-		existing = true
-		writes++
-		_, _ = w.Write([]byte(`{"data":{"version":1}}`))
+		serveTestKV(t, w, r, &existing, &writes, mountReady)
 	}))
 	defer server.Close()
 	config := clientapi.Config{CurrentContext: "test", Clusters: map[string]*clientapi.Cluster{"test": {Server: server.URL}}, AuthInfos: map[string]*clientapi.AuthInfo{"test": {}}, Contexts: map[string]*clientapi.Context{"test": {Cluster: "test", AuthInfo: "test"}}}
@@ -77,6 +53,9 @@ func TestSyncWritesKVAndSkipsUnchangedRecords(t *testing.T) {
 		if err := Sync(ctx, path, records); err != nil {
 			t.Fatal(err)
 		}
+	}
+	if reconciliations != 2 {
+		t.Fatalf("expected reconciliation even for unchanged KV, got %d", reconciliations)
 	}
 	if writes != 1 {
 		t.Fatalf("expected one KV version across two syncs, got %d writes", writes)
@@ -114,4 +93,42 @@ func bootstrapHandler(mountReady *bool) func(http.ResponseWriter, *http.Request)
 		}
 		return true
 	}
+}
+
+func serveTestKV(t *testing.T, w http.ResponseWriter, r *http.Request, existing *bool, writes *int, mountReady bool) {
+	t.Helper()
+	if r.URL.Path != "/api/v1/namespaces/openbao/services/http:openbao:8200/proxy/v1/secret/data/cert-manager/cloudflare" || r.Header.Get("X-Vault-Token") != "root-canary" {
+		t.Errorf("unexpected request %s", r.URL.Path)
+		w.WriteHeader(403)
+		return
+	}
+	if !mountReady {
+		w.WriteHeader(404)
+		_, _ = w.Write([]byte(`{"errors":["no handler for route"]}`))
+		return
+	}
+	switch r.Method {
+	case "GET":
+		if !*existing {
+			w.WriteHeader(404)
+			_, _ = w.Write([]byte(`{"errors":["missing"]}`))
+			return
+		}
+		_, _ = w.Write([]byte(`{"data":{"data":{"api_token":"token-canary"},"metadata":{"version":1}}}`))
+		return
+	case "PUT":
+	default:
+		t.Errorf("unexpected method %s", r.Method)
+		w.WriteHeader(405)
+		return
+	}
+	var body struct {
+		Data map[string]string `json:"data"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil || body.Data["api_token"] != "token-canary" || len(body.Data) != 1 {
+		t.Errorf("incorrect KV write body")
+	}
+	*existing = true
+	*writes++
+	_, _ = w.Write([]byte(`{"data":{"version":1}}`))
 }
