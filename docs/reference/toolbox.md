@@ -41,6 +41,20 @@ another destination. Files are published atomically with mode `0600`.
 `--output -` sends credentials to stdout.
 Cluster commands use the explicit environment inventory, not `KUBECONFIG`.
 
+## SSO readiness
+
+SSO commands require `--kubeconfig PATH` and `--url HTTPS_URL`.
+`--timeout` defaults to `15m` and sets one total deadline per command for
+OpenBao readiness, Kanidm pod creation and readiness, and the SSO operation.
+Missing or unready Kanidm pods are retried while Argo CD reconciles them.
+Kubernetes API errors other than missing resources fail the readiness check;
+interrupting the command cancels the wait and in-flight requests.
+
+```sh
+toolbox sso --kubeconfig infra/staging/kubeconfig.yaml \
+  --url https://auth.example.com --timeout 20m secrets sync
+```
+
 ## Development
 
 Without the packaged binary, commands run through Go:

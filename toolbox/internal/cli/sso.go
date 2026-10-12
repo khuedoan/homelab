@@ -13,10 +13,20 @@ import (
 
 func newSSOCmd() *cobra.Command {
 	var options kanidm.Options
-	group := &cobra.Command{Use: "sso", Short: "Provision SSO clients and sync their credentials to OpenBao"}
+	var timeout time.Duration
+	group := &cobra.Command{
+		Use: "sso", Short: "Provision SSO clients and sync their credentials to OpenBao",
+		PersistentPreRunE: func(_ *cobra.Command, _ []string) error {
+			if timeout <= 0 {
+				return fmt.Errorf("--timeout must be positive")
+			}
+			return nil
+		},
+	}
 	group.PersistentFlags().StringVar(&options.Kubeconfig, "kubeconfig", "", "Target cluster kubeconfig (required)")
 	group.PersistentFlags().StringVar(&options.URL, "url", "", "Kanidm HTTPS URL (required)")
 	group.PersistentFlags().BoolVar(&options.Bootstrap, "bootstrap", false, "Recover idm_admin only when its OpenBao credential is absent")
+	group.PersistentFlags().DurationVar(&timeout, "timeout", 15*time.Minute, "Maximum total time for readiness checks and the SSO operation")
 	if err := group.MarkPersistentFlagRequired("kubeconfig"); err != nil {
 		panic(err)
 	}
@@ -27,10 +37,10 @@ func newSSOCmd() *cobra.Command {
 	clients := &cobra.Command{Use: "client", Short: "Manage SSO clients"}
 	ensure := &cobra.Command{
 		Use: "ensure NAME", Short: "Create or update a client and its NAME_users access group",
-		Long: "Ensure the client settings and access group exist without rotating its secret or changing group membership. Requires kubectl on PATH. Credentials are published separately with sso secrets sync.",
+		Long: "Ensure the client settings and access group exist without rotating its secret or changing group membership. Requires kubectl on PATH for --bootstrap account recovery. Credentials are published separately with sso secrets sync.",
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
+			ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
 			defer cancel()
 			config.Name = args[0]
 			if err := kanidm.EnsureClient(ctx, options, config); err != nil {
@@ -48,10 +58,10 @@ func newSSOCmd() *cobra.Command {
 	secretGroup := &cobra.Command{Use: "secrets", Short: "Publish SSO client credentials to OpenBao"}
 	sync := &cobra.Command{
 		Use: "sync", Short: "Sync all confidential clients to NAME/sso in OpenBao",
-		Long: "Read client IDs and existing secrets from Kanidm and publish client_id and client_secret fields to NAME/sso. Does not create or change clients. Unchanged OpenBao records retain their versions. Requires kubectl on PATH. Secret values are never printed.",
+		Long: "Read client IDs and existing secrets from Kanidm and publish client_id and client_secret fields to NAME/sso. Does not create or change clients. Unchanged OpenBao records retain their versions. Requires kubectl on PATH for --bootstrap account recovery. Secret values are never printed.",
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
+			ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
 			defer cancel()
 			if err := kanidm.SyncSecrets(ctx, options); err != nil {
 				return err
@@ -67,7 +77,7 @@ func newSSOCmd() *cobra.Command {
 		Use: "configure", Short: "Enable OpenBao UI SSO with the default token policy",
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
+			ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
 			defer cancel()
 			if err := secrets.ConfigureOIDC(ctx, options.Kubeconfig, strings.TrimRight(options.URL, "/")+"/oauth2/openid/openbao", callback); err != nil {
 				return err
