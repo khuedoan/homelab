@@ -8,6 +8,29 @@ set -eu
 flake_dir="$(readlink -f "${1:?usage: nixie <flake-dir> <hosts-file>}")"
 hosts_file="$(readlink -f "${2:?usage: nixie <flake-dir> <hosts-file>}")"
 
+# Nix copies path flakes to the world-readable store. Never pass Terragrunt's
+# working directory: it contains backend credentials, state and provider files.
+staging_dir="$(mktemp -d)"
+trap 'rm -rf "$staging_dir"' EXIT
+trap 'exit 1' HUP INT TERM
+chmod 700 "$staging_dir"
+mkdir "$staging_dir/profiles"
+for source in \
+	flake.nix flake.lock default.nix configuration.nix disks.nix \
+	profiles/installer.nix profiles/k3s-server.nix profiles/kube-vip.nix profiles/rook-ceph.nix
+do
+	test -f "$flake_dir/$source" && test ! -L "$flake_dir/$source" || {
+		echo "expected regular Nix source: $source" >&2
+		exit 1
+	}
+	cp "$flake_dir/$source" "$staging_dir/$source"
+done
+# Only public provisioning attributes belong in the flake. Keep Nixie's mutable
+# installation inventory outside it so callbacks can update the original file.
+jq 'map_values(with_entries(select(.key | IN("mac_address", "ip", "ipv6_address", "network_interface", "disk"))))' \
+	"$flake_dir/hosts.json" > "$staging_dir/hosts.json"
+jq '{init_host, vip}' "$flake_dir/cluster.json" > "$staging_dir/cluster.json"
+
 interface="${PXE_INTERFACE:-$(ip -4 route show default | awk '/default/ { print $5; exit }')}"
 test -n "$interface" || {
 	echo "no default-route interface for PXE, set PXE_INTERFACE" >&2
@@ -40,5 +63,5 @@ else
 	set -- "$@" --install-ssh-key "$ssh_key" --deployment-ssh-key "$ssh_key"
 fi
 
-cd "$flake_dir"
+cd "$staging_dir"
 sudo env "PATH=$PATH" nixie "$@"
