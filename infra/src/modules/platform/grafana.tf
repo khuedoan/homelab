@@ -12,7 +12,7 @@ resource "kubectl_manifest" "grafana" {
       project = "default"
       sources = [{
         repoURL        = "https://grafana-community.github.io/helm-charts"
-        targetRevision = "13.2.7"
+        targetRevision = "13.5.0"
         chart          = "grafana"
         helm = {
           releaseName = "grafana"
@@ -39,17 +39,19 @@ resource "kubectl_manifest" "grafana" {
               }
             }
             "grafana.ini" = {
+              auth = { disable_login_form = true }
               "auth.generic_oauth" = {
-                allow_sign_up = true
-                api_url       = "https://auth.${var.domain}/oauth2/openid/grafana/userinfo"
-                auth_url      = "https://auth.${var.domain}/ui/oauth2"
-                client_id     = "grafana"
-                client_secret = "$__env{GRAFANA_SSO_CLIENT_SECRET}"
-                enabled       = true
-                name          = "SSO"
-                scopes        = "openid profile email groups"
-                token_url     = "https://auth.${var.domain}/oauth2/token"
-                use_pkce      = true
+                allow_assign_grafana_admin = true
+                role_attribute_path        = "contains(groups[*], 'grafana_admins') && 'GrafanaAdmin' || 'Viewer'"
+                api_url                    = "https://auth.${var.domain}/oauth2/openid/grafana/userinfo"
+                auth_url                   = "https://auth.${var.domain}/ui/oauth2"
+                client_id                  = "grafana"
+                client_secret              = "$__env{GRAFANA_SSO_CLIENT_SECRET}"
+                enabled                    = true
+                name                       = "SSO"
+                scopes                     = "openid profile email groups"
+                token_url                  = "https://auth.${var.domain}/oauth2/token"
+                use_pkce                   = true
               }
               server = {
                 root_url = "https://grafana.${var.domain}"
@@ -58,16 +60,13 @@ resource "kubectl_manifest" "grafana" {
             envFromSecret = "grafana-secrets"
             route = {
               main = {
-                enabled    = true
-                apiVersion = "gateway.networking.k8s.io/v1"
-                kind       = "HTTPRoute"
+                enabled = true
                 parentRefs = [{
                   name        = "gateway"
                   namespace   = "istio-system"
                   sectionName = "https"
                 }]
                 hostnames = ["grafana.${var.domain}"]
-                matches   = [{ path = { type = "PathPrefix", value = "/" } }]
               }
             }
           })
