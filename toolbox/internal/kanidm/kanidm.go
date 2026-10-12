@@ -36,8 +36,17 @@ type Options struct {
 	Bootstrap  bool
 }
 
+// ClientConfig describes an application registered with the SSO provider.
+type ClientConfig struct {
+	Name        string
+	DisplayName string
+	RedirectURI string
+	Public      bool
+}
+
 // EnsureClient provisions a client without rotating its secret or changing group membership.
-func EnsureClient(ctx context.Context, options Options, name, displayName, redirectURI string) error {
+func EnsureClient(ctx context.Context, options Options, config ClientConfig) error {
+	name, redirectURI := config.Name, config.RedirectURI
 	if len(validation.IsDNS1123Label(name)) != 0 {
 		return fmt.Errorf("client name must be a lowercase DNS label")
 	}
@@ -48,7 +57,7 @@ func EnsureClient(ctx context.Context, options Options, name, displayName, redir
 	if err != nil {
 		return err
 	}
-	return c.ensureClient(ctx, name, displayName, redirectURI)
+	return c.ensureClient(ctx, config)
 }
 
 // SyncSecrets exports confidential client credentials without modifying Kanidm.
@@ -192,7 +201,8 @@ func (c *client) login(ctx context.Context, password string) error {
 	return nil
 }
 
-func (c *client) ensureClient(ctx context.Context, name, displayName, redirectURI string) error {
+func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
+	name, displayName, redirectURI := config.Name, config.DisplayName, config.RedirectURI
 	groupName := name + "_users"
 	var group *entry
 	if err := c.request(ctx, "GET", "/v1/group/"+groupName, nil, &group); err != nil {
@@ -210,17 +220,27 @@ func (c *client) ensureClient(ctx context.Context, name, displayName, redirectUR
 	if err := c.request(ctx, "GET", "/v1/oauth2/"+name, nil, &existing); err != nil {
 		return err
 	}
+	clientType := "basic"
+	if config.Public {
+		clientType = "public"
+	}
+	if existing != nil && !slices.Contains(existing.Attrs["class"], "oauth2_resource_server_"+clientType) {
+		return fmt.Errorf("SSO client %s has a different client type", name)
+	}
 	attrs := entry{Attrs: map[string][]string{
-		"displayname":                               {displayName},
-		"oauth2_rs_origin_landing":                  {redirectURI},
-		"oauth2_rs_origin":                          {redirectURI},
-		"oauth2_allow_insecure_client_disable_pkce": {"false"},
-		"oauth2_prefer_short_username":              {"true"},
+		"displayname":                  {displayName},
+		"oauth2_rs_origin_landing":     {redirectURI},
+		"oauth2_rs_origin":             {redirectURI},
+		"oauth2_strict_redirect_uri":   {"true"},
+		"oauth2_prefer_short_username": {"true"},
 	}}
+	if !config.Public {
+		attrs.Attrs["oauth2_allow_insecure_client_disable_pkce"] = []string{"false"}
+	}
 	method, path := "PATCH", "/v1/oauth2/"+name
 	if existing == nil {
 		attrs.Attrs["name"] = []string{name}
-		method, path = "POST", "/v1/oauth2/_basic"
+		method, path = "POST", "/v1/oauth2/_"+clientType
 	}
 	if err := c.request(ctx, method, path, attrs, nil); err != nil {
 		return err

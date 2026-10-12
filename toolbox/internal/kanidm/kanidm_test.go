@@ -16,6 +16,7 @@ type fakeProvider struct {
 	groups             map[string]bool
 	clients            map[string]entry
 	callbacks          map[string]string
+	public             map[string]bool
 	creates, mutations int
 	readingSecrets     bool
 }
@@ -78,14 +79,26 @@ func (f *fakeProvider) groupRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 func (f *fakeProvider) clientRequest(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" && r.URL.Path == "/v1/oauth2/_basic" {
+	if r.Method == "POST" && (r.URL.Path == "/v1/oauth2/_basic" || r.URL.Path == "/v1/oauth2/_public") {
 		var client entry
 		_ = json.NewDecoder(r.Body).Decode(&client)
 		name := client.Attrs["name"][0]
 		if _, exists := f.clients[name]; exists {
 			f.t.Error("recreated existing client")
 		}
-		client.Attrs["class"] = []string{"oauth2_resource_server_basic"}
+		clientType := "basic"
+		if f.public[name] {
+			clientType = "public"
+			if _, exists := client.Attrs["oauth2_allow_insecure_client_disable_pkce"]; exists {
+				f.t.Error("public clients cannot override PKCE")
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+		}
+		if r.URL.Path != "/v1/oauth2/_"+clientType {
+			f.t.Error("incorrect client type")
+		}
+		client.Attrs["class"] = []string{"oauth2_resource_server_" + clientType}
 		f.clients[name] = client
 		f.creates++
 		return
@@ -100,11 +113,11 @@ func (f *fakeProvider) clientRequest(w http.ResponseWriter, r *http.Request) {
 			_, _ = w.Write([]byte(`null`))
 		}
 	case r.Method == "PATCH" && len(parts) == 1:
-		checkOAuthPatch(f.t, r, name, f.callbacks[name])
+		checkOAuthPatch(f.t, r, name, f.callbacks[name], f.public[name])
 	case r.Method == "POST" && len(parts) == 3 && parts[1] == "_scopemap" && parts[2] == name+"_users":
 		checkScopes(f.t, r)
 	case r.Method == "GET" && len(parts) == 2 && parts[1] == "_basic_secret":
-		if !f.readingSecrets {
+		if !f.readingSecrets || f.public[name] {
 			f.t.Error("client ensure read a secret")
 		}
 		_ = json.NewEncoder(w).Encode(name + "-canary")
@@ -116,9 +129,13 @@ func (f *fakeProvider) clientRequest(w http.ResponseWriter, r *http.Request) {
 
 func TestClientProvisioningAndSecretSync(t *testing.T) {
 	f := &fakeProvider{t: t, groups: make(map[string]bool), clients: make(map[string]entry), callbacks: map[string]string{
-		"grafana": "https://grafana.example.test/login/generic_oauth",
-		"forgejo": "https://git.example.test/user/oauth2/sso/callback",
-	}}
+		"grafana":      "https://grafana.example.test/login/generic_oauth",
+		"forgejo":      "https://git.example.test/user/oauth2/SSO/callback",
+		"argocd":       "https://argocd.example.test/auth/callback",
+		"actualbudget": "https://budget.example.test/openid/callback",
+		"zot":          "https://registry.example.test/zot/auth/callback/oidc",
+		"openbao":      "https://openbao.example.test/ui/vault/auth/oidc/oidc/callback",
+	}, public: map[string]bool{"zot": true}}
 	server := httptest.NewServer(f)
 	defer server.Close()
 	jar, _ := cookiejar.New(nil)
@@ -129,19 +146,22 @@ func TestClientProvisioningAndSecretSync(t *testing.T) {
 	}
 	for range 2 {
 		for name, callback := range f.callbacks {
-			if err := c.ensureClient(ctx, name, name, callback); err != nil {
+			if err := c.ensureClient(ctx, ClientConfig{Name: name, DisplayName: name, RedirectURI: callback, Public: f.public[name]}); err != nil {
 				t.Fatal(err)
 			}
 		}
 	}
-	if f.creates != 4 {
-		t.Fatalf("expected two groups and two clients, got %d creations", f.creates)
+	if f.creates != 12 {
+		t.Fatalf("expected six groups and six clients, got %d creations", f.creates)
 	}
 	f.readingSecrets = true
 	before := f.mutations
 	want := map[string]map[string]string{
-		"sso/grafana": {"client_id": "grafana", "client_secret": "grafana-canary"},
-		"sso/forgejo": {"client_id": "forgejo", "client_secret": "forgejo-canary"},
+		"sso/grafana":      {"client_id": "grafana", "client_secret": "grafana-canary"},
+		"sso/forgejo":      {"client_id": "forgejo", "client_secret": "forgejo-canary"},
+		"sso/argocd":       {"client_id": "argocd", "client_secret": "argocd-canary"},
+		"sso/actualbudget": {"client_id": "actualbudget", "client_secret": "actualbudget-canary"},
+		"sso/openbao":      {"client_id": "openbao", "client_secret": "openbao-canary"},
 	}
 	for range 2 {
 		got, err := c.clientRecords(ctx)
@@ -197,7 +217,7 @@ func TestRequestErrorsDoNotExposeCredentials(t *testing.T) {
 	}
 }
 
-func checkOAuthPatch(t *testing.T, r *http.Request, name, callback string) {
+func checkOAuthPatch(t *testing.T, r *http.Request, name, callback string, public bool) {
 	t.Helper()
 	var body entry
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
@@ -205,8 +225,12 @@ func checkOAuthPatch(t *testing.T, r *http.Request, name, callback string) {
 	}
 	expected := map[string][]string{
 		"displayname": {name}, "oauth2_rs_origin_landing": {callback},
-		"oauth2_rs_origin":                          {callback},
-		"oauth2_allow_insecure_client_disable_pkce": {"false"}, "oauth2_prefer_short_username": {"true"},
+		"oauth2_rs_origin":             {callback},
+		"oauth2_strict_redirect_uri":   {"true"},
+		"oauth2_prefer_short_username": {"true"},
+	}
+	if !public {
+		expected["oauth2_allow_insecure_client_disable_pkce"] = []string{"false"}
 	}
 	if !reflect.DeepEqual(body.Attrs, expected) {
 		t.Errorf("unexpected OAuth patch: %v", body.Attrs)
@@ -231,7 +255,7 @@ func TestClientValidationBeforeClusterAccess(t *testing.T) {
 		{"app", "http://app.example.test/callback"},
 		{"app", "https://user:password@app.example.test/callback"},
 	} {
-		err := EnsureClient(context.Background(), options, test.name, "", test.redirect)
+		err := EnsureClient(context.Background(), options, ClientConfig{Name: test.name, RedirectURI: test.redirect})
 		if err == nil || strings.Contains(err.Error(), "kubeconfig") {
 			t.Fatalf("did not reject invalid client configuration first: %v", err)
 		}
