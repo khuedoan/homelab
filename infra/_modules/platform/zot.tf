@@ -70,26 +70,13 @@ resource "kubectl_manifest" "zot_resources" {
           releaseName = "zot-resources"
           values = yamlencode({
             global = { createDefaultServiceAccount = false }
-            rawResources = {
+            secrets = {
               admin-secret = {
                 forceRename = "registry-admin-secret"
-                manifest = {
-                  apiVersion = "v1"
-                  kind       = "Secret"
-                  metadata = {
-                    namespace = "zot"
-                    labels    = { "homelab.khuedoan.com/bao-secret" = "true" }
-                    annotations = {
-                      "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
-                      "secrets-webhook.security.bank-vaults.io/bao-role"           = "zot"
-                      "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
-                      "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
-                    }
-                  }
-                  data = {
-                    username = base64encode("admin")
-                    password = base64encode("bao:secret/data/registry.admin#password")
-                  }
+                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
+                stringData = {
+                  username = "admin"
+                  password = "bao:secret/data/registry.admin#password"
                 }
               }
             }

@@ -104,25 +104,12 @@ resource "kubectl_manifest" "grafana_resources" {
           releaseName = "grafana-resources"
           values = yamlencode({
             global = { createDefaultServiceAccount = false }
-            rawResources = {
+            secrets = {
               grafana-secrets = {
                 forceRename = "grafana-secrets"
-                manifest = {
-                  apiVersion = "v1"
-                  kind       = "Secret"
-                  metadata = {
-                    namespace = "grafana"
-                    labels    = { "homelab.khuedoan.com/bao-secret" = "true" }
-                    annotations = {
-                      "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
-                      "secrets-webhook.security.bank-vaults.io/bao-role"           = "grafana"
-                      "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
-                      "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
-                    }
-                  }
-                  data = {
-                    GRAFANA_SSO_CLIENT_SECRET = base64encode("bao:secret/data/sso/grafana#client_secret")
-                  }
+                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
+                stringData = {
+                  GRAFANA_SSO_CLIENT_SECRET = "bao:secret/data/sso/grafana#client_secret"
                 }
               }
             }

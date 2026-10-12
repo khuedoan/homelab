@@ -75,12 +75,6 @@ resource "kubectl_manifest" "external_dns_resources" {
               cloudflare = {
                 forceRename = "cloudflare-api-token"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
-                annotations = {
-                  "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
-                  "secrets-webhook.security.bank-vaults.io/bao-role"           = "external-dns"
-                  "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
-                  "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
-                }
                 stringData = {
                   "api-token" = "bao:secret/data/infra/cloudflare/external_dns_token#value"
                   "zone-id"   = "bao:secret/data/infra/cloudflare/zone_id#value"

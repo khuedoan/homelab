@@ -24,6 +24,7 @@ locals {
     kind = "Secret"
     jqPathExpressions = [
       "select(.metadata.labels[\"homelab.khuedoan.com/bao-secret\"] == \"true\") | .data",
+      "select(.metadata.labels[\"homelab.khuedoan.com/bao-secret\"] == \"true\") | .stringData",
     ]
   }]
   sync_policy = {

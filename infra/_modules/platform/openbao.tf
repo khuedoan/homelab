@@ -46,6 +46,9 @@ resource "kubectl_manifest" "openbao" {
             autoscaling = { hpa = { enabled = false } }
             resources   = { requests = { cpu = "10m", memory = "32Mi" } }
             env = {
+              PROVIDER                     = "bao"
+              BAO_ROLE                     = "{{ .namespace }}"
+              BAO_SERVICEACCOUNT           = "default"
               BAO_ADDR                     = "http://openbao.openbao.svc.cluster.local:8200"
               BAO_PATH                     = "kubernetes"
               BAO_ADDR_ALLOWLIST           = "http://openbao.openbao.svc.cluster.local:8200"
