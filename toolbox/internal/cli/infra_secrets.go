@@ -18,7 +18,7 @@ func newInfraSecretsCmd() *cobra.Command {
 		Example: "  toolbox infra secrets sync --environment staging --kubeconfig infra/staging/kubeconfig.yaml",
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
+			ctx, cancel := context.WithTimeout(cmd.Context(), 20*time.Minute)
 			defer cancel()
 			records, err := secrets.EnvironmentRecords(ctx, environment)
 			if err != nil {
