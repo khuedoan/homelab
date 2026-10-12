@@ -86,13 +86,7 @@ resource "kubectl_manifest" "cert_manager_resources" {
               cloudflare = {
                 forceRename = "cloudflare-api-token"
                 labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
-                annotations = {
-                  "secrets-webhook.security.bank-vaults.io/provider"           = "bao"
-                  "secrets-webhook.security.bank-vaults.io/bao-role"           = "cert-manager"
-                  "secrets-webhook.security.bank-vaults.io/bao-path"           = "kubernetes"
-                  "secrets-webhook.security.bank-vaults.io/bao-serviceaccount" = "default"
-                }
-                stringData = { "api-token" = "bao:secret/data/infra/cloudflare/cert_manager_token#value" }
+                stringData  = { "api-token" = "bao:secret/data/infra/cloudflare/cert_manager_token#value" }
               }
             }
             rawResources = {
