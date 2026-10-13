@@ -1,0 +1,117 @@
+controllers:
+  main:
+    strategy: Recreate
+    pod:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    defaultContainerOptions:
+      image:
+        repository: docker.io/opencloudeu/opencloud-rolling
+        tag: 8.1.0
+    initContainers:
+      config:
+        command: [/bin/sh, -ec]
+        args:
+          - |
+            if [ ! -s /etc/opencloud/opencloud.yaml ]; then
+              exec opencloud init --quiet --insecure=false
+            fi
+        env:
+          OC_URL: 'https://drive.{{ .Values.global.domain }}'
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+    containers:
+      main:
+        env:
+          OC_URL: 'https://drive.{{ .Values.global.domain }}'
+          OC_EXCLUDE_RUN_SERVICES: idp
+          OC_OIDC_ISSUER: 'https://auth.{{ .Values.global.domain }}/oauth2/openid/opencloud'
+          OC_OIDC_CLIENT_ID: opencloud
+          OC_LDAP_SERVER_WRITE_ENABLED: 'true'
+          PROXY_TLS: 'false'
+          PROXY_OIDC_AUDIENCES: opencloud
+          PROXY_OIDC_REWRITE_WELLKNOWN: 'true'
+          PROXY_AUTOPROVISION_ACCOUNTS: 'true'
+          PROXY_USER_OIDC_CLAIM: sub
+          PROXY_AUTOPROVISION_CLAIM_USERNAME: sub
+          GRAPH_USERNAME_MATCH: none
+          PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yaml
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 1536Mi
+        probes:
+          startup:
+            enabled: true
+            custom: true
+            spec:
+              tcpSocket:
+                port: 9200
+              periodSeconds: 5
+              failureThreshold: 60
+          readiness:
+            enabled: true
+            custom: true
+            spec:
+              exec:
+                command: [curl, -fsS, http://127.0.0.1:9205/readyz]
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 9200
+        protocol: HTTP
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'drive.{{ .Values.global.domain }}'
+    rules:
+      - backendRefs:
+          - identifier: main
+            port: 9200
+
+persistence:
+  config:
+    suffix: config
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    globalMounts:
+      - path: /etc/opencloud
+  data:
+    suffix: data
+    accessMode: ReadWriteOnce
+    size: 20Gi
+    globalMounts:
+      - path: /var/lib/opencloud
+  csp:
+    type: configMap
+    identifier: csp
+    advancedMounts:
+      main:
+        main:
+          - path: /etc/opencloud/csp.yaml
+            subPath: csp.yaml
+
+configMaps:
+  csp:
+    data:
+      csp.yaml: |
+        directives:
+          connect-src:
+            - 'https://auth.{{ .Values.global.domain }}/'
