@@ -36,7 +36,10 @@ resource "kubectl_manifest" "kured" {
               endTime                   = "04:00"
               drainTimeout              = "10m"
             }
-
+            resources = {
+              requests = { cpu = "10m", memory = "32Mi" }
+              limits   = { memory = "128Mi" }
+            }
 
           })
         }
