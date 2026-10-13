@@ -17,14 +17,27 @@ resource "kubectl_manifest" "kured" {
         helm = {
           releaseName = "kured"
           values = yamlencode({
-            # TODO: Revisit resource sizing after measuring usage.
-
             configuration = {
-              annotateNodes = true
-
-              rebootSentinelCommand = "sh -c \"! needs-restarting --reboothint\""
-              timeZone = "Asia/Ho_Chi_Minh"
+              annotateNodes             = true
+              useRebootSentinelHostPath = false
+              rebootSentinelCommand     = <<-EOT
+                /run/current-system/sw/bin/sh -c '
+                  for file in kernel initrd kernel-modules; do
+                    booted=$(/run/current-system/sw/bin/readlink -f /run/booted-system/$file)
+                    configured=$(/run/current-system/sw/bin/readlink -f /nix/var/nix/profiles/system/$file)
+                    test "$booted" = "$configured" || exit 0
+                  done
+                  exit 1
+                '
+              EOT
+              rebootCommand             = "/run/current-system/sw/bin/systemctl reboot"
+              timeZone                  = "Asia/Ho_Chi_Minh"
+              startTime                 = "03:00"
+              endTime                   = "04:00"
+              drainTimeout              = "10m"
             }
+
+
           })
         }
       }]
