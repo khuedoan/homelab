@@ -29,7 +29,7 @@ resource "kubectl_manifest" "apps" {
           sources = [{
             repoURL        = "https://bjw-s-labs.github.io/helm-charts"
             chart          = "app-template"
-            targetRevision = "5.2.1"
+            targetRevision = "5.3.0"
             helm = {
               releaseName = "{{ .path.filename | trimSuffix \".yaml\" }}"
               valueFiles  = ["$values/apps/{{ .path.filename }}"]
