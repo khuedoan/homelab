@@ -11,7 +11,7 @@ terraform {
 
   after_hook "nixie" {
     commands = ["apply"]
-    execute  = ["./nixie", get_working_dir(), "${get_terragrunt_dir()}/hosts.json"]
+    execute  = ["./nixie", "${get_working_dir()}/flake", "${get_terragrunt_dir()}/hosts.json"]
   }
 
   after_hook "enroll" {
