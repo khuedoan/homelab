@@ -146,7 +146,7 @@ func TestClientProvisioningAndSecretSync(t *testing.T) {
 	}
 	for range 2 {
 		for name, callback := range f.callbacks {
-			if err := c.ensureClient(ctx, ClientConfig{Name: name, DisplayName: name, RedirectURI: callback, Public: f.public[name]}); err != nil {
+			if err := c.ensureClient(ctx, ClientConfig{Name: name, DisplayName: name, RedirectURIs: []string{callback}, Public: f.public[name], RS256: name == "actualbudget"}); err != nil {
 				t.Fatal(err)
 			}
 		}
@@ -229,6 +229,10 @@ func checkOAuthPatch(t *testing.T, r *http.Request, name, callback string, publi
 		"oauth2_strict_redirect_uri":   {"true"},
 		"oauth2_prefer_short_username": {"true"},
 	}
+	expected["oauth2_jwt_legacy_crypto_enable"] = []string{"false"}
+	if name == "actualbudget" {
+		expected["oauth2_jwt_legacy_crypto_enable"] = []string{"true"}
+	}
 	if !public {
 		expected["oauth2_allow_insecure_client_disable_pkce"] = []string{"false"}
 	}
@@ -255,9 +259,48 @@ func TestClientValidationBeforeClusterAccess(t *testing.T) {
 		{"app", "http://app.example.test/callback"},
 		{"app", "https://user:password@app.example.test/callback"},
 	} {
-		err := EnsureClient(context.Background(), options, ClientConfig{Name: test.name, RedirectURI: test.redirect})
+		err := EnsureClient(context.Background(), options, ClientConfig{Name: test.name, RedirectURIs: []string{test.redirect}})
 		if err == nil || strings.Contains(err.Error(), "kubeconfig") {
 			t.Fatalf("did not reject invalid client configuration first: %v", err)
 		}
+	}
+}
+
+func TestMultipleRedirectURIs(t *testing.T) {
+	var got entry
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == "GET" && strings.HasPrefix(r.URL.Path, "/v1/group/"):
+			_, _ = w.Write([]byte(`{"attrs":{"name":["immich_users"]}}`))
+		case r.Method == "GET":
+			_, _ = w.Write([]byte(`{"attrs":{"class":["oauth2_resource_server_basic"]}}`))
+		case r.Method == "PATCH":
+			if err := json.NewDecoder(r.Body).Decode(&got); err != nil {
+				t.Error(err)
+			}
+		case r.Method == "POST" && strings.Contains(r.URL.Path, "/_scopemap/"):
+			checkScopes(t, r)
+		default:
+			t.Errorf("unexpected request: %s %s", r.Method, r.URL.Path)
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	}))
+	defer server.Close()
+	c := &client{url: server.URL, http: server.Client()}
+	callbacks := []string{"https://photos.example.test/auth/login", "https://photos.example.test/user-settings"}
+	for _, redirects := range [][]string{callbacks, callbacks, callbacks[:1]} {
+		if err := c.ensureClient(context.Background(), ClientConfig{Name: "immich", RedirectURIs: redirects}); err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(got.Attrs["oauth2_rs_origin"], redirects) {
+			t.Fatalf("callbacks: %v", got.Attrs["oauth2_rs_origin"])
+		}
+		if !reflect.DeepEqual(got.Attrs["oauth2_rs_origin_landing"], []string{"https://photos.example.test/auth/login"}) {
+			t.Fatalf("landing: %v", got.Attrs["oauth2_rs_origin_landing"])
+		}
+	}
+	err := EnsureClient(context.Background(), Options{URL: "https://auth.example.test", Kubeconfig: "absent"}, ClientConfig{Name: "immich", RedirectURIs: []string{callbacks[0], "http://photos.example.test/user-settings"}})
+	if err == nil || !strings.Contains(err.Error(), "redirect URI") {
+		t.Fatalf("invalid second callback reached cluster: %v", err)
 	}
 }

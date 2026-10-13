@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os/exec"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -38,20 +39,26 @@ type Options struct {
 
 // ClientConfig describes an application registered with the SSO provider.
 type ClientConfig struct {
-	Name        string
-	DisplayName string
-	RedirectURI string
-	Public      bool
+	Name         string
+	DisplayName  string
+	RedirectURIs []string
+	Public       bool
+	RS256        bool
 }
 
 // EnsureClient provisions a client without rotating its secret or changing group membership.
 func EnsureClient(ctx context.Context, options Options, config ClientConfig) error {
-	name, redirectURI := config.Name, config.RedirectURI
+	name := config.Name
 	if len(validation.IsDNS1123Label(name)) != 0 {
 		return fmt.Errorf("client name must be a lowercase DNS label")
 	}
-	if err := validateURL(redirectURI); err != nil {
-		return fmt.Errorf("redirect URI: %w", err)
+	if len(config.RedirectURIs) == 0 {
+		return fmt.Errorf("at least one redirect URI is required")
+	}
+	for _, uri := range config.RedirectURIs {
+		if err := validateURL(uri); err != nil {
+			return fmt.Errorf("redirect URI: %w", err)
+		}
 	}
 	c, err := connect(ctx, options)
 	if err != nil {
@@ -202,7 +209,7 @@ func (c *client) login(ctx context.Context, password string) error {
 }
 
 func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
-	name, displayName, redirectURI := config.Name, config.DisplayName, config.RedirectURI
+	name, displayName := config.Name, config.DisplayName
 	groupName := name + "_users"
 	var group *entry
 	if err := c.request(ctx, "GET", "/v1/group/"+groupName, nil, &group); err != nil {
@@ -228,11 +235,12 @@ func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
 		return fmt.Errorf("SSO client %s has a different client type", name)
 	}
 	attrs := entry{Attrs: map[string][]string{
-		"displayname":                  {displayName},
-		"oauth2_rs_origin_landing":     {redirectURI},
-		"oauth2_rs_origin":             {redirectURI},
-		"oauth2_strict_redirect_uri":   {"true"},
-		"oauth2_prefer_short_username": {"true"},
+		"displayname":                     {displayName},
+		"oauth2_rs_origin_landing":        {config.RedirectURIs[0]},
+		"oauth2_rs_origin":                config.RedirectURIs,
+		"oauth2_strict_redirect_uri":      {"true"},
+		"oauth2_prefer_short_username":    {"true"},
+		"oauth2_jwt_legacy_crypto_enable": {strconv.FormatBool(config.RS256)},
 	}}
 	if !config.Public {
 		attrs.Attrs["oauth2_allow_insecure_client_disable_pkce"] = []string{"false"}

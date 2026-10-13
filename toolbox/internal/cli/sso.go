@@ -40,9 +40,10 @@ func newSSOCmd() *cobra.Command {
 			return err
 		},
 	}
-	ensure.Flags().StringVar(&config.RedirectURI, "redirect-uri", "", "Application HTTPS callback URI (required)")
+	ensure.Flags().StringArrayVar(&config.RedirectURIs, "redirect-uri", nil, "Application HTTPS callback URI (required; repeat for multiple callbacks)")
 	ensure.Flags().StringVar(&config.DisplayName, "display-name", "", "Client display name (defaults to NAME)")
 	ensure.Flags().BoolVar(&config.Public, "public", false, "Create a public PKCE client without a client secret")
+	ensure.Flags().BoolVar(&config.RS256, "rs256", false, "Sign ID tokens with RS256 for applications that require it")
 	requireFlags(ensure, "redirect-uri")
 	clients.AddCommand(ensure)
 	secretGroup := &cobra.Command{Use: "secrets", Short: "Publish SSO client credentials to OpenBao"}

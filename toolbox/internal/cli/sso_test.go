@@ -24,3 +24,10 @@ func TestSSORequiredArguments(t *testing.T) {
 		t.Fatalf("did not validate the client before cluster access: %v", err)
 	}
 }
+
+func TestRepeatedSSORedirectFlags(t *testing.T) {
+	_, _, err := operationExecute("sso", "--kubeconfig", "absent", "--url", "https://auth.example.test", "client", "ensure", "immich", "--redirect-uri", "http://photos.example.test/auth/login", "--redirect-uri", "https://photos.example.test/user-settings")
+	if err == nil || !strings.Contains(err.Error(), "redirect URI") {
+		t.Fatalf("invalid first callback was lost when parsing repeated flags: %v", err)
+	}
+}
