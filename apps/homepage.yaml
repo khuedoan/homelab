@@ -4,7 +4,9 @@ controllers:
       main:
         image:
           repository: ghcr.io/gethomepage/homepage
-          tag: v0.8.8
+          tag: v2.5.0
+        env:
+          HOMEPAGE_ALLOWED_HOSTS: 'home.{{ .Values.global.domain }}'
 service:
   main:
     controller: main
@@ -61,71 +63,51 @@ configMaps:
             target: _blank
       services.yaml: |
         - Popular:
+          - Actual Budget:
+              href: https://budget.{{ .Values.global.domain }}
+              description: Personal finances
+              icon: actual-budget.svg
+          - PairDrop:
+              href: https://drop.{{ .Values.global.domain }}
+              description: File sharing
+              icon: pairdrop.png
           - Matrix:
-              href: https://chat.khuedoan.com
-              description: Chat client
-              icon: element.svg
-          - Jellyfin:
-              href: https://jellyfin.khuedoan.com
-              description: Media system (movies, music, etc.)
-              icon: jellyfin.svg
-          - Jellyseerr:
-              href: https://jellyseerr.khuedoan.com
-              description: Request media
-              icon: jellyseerr.svg
-          - Paperless:
-              href: https://paperless.khuedoan.com
-              description: Document management system
-              icon: paperless.svg
+              href: https://chat.{{ .Values.global.domain }}
+              description: Encrypted messaging
+              icon: matrix.svg
         - Management:
-          - Transmission:
-              href: https://transmission.khuedoan.com
-              description: Bittorrent client
-              icon: transmission.svg
-          - Prowlarr:
-              href: https://prowlarr.khuedoan.com
-              description: Indexer manager
-              icon: prowlarr.svg
-          - Radarr:
-              href: https://radarr.khuedoan.com
-              description: Movie manager
-              icon: radarr.svg
-          - Sonarr:
-              href: https://sonarr.khuedoan.com
-              description: TV show manager
-              icon: sonarr.svg
-          - Kanidm:
-              href: https://auth.khuedoan.com
+          - SSO:
+              href: https://auth.{{ .Values.global.domain }}
               description: Identity management
-              icon: https://auth.khuedoan.com/pkg/img/logo-square.svg
+              icon: kanidm.svg
+          - OpenBao:
+              href: https://openbao.{{ .Values.global.domain }}
+              description: Secrets management
+              icon: openbao.svg
         - Development:
-          - Gitea:
-              href: https://git.khuedoan.com
+          - Forgejo:
+              href: https://git.{{ .Values.global.domain }}
               description: Git forge
-              icon: gitea.svg
+              icon: forgejo.svg
           - Woodpecker:
-              href: https://ci.khuedoan.com
+              href: https://ci.{{ .Values.global.domain }}
               description: Continuous integration
               icon: woodpecker-ci.svg
           - ArgoCD:
-              href: https://argocd.khuedoan.com
+              href: https://argocd.{{ .Values.global.domain }}
               description: Continuous deployment
-              icon: argocd.svg
+              icon: argo-cd.svg
           - Registry:
-              href: https://registry.khuedoan.com
+              href: https://registry.{{ .Values.global.domain }}
               description: Container registry
               icon: docker.svg
           - Grafana:
-              href: https://grafana.khuedoan.com
+              href: https://grafana.{{ .Values.global.domain }}
               description: Observability dashboards
               icon: grafana.svg
         - Utilities:
-          - Excalidraw:
-              href: https://draw.khuedoan.com
-              description: Virtual whiteboard
-              icon: excalidraw.svg
           - Speedtest:
-              href: https://speedtest.khuedoan.com
+              href: https://speedtest.{{ .Values.global.domain }}
               description: Internal network speed test
               icon: openspeedtest.png
       bookmarks.yaml: |
@@ -140,19 +122,7 @@ configMaps:
           - Cloudflare:
             - href: https://dash.cloudflare.com
               icon: cloudflare.svg
-          - Terraform Cloud:
-            - href: https://app.terraform.io
-              icon: terraform.svg
         - Infrastructure:
           - Router:
             - href: https://192.168.1.1
               icon: router.svg
-          - Proxmox:
-            - href: https://proxmox:8006
-              icon: proxmox.svg
-          - Google Cloud:
-            - href: https://console.cloud.google.com
-              icon: google-cloud-platform.svg
-          - Oracle Cloud:
-            - href: https://cloud.oracle.com
-              icon: oracle-cloud.svg
