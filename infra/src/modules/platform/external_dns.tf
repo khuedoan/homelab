@@ -28,7 +28,7 @@ resource "kubectl_manifest" "external_dns" {
                 }
               }
             }]
-            extraArgs          = ["--annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)", "--zone-id-filter=$(CF_ZONE_ID)"]
+            extraArgs          = ["--annotation-filter=external-dns.kubernetes.io/exclude notin (true)", "--zone-id-filter=$(CF_ZONE_ID)"]
             domainFilters      = [var.domain]
             interval           = "5m"
             policy             = "upsert-only"

@@ -17,7 +17,7 @@ route:
     enabled: true
     kind: HTTPRoute
     annotations:
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: 'true'
+      external-dns.kubernetes.io/cloudflare-proxied: 'true'
     parentRefs:
       - name: public
         namespace: istio-system
