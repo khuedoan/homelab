@@ -40,7 +40,8 @@ resource "kubectl_manifest" "kured" {
               requests = { cpu = "10m", memory = "32Mi" }
               limits   = { memory = "128Mi" }
             }
-
+            metrics = { create = true }
+            service = { create = true }
           })
         }
       }]
