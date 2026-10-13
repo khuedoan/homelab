@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           repository: docker.io/openspeedtest/latest
-          tag: latest
+          tag: v2.0.6
 service:
   main:
     controller: main
