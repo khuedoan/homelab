@@ -18,8 +18,6 @@ inputs = {
     url      = get_env("GITOPS_REPOSITORY_URL", "http://forgejo-http.forgejo:3000/ops/homelab.git")
     revision = get_env("GITOPS_REVISION", "master")
   }
-  # OpenBao derives reader roles from the app catalog, so the platform module
-  # still receives the list of apps.
   apps = [
     for file in fileset("${get_repo_root()}/apps", "*.yaml") :
     trimsuffix(file, ".yaml")
