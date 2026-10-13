@@ -1,15 +1,19 @@
 {
   "homelab-1": {
-    "mac_address": "00:23:24:d1:f5:69"
+    "mac_address": "00:23:24:d1:f5:69",
+    "ip": "192.168.1.110"
   },
   "homelab-2": {
-    "mac_address": "00:23:24:d1:f3:f0"
+    "mac_address": "00:23:24:d1:f3:f0",
+    "ip": "192.168.1.111"
   },
   "homelab-3": {
-    "mac_address": "00:23:24:e7:04:60"
+    "mac_address": "00:23:24:e7:04:60",
+    "ip": "192.168.1.112"
   },
   "homelab-4": {
-    "mac_address": "00:23:24:d1:f4:d6"
+    "mac_address": "00:23:24:d1:f4:d6",
+    "ip": "192.168.1.113"
   },
   "hetzner-1": {
     "ipv6_address": "2a01:4f9:3a:20ef::2",

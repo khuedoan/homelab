@@ -29,15 +29,17 @@ in
     system = "x86_64-linux";
     specialArgs = {
       inherit hostConfig;
+      network = cluster.network;
       k3s = {
         clusterInit = name == initHost;
-        vip         = cluster.vip;
-        nodeIPs     = nixpkgs.lib.mapAttrsToList (_: host: host.ip) hosts;
+        vip = cluster.vip;
+        nodeIPs = nixpkgs.lib.mapAttrsToList (_: host: host.ip) hosts;
       };
     };
     modules = [
       disko.nixosModules.disko
       ./configuration.nix
+      ./profiles/network.nix
       ./profiles/k3s-server.nix
       ./profiles/kube-vip.nix
       ./profiles/rook-ceph.nix
