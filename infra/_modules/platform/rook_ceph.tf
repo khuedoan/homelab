@@ -157,6 +157,14 @@ resource "kubectl_manifest" "rook_ceph" {
                   activeCount       = 1
                   activeStandby     = var.ceph_replica_count > 1
                   priorityClassName = "system-cluster-critical"
+                  placement = {
+                    podAntiAffinity = {
+                      requiredDuringSchedulingIgnoredDuringExecution = [{
+                        labelSelector = { matchLabels = { app = "rook-ceph-mds", rook_file_system = "standard-rwx" } }
+                        topologyKey   = "kubernetes.io/hostname"
+                      }]
+                    }
+                  }
                   resources = {
                     limits = {
                       memory = "4Gi"
