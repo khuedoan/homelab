@@ -18,6 +18,7 @@ func TestCluster(t *testing.T) {
 	t.Run("Networking", func(t *testing.T) { checkNetworking(t, cluster) })
 	t.Run("LoadBalancer", func(t *testing.T) { checkLoadBalancer(t, cluster) })
 	t.Run("Storage", func(t *testing.T) { checkStorage(t, cluster) })
+	t.Run("Snapshots", func(t *testing.T) { checkSnapshots(t, cluster) })
 	t.Run("Registry", func(t *testing.T) { checkRegistry(t, cluster) })
 	t.Run("GitOps", func(t *testing.T) { checkGitOps(t, cluster) })
 	t.Run("Secrets", func(t *testing.T) { checkSecrets(t, cluster) })
