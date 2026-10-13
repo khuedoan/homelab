@@ -13,7 +13,7 @@ resource "kubectl_manifest" "kured" {
       sources = [{
         repoURL        = "https://kubereboot.github.io/charts"
         chart          = "kured"
-        targetRevision = "4.7.0"
+        targetRevision = "6.1.0"
         helm = {
           releaseName = "kured"
           values = yamlencode({
