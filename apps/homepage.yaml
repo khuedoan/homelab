@@ -1,0 +1,134 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/gethomepage/homepage
+          tag: v2.5.0
+        env:
+          HOMEPAGE_ALLOWED_HOSTS: 'home.{{ .Values.global.domain }}'
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 3000
+        protocol: HTTP
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'home.{{ .Values.global.domain }}'
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - identifier: main
+            port: 3000
+persistence:
+  config:
+    enabled: true
+    type: configMap
+    name: homepage-config
+    globalMounts:
+      - path: /app/config/settings.yaml
+        subPath: settings.yaml
+      - path: /app/config/widgets.yaml
+        subPath: widgets.yaml
+      - path: /app/config/services.yaml
+        subPath: services.yaml
+      - path: /app/config/bookmarks.yaml
+        subPath: bookmarks.yaml
+configMaps:
+  config:
+    enabled: true
+    suffix: config
+    data:
+      settings.yaml: |
+        background: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+        cardBlur: md
+        theme: dark
+        headerStyle: boxed
+        hideVersion: true
+      widgets.yaml: |
+        - search:
+            provider: google
+            target: _blank
+      services.yaml: |
+        - Popular:
+          - Actual Budget:
+              href: https://budget.{{ .Values.global.domain }}
+              description: Personal finances
+              icon: actual-budget.svg
+          - PairDrop:
+              href: https://drop.{{ .Values.global.domain }}
+              description: File sharing
+              icon: pairdrop.png
+          - Matrix:
+              href: https://chat.{{ .Values.global.domain }}
+              description: Encrypted messaging
+              icon: matrix.svg
+        - Management:
+          - SSO:
+              href: https://auth.{{ .Values.global.domain }}
+              description: Identity management
+              icon: kanidm.svg
+          - OpenBao:
+              href: https://openbao.{{ .Values.global.domain }}
+              description: Secrets management
+              icon: openbao.svg
+        - Development:
+          - Forgejo:
+              href: https://git.{{ .Values.global.domain }}
+              description: Git forge
+              icon: forgejo.svg
+          - Woodpecker:
+              href: https://ci.{{ .Values.global.domain }}
+              description: Continuous integration
+              icon: woodpecker-ci.svg
+          - ArgoCD:
+              href: https://argocd.{{ .Values.global.domain }}
+              description: Continuous deployment
+              icon: argo-cd.svg
+          - Registry:
+              href: https://registry.{{ .Values.global.domain }}
+              description: Container registry
+              icon: docker.svg
+          - Grafana:
+              href: https://grafana.{{ .Values.global.domain }}
+              description: Observability dashboards
+              icon: grafana.svg
+        - Utilities:
+          - Speedtest:
+              href: https://speedtest.{{ .Values.global.domain }}
+              description: Internal network speed test
+              icon: openspeedtest.png
+      bookmarks.yaml: |
+        - Homelab:
+          - Documentation:
+            - href: https://homelab.khuedoan.com
+              icon: google-docs.svg
+          - Public homelab repository:
+            - href: https://github.com/khuedoan/homelab
+              icon: github.svg
+        - Managed services:
+          - Cloudflare:
+            - href: https://dash.cloudflare.com
+              icon: cloudflare.svg
+        - Infrastructure:
+          - Router:
+            - href: https://192.168.1.1
+              icon: router.svg
