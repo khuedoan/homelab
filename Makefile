@@ -41,6 +41,7 @@ sso:
 	toolbox sso $(sso_args) client ensure forgejo --display-name Forgejo --redirect-uri "https://git.$$domain/user/oauth2/SSO/callback"; \
 	toolbox sso $(sso_args) client ensure argocd --display-name 'Argo CD' --redirect-uri "https://argocd.$$domain/auth/callback"; \
 	toolbox sso $(sso_args) client ensure actualbudget --rs256 --display-name 'Actual Budget' --redirect-uri "https://budget.$$domain/openid/callback"; \
+	toolbox sso $(sso_args) client ensure paperless --display-name Paperless --redirect-uri "https://paperless.$$domain/accounts/oidc/sso/login/callback/"; \
 	toolbox sso $(sso_args) client ensure opencloud --display-name OpenCloud --public --redirect-uri "https://drive.$$domain/" --redirect-uri "https://drive.$$domain/oidc-callback.html" --redirect-uri "https://drive.$$domain/oidc-silent-redirect.html"; \
 	toolbox sso $(sso_args) client ensure zot --display-name Zot --public --redirect-uri "https://registry.$$domain/zot/auth/callback/oidc"; \
 	toolbox sso $(sso_args) client ensure openbao --display-name OpenBao --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"; \

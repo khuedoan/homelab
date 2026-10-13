@@ -185,15 +185,16 @@ resource "kubectl_manifest" "openbao_resources" {
                         type    = "kv"
                         options = { version = "2" }
                         configuration = {
-                          data = [for record, key in {
-                            "forgejo/admin"    = "password"
-                            "zot/admin"        = "password"
-                            "woodpecker/agent" = "secret"
+                          data = [for record, data in {
+                            "forgejo/admin"    = { password = "$${randAlphaNum 32}" }
+                            "zot/admin"        = { password = "$${randAlphaNum 32}" }
+                            "woodpecker/agent" = { secret = "$${randAlphaNum 32}" }
+                            "paperless/admin"  = { password = "$${randAlphaNum 32}", secret_key = "$${randAlphaNum 64}" }
                             } : {
                             name        = record
                             create_only = true
                             options     = { cas = 0 }
-                            data        = { (key) = "$${randAlphaNum 32}" }
+                            data        = data
                           }]
                         }
                       }]
