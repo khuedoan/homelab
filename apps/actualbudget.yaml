@@ -1,11 +1,13 @@
 controllers:
   main:
+    strategy: Recreate
     containers:
       main:
         image:
           repository: docker.io/actualbudget/actual-server
           tag: 26.10.0-alpine
         env:
+          ACTUAL_OPENID_ENFORCE: 'true'
           ACTUAL_OPENID_DISCOVERY_URL: 'https://auth.{{ .Values.global.domain }}/oauth2/openid/actualbudget'
           ACTUAL_OPENID_CLIENT_ID: actualbudget
           ACTUAL_OPENID_SERVER_HOSTNAME: 'https://budget.{{ .Values.global.domain }}'
