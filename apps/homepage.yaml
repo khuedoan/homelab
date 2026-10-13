@@ -7,6 +7,12 @@ controllers:
           tag: v2.5.0
         env:
           HOMEPAGE_ALLOWED_HOSTS: 'home.{{ .Values.global.domain }}'
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
 service:
   main:
     controller: main

@@ -2,6 +2,12 @@ controllers:
   main:
     containers:
       main:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
         image:
           repository: lscr.io/linuxserver/pairdrop
           tag: 1.10.7

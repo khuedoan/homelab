@@ -5,6 +5,12 @@ controllers:
         image:
           repository: docker.io/openspeedtest/latest
           tag: v2.0.6
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
 service:
   main:
     controller: main

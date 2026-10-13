@@ -3,6 +3,12 @@ controllers:
     strategy: Recreate
     containers:
       main:
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
         image:
           repository: docker.io/actualbudget/actual-server
           tag: 26.10.0-alpine
