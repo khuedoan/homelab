@@ -68,7 +68,7 @@ func checkLoadBalancer(t *testing.T, cluster fixture.Cluster) {
 		"metadata": map[string]any{
 			"name": "echo",
 			"annotations": map[string]any{
-				"external-dns.alpha.kubernetes.io/exclude": "true",
+				"external-dns.kubernetes.io/exclude": "true",
 			},
 		},
 		"spec": map[string]any{

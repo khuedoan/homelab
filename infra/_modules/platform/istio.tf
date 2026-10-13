@@ -107,7 +107,7 @@ resource "kubectl_manifest" "istio_resources" {
                   kind       = "Gateway"
                   metadata = {
                     namespace   = "istio-system"
-                    annotations = { "external-dns.alpha.kubernetes.io/target" = "${var.resource_prefix}-tunnel.${var.domain}" }
+                    annotations = { "external-dns.kubernetes.io/target" = "${var.resource_prefix}-tunnel.${var.domain}" }
                   }
                   spec = {
                     gatewayClassName = "istio"
