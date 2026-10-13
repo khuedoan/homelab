@@ -20,5 +20,6 @@ func TestCluster(t *testing.T) {
 	t.Run("Storage", func(t *testing.T) { checkStorage(t, cluster) })
 	t.Run("Registry", func(t *testing.T) { checkRegistry(t, cluster) })
 	t.Run("GitOps", func(t *testing.T) { checkGitOps(t, cluster) })
+	t.Run("Secrets", func(t *testing.T) { checkSecrets(t, cluster) })
 	t.Run("Apps", func(t *testing.T) { checkApps(t, cluster) })
 }
