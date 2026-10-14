@@ -29,6 +29,12 @@ resource "kubectl_manifest" "forgejo" {
                 existingSecret  = "forgejo-sso"
                 autoDiscoverUrl = "https://auth.${var.domain}/oauth2/openid/forgejo/.well-known/openid-configuration"
                 scopes          = "openid,profile,email,groups"
+                groupClaimName  = "groups"
+                adminGroup      = "admins@auth.${var.domain}"
+                groupTeamMap = jsonencode({
+                  "developers@auth.${var.domain}" = { ops = ["developers"] }
+                })
+                groupTeamMapRemoval = true
               }]
               config = {
                 database      = { DB_TYPE = "sqlite3" }
