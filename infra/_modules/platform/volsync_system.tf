@@ -17,6 +17,7 @@ resource "kubectl_manifest" "volsync_system" {
         helm = {
           releaseName = "volsync-system"
           values = yamlencode({
+            metrics = { disableAuth = true }
             # TODO: Revisit resource sizing after measuring usage.
             resources = { requests = { cpu = "10m", memory = "64Mi" } }
           })
