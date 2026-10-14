@@ -18,7 +18,7 @@ resource "kubectl_manifest" "forgejo" {
           releaseName = "forgejo"
           values = yamlencode({
             fullnameOverride = "forgejo"
-            image            = { tag = "16.0.5" }
+            image            = { tag = "16.0.6" }
             # TODO: Revisit resource sizing after measuring usage.
             resources = { requests = { cpu = "50m", memory = "128Mi" } }
             gitea = {
