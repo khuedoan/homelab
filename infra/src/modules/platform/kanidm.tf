@@ -44,6 +44,14 @@ EOT
                       repository = "docker.io/kanidm/server"
                       tag        = "1.11.2"
                     }
+                    probes = {
+                      readiness = {
+                        enabled = true
+                        type    = "HTTPS"
+                        path    = "/status"
+                        port    = 443
+                      }
+                    }
                     # TODO: Revisit resource sizing after measuring usage.
                     resources = { requests = { cpu = "50m", memory = "128Mi" } }
                   }
