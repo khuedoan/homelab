@@ -30,7 +30,7 @@ func newSSOCmd() *cobra.Command {
 		Long: "Ensure the client settings and access group exist without rotating its secret or changing group membership. Requires kubectl on PATH. Credentials are published separately with sso secrets sync.",
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
+			ctx, cancel := context.WithTimeout(cmd.Context(), 20*time.Minute)
 			defer cancel()
 			config.Name = args[0]
 			if err := kanidm.EnsureClient(ctx, options, config); err != nil {
@@ -52,7 +52,7 @@ func newSSOCmd() *cobra.Command {
 		Long: "Read client IDs and existing secrets from Kanidm and publish client_id and client_secret fields to NAME/sso. Does not create or change clients. Unchanged OpenBao records retain their versions. Requires kubectl on PATH. Secret values are never printed.",
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			ctx, cancel := context.WithTimeout(cmd.Context(), 5*time.Minute)
+			ctx, cancel := context.WithTimeout(cmd.Context(), 20*time.Minute)
 			defer cancel()
 			if err := kanidm.SyncSecrets(ctx, options); err != nil {
 				return err

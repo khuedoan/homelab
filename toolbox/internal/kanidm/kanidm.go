@@ -92,13 +92,16 @@ func connect(ctx context.Context, options Options) (*client, error) {
 	if err := validateURL(options.URL); err != nil {
 		return nil, fmt.Errorf("kanidm URL: %w", err)
 	}
+	if options.Kubeconfig == "" {
+		return nil, fmt.Errorf("an explicit kubeconfig path is required")
+	}
+	ready := exec.CommandContext(ctx, "kubectl", "--kubeconfig", options.Kubeconfig, "wait", "--namespace", "kanidm", "--for=create", "--for=condition=Ready", "pod/kanidm-0", "--timeout=15m")
+	if err := ready.Run(); err != nil {
+		return nil, fmt.Errorf("wait for Kanidm readiness failed")
+	}
 	credentials, err := secrets.Read(ctx, options.Kubeconfig, "kanidm/idm-admin")
 	if err != nil {
 		return nil, err
-	}
-	ready := exec.CommandContext(ctx, "kubectl", "--kubeconfig", options.Kubeconfig, "wait", "--namespace", "kanidm", "--for=condition=Ready", "pod/kanidm-0", "--timeout=15m")
-	if err := ready.Run(); err != nil {
-		return nil, fmt.Errorf("wait for Kanidm readiness failed")
 	}
 	password := credentials["password"]
 	if password == "" {

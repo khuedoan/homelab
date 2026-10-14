@@ -1,8 +1,15 @@
 package cli
 
 import (
+	"io"
+	"net/http"
+	"path/filepath"
 	"strings"
 	"testing"
+	"time"
+
+	"k8s.io/client-go/tools/clientcmd"
+	clientapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
 func TestSSORequiredArguments(t *testing.T) {
@@ -30,4 +37,36 @@ func TestRepeatedSSORedirectFlags(t *testing.T) {
 	if err == nil || !strings.Contains(err.Error(), "redirect URI") {
 		t.Fatalf("invalid first callback was lost when parsing repeated flags: %v", err)
 	}
+}
+
+func TestSSODeadlineAllowsReadinessAndOperation(t *testing.T) {
+	dir := t.TempDir()
+	config := clientapi.Config{CurrentContext: "test", Clusters: map[string]*clientapi.Cluster{"test": {Server: "http://kubernetes.example.test"}}, AuthInfos: map[string]*clientapi.AuthInfo{"test": {}}, Contexts: map[string]*clientapi.Context{"test": {Cluster: "test", AuthInfo: "test"}}}
+	kubeconfig := filepath.Join(dir, "kubeconfig")
+	if err := clientcmd.WriteToFile(config, kubeconfig); err != nil {
+		t.Fatal(err)
+	}
+	operationFake(t, "kubectl", "exit 0\n")
+	original := http.DefaultTransport
+	http.DefaultTransport = ssoDeadlineTransport{t: t}
+	t.Cleanup(func() { http.DefaultTransport = original })
+	for _, args := range [][]string{
+		{"client", "ensure", "grafana", "--redirect-uri", "https://grafana.example.test/login/generic_oauth"},
+		{"secrets", "sync"},
+	} {
+		_, _, err := operationExecute(append([]string{"sso", "--kubeconfig", kubeconfig, "--url", "https://auth.example.test"}, args...)...)
+		if err == nil || !strings.Contains(err.Error(), "bootstrap credentials") {
+			t.Fatalf("expected the readiness probe to stop at unavailable OpenBao credentials: %v", err)
+		}
+	}
+}
+
+type ssoDeadlineTransport struct{ t *testing.T }
+
+func (transport ssoDeadlineTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	deadline, ok := request.Context().Deadline()
+	if !ok || time.Until(deadline) <= 15*time.Minute {
+		transport.t.Errorf("SSO operation cannot outlast its 15-minute Kanidm readiness wait: deadline in %s", time.Until(deadline))
+	}
+	return &http.Response{StatusCode: http.StatusForbidden, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(`{"kind":"Status","apiVersion":"v1","status":"Failure","reason":"Forbidden","code":403}`)), Request: request}, nil
 }
