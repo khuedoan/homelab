@@ -189,7 +189,6 @@ resource "kubectl_manifest" "openbao_resources" {
                             "forgejo/admin"    = { password = "$${randAlphaNum 32}" }
                             "zot/admin"        = { password = "$${randAlphaNum 32}" }
                             "woodpecker/agent" = { secret = "$${randAlphaNum 32}" }
-                            "paperless/admin"  = { password = "$${randAlphaNum 32}", secret_key = "$${randAlphaNum 64}" }
                             } : {
                             name        = record
                             create_only = true
