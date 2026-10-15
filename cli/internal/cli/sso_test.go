@@ -48,6 +48,15 @@ func TestRepeatedSSORedirectFlags(t *testing.T) {
 	}
 }
 
+func TestSSOClaimValidationBeforeClusterAccess(t *testing.T) {
+	for _, mapping := range []string{"immich_role", "immich_role:users", "immich_role:../admins=admin", "immich_role:admins=", "invalid/name:admins=admin"} {
+		_, _, err := operationExecute("sso", "--kubeconfig", "absent", "--url", "https://auth.example.test", "client", "ensure", "immich", "--redirect-uri", "https://photos.example.test/auth/login", "--claim", "immich_role:users=user", "--claim", mapping)
+		if err == nil || !strings.Contains(err.Error(), "claim mapping") {
+			t.Fatalf("invalid claim %q reached cluster access: %v", mapping, err)
+		}
+	}
+}
+
 func TestSSODeadlineAllowsReadinessAndOperation(t *testing.T) {
 	dir := t.TempDir()
 	config := clientapi.Config{CurrentContext: "test", Clusters: map[string]*clientapi.Cluster{"test": {Server: "http://kubernetes.example.test"}}, AuthInfos: map[string]*clientapi.AuthInfo{"test": {}}, Contexts: map[string]*clientapi.Context{"test": {Cluster: "test", AuthInfo: "test"}}}

@@ -46,9 +46,18 @@ type ClientConfig struct {
 	RedirectURIs []string
 	Public       bool
 	RS256        bool
+	Claims       []ClaimMapping
+}
+
+// ClaimMapping assigns a claim value to members of an existing group.
+type ClaimMapping struct {
+	Name  string
+	Group string
+	Value string
 }
 
 var groupNamePattern = regexp.MustCompile(`^[a-z][a-z0-9_.-]{0,63}$`)
+var claimNamePattern = regexp.MustCompile(`^[0-9a-zA-Z_]+([:\-][0-9a-zA-Z_]+)*$`)
 
 // EnsureGroup creates a group without changing its members.
 func EnsureGroup(ctx context.Context, options Options, name string) error {
@@ -77,6 +86,11 @@ func EnsureClient(ctx context.Context, options Options, config ClientConfig) err
 	for _, uri := range config.RedirectURIs {
 		if err := validateURL(uri); err != nil {
 			return fmt.Errorf("redirect URI: %w", err)
+		}
+	}
+	for _, claim := range config.Claims {
+		if !claimNamePattern.MatchString(claim.Name) || !groupNamePattern.MatchString(claim.Group) || strings.TrimSpace(claim.Value) == "" {
+			return fmt.Errorf("claim mapping requires a valid claim name, group name, and nonempty value")
 		}
 	}
 	c, err := connect(ctx, options)
@@ -304,6 +318,11 @@ func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
 	}
 	for _, previous := range previousGroups {
 		if err := c.request(ctx, "DELETE", "/v1/oauth2/"+name+"/_scopemap/"+url.PathEscape(previous), nil, nil); err != nil {
+			return err
+		}
+	}
+	for _, claim := range config.Claims {
+		if err := c.request(ctx, "POST", "/v1/oauth2/"+name+"/_claimmap/"+url.PathEscape(claim.Name)+"/"+claim.Group, []string{claim.Value}, nil); err != nil {
 			return err
 		}
 	}

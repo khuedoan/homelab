@@ -371,3 +371,45 @@ func TestClientRejectsInvalidAccessGroup(t *testing.T) {
 		t.Fatalf("invalid group reached cluster access: %v", err)
 	}
 }
+
+func TestClientClaimMappings(t *testing.T) {
+	mappings := map[string][]string{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == "GET" && r.URL.Path == "/v1/group/users":
+			_, _ = w.Write([]byte(`{"attrs":{"name":["users"]}}`))
+		case r.Method == "GET" && r.URL.Path == "/v1/oauth2/immich":
+			_, _ = w.Write([]byte(`{"attrs":{"class":["oauth2_resource_server_basic"]}}`))
+		case r.Method == "PATCH" && r.URL.Path == "/v1/oauth2/immich":
+		case r.Method == "POST" && r.URL.Path == "/v1/oauth2/immich/_scopemap/users":
+			checkScopes(t, r)
+		case r.Method == "POST" && strings.HasPrefix(r.URL.Path, "/v1/oauth2/immich/_claimmap/immich_role/"):
+			var values []string
+			if err := json.NewDecoder(r.Body).Decode(&values); err != nil {
+				t.Error(err)
+			}
+			mappings[r.URL.Path] = values
+		default:
+			t.Errorf("unexpected request: %s %s", r.Method, r.URL.Path)
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	}))
+	defer server.Close()
+	c := &client{url: server.URL, http: server.Client()}
+	config := ClientConfig{Name: "immich", RedirectURIs: []string{"https://photos.example.test/auth/login"}, Claims: []ClaimMapping{
+		{Name: "immich_role", Group: "users", Value: "user"},
+		{Name: "immich_role", Group: "admins", Value: "admin"},
+	}}
+	for range 2 {
+		if err := c.ensureClient(t.Context(), config); err != nil {
+			t.Fatal(err)
+		}
+	}
+	want := map[string][]string{
+		"/v1/oauth2/immich/_claimmap/immich_role/users":  {"user"},
+		"/v1/oauth2/immich/_claimmap/immich_role/admins": {"admin"},
+	}
+	if !reflect.DeepEqual(mappings, want) {
+		t.Fatalf("claim mappings: got %v, want %v", mappings, want)
+	}
+}

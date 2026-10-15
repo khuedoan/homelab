@@ -38,6 +38,7 @@ func newSSOCmd() *cobra.Command {
 		},
 	})
 	var config kanidm.ClientConfig
+	var claims []string
 	clients := &cobra.Command{Use: "client", Short: "Manage SSO clients"}
 	ensure := &cobra.Command{
 		Use: "ensure NAME", Short: "Create or update an SSO client",
@@ -47,6 +48,15 @@ func newSSOCmd() *cobra.Command {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 20*time.Minute)
 			defer cancel()
 			config.Name = args[0]
+			config.Claims = nil
+			for _, mapping := range claims {
+				assignment, value, assigned := strings.Cut(mapping, "=")
+				separator := strings.LastIndex(assignment, ":")
+				if separator < 0 || !assigned {
+					return fmt.Errorf("claim mapping must use NAME:GROUP=VALUE")
+				}
+				config.Claims = append(config.Claims, kanidm.ClaimMapping{Name: assignment[:separator], Group: assignment[separator+1:], Value: value})
+			}
 			if err := kanidm.EnsureClient(ctx, options, config); err != nil {
 				return err
 			}
@@ -59,6 +69,7 @@ func newSSOCmd() *cobra.Command {
 	ensure.Flags().StringVar(&config.Group, "group", "users", "Existing login access group")
 	ensure.Flags().BoolVar(&config.Public, "public", false, "Create a public PKCE client without a client secret")
 	ensure.Flags().BoolVar(&config.RS256, "rs256", false, "Sign ID tokens with RS256 for applications that require it")
+	ensure.Flags().StringArrayVar(&claims, "claim", nil, "Set a group claim mapping as NAME:GROUP=VALUE (repeat; other mappings are retained)")
 	requireFlags(ensure, "redirect-uri")
 	clients.AddCommand(ensure)
 	secretGroup := &cobra.Command{Use: "secrets", Short: "Publish SSO client credentials to OpenBao"}
