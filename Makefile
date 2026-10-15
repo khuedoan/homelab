@@ -45,6 +45,7 @@ sso:
 	lab sso $(sso_args) client ensure argocd --display-name 'Argo CD' --redirect-uri "https://argocd.$$domain/auth/callback"; \
 	lab sso $(sso_args) client ensure actualbudget --rs256 --display-name 'Actual Budget' --redirect-uri "https://budget.$$domain/openid/callback"; \
 	lab sso $(sso_args) client ensure matrix --display-name Matrix --redirect-uri "https://matrix.$$domain/_matrix/client/unstable/login/sso/callback/matrix"; \
+	lab sso $(sso_args) client ensure immich --display-name Immich --redirect-uri "https://photos.$$domain/auth/login" --redirect-uri "https://photos.$$domain/user-settings" --redirect-uri "https://photos.$$domain/api/oauth/mobile-redirect" --claim immich_role:users=user --claim immich_role:admins=admin; \
 	lab sso $(sso_args) client ensure opencloud --display-name OpenCloud --public --redirect-uri "https://drive.$$domain/" --redirect-uri "https://drive.$$domain/oidc-callback.html" --redirect-uri "https://drive.$$domain/oidc-silent-redirect.html"; \
 	lab sso $(sso_args) client ensure zot --display-name Zot --public --redirect-uri "https://registry.$$domain/zot/auth/callback/oidc"; \
 	lab sso $(sso_args) client ensure openbao --group admins --display-name OpenBao --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"; \
