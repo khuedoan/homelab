@@ -32,7 +32,7 @@ resource "kubectl_manifest" "argocd_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "argocd" }
+      destination       = { name = "in-cluster", namespace = "argocd" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

@@ -42,7 +42,7 @@ resource "kubectl_manifest" "kiali" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "kiali" }
+      destination       = { name = "in-cluster", namespace = "kiali" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -98,7 +98,7 @@ resource "kubectl_manifest" "kiali_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "kiali" }
+      destination       = { name = "in-cluster", namespace = "kiali" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

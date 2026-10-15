@@ -53,7 +53,7 @@ resource "kubectl_manifest" "istio" {
           })
         }
       }]
-      destination = { server = "https://kubernetes.default.svc", namespace = "istio-system" }
+      destination = { name = "in-cluster", namespace = "istio-system" }
       ignoreDifferences = concat(local.ignore_differences, [
         for name in ["istio-validator-istio-system", "istiod-default-validator"] : {
           group             = "admissionregistration.k8s.io"
@@ -153,7 +153,7 @@ resource "kubectl_manifest" "istio_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "istio-system" }
+      destination       = { name = "in-cluster", namespace = "istio-system" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

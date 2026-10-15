@@ -37,7 +37,7 @@ resource "kubectl_manifest" "cert_manager" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "cert-manager" }
+      destination       = { name = "in-cluster", namespace = "cert-manager" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -123,7 +123,7 @@ resource "kubectl_manifest" "cert_manager_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "cert-manager" }
+      destination       = { name = "in-cluster", namespace = "cert-manager" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

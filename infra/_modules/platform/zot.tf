@@ -70,7 +70,7 @@ resource "kubectl_manifest" "zot" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "zot" }
+      destination       = { name = "in-cluster", namespace = "zot" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -114,7 +114,7 @@ resource "kubectl_manifest" "zot_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "zot" }
+      destination       = { name = "in-cluster", namespace = "zot" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

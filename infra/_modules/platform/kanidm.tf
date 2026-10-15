@@ -126,7 +126,7 @@ EOT
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "kanidm" }
+      destination       = { name = "in-cluster", namespace = "kanidm" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -195,7 +195,7 @@ resource "kubectl_manifest" "kanidm_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "kanidm" }
+      destination       = { name = "in-cluster", namespace = "kanidm" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

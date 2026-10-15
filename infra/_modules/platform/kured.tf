@@ -45,7 +45,7 @@ resource "kubectl_manifest" "kured" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "kured" }
+      destination       = { name = "in-cluster", namespace = "kured" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

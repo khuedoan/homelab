@@ -23,7 +23,7 @@ resource "kubectl_manifest" "volsync_system" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "volsync-system" }
+      destination       = { name = "in-cluster", namespace = "volsync-system" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

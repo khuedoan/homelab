@@ -215,7 +215,7 @@ resource "kubectl_manifest" "rook_ceph" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "rook-ceph" }
+      destination       = { name = "in-cluster", namespace = "rook-ceph" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

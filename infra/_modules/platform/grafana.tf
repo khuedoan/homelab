@@ -72,7 +72,7 @@ resource "kubectl_manifest" "grafana" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "grafana" }
+      destination       = { name = "in-cluster", namespace = "grafana" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -115,7 +115,7 @@ resource "kubectl_manifest" "grafana_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "grafana" }
+      destination       = { name = "in-cluster", namespace = "grafana" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

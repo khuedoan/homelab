@@ -35,7 +35,7 @@ resource "kubectl_manifest" "loki" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "loki" }
+      destination       = { name = "in-cluster", namespace = "loki" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

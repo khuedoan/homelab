@@ -37,7 +37,7 @@ func checkGitOps(t *testing.T, cluster fixture.Cluster) {
 					"image":            map[string]any{"repository": "docker.io/library/nginx", "tag": "1.28.0"},
 				}},
 			},
-			"destination": map[string]any{"server": "https://kubernetes.default.svc", "namespace": namespace},
+			"destination": map[string]any{"name": "in-cluster", "namespace": namespace},
 			"syncPolicy":  map[string]any{"automated": map[string]any{"prune": true, "selfHeal": true}},
 		},
 	}}, metav1.CreateOptions{})

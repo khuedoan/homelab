@@ -47,7 +47,7 @@ resource "kubectl_manifest" "woodpecker" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "woodpecker" }
+      destination       = { name = "in-cluster", namespace = "woodpecker" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -117,7 +117,7 @@ resource "kubectl_manifest" "woodpecker_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "woodpecker" }
+      destination       = { name = "in-cluster", namespace = "woodpecker" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
