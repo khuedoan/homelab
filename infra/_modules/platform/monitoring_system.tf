@@ -41,17 +41,49 @@ resource "kubectl_manifest" "monitoring_system" {
           values = yamlencode({
             alertmanager = {
               alertmanagerSpec = {
+                secrets = ["ntfy-auth"]
                 # TODO: Revisit resource sizing after measuring usage.
                 resources = { requests = { cpu = "10m", memory = "64Mi" } }
               }
               config = {
-                receivers = [{ name = "null" }]
+                receivers = [{
+                  name = "ntfy"
+                  webhook_configs = [{
+                    url = "http://ntfy.monitoring-system/alerts?template=alertmanager"
+                    http_config = {
+                      authorization = { credentials_file = "/etc/alertmanager/secrets/ntfy-auth/token" }
+                    }
+                  }]
+                  }, {
+                  name = "ntfy-watchdog"
+                  webhook_configs = [{
+                    url           = "http://ntfy.monitoring-system/"
+                    send_resolved = false
+                    http_config = {
+                      authorization = { credentials_file = "/etc/alertmanager/secrets/ntfy-auth/token" }
+                    }
+                    payload = jsonencode({
+                      topic       = "alerts"
+                      title       = "Monitoring heartbeat missing"
+                      message     = "Watchdog heartbeats stopped for ${var.domain}"
+                      delay       = "15m"
+                      sequence_id = "watchdog"
+                    })
+                  }]
+                }]
                 route = {
                   group_by        = ["namespace"]
                   group_interval  = "5m"
                   group_wait      = "30s"
-                  receiver        = "null"
+                  receiver        = "ntfy"
                   repeat_interval = "12h"
+                  routes = [{
+                    matchers        = ["alertname = Watchdog"]
+                    receiver        = "ntfy-watchdog"
+                    group_wait      = "0s"
+                    group_interval  = "1m"
+                    repeat_interval = "5m"
+                  }]
                 }
               }
             }

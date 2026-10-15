@@ -186,9 +186,13 @@ resource "kubectl_manifest" "openbao_resources" {
                         options = { version = "2" }
                         configuration = {
                           data = [for record, data in {
-                            "forgejo/admin"    = { password = "$${randAlphaNum 32}" }
-                            "immich/database"  = { password = "$${randAlphaNum 32}" }
-                            "kiali/session"    = { signing_key = "$${randAlphaNum 32}" }
+                            "forgejo/admin"   = { password = "$${randAlphaNum 32}" }
+                            "immich/database" = { password = "$${randAlphaNum 32}" }
+                            "kiali/session"   = { signing_key = "$${randAlphaNum 32}" }
+                            "monitoring-system/ntfy" = {
+                              password_hash = "$${bcrypt (randAlphaNum 32)}"
+                              token         = "tk_$${randAlphaNum 29}"
+                            }
                             "zot/admin"        = { password = "$${randAlphaNum 32}" }
                             "woodpecker/agent" = { secret = "$${randAlphaNum 32}" }
                             } : {
