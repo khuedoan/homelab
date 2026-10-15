@@ -89,6 +89,22 @@ resource "kubectl_manifest" "monitoring_system" {
               serviceMonitor = local.control_plane_service_monitors.kubelet
             }
             prometheus = {
+              additionalPodMonitors = [{
+                name              = "ztunnel"
+                namespaceSelector = { matchNames = ["istio-system"] }
+                selector          = { matchLabels = { app = "ztunnel" } }
+                podTargetLabels   = ["app"]
+                podMetricsEndpoints = [{
+                  port = "ztunnel-stats"
+                  path = "/stats/prometheus"
+                }]
+              }]
+              additionalServiceMonitors = [{
+                name              = "istiod"
+                namespaceSelector = { matchNames = ["istio-system"] }
+                selector          = { matchLabels = { app = "istiod" } }
+                endpoints         = [{ port = "http-monitoring" }]
+              }]
               prometheusSpec = {
                 ruleSelectorNilUsesHelmValues           = false
                 serviceMonitorSelectorNilUsesHelmValues = false
