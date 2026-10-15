@@ -14,16 +14,36 @@ locals {
 }
 
 remote_state {
-  backend = "http"
+  backend                         = "s3"
+  disable_init                    = true
+  disable_dependency_optimization = true
   generate = {
     path      = "backend.tf"
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    address       = "https://api.cloudflare.com/client/v4/accounts/${local.r2_account_id}/r2/buckets/${local.state_bucket}/objects/${local.state_key}/tfstate.json"
-    update_method = "PUT"
-    headers       = { Authorization = "Bearer ${local.access_token}" }
+    bucket                      = local.state_bucket
+    key                         = "${local.state_key}/tfstate.json"
+    region                      = "auto"
+    endpoints                   = { s3 = "https://${local.r2_account_id}.r2.cloudflarestorage.com" }
+    use_lockfile                = true
+    profile                     = "r2-state"
+    shared_config_files         = ["./r2-state.config"]
+    skip_credentials_validation = true
+    skip_region_validation      = true
+    skip_requesting_account_id  = true
+    skip_metadata_api_check     = true
+    skip_s3_checksum            = true
   }
+}
+
+generate "r2_credentials" {
+  path      = "r2-state.config"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<-EOF
+    [profile r2-state]
+    credential_process = lab infra state credentials --account-id ${local.r2_account_id} --bucket ${local.state_bucket}
+  EOF
 }
 
 terraform {
@@ -45,11 +65,6 @@ terraform {
       "--environment", local.env,
       "--output", local.kubeconfig,
     ]
-  }
-
-  extra_arguments "backend_credentials" {
-    commands  = ["init"]
-    arguments = ["-reconfigure"]
   }
 
   before_hook "bootstrap_tfstate" {
