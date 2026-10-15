@@ -23,11 +23,25 @@ func newSSOCmd() *cobra.Command {
 	if err := group.MarkPersistentFlagRequired("url"); err != nil {
 		panic(err)
 	}
+	groups := &cobra.Command{Use: "group", Short: "Manage SSO access groups"}
+	groups.AddCommand(&cobra.Command{
+		Use: "ensure NAME", Short: "Create a group without changing membership",
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx, cancel := context.WithTimeout(cmd.Context(), 20*time.Minute)
+			defer cancel()
+			if err := kanidm.EnsureGroup(ctx, options, args[0]); err != nil {
+				return err
+			}
+			_, err := fmt.Fprintf(cmd.OutOrStdout(), "SSO group %s is ready.\n", args[0])
+			return err
+		},
+	})
 	var config kanidm.ClientConfig
 	clients := &cobra.Command{Use: "client", Short: "Manage SSO clients"}
 	ensure := &cobra.Command{
-		Use: "ensure NAME", Short: "Create or update a client and its NAME_users access group",
-		Long: "Ensure the client settings and access group exist without rotating its secret or changing group membership. Requires kubectl on PATH. Credentials are published separately with sso secrets sync.",
+		Use: "ensure NAME", Short: "Create or update an SSO client",
+		Long: "Ensure the client settings without rotating its secret. The login access group must already exist. Requires kubectl on PATH. Credentials are published separately with sso secrets sync.",
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 20*time.Minute)
@@ -42,6 +56,7 @@ func newSSOCmd() *cobra.Command {
 	}
 	ensure.Flags().StringArrayVar(&config.RedirectURIs, "redirect-uri", nil, "Application HTTPS callback URI (required; repeat for multiple callbacks)")
 	ensure.Flags().StringVar(&config.DisplayName, "display-name", "", "Client display name (defaults to NAME)")
+	ensure.Flags().StringVar(&config.Group, "group", "users", "Existing login access group")
 	ensure.Flags().BoolVar(&config.Public, "public", false, "Create a public PKCE client without a client secret")
 	ensure.Flags().BoolVar(&config.RS256, "rs256", false, "Sign ID tokens with RS256 for applications that require it")
 	requireFlags(ensure, "redirect-uri")
@@ -80,6 +95,6 @@ func newSSOCmd() *cobra.Command {
 	configure.Flags().StringVar(&callback, "redirect-uri", "", "OpenBao HTTPS UI callback URI (required)")
 	requireFlags(configure, "redirect-uri")
 	openbao.AddCommand(configure)
-	group.AddCommand(clients, secretGroup, openbao)
+	group.AddCommand(groups, clients, secretGroup, openbao)
 	return group
 }

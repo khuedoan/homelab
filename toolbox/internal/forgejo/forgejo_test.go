@@ -55,6 +55,8 @@ func TestOAuthSyncPreservesCredentialsAndRepairsMissingSecret(t *testing.T) {
 
 func TestGitOpsCreatesOnlyMissingResources(t *testing.T) {
 	org, repo := false, false
+	var team *sdk.Team
+	assigned := false
 	creates := 0
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -91,6 +93,28 @@ func TestGitOpsCreatesOnlyMissingResources(t *testing.T) {
 			repo = true
 			creates++
 			_, _ = w.Write([]byte(`{}`))
+		case "GET /api/v1/orgs/ops/teams":
+			teams := []*sdk.Team{}
+			if team != nil {
+				teams = append(teams, team)
+			}
+			_ = json.NewEncoder(w).Encode(teams)
+		case "POST /api/v1/orgs/ops/teams", "PATCH /api/v1/teams/7":
+			var input sdk.CreateTeamOption
+			if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+				t.Fatal(err)
+			}
+			if input.Name != "developers" || input.Permission != sdk.AccessModeWrite || input.CanCreateOrgRepo || input.IncludesAllRepositories || !reflect.DeepEqual(input.UnitsMap, map[string]string{"repo.code": "write", "repo.pulls": "write"}) {
+				t.Errorf("unexpected developer team permissions: %+v", input)
+			}
+			team = &sdk.Team{ID: 7, Name: input.Name, Permission: input.Permission, UnitsMap: input.UnitsMap}
+			if r.Method == "POST" {
+				creates++
+			}
+			_ = json.NewEncoder(w).Encode(team)
+		case "PUT /api/v1/teams/7/repos/ops/homelab":
+			assigned = true
+			w.WriteHeader(http.StatusNoContent)
 		default:
 			t.Errorf("unexpected request %s %s", r.Method, r.URL.Path)
 			w.WriteHeader(500)
@@ -103,8 +127,8 @@ func TestGitOpsCreatesOnlyMissingResources(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if creates != 2 {
-		t.Fatalf("created %d resources; want 2", creates)
+	if creates != 3 || !assigned {
+		t.Fatalf("created %d resources; want 3 and GitOps repository assignment", creates)
 	}
 }
 
@@ -164,4 +188,52 @@ func testClient(t *testing.T, server *httptest.Server) *sdk.Client {
 		t.Fatal(err)
 	}
 	return c
+}
+
+func TestDeveloperTeamLookupFailureDoesNotGrantAccess(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("mutated permissions after failed lookup: %s", r.Method)
+		}
+		w.WriteHeader(http.StatusForbidden)
+	}))
+	defer server.Close()
+	if err := syncDevelopers(testClient(t, server)); err == nil {
+		t.Fatal("ignored denied team lookup")
+	}
+}
+
+func TestDeveloperTeamFoundOnLaterPage(t *testing.T) {
+	pages := []string{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.Method + " " + r.URL.Path {
+		case "GET /api/v1/orgs/ops/teams":
+			page := r.URL.Query().Get("page")
+			pages = append(pages, page)
+			if page == "1" {
+				teams := make([]sdk.Team, 50)
+				for i := range teams {
+					teams[i] = sdk.Team{ID: int64(i + 20), Name: fmt.Sprintf("other-%d", i)}
+				}
+				_ = json.NewEncoder(w).Encode(teams)
+			} else {
+				_, _ = w.Write([]byte(`[{"id":7,"name":"developers"}]`))
+			}
+		case "PATCH /api/v1/teams/7":
+			_, _ = w.Write([]byte(`{"id":7,"name":"developers"}`))
+		case "PUT /api/v1/teams/7/repos/ops/homelab":
+			w.WriteHeader(http.StatusNoContent)
+		default:
+			t.Errorf("unexpected request %s %s", r.Method, r.URL.Path)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+	}))
+	defer server.Close()
+	if err := syncDevelopers(testClient(t, server)); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(pages, []string{"1", "2"}) {
+		t.Fatalf("pages: %v", pages)
+	}
 }

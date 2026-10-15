@@ -14,6 +14,7 @@ import (
 type fakeProvider struct {
 	t                  *testing.T
 	groups             map[string]bool
+	scopeGroups        map[string]string
 	clients            map[string]entry
 	callbacks          map[string]string
 	public             map[string]bool
@@ -66,9 +67,6 @@ func (f *fakeProvider) groupRequest(w http.ResponseWriter, r *http.Request) {
 		var group entry
 		_ = json.NewDecoder(r.Body).Decode(&group)
 		name := group.Attrs["name"][0]
-		if _, ok := f.callbacks[strings.TrimSuffix(name, "_users")]; !ok {
-			f.t.Errorf("unexpected group %s", name)
-		}
 		f.groups[name] = true
 		f.creates++
 
@@ -114,8 +112,29 @@ func (f *fakeProvider) clientRequest(w http.ResponseWriter, r *http.Request) {
 		}
 	case r.Method == "PATCH" && len(parts) == 1:
 		checkOAuthPatch(f.t, r, name, f.callbacks[name], f.public[name])
-	case r.Method == "POST" && len(parts) == 3 && parts[1] == "_scopemap" && parts[2] == name+"_users":
+	case r.Method == "POST" && len(parts) == 3 && parts[1] == "_scopemap":
+		f.scopeGroups[name] = parts[2]
+		client := f.clients[name]
+		mapping := parts[2] + `: {"openid", "profile", "email", "groups"}`
+		var mappings []string
+		for _, old := range client.Attrs["oauth2_rs_scope_map"] {
+			if !strings.HasPrefix(old, parts[2]+": ") {
+				mappings = append(mappings, old)
+			}
+		}
+		client.Attrs["oauth2_rs_scope_map"] = append(mappings, mapping)
+		f.clients[name] = client
 		checkScopes(f.t, r)
+	case r.Method == "DELETE" && len(parts) == 3 && parts[1] == "_scopemap":
+		client := f.clients[name]
+		var remaining []string
+		for _, mapping := range client.Attrs["oauth2_rs_scope_map"] {
+			if !strings.HasPrefix(mapping, parts[2]+": ") {
+				remaining = append(remaining, mapping)
+			}
+		}
+		client.Attrs["oauth2_rs_scope_map"] = remaining
+		f.clients[name] = client
 	case r.Method == "GET" && len(parts) == 2 && parts[1] == "_basic_secret":
 		if !f.readingSecrets || f.public[name] {
 			f.t.Error("client ensure read a secret")
@@ -128,7 +147,7 @@ func (f *fakeProvider) clientRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 func TestClientProvisioningAndSecretSync(t *testing.T) {
-	f := &fakeProvider{t: t, groups: make(map[string]bool), clients: make(map[string]entry), callbacks: map[string]string{
+	f := &fakeProvider{t: t, groups: make(map[string]bool), scopeGroups: make(map[string]string), clients: make(map[string]entry), callbacks: map[string]string{
 		"grafana":      "https://grafana.example.test/login/generic_oauth",
 		"forgejo":      "https://git.example.test/user/oauth2/SSO/callback",
 		"argocd":       "https://argocd.example.test/auth/callback",
@@ -144,15 +163,56 @@ func TestClientProvisioningAndSecretSync(t *testing.T) {
 	if err := c.login(ctx, "admin-canary"); err != nil {
 		t.Fatal(err)
 	}
+	if err := c.ensureClient(ctx, ClientConfig{Name: "grafana", RedirectURIs: []string{f.callbacks["grafana"]}}); err == nil || !strings.Contains(err.Error(), "sso group ensure users") {
+		t.Fatalf("expected missing group guidance, got %v", err)
+	}
+	if f.mutations != 0 {
+		t.Fatal("client provisioning mutated state before its group existed")
+	}
 	for range 2 {
-		for name, callback := range f.callbacks {
-			if err := c.ensureClient(ctx, ClientConfig{Name: name, DisplayName: name, RedirectURIs: []string{callback}, Public: f.public[name], RS256: name == "actualbudget"}); err != nil {
+		for _, name := range []string{"users", "developers", "admins"} {
+			if err := c.ensureGroup(ctx, name); err != nil {
 				t.Fatal(err)
 			}
 		}
 	}
-	if f.creates != 12 {
-		t.Fatalf("expected six groups and six clients, got %d creations", f.creates)
+	if f.creates != 3 || f.mutations != 3 {
+		t.Fatal("group ensure recreated groups or changed existing memberships")
+	}
+	for range 2 {
+		for name, callback := range f.callbacks {
+			if err := c.ensureClient(ctx, ClientConfig{Name: name, DisplayName: name, RedirectURIs: []string{callback}, Group: map[string]string{"openbao": "admins", "argocd": "developers"}[name], Public: f.public[name], RS256: name == "actualbudget"}); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	if f.creates != 9 {
+		t.Fatalf("expected three shared groups and six clients, got %d creations", f.creates)
+	}
+	if !reflect.DeepEqual(f.scopeGroups, map[string]string{"grafana": "users", "forgejo": "users", "argocd": "developers", "actualbudget": "users", "zot": "users", "openbao": "admins"}) {
+		t.Fatalf("unexpected client access groups: %v", f.scopeGroups)
+	}
+	for range 2 {
+		if err := c.ensureGroup(ctx, "grafana_editors"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	f.clients["grafana"].Attrs["oauth2_rs_scope_map"] = append(f.clients["grafana"].Attrs["oauth2_rs_scope_map"], `former_users@auth.example.test: {"openid"}`)
+	for range 2 {
+		if err := c.ensureClient(ctx, ClientConfig{Name: "grafana", RedirectURIs: []string{f.callbacks["grafana"]}, Group: "grafana_editors"}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if got := f.clients["grafana"].Attrs["oauth2_rs_scope_map"]; !reflect.DeepEqual(got, []string{`grafana_editors: {"openid", "profile", "email", "groups"}`}) {
+		t.Fatalf("client retained previous login access: %v", got)
+	}
+	f.clients["grafana"].Attrs["oauth2_rs_scope_map"] = []string{"malformed"}
+	beforeInvalid := f.mutations
+	if err := c.ensureClient(ctx, ClientConfig{Name: "grafana", RedirectURIs: []string{f.callbacks["grafana"]}, Group: "grafana_editors"}); err == nil {
+		t.Fatal("accepted malformed scope map")
+	}
+	if f.mutations != beforeInvalid {
+		t.Fatal("mutated client before validating existing scope maps")
 	}
 	f.readingSecrets = true
 	before := f.mutations
@@ -271,7 +331,7 @@ func TestMultipleRedirectURIs(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.Method == "GET" && strings.HasPrefix(r.URL.Path, "/v1/group/"):
-			_, _ = w.Write([]byte(`{"attrs":{"name":["immich_users"]}}`))
+			_, _ = w.Write([]byte(`{"attrs":{"name":["users"]}}`))
 		case r.Method == "GET":
 			_, _ = w.Write([]byte(`{"attrs":{"class":["oauth2_resource_server_basic"]}}`))
 		case r.Method == "PATCH":
@@ -302,5 +362,12 @@ func TestMultipleRedirectURIs(t *testing.T) {
 	err := EnsureClient(context.Background(), Options{URL: "https://auth.example.test", Kubeconfig: "absent"}, ClientConfig{Name: "immich", RedirectURIs: []string{callbacks[0], "http://photos.example.test/user-settings"}})
 	if err == nil || !strings.Contains(err.Error(), "redirect URI") {
 		t.Fatalf("invalid second callback reached cluster: %v", err)
+	}
+}
+
+func TestClientRejectsInvalidAccessGroup(t *testing.T) {
+	err := EnsureClient(t.Context(), Options{URL: "https://auth.example.test", Kubeconfig: "absent"}, ClientConfig{Name: "grafana", Group: "../invalid", RedirectURIs: []string{"https://grafana.example.test/login/generic_oauth"}})
+	if err == nil || !strings.Contains(err.Error(), "access group") {
+		t.Fatalf("invalid group reached cluster access: %v", err)
 	}
 }

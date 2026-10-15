@@ -14,6 +14,8 @@ import (
 
 func TestSSORequiredArguments(t *testing.T) {
 	for _, args := range [][]string{
+		{"sso", "group", "ensure"},
+		{"sso", "group", "ensure", "users"},
 		{"sso", "client", "ensure"},
 		{"sso", "client", "ensure", "grafana"},
 		{"sso", "client", "ensure", "grafana", "--kubeconfig", "absent", "--url", "https://auth.example.test"},
@@ -29,6 +31,13 @@ func TestSSORequiredArguments(t *testing.T) {
 	_, _, err := operationExecute("sso", "--kubeconfig", "absent", "--url", "https://auth.example.test", "client", "ensure", "../invalid", "--redirect-uri", "https://app.example.test/callback")
 	if err == nil || !strings.Contains(err.Error(), "client name") {
 		t.Fatalf("did not validate the client before cluster access: %v", err)
+	}
+}
+
+func TestSSOGroupValidationBeforeClusterAccess(t *testing.T) {
+	_, _, err := operationExecute("sso", "--kubeconfig", "absent", "--url", "https://auth.example.test", "group", "ensure", "../invalid")
+	if err == nil || !strings.Contains(err.Error(), "access group") {
+		t.Fatalf("did not validate group before cluster access: %v", err)
 	}
 }
 
@@ -52,6 +61,7 @@ func TestSSODeadlineAllowsReadinessAndOperation(t *testing.T) {
 	t.Cleanup(func() { http.DefaultTransport = original })
 	for _, args := range [][]string{
 		{"client", "ensure", "grafana", "--redirect-uri", "https://grafana.example.test/login/generic_oauth"},
+		{"group", "ensure", "grafana_editors"},
 		{"secrets", "sync"},
 	} {
 		_, _, err := operationExecute(append([]string{"sso", "--kubeconfig", kubeconfig, "--url", "https://auth.example.test"}, args...)...)

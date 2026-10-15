@@ -10,6 +10,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"os/exec"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -40,10 +41,25 @@ type Options struct {
 // ClientConfig describes an application registered with the SSO provider.
 type ClientConfig struct {
 	Name         string
+	Group        string
 	DisplayName  string
 	RedirectURIs []string
 	Public       bool
 	RS256        bool
+}
+
+var groupNamePattern = regexp.MustCompile(`^[a-z][a-z0-9_.-]{0,63}$`)
+
+// EnsureGroup creates a group without changing its members.
+func EnsureGroup(ctx context.Context, options Options, name string) error {
+	if !groupNamePattern.MatchString(name) {
+		return fmt.Errorf("access group name must start with a lowercase letter and contain at most 64 lowercase letters, digits, dots, underscores, or hyphens")
+	}
+	c, err := connect(ctx, options)
+	if err != nil {
+		return err
+	}
+	return c.ensureGroup(ctx, name)
 }
 
 // EnsureClient provisions a client without rotating its secret or changing group membership.
@@ -54,6 +70,9 @@ func EnsureClient(ctx context.Context, options Options, config ClientConfig) err
 	}
 	if len(config.RedirectURIs) == 0 {
 		return fmt.Errorf("at least one redirect URI is required")
+	}
+	if config.Group != "" && !groupNamePattern.MatchString(config.Group) {
+		return fmt.Errorf("access group name must start with a lowercase letter and contain at most 64 lowercase letters, digits, dots, underscores, or hyphens")
 	}
 	for _, uri := range config.RedirectURIs {
 		if err := validateURL(uri); err != nil {
@@ -211,17 +230,29 @@ func (c *client) login(ctx context.Context, password string) error {
 	return nil
 }
 
+func (c *client) ensureGroup(ctx context.Context, name string) error {
+	var group *entry
+	if err := c.request(ctx, "GET", "/v1/group/"+name, nil, &group); err != nil {
+		return err
+	}
+	if group != nil {
+		return nil
+	}
+	return c.request(ctx, "POST", "/v1/group", entry{Attrs: map[string][]string{"name": {name}}}, nil)
+}
+
 func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
 	name, displayName := config.Name, config.DisplayName
-	groupName := name + "_users"
+	groupName := config.Group
+	if groupName == "" {
+		groupName = "users"
+	}
 	var group *entry
 	if err := c.request(ctx, "GET", "/v1/group/"+groupName, nil, &group); err != nil {
 		return err
 	}
 	if group == nil {
-		if err := c.request(ctx, "POST", "/v1/group", entry{Attrs: map[string][]string{"name": {groupName}}}, nil); err != nil {
-			return err
-		}
+		return fmt.Errorf("access group %s does not exist; run sso group ensure %s first", groupName, groupName)
 	}
 	if displayName == "" {
 		displayName = name
@@ -236,6 +267,18 @@ func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
 	}
 	if existing != nil && !slices.Contains(existing.Attrs["class"], "oauth2_resource_server_"+clientType) {
 		return fmt.Errorf("SSO client %s has a different client type", name)
+	}
+	var previousGroups []string
+	if existing != nil {
+		for _, mapping := range existing.Attrs["oauth2_rs_scope_map"] {
+			mappedGroup, _, ok := strings.Cut(mapping, ": ")
+			if !ok || mappedGroup == "" {
+				return fmt.Errorf("kanidm returned an invalid scope map")
+			}
+			if mappedGroup != groupName && !slices.Contains(group.Attrs["spn"], mappedGroup) && !slices.Contains(group.Attrs["uuid"], mappedGroup) {
+				previousGroups = append(previousGroups, mappedGroup)
+			}
+		}
 	}
 	attrs := entry{Attrs: map[string][]string{
 		"displayname":                     {displayName},
@@ -256,7 +299,15 @@ func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
 	if err := c.request(ctx, method, path, attrs, nil); err != nil {
 		return err
 	}
-	return c.request(ctx, "POST", "/v1/oauth2/"+name+"/_scopemap/"+groupName, []string{"openid", "profile", "email", "groups"}, nil)
+	if err := c.request(ctx, "POST", "/v1/oauth2/"+name+"/_scopemap/"+groupName, []string{"openid", "profile", "email", "groups"}, nil); err != nil {
+		return err
+	}
+	for _, previous := range previousGroups {
+		if err := c.request(ctx, "DELETE", "/v1/oauth2/"+name+"/_scopemap/"+url.PathEscape(previous), nil, nil); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (c *client) clientRecords(ctx context.Context) (map[string]map[string]string, error) {

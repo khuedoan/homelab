@@ -76,7 +76,41 @@ func syncGitOps(c *sdk.Client) error {
 			return err
 		}
 	}
-	return nil
+	return syncDevelopers(c)
+}
+
+func syncDevelopers(c *sdk.Client) error {
+	var team *sdk.Team
+	for page := 1; team == nil; page++ {
+		teams, _, err := c.ListOrgTeams("ops", sdk.ListTeamsOptions{ListOptions: sdk.ListOptions{Page: page, PageSize: 50}})
+		if err != nil {
+			return err
+		}
+		for _, existing := range teams {
+			if existing.Name == "developers" {
+				team = existing
+				break
+			}
+		}
+		if len(teams) < 50 {
+			break
+		}
+	}
+	units := map[string]string{"repo.code": "write", "repo.pulls": "write"}
+	if team == nil {
+		var err error
+		team, _, err = c.CreateTeam("ops", sdk.CreateTeamOption{Name: "developers", Permission: sdk.AccessModeWrite, UnitsMap: units})
+		if err != nil {
+			return err
+		}
+	} else {
+		disabled := false
+		if _, err := c.EditTeam(team.ID, sdk.EditTeamOption{Name: "developers", Permission: sdk.AccessModeWrite, UnitsMap: units, CanCreateOrgRepo: &disabled, IncludesAllRepositories: &disabled}); err != nil {
+			return err
+		}
+	}
+	_, err := c.AddTeamRepository(team.ID, "ops", "homelab")
+	return err
 }
 
 func syncOAuth(c *sdk.Client, callback string, existing map[string]string) (map[string]string, error) {

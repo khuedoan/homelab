@@ -37,6 +37,9 @@ sso:
 	@test -n "$(env)" || { echo 'Usage: make sso env=production (or staging)' >&2; exit 1; }
 	@set -eu; \
 	domain=$$(cd infra/$(env)/platform && terragrunt render --json | jq -er '.inputs.domain'); \
+	toolbox sso $(sso_args) group ensure users; \
+	toolbox sso $(sso_args) group ensure developers; \
+	toolbox sso $(sso_args) group ensure admins; \
 	toolbox sso $(sso_args) client ensure grafana --display-name Grafana --redirect-uri "https://grafana.$$domain/login/generic_oauth"; \
 	toolbox sso $(sso_args) client ensure forgejo --display-name Forgejo --redirect-uri "https://git.$$domain/user/oauth2/SSO/callback"; \
 	toolbox sso $(sso_args) client ensure argocd --display-name 'Argo CD' --redirect-uri "https://argocd.$$domain/auth/callback"; \
@@ -44,7 +47,7 @@ sso:
 	toolbox sso $(sso_args) client ensure matrix --display-name Matrix --redirect-uri "https://matrix.$$domain/_matrix/client/unstable/login/sso/callback/matrix"; \
 	toolbox sso $(sso_args) client ensure opencloud --display-name OpenCloud --public --redirect-uri "https://drive.$$domain/" --redirect-uri "https://drive.$$domain/oidc-callback.html" --redirect-uri "https://drive.$$domain/oidc-silent-redirect.html"; \
 	toolbox sso $(sso_args) client ensure zot --display-name Zot --public --redirect-uri "https://registry.$$domain/zot/auth/callback/oidc"; \
-	toolbox sso $(sso_args) client ensure openbao --display-name OpenBao --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"; \
+	toolbox sso $(sso_args) client ensure openbao --group admins --display-name OpenBao --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"; \
 	toolbox sso $(sso_args) secrets sync; \
 	toolbox sso $(sso_args) openbao configure --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"
 
