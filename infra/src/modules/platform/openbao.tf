@@ -44,7 +44,7 @@ resource "kubectl_manifest" "openbao" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "openbao" }
+      destination       = { name = "in-cluster", namespace = "openbao" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -223,7 +223,7 @@ resource "kubectl_manifest" "openbao_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "openbao" }
+      destination       = { name = "in-cluster", namespace = "openbao" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

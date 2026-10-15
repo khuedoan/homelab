@@ -137,7 +137,7 @@ resource "kubectl_manifest" "monitoring_system" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "monitoring-system" }
+      destination       = { name = "in-cluster", namespace = "monitoring-system" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

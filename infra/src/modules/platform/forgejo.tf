@@ -71,7 +71,7 @@ resource "kubectl_manifest" "forgejo" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "forgejo" }
+      destination       = { name = "in-cluster", namespace = "forgejo" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -124,7 +124,7 @@ resource "kubectl_manifest" "forgejo_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "forgejo" }
+      destination       = { name = "in-cluster", namespace = "forgejo" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

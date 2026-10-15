@@ -81,7 +81,7 @@ EOT
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "cloudflared" }
+      destination       = { name = "in-cluster", namespace = "cloudflared" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -122,7 +122,7 @@ resource "kubectl_manifest" "cloudflared_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "cloudflared" }
+      destination       = { name = "in-cluster", namespace = "cloudflared" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

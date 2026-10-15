@@ -40,7 +40,7 @@ resource "kubectl_manifest" "external_dns" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "external-dns" }
+      destination       = { name = "in-cluster", namespace = "external-dns" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }
@@ -84,7 +84,7 @@ resource "kubectl_manifest" "external_dns_resources" {
           })
         }
       }]
-      destination       = { server = "https://kubernetes.default.svc", namespace = "external-dns" }
+      destination       = { name = "in-cluster", namespace = "external-dns" }
       ignoreDifferences = local.ignore_differences
       syncPolicy        = local.sync_policy
     }

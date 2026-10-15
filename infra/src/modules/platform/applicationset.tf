@@ -44,7 +44,7 @@ resource "kubectl_manifest" "apps" {
             ref            = "values"
           }]
           destination = {
-            server    = "https://kubernetes.default.svc"
+            name      = "in-cluster"
             namespace = "{{ .path.filename | trimSuffix \".yaml\" }}"
           }
           ignoreDifferences = local.ignore_differences
