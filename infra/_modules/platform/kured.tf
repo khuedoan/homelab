@@ -20,21 +20,20 @@ resource "kubectl_manifest" "kured" {
             configuration = {
               annotateNodes             = true
               useRebootSentinelHostPath = false
-              rebootSentinelCommand     = <<-EOT
-                /run/current-system/sw/bin/sh -c '
-                  for file in kernel initrd kernel-modules; do
-                    booted=$(/run/current-system/sw/bin/readlink -f /run/booted-system/$file)
-                    configured=$(/run/current-system/sw/bin/readlink -f /nix/var/nix/profiles/system/$file)
-                    test "$booted" = "$configured" || exit 0
-                  done
-                  exit 1
-                '
-              EOT
-              rebootCommand             = "/run/current-system/sw/bin/systemctl reboot"
-              timeZone                  = "Asia/Ho_Chi_Minh"
-              startTime                 = "03:00"
-              endTime                   = "04:00"
-              drainTimeout              = "10m"
+              rebootSentinelCommand = join(" ", [
+                "/run/current-system/sw/bin/sh -c '",
+                "for file in kernel initrd kernel-modules; do",
+                "booted=$(/run/current-system/sw/bin/readlink -f /run/booted-system/$file);",
+                "configured=$(/run/current-system/sw/bin/readlink -f /nix/var/nix/profiles/system/$file);",
+                "test \"$booted\" = \"$configured\" || exit 0;",
+                "done;",
+                "exit 1'",
+              ])
+              rebootCommand = "/run/current-system/sw/bin/systemctl reboot"
+              timeZone      = "Asia/Ho_Chi_Minh"
+              startTime     = "03:00"
+              endTime       = "04:00"
+              drainTimeout  = "10m"
             }
             resources = {
               requests = { cpu = "10m", memory = "32Mi" }
