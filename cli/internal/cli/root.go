@@ -22,7 +22,7 @@ func newRootCmd() *cobra.Command {
 	cluster.AddCommand(newClusterEnrollCmd(), newClusterKubeconfigCmd())
 	infra := &cobra.Command{Use: "infra", Short: "Manage infrastructure prerequisites"}
 	infra.AddCommand(newInfraStateCmd(), newInfraSecretsCmd(), newInfraForgejoCmd())
-	root.AddCommand(cluster, infra, newSSOCmd())
+	root.AddCommand(cluster, infra, newSSOCmd(), newUserCmd())
 	return root
 }
 
