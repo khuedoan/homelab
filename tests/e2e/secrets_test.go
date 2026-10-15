@@ -96,6 +96,9 @@ func checkSecrets(t *testing.T, cluster fixture.Cluster) {
 	}
 	require.NoError(t, json.Unmarshal(body, &record))
 	require.Equal(t, "homelab-secret-injection", record.Data.Data["value"])
+	status, _ = baoRequest(t, cluster, ownToken, http.MethodPost, "secret/data/"+path,
+		map[string]any{"data": map[string]string{"value": "unauthorized-write"}})
+	require.Equal(t, http.StatusForbidden, status, "apps must not overwrite their own secrets")
 	status, otherToken := baoLogin(t, cluster, other, "default")
 	require.Equal(t, http.StatusOK, status)
 	status, _ = baoRequest(t, cluster, otherToken, http.MethodGet, "secret/data/"+path, nil)
@@ -111,5 +114,10 @@ func checkSecrets(t *testing.T, cluster fixture.Cluster) {
 	}, metav1.CreateOptions{})
 	require.NoError(t, err)
 	require.Equal(t, "homelab-secret-injection", string(injected.Data["value"]), "webhook must resolve the reference")
-	t.Log("Verified own-namespace read, cross-namespace denial, non-default account denial and Secret injection")
+	_, err = cluster.Client.CoreV1().Secrets(other).Create(t.Context(), &corev1.Secret{
+		ObjectMeta: metav1.ObjectMeta{Name: "cross-namespace-check", Labels: map[string]string{"homelab.khuedoan.com/bao-secret": "true"}},
+		StringData: map[string]string{"value": "bao:secret/data/" + path + "#value"},
+	}, metav1.CreateOptions{})
+	require.ErrorContains(t, err, "permission denied", "webhook must not resolve another namespace's secret")
+	t.Log("Verified own-namespace read, write denial, cross-namespace denial, non-default account denial and scoped Secret injection")
 }
