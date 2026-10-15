@@ -188,6 +188,7 @@ resource "kubectl_manifest" "openbao_resources" {
                           data = [for record, data in {
                             "forgejo/admin"    = { password = "$${randAlphaNum 32}" }
                             "immich/database"  = { password = "$${randAlphaNum 32}" }
+                            "kiali/session"    = { signing_key = "$${randAlphaNum 32}" }
                             "zot/admin"        = { password = "$${randAlphaNum 32}" }
                             "woodpecker/agent" = { secret = "$${randAlphaNum 32}" }
                             } : {
