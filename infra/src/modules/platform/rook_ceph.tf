@@ -206,8 +206,9 @@ resource "kubectl_manifest" "rook_ceph" {
         helm = {
           releaseName = "rook-ceph"
           values = yamlencode({
-            # TODO: Revisit resource sizing after measuring usage.
-            resources = { requests = { cpu = "10m", memory = "32Mi" } }
+            controller = {
+              resources = { requests = { cpu = "10m", memory = "64Mi" } }
+            }
             webhook = {
               tls = { certManagerIssuerRef = { kind = "ClusterIssuer", name = "selfsigned" } }
             }
