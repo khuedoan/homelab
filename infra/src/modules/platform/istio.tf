@@ -1,3 +1,7 @@
+locals {
+  istio_version = "1.30.5"
+}
+
 resource "kubectl_manifest" "istio" {
   server_side_apply = true
   yaml_body = yamlencode({
@@ -12,18 +16,40 @@ resource "kubectl_manifest" "istio" {
       project = "default"
       sources = [{
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
-        targetRevision = "1.30.5"
+        targetRevision = local.istio_version
         chart          = "base"
         helm           = { releaseName = "istio" }
         }, {
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
-        targetRevision = "1.30.5"
+        targetRevision = local.istio_version
         chart          = "istiod"
         helm = {
           releaseName = "istio"
           values = yamlencode({
+            profile = "ambient"
             # TODO: Revisit resource sizing after measuring usage.
             resources = { requests = { cpu = "100m", memory = "128Mi" } }
+          })
+        }
+        }, {
+        repoURL        = "https://istio-release.storage.googleapis.com/charts"
+        targetRevision = local.istio_version
+        chart          = "cni"
+        helm = {
+          releaseName = "istio-cni"
+          values = yamlencode({
+            profile = "ambient"
+            global  = { platform = "k3s" }
+          })
+        }
+        }, {
+        repoURL        = "https://istio-release.storage.googleapis.com/charts"
+        targetRevision = local.istio_version
+        chart          = "ztunnel"
+        helm = {
+          releaseName = "ztunnel"
+          values = yamlencode({
+            resources = { requests = { memory = "128Mi" } }
           })
         }
       }]
