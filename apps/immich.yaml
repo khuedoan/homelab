@@ -1,0 +1,172 @@
+controllers:
+  server:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/immich-app/immich-server
+          tag: v3.3.1
+        env:
+          DB_HOSTNAME: immich-database
+          DB_USERNAME: immich
+          REDIS_HOSTNAME: immich-valkey
+          IMMICH_CONFIG_FILE: /config/immich-config.yaml
+          TZ: Asia/Ho_Chi_Minh
+        envFrom:
+          - secretRef:
+              identifier: credentials
+        resources:
+          requests:
+            cpu: 250m
+            memory: 2Gi
+          limits:
+            cpu: "2"
+            memory: 4Gi
+        probes:
+          startup:
+            enabled: true
+            type: HTTP
+            path: /api/server/ping
+            spec:
+              failureThreshold: 60
+          readiness:
+            enabled: true
+            type: HTTP
+            path: /api/server/ping
+  database:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/immich-app/postgres
+          tag: 18-vectorchord1.1.1-pgvector0.8.5
+        env:
+          POSTGRES_USER: immich
+        envFrom:
+          - secretRef:
+              identifier: credentials
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "1"
+            memory: 2Gi
+        probes:
+          startup:
+            enabled: true
+            command: [pg_isready, -U, immich, -d, immich]
+            spec:
+              periodSeconds: 5
+              failureThreshold: 60
+          readiness:
+            enabled: true
+            command: [pg_isready, -U, immich, -d, immich]
+  valkey:
+    containers:
+      main:
+        image:
+          repository: docker.io/valkey/valkey
+          tag: 9
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        probes:
+          startup:
+            enabled: true
+            command: [sh, -c, "valkey-cli ping | grep -q PONG"]
+            spec:
+              periodSeconds: 5
+              failureThreshold: 30
+          readiness:
+            enabled: true
+            command: [sh, -c, "valkey-cli ping | grep -q PONG"]
+service:
+  server:
+    controller: server
+    ports:
+      http:
+        port: 2283
+  database:
+    controller: database
+    ports:
+      postgres:
+        port: 5432
+  valkey:
+    controller: valkey
+    ports:
+      redis:
+        port: 6379
+route:
+  main:
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'photos.{{ .Values.global.domain }}'
+    rules:
+      - backendRefs:
+          - identifier: server
+            port: 2283
+persistence:
+  library:
+    accessMode: ReadWriteOnce
+    size: 20Gi
+    advancedMounts:
+      server:
+        main:
+          - path: /data
+  database:
+    accessMode: ReadWriteOnce
+    size: 5Gi
+    advancedMounts:
+      database:
+        main:
+          - path: /var/lib/postgresql
+  database-shm:
+    type: emptyDir
+    medium: Memory
+    sizeLimit: 128Mi
+    advancedMounts:
+      database:
+        main:
+          - path: /dev/shm
+  config:
+    type: secret
+    identifier: config
+    advancedMounts:
+      server:
+        main:
+          - path: /config
+secrets:
+  credentials:
+    labels:
+      homelab.khuedoan.com/bao-secret: "true"
+    stringData:
+      DB_PASSWORD: bao:secret/data/immich/database#password
+      POSTGRES_PASSWORD: bao:secret/data/immich/database#password
+  config:
+    labels:
+      homelab.khuedoan.com/bao-secret: "true"
+    stringData:
+      immich-config.yaml: |
+        machineLearning:
+          enabled: false
+        oauth:
+          enabled: true
+          issuerUrl: "https://auth.{{ .Values.global.domain }}/oauth2/openid/immich"
+          clientId: immich
+          clientSecret: "${bao:secret/data/immich/sso#client_secret}"
+          signingAlgorithm: ES256
+          tokenEndpointAuthMethod: client_secret_basic
+          autoLaunch: true
+          buttonText: SSO
+          mobileOverrideEnabled: true
+          mobileRedirectUri: "https://photos.{{ .Values.global.domain }}/api/oauth/mobile-redirect"
+        passwordLogin:
+          enabled: false
+        server:
+          externalDomain: "https://photos.{{ .Values.global.domain }}"

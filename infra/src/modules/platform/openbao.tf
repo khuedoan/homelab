@@ -187,6 +187,7 @@ resource "kubectl_manifest" "openbao_resources" {
                         configuration = {
                           data = [for record, data in {
                             "forgejo/admin"    = { password = "$${randAlphaNum 32}" }
+                            "immich/database"  = { password = "$${randAlphaNum 32}" }
                             "zot/admin"        = { password = "$${randAlphaNum 32}" }
                             "woodpecker/agent" = { secret = "$${randAlphaNum 32}" }
                             } : {
