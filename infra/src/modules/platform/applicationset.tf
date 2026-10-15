@@ -48,7 +48,11 @@ resource "kubectl_manifest" "apps" {
             namespace = "{{ .path.filename | trimSuffix \".yaml\" }}"
           }
           ignoreDifferences = local.ignore_differences
-          syncPolicy        = local.sync_policy
+          syncPolicy = merge(local.sync_policy, {
+            managedNamespaceMetadata = merge(local.sync_policy.managedNamespaceMetadata, {
+              labels = { "istio.io/dataplane-mode" = "ambient" }
+            })
+          })
         }
       }
     }
