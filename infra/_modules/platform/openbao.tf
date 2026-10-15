@@ -189,6 +189,10 @@ resource "kubectl_manifest" "openbao_resources" {
                             "forgejo/admin"   = { password = "$${randAlphaNum 32}" }
                             "immich/database" = { password = "$${randAlphaNum 32}" }
                             "kiali/session"   = { signing_key = "$${randAlphaNum 32}" }
+                            "wireguard/web" = {
+                              session_secret = "$${randAlphaNum 32}"
+                              csrf_secret    = "$${randAlphaNum 32}"
+                            }
                             "monitoring-system/ntfy" = {
                               password_hash = "$${bcrypt (randAlphaNum 32)}"
                               token         = "tk_$${randAlphaNum 29}"
