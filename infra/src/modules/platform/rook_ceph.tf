@@ -22,10 +22,10 @@ resource "kubectl_manifest" "rook_ceph" {
             csi = {
               for setting, containers in {
                 csiRBDPluginResource = {
-                  driver-registrar = "64Mi", csi-rbdplugin = "128Mi"
+                  driver-registrar = "32Mi", csi-rbdplugin = "128Mi"
                 }
                 csiCephFSPluginResource = {
-                  driver-registrar = "64Mi", csi-cephfsplugin = "128Mi"
+                  driver-registrar = "32Mi", csi-cephfsplugin = "64Mi"
                 }
                 csiRBDProvisionerResource = {
                   csi-provisioner = "64Mi", csi-resizer = "64Mi", csi-attacher = "64Mi",
@@ -33,7 +33,7 @@ resource "kubectl_manifest" "rook_ceph" {
                 }
                 csiCephFSProvisionerResource = {
                   csi-provisioner = "64Mi", csi-resizer = "64Mi", csi-attacher = "64Mi",
-                  csi-snapshotter = "64Mi", csi-cephfsplugin = "128Mi"
+                  csi-snapshotter = "64Mi", csi-cephfsplugin = "64Mi"
                 }
                 } : setting => yamlencode([
                   for name, memory in containers : {
@@ -128,7 +128,7 @@ resource "kubectl_manifest" "rook_ceph" {
                   }
                   requests = {
                     cpu    = "50m"
-                    memory = "128Mi"
+                    memory = "1Gi"
                   }
                 }
               }
