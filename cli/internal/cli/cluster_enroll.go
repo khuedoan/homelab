@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/khuedoan/homelab/toolbox/internal/cluster"
+	"github.com/khuedoan/homelab/cli/internal/cluster"
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +16,7 @@ func newClusterEnrollCmd() *cobra.Command {
 		Use:     "enroll",
 		Short:   "Join installed servers to the configured k3s cluster",
 		Long:    "Enroll installed servers using verified root SSH connections. Host keys must already be trusted in known_hosts. Existing conflicting credentials or cluster state are never overwritten. This does not install nodes or recover a lost cluster.",
-		Example: "  toolbox cluster enroll --environment staging\n  toolbox cluster enroll --environment production --timeout 15m",
+		Example: "  lab cluster enroll --environment staging\n  lab cluster enroll --environment production --timeout 15m",
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			if timeout <= 0 {

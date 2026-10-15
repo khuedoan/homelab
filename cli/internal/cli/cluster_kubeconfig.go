@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/khuedoan/homelab/toolbox/internal/cluster"
+	"github.com/khuedoan/homelab/cli/internal/cluster"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +20,7 @@ func newClusterKubeconfigCmd() *cobra.Command {
 		Use:     "kubeconfig",
 		Short:   "Export authenticated kubeconfig for the control-plane VIP",
 		Long:    "Fetch kubeconfig from the configured initializer over verified root SSH. Verify authenticated VIP readiness before writing credentials. Files are published atomically with mode 0600. Use --output - to send credentials to stdout.",
-		Example: "  toolbox cluster kubeconfig --environment staging\n  toolbox cluster kubeconfig --environment production --output ~/.kube/homelab.yaml",
+		Example: "  lab cluster kubeconfig --environment staging\n  lab cluster kubeconfig --environment production --output ~/.kube/homelab.yaml",
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			if timeout <= 0 {

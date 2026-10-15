@@ -140,14 +140,15 @@
             ];
           };
         });
-      toolbox = pkgs.buildGoModule {
-        pname = "toolbox";
+      lab = pkgs.buildGoModule {
+        pname = "lab";
         version = "0.1.0";
         src = builtins.path {
-          path = ./toolbox;
-          name = "toolbox-src";
+          path = ./cli;
+          name = "cli-src";
         };
         vendorHash = "sha256-eWp5wsaHvrNDTbRRSmbUdn7gaHbCRhyeLoElZWCu9Co=";
+        subPackages = [ "cmd/lab" ];
         nativeCheckInputs = [ pkgs.git ];
         preCheck = ''
           export SFTP_SERVER="${pkgs.openssh}/libexec/sftp-server"
@@ -156,7 +157,7 @@
     in
     {
       packages.${system} = {
-        inherit toolbox cf;
+        inherit lab cf;
       };
 
       devShells.${system}.default = pkgs.mkShell {
@@ -184,7 +185,7 @@
           ++ [
             cf
             nixie.packages.${system}.default
-            toolbox
+            lab
           ];
       };
     };

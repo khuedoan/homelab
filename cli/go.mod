@@ -1,4 +1,4 @@
-module github.com/khuedoan/homelab/toolbox
+module github.com/khuedoan/homelab/cli
 
 go 1.26.0
 

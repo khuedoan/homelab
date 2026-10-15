@@ -12,9 +12,9 @@ import (
 
 func newRootCmd() *cobra.Command {
 	root := &cobra.Command{
-		Use:           "toolbox",
+		Use:           "lab",
 		Short:         "Bootstrap infrastructure and manage k3s cluster access",
-		Example:       "  toolbox cluster enroll --environment staging\n  toolbox cluster kubeconfig --environment staging --output infra/staging/kubeconfig.yaml",
+		Example:       "  lab cluster enroll --environment staging\n  lab cluster kubeconfig --environment staging --output infra/staging/kubeconfig.yaml",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}
@@ -34,7 +34,7 @@ func requireFlags(cmd *cobra.Command, flags ...string) {
 	}
 }
 
-// Execute runs the toolbox CLI and exits on failure.
+// Execute runs the lab CLI and exits on failure.
 func Execute() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()

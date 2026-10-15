@@ -61,7 +61,7 @@
         hash = "sha256-akAp5mFEbWSt2GagDs3EDBQhm2h3erYUxc2qwK20gfE=";
       };
     };
-    # Joiners remain stopped until toolbox enrolls them with the secure token.
+    # Joiners remain stopped until lab enrolls them with the secure token.
     clusterInit = k3s.clusterInit;
     serverAddr = if k3s.clusterInit then "" else "https://${k3s.vip}:6443";
     tokenFile = if k3s.clusterInit then null else "/var/lib/rancher/k3s/enrollment/token";

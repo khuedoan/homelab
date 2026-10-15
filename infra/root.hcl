@@ -41,7 +41,7 @@ terraform {
     if          = contains(["argocd", "platform"], local.unit)
     working_dir = get_repo_root()
     execute = [
-      "toolbox", "cluster", "kubeconfig",
+      "lab", "cluster", "kubeconfig",
       "--environment", local.env,
       "--output", local.kubeconfig,
     ]
@@ -55,7 +55,7 @@ terraform {
   before_hook "bootstrap_tfstate" {
     commands = ["init"]
     execute = [
-      "toolbox", "infra", "state", "ensure",
+      "lab", "infra", "state", "ensure",
       "--account-id", local.r2_account_id,
       "--bucket", local.state_bucket,
     ]

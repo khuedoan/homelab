@@ -5,13 +5,13 @@ steps:
   unit-tests:
     image: nixery.dev/shell/git/go/gcc/gnumake
     commands:
-      - make -C toolbox test
+      - make -C cli test
       - make -C tests test
     when:
       - event: pull_request
         path:
           include:
-            - 'toolbox/**'
+            - 'cli/**'
             - 'tests/**'
             - '.woodpecker/static-checks.yaml'
     depends_on: []

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	cloudflare "github.com/cloudflare/cloudflare-go"
-	"github.com/khuedoan/homelab/toolbox/internal/state"
+	"github.com/khuedoan/homelab/cli/internal/state"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +18,7 @@ func newInfraStateCmd() *cobra.Command {
 		Use:     "ensure",
 		Short:   "Create the Cloudflare R2 state bucket if absent",
 		Long:    "Ensure an R2 bucket exists without changing existing buckets. Authentication uses the cf CLI OAuth login, matching the Cloudflare Terraform provider. Requires cf on PATH. No Kubernetes cluster or Terraform state is required.",
-		Example: "  toolbox infra state ensure --bucket homelab-production-tfstate",
+		Example: "  lab infra state ensure --bucket homelab-production-tfstate",
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), time.Minute)

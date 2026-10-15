@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/khuedoan/homelab/toolbox/internal/secrets"
+	"github.com/khuedoan/homelab/cli/internal/secrets"
 	"k8s.io/apimachinery/pkg/util/validation"
 )
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/khuedoan/homelab/toolbox/internal/secrets"
+	"github.com/khuedoan/homelab/cli/internal/secrets"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +15,7 @@ func newInfraSecretsCmd() *cobra.Command {
 	sync := &cobra.Command{
 		Use: "sync", Short: "Sync every Terragrunt unit's secrets output in an environment",
 		Long:    "Run from the repository root. Read each module's secrets output, a map of namespace/secret paths to string fields, and publish it to OpenBao. Other outputs are ignored. Unchanged records and omitted paths are preserved. Requires terragrunt and an explicit cluster-admin kubeconfig. Secret values are never printed.",
-		Example: "  toolbox infra secrets sync --environment staging --kubeconfig infra/staging/kubeconfig.yaml",
+		Example: "  lab infra secrets sync --environment staging --kubeconfig infra/staging/kubeconfig.yaml",
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 20*time.Minute)

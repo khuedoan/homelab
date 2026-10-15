@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/khuedoan/homelab/toolbox/internal/kanidm"
-	"github.com/khuedoan/homelab/toolbox/internal/secrets"
+	"github.com/khuedoan/homelab/cli/internal/kanidm"
+	"github.com/khuedoan/homelab/cli/internal/secrets"
 	"github.com/spf13/cobra"
 )
 

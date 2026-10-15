@@ -29,15 +29,15 @@ func Connect(t *testing.T, target testenv.Target) Cluster {
 	t.Helper()
 	checkHosts(t, target)
 	work := t.TempDir()
-	toolbox := os.Getenv("TOOLBOX_BIN")
-	if toolbox == "" {
-		toolbox = filepath.Join(work, "toolbox")
-		run(t, target, "build toolbox", "go", "-C", filepath.Join(target.Root, "toolbox"), "build", "-o", toolbox, ".")
+	lab := os.Getenv("LAB_BIN")
+	if lab == "" {
+		lab = filepath.Join(work, "lab")
+		run(t, target, "build lab", "go", "-C", filepath.Join(target.Root, "cli"), "build", "-o", lab, "./cmd/lab")
 	} else {
-		require.True(t, filepath.IsAbs(toolbox), "TOOLBOX_BIN must be an absolute path")
+		require.True(t, filepath.IsAbs(lab), "LAB_BIN must be an absolute path")
 	}
 	kubeconfig := filepath.Join(work, "kubeconfig.yaml")
-	run(t, target, "export kubeconfig", toolbox, "cluster", "kubeconfig", "--environment", target.Environment, "--output", kubeconfig, "--timeout", "30s")
+	run(t, target, "export kubeconfig", lab, "cluster", "kubeconfig", "--environment", target.Environment, "--output", kubeconfig, "--timeout", "30s")
 	info, err := os.Stat(kubeconfig)
 	require.NoError(t, err)
 	require.Equal(t, os.FileMode(0600), info.Mode().Perm())

@@ -16,7 +16,7 @@ terraform {
 
   after_hook "enroll" {
     commands = ["apply"]
-    execute  = ["sh", "-c", "cd \"$1\" && exec toolbox cluster enroll --environment staging", "enroll", get_repo_root()]
+    execute  = ["sh", "-c", "cd \"$1\" && exec lab cluster enroll --environment staging", "enroll", get_repo_root()]
   }
 }
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/khuedoan/homelab/toolbox/internal/forgejo"
+	"github.com/khuedoan/homelab/cli/internal/forgejo"
 	"github.com/spf13/cobra"
 )
 
