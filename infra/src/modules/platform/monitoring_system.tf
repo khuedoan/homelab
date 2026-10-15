@@ -1,10 +1,22 @@
 locals {
-  control_plane_service_monitor = {
-    metricRelabelings = [{
-      action       = "drop"
-      sourceLabels = ["__name__"]
-      regex        = "(apiserver|etcd|kubelet|container)_.+"
-    }]
+  # K3s shares metrics across components; keep the copies used by the dashboards.
+  control_plane_service_monitors = {
+    for component, patterns in {
+      apiserver = [
+        "(container|kubelet|scheduler)_.+",
+        "apiserver_(request_body_size_bytes|response_sizes|watch_events_sizes)_.+",
+        "apiserver_watch_(list_duration_seconds|cache_read_wait_seconds)_.+",
+      ]
+      controller_manager = ["(apiserver|etcd|kubelet|container|scheduler)_.+"]
+      scheduler          = ["(apiserver|etcd|kubelet|container|workqueue)_.+"]
+      kubelet            = ["(apiserver|etcd|scheduler|workqueue|container)_.+"]
+      } : component => {
+      metricRelabelings = [{
+        action       = "drop"
+        sourceLabels = ["__name__"]
+        regex        = join("|", patterns)
+      }]
+    }
   }
 }
 
@@ -64,22 +76,17 @@ resource "kubectl_manifest" "monitoring_system" {
             kube-state-metrics       = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }
             prometheus-node-exporter = { resources = { requests = { cpu = "10m", memory = "32Mi" } } }
             kubeEtcd                 = { endpoints = var.control_plane_ips }
+            kubeApiServer            = { serviceMonitor = local.control_plane_service_monitors.apiserver }
             kubeControllerManager = {
               endpoints      = var.control_plane_ips
-              serviceMonitor = local.control_plane_service_monitor
+              serviceMonitor = local.control_plane_service_monitors.controller_manager
             }
             kubeScheduler = {
               endpoints      = var.control_plane_ips
-              serviceMonitor = local.control_plane_service_monitor
+              serviceMonitor = local.control_plane_service_monitors.scheduler
             }
             kubelet = {
-              serviceMonitor = {
-                metricRelabelings = [{
-                  action       = "drop"
-                  sourceLabels = ["__name__"]
-                  regex        = "(apiserver|etcd)_.+"
-                }]
-              }
+              serviceMonitor = local.control_plane_service_monitors.kubelet
             }
             prometheus = {
               prometheusSpec = {
