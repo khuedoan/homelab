@@ -52,7 +52,7 @@ func TestCreateR2Credentials(t *testing.T) {
 			t.Fatalf("unexpected request: %s %s", r.Method, r.URL)
 		}
 	})
-	credentials, err := CreateR2Credentials(t.Context(), api, "test-account", "tfstate-test")
+	credentials, err := CreateR2Credentials(t.Context(), api, newR2ActivationFixture(t, func(w http.ResponseWriter, _ *http.Request) { w.WriteHeader(http.StatusOK) }).client, "test-account", "tfstate-test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -115,7 +115,7 @@ func TestCredentialsOnlyPruneExpiredTokensForThisBucket(t *testing.T) {
 			t.Fatalf("unexpected request: %s %s", r.Method, r.URL)
 		}
 	})
-	if _, err := CreateR2Credentials(t.Context(), api, "test-account", "tfstate-test"); err != nil {
+	if _, err := CreateR2Credentials(t.Context(), api, newR2ActivationFixture(t, func(w http.ResponseWriter, _ *http.Request) { w.WriteHeader(http.StatusOK) }).client, "test-account", "tfstate-test"); err != nil {
 		t.Fatal(err)
 	}
 	if !slices.Equal(requests, []string{"GET /accounts/test-account/tokens/permission_groups", "GET /accounts/test-account/tokens?include_expired=true&per_page=50&page=1", "GET /accounts/test-account/tokens?include_expired=true&per_page=50&page=2", "DELETE /accounts/test-account/tokens/expired-owned", "POST /accounts/test-account/tokens"}) {
@@ -130,7 +130,7 @@ func TestCredentialsMissingPermissionDoesNotMint(t *testing.T) {
 		}
 		writeCredentialsResponse(t, w, `{"success":true,"result":[]}`)
 	})
-	credentials, err := CreateR2Credentials(t.Context(), api, "test-account", "tfstate-test")
+	credentials, err := CreateR2Credentials(t.Context(), api, newR2ActivationFixture(t, func(w http.ResponseWriter, _ *http.Request) { w.WriteHeader(http.StatusOK) }).client, "test-account", "tfstate-test")
 	if err == nil || credentials.AccessKeyID != "" {
 		t.Fatalf("missing permission returned credentials or no error: %+v, %v", credentials, err)
 	}

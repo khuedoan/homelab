@@ -4,6 +4,7 @@ go 1.26.0
 
 require (
 	codeberg.org/mvdkleijn/forgejo-sdk/forgejo/v3 v3.0.0
+	github.com/aws/aws-sdk-go-v2 v1.39.2
 	github.com/cloudflare/cloudflare-go v0.115.0
 	github.com/openbao/openbao/api/v2 v2.7.1
 	github.com/pkg/sftp v1.13.11
@@ -16,6 +17,7 @@ require (
 
 require (
 	github.com/42wim/httpsig v1.2.3 // indirect
+	github.com/aws/smithy-go v1.23.0 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/davidmz/go-pageant v1.0.2 // indirect

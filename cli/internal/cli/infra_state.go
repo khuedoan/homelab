@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
@@ -60,7 +61,7 @@ func newInfraStateCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			result, err := state.CreateR2Credentials(ctx, api, accountID, bucket)
+			result, err := state.CreateR2Credentials(ctx, api, http.DefaultClient, accountID, bucket)
 			if err != nil {
 				return err
 			}

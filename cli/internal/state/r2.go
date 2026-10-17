@@ -9,8 +9,11 @@ import (
 	"fmt"
 	"maps"
 	"net/http"
+	"net/url"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	cloudflare "github.com/cloudflare/cloudflare-go"
 )
 
@@ -24,7 +27,7 @@ type R2Credentials struct {
 
 // CreateR2Credentials grants one hour of object access to one state bucket.
 // The account token expires directly, so no permanent parent token is needed.
-func CreateR2Credentials(ctx context.Context, api *cloudflare.API, account, bucket string) (R2Credentials, error) {
+func CreateR2Credentials(ctx context.Context, api *cloudflare.API, client *http.Client, account, bucket string) (R2Credentials, error) {
 	endpoint := "/accounts/" + account + "/tokens"
 	response, err := api.Raw(ctx, http.MethodGet, endpoint+"/permission_groups", nil, nil)
 	if err != nil {
@@ -68,7 +71,52 @@ func CreateR2Credentials(ctx context.Context, api *cloudflare.API, account, buck
 		return R2Credentials{}, errors.New("account token response has no valid R2 credentials")
 	}
 	secret := sha256.Sum256([]byte(token.Value))
-	return R2Credentials{Version: 1, AccessKeyID: token.ID, SecretAccessKey: hex.EncodeToString(secret[:]), Expiration: expires}, nil
+	credentials := R2Credentials{Version: 1, AccessKeyID: token.ID, SecretAccessKey: hex.EncodeToString(secret[:]), Expiration: expires}
+	if err := waitForR2Credentials(ctx, client, account, bucket, credentials); err != nil {
+		return R2Credentials{}, err
+	}
+	return credentials, nil
+}
+
+func waitForR2Credentials(ctx context.Context, client *http.Client, account, bucket string, credentials R2Credentials) error {
+	ctx, cancel := context.WithTimeout(ctx, 40*time.Second)
+	defer cancel()
+	probeClient := *client
+	probeClient.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
+	endpoint := url.URL{Scheme: "https", Host: account + ".r2.cloudflarestorage.com", Path: "/" + bucket}
+	identity := aws.Credentials{AccessKeyID: credentials.AccessKeyID, SecretAccessKey: credentials.SecretAccessKey}
+	payload := sha256.Sum256(nil)
+	signer := v4.NewSigner()
+	for {
+		request, err := http.NewRequestWithContext(ctx, http.MethodHead, endpoint.String(), nil)
+		if err != nil {
+			return errors.New("construct R2 bucket access probe failed")
+		}
+		request.Header.Set("X-Amz-Content-Sha256", hex.EncodeToString(payload[:]))
+		if err := signer.SignHTTP(ctx, identity, request, hex.EncodeToString(payload[:]), "s3", "auto", time.Now()); err != nil {
+			return errors.New("sign R2 bucket access probe failed")
+		}
+		response, err := probeClient.Do(request)
+		if err != nil {
+			if ctx.Err() != nil {
+				return fmt.Errorf("wait for R2 bucket access: %w", ctx.Err())
+			}
+			return errors.New("R2 bucket access probe transport failed")
+		}
+		_ = response.Body.Close()
+		switch response.StatusCode {
+		case http.StatusOK:
+			return nil
+		case http.StatusUnauthorized, http.StatusForbidden:
+			select {
+			case <-ctx.Done():
+				return fmt.Errorf("wait for R2 bucket access: %w", ctx.Err())
+			case <-time.After(time.Second):
+			}
+		default:
+			return fmt.Errorf("R2 bucket access probe returned HTTP %d", response.StatusCode)
+		}
+	}
 }
 
 func pruneR2Credentials(ctx context.Context, api *cloudflare.API, endpoint string, grant cloudflare.APIToken) error {

@@ -147,7 +147,7 @@
           path = ./cli;
           name = "cli-src";
         };
-        vendorHash = "sha256-eWp5wsaHvrNDTbRRSmbUdn7gaHbCRhyeLoElZWCu9Co=";
+        vendorHash = "sha256-P0QuqcH86h4JB7KFafMVh8d30q3o/3pnNdEMfvm2TRU=";
         subPackages = [ "cmd/lab" ];
         nativeCheckInputs = [ pkgs.git ];
         preCheck = ''
