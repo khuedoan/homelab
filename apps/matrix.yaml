@@ -1,0 +1,145 @@
+controllers:
+  server:
+    pod:
+      securityContext:
+        fsGroup: 1000
+      terminationGracePeriodSeconds: 1800
+    containers:
+      main:
+        image:
+          repository: ghcr.io/matrix-construct/tuwunel
+          tag: v1.9.4
+        env:
+          TUWUNEL_CONFIG: /config/tuwunel.toml
+        resources:
+          requests:
+            cpu: 100m
+            memory: 384Mi
+          limits:
+            cpu: '1'
+            memory: 1Gi
+        probes:
+          startup:
+            enabled: true
+            command: [tuwunel, --health-check]
+            spec:
+              failureThreshold: 180
+          readiness:
+            enabled: true
+            command: [tuwunel, --health-check]
+          liveness:
+            enabled: true
+            command: [tuwunel, --health-check]
+  client:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/krille-chan/fluffychat
+          tag: v2.10.0
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+service:
+  server:
+    controller: server
+    ports:
+      http:
+        port: 8008
+  client:
+    controller: client
+    ports:
+      http:
+        port: 80
+route:
+  server:
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'matrix.{{ .Values.global.domain }}'
+    rules:
+      - backendRefs:
+          - identifier: server
+            port: 8008
+  client:
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'chat.{{ .Values.global.domain }}'
+    rules:
+      - backendRefs:
+          - identifier: client
+            port: 80
+persistence:
+  data:
+    accessMode: ReadWriteOnce
+    size: 5Gi
+    advancedMounts:
+      server:
+        main:
+          - path: /var/lib/tuwunel
+  server-config:
+    type: configMap
+    identifier: server
+    advancedMounts:
+      server:
+        main:
+          - path: /config/tuwunel.toml
+            subPath: tuwunel.toml
+  client-config:
+    type: configMap
+    identifier: client
+    advancedMounts:
+      client:
+        main:
+          - path: /usr/share/nginx/html/config.json
+            subPath: config.json
+  sso:
+    type: secret
+    identifier: sso
+    advancedMounts:
+      server:
+        main:
+          - path: /run/secrets/sso
+configMaps:
+  server:
+    data:
+      tuwunel.toml: |
+        [global]
+        server_name = "matrix.{{ .Values.global.domain }}"
+        address = ["0.0.0.0"]
+        login_with_password = false
+        db_cache_capacity_mb = 192
+        db_write_buffer_capacity_mb = 52
+        cache_capacity_modifier = 0.5
+
+        [global.well_known]
+        client = "https://matrix.{{ .Values.global.domain }}"
+        server = "matrix.{{ .Values.global.domain }}:443"
+
+        [[global.identity_provider]]
+        brand = "kanidm"
+        name = "SSO"
+        client_id = "matrix"
+        client_secret_file = "/run/secrets/sso/client_secret"
+        issuer_url = "https://auth.{{ .Values.global.domain }}/oauth2/openid/matrix"
+        userid_claims = ["preferred_username"]
+        unique_id_fallbacks = false
+  client:
+    data:
+      config.json: |
+        {
+          "defaultHomeserver": "matrix.{{ .Values.global.domain }}"
+        }
+secrets:
+  sso:
+    labels:
+      homelab.khuedoan.com/bao-secret: 'true'
+    stringData:
+      client_secret: bao:secret/data/matrix/sso#client_secret

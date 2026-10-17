@@ -1,0 +1,38 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: docker.io/openspeedtest/latest
+          tag: v2.0.6
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 3000
+        protocol: HTTP
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'speedtest.{{ .Values.global.domain }}'
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - identifier: main
+            port: 3000

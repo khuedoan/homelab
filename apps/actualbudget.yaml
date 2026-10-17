@@ -1,0 +1,61 @@
+controllers:
+  main:
+    strategy: Recreate
+    containers:
+      main:
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+        image:
+          repository: docker.io/actualbudget/actual-server
+          tag: 26.10.0-alpine
+        env:
+          ACTUAL_OPENID_ENFORCE: 'true'
+          ACTUAL_OPENID_DISCOVERY_URL: 'https://auth.{{ .Values.global.domain }}/oauth2/openid/actualbudget'
+          ACTUAL_OPENID_CLIENT_ID: actualbudget
+          ACTUAL_OPENID_SERVER_HOSTNAME: 'https://budget.{{ .Values.global.domain }}'
+        envFrom:
+          - secretRef:
+              name: actualbudget-sso
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 5006
+        protocol: HTTP
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'budget.{{ .Values.global.domain }}'
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - identifier: main
+            port: 5006
+persistence:
+  data:
+    suffix: data
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    globalMounts:
+      - path: /data
+secrets:
+  sso:
+    forceRename: actualbudget-sso
+    labels:
+      homelab.khuedoan.com/bao-secret: 'true'
+    stringData:
+      ACTUAL_OPENID_CLIENT_SECRET: bao:secret/data/actualbudget/sso#client_secret
