@@ -135,7 +135,7 @@ resource "kubectl_manifest" "rook_ceph" {
             }
             cephFileSystemVolumeSnapshotClass = {
               enabled   = true
-              isDefault = false
+              isDefault = true
             }
             cephFileSystems = [{
               name = "standard-rwx"

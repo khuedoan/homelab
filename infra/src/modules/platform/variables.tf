@@ -51,13 +51,3 @@ variable "load_balancer_cidr" {
   type        = string
   description = "Application LoadBalancer subnet advertised by kube-vip and Tailscale."
 }
-
-variable "apps" {
-  type = set(string)
-  default = []
-}
-
-variable "log_collection_enabled" {
-  type = bool
-  default = true
-}

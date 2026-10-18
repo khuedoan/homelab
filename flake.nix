@@ -38,6 +38,7 @@
           openssh
           opentofu
           terragrunt
+          velero
         ];
       };
     };

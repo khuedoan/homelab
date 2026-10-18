@@ -29,7 +29,6 @@ resource "kubectl_manifest" "loki" {
               }
             }
             promtail = {
-              enabled   = var.log_collection_enabled
               resources = { requests = { cpu = "10m", memory = "32Mi" } }
             }
           })

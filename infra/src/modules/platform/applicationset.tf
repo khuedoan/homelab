@@ -16,7 +16,7 @@ resource "kubectl_manifest" "apps" {
         git = {
           repoURL  = var.repository.url
           revision = var.repository.revision
-          files    = [for app in var.apps : { path = "apps/${app}.yaml" }]
+          files    = [{ path = "apps/*.yaml" }]
         }
       }]
       template = {
@@ -49,9 +49,9 @@ resource "kubectl_manifest" "apps" {
           }
           ignoreDifferences = local.ignore_differences
           syncPolicy = merge(local.sync_policy, {
-            managedNamespaceMetadata = merge(local.sync_policy.managedNamespaceMetadata, {
+            managedNamespaceMetadata = {
               labels = { "istio.io/dataplane-mode" = "ambient" }
-            })
+            }
           })
         }
       }

@@ -21,5 +21,4 @@ inputs = {
   control_plane_ips  = [for host in jsondecode(file("${get_terragrunt_dir()}/../metal/hosts.json")) : host.ip]
   domain             = "staging.khuedoan.com"
   ceph_replica_count = 3
-  apps = [for file in fileset("${get_repo_root()}/apps", "*.yaml") : trimsuffix(file, ".yaml")]
 }

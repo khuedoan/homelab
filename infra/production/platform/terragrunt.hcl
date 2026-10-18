@@ -20,5 +20,4 @@ inputs = {
   backup_location    = dependency.backup.outputs.location
   control_plane_ips  = [for host in jsondecode(file("${get_terragrunt_dir()}/../metal/hosts.json")) : host.ip]
   domain             = "khuedoan.com"
-  apps = [for file in fileset("${get_repo_root()}/apps", "*.yaml") : trimsuffix(file, ".yaml")]
 }
