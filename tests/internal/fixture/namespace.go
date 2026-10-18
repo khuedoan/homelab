@@ -13,7 +13,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-// Namespace creates an isolated namespace and registers UID-guarded cleanup.
+// Namespace creates an isolated namespace and waits for its default ServiceAccount.
 // Cleanup waits for namespace deletion and reclamation of all PVs bound to its claims.
 func Namespace(t *testing.T, client *kubernetes.Clientset) string {
 	t.Helper()
@@ -47,6 +47,14 @@ func Namespace(t *testing.T, client *kubernetes.Clientset) string {
 			t.Errorf("volumes for namespace %s were not reclaimed: %v", namespace.Name, err)
 		}
 	})
+	err = wait.PollUntilContextTimeout(t.Context(), 200*time.Millisecond, 30*time.Second, true, func(ctx context.Context) (bool, error) {
+		_, err := client.CoreV1().ServiceAccounts(namespace.Name).Get(ctx, "default", metav1.GetOptions{})
+		if apierrors.IsNotFound(err) {
+			return false, nil
+		}
+		return err == nil, err
+	})
+	require.NoError(t, err, "namespace must have its default ServiceAccount before creating workloads")
 	return namespace.Name
 }
 
