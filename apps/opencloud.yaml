@@ -32,6 +32,7 @@ controllers:
           OC_EXCLUDE_RUN_SERVICES: idp
           OC_OIDC_ISSUER: 'https://auth.{{ .Values.global.domain }}/oauth2/openid/opencloud'
           OC_OIDC_CLIENT_ID: opencloud
+          OC_OIDC_CLIENT_SCOPES: openid,profile,email,groups
           OC_LDAP_SERVER_WRITE_ENABLED: 'true'
           PROXY_TLS: 'false'
           PROXY_OIDC_AUDIENCES: opencloud
