@@ -41,8 +41,5 @@ locals {
       }
     }
     syncOptions = ["CreateNamespace=true", "ServerSideApply=true"]
-    managedNamespaceMetadata = {
-      annotations = { "volsync.backube/privileged-movers" = "true" }
-    }
   }
 }

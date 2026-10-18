@@ -178,6 +178,7 @@
             openssh
             opentofu
             terragrunt
+            velero
             (python3.withPackages (pythonPackages: [
               pythonPackages.mkdocs-material
             ]))

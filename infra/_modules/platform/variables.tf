@@ -13,9 +13,17 @@ variable "repository" {
   })
 }
 
-variable "apps" {
-  type    = set(string)
-  default = []
+variable "backup_location" {
+  type = object({
+    bucket   = string
+    endpoint = string
+  })
+}
+
+variable "backup_read_only" {
+  type        = bool
+  default     = false
+  description = "Prevent backup creation and deletion during recovery and disable the backup schedule."
 }
 
 variable "domain" {
@@ -33,9 +41,4 @@ variable "ceph_replica_count" {
     condition     = var.ceph_replica_count >= 1 && floor(var.ceph_replica_count) == var.ceph_replica_count
     error_message = "Ceph replica count must be a positive integer."
   }
-}
-
-variable "log_collection_enabled" {
-  type    = bool
-  default = true
 }
