@@ -293,7 +293,9 @@ func checkOAuthPatch(t *testing.T, r *http.Request, name, callback string, publi
 	if name == "actualbudget" {
 		expected["oauth2_jwt_legacy_crypto_enable"] = []string{"true"}
 	}
-	if !public {
+	if public {
+		expected["oauth2_allow_localhost_redirect"] = []string{"false"}
+	} else {
 		expected["oauth2_allow_insecure_client_disable_pkce"] = []string{"false"}
 	}
 	if !reflect.DeepEqual(body.Attrs, expected) {
@@ -317,12 +319,40 @@ func TestClientValidationBeforeClusterAccess(t *testing.T) {
 	for _, test := range []struct{ name, redirect string }{
 		{"../invalid", "https://app.example.test/callback"},
 		{"app", "http://app.example.test/callback"},
+		{"app", "oc://ios.opencloud.eu"},
 		{"app", "https://user:password@app.example.test/callback"},
 	} {
 		err := EnsureClient(context.Background(), options, ClientConfig{Name: test.name, RedirectURIs: []string{test.redirect}})
 		if err == nil || strings.Contains(err.Error(), "kubeconfig") {
 			t.Fatalf("did not reject invalid client configuration first: %v", err)
 		}
+	}
+}
+
+func TestRedirectURIValidation(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		uri     string
+		invalid bool
+	}{
+		{"web", "https://files.example.test/callback", false},
+		{"native", "oc://android.opencloud.eu", false},
+		{"insecure", "http://files.example.test/callback", true},
+		{"relative", "/callback", true},
+		{"empty native callback", "oc:", true},
+		{"empty HTTPS host", "https:///callback", true},
+		{"native credentials", "oc://user:password@ios.opencloud.eu", true},
+		{"native fragment", "oc://ios.opencloud.eu#fragment", true},
+		{"web credentials", "https://user:password@files.example.test/callback", true},
+		{"web fragment", "https://files.example.test/callback#fragment", true},
+		{"malformed", "oc://%invalid", true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			err := validateRedirectURI(test.uri)
+			if (err != nil) != test.invalid {
+				t.Fatalf("callback %q: got %v, want invalid=%t", test.uri, err, test.invalid)
+			}
+		})
 	}
 }
 
@@ -362,6 +392,50 @@ func TestMultipleRedirectURIs(t *testing.T) {
 	err := EnsureClient(context.Background(), Options{URL: "https://auth.example.test", Kubeconfig: "absent"}, ClientConfig{Name: "immich", RedirectURIs: []string{callbacks[0], "http://photos.example.test/user-settings"}})
 	if err == nil || !strings.Contains(err.Error(), "redirect URI") {
 		t.Fatalf("invalid second callback reached cluster: %v", err)
+	}
+}
+
+func TestNativePublicClientReconciliation(t *testing.T) {
+	var got entry
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == "GET" && r.URL.Path == "/v1/group/users":
+			_, _ = w.Write([]byte(`{"attrs":{"name":["users"]}}`))
+		case r.Method == "GET" && r.URL.Path == "/v1/oauth2/files":
+			_, _ = w.Write([]byte(`{"attrs":{"class":["oauth2_resource_server_public"]}}`))
+		case r.Method == "PATCH" && r.URL.Path == "/v1/oauth2/files":
+			if err := json.NewDecoder(r.Body).Decode(&got); err != nil {
+				t.Error(err)
+			}
+		case r.Method == "POST" && r.URL.Path == "/v1/oauth2/files/_scopemap/users":
+			checkScopes(t, r)
+		default:
+			t.Errorf("unexpected request: %s %s", r.Method, r.URL.Path)
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	}))
+	defer server.Close()
+	c := &client{url: server.URL, http: server.Client()}
+	for _, test := range []struct {
+		allow bool
+		want  string
+	}{{true, "true"}, {false, "false"}} {
+		config := ClientConfig{Name: "files", Public: true, AllowLocalhostRedirects: test.allow,
+			RedirectURIs: []string{"https://files.example.test/", "oc://android.opencloud.eu", "oc://ios.opencloud.eu"}}
+		if err := c.ensureClient(t.Context(), config); err != nil {
+			t.Fatal(err)
+		}
+		want := map[string][]string{
+			"displayname": {"files"}, "oauth2_rs_origin_landing": {"https://files.example.test/"},
+			"oauth2_rs_origin":                {"https://files.example.test/", "oc://android.opencloud.eu", "oc://ios.opencloud.eu"},
+			"oauth2_strict_redirect_uri":      {"true"},
+			"oauth2_prefer_short_username":    {"true"},
+			"oauth2_jwt_legacy_crypto_enable": {"false"},
+			"oauth2_allow_localhost_redirect": {test.want},
+		}
+		if !reflect.DeepEqual(got.Attrs, want) {
+			t.Fatalf("native public client settings: got %v, want %v", got.Attrs, want)
+		}
 	}
 }
 

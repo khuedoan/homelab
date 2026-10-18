@@ -48,7 +48,7 @@ sso:
 	lab sso $(sso_args) client ensure immich --display-name Immich --redirect-uri "https://photos.$$domain/auth/login" --redirect-uri "https://photos.$$domain/user-settings" --redirect-uri "https://photos.$$domain/api/oauth/mobile-redirect" --claim immich_role:users=user --claim immich_role:admins=admin; \
 	lab sso $(sso_args) client ensure kiali --group admins --rs256 --display-name Kiali --redirect-uri "https://kiali.$$domain/"; \
 	lab sso $(sso_args) client ensure wireguard --display-name 'WireGuard Portal' --redirect-uri "https://vpn.$$domain/api/v0/auth/login/sso/callback"; \
-	lab sso $(sso_args) client ensure opencloud --display-name OpenCloud --public --redirect-uri "https://drive.$$domain/" --redirect-uri "https://drive.$$domain/oidc-callback.html" --redirect-uri "https://drive.$$domain/oidc-silent-redirect.html"; \
+	lab sso $(sso_args) client ensure opencloud --display-name OpenCloud --public --allow-localhost-redirects --redirect-uri "https://drive.$$domain/" --redirect-uri "https://drive.$$domain/oidc-callback.html" --redirect-uri "https://drive.$$domain/oidc-silent-redirect.html" --redirect-uri "oc://android.opencloud.eu" --redirect-uri "oc://ios.opencloud.eu"; \
 	lab sso $(sso_args) client ensure zot --display-name Zot --public --redirect-uri "https://registry.$$domain/zot/auth/callback/oidc"; \
 	lab sso $(sso_args) client ensure openbao --group admins --display-name OpenBao --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"; \
 	lab sso $(sso_args) secrets sync; \

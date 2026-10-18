@@ -40,13 +40,14 @@ type Options struct {
 
 // ClientConfig describes an application registered with the SSO provider.
 type ClientConfig struct {
-	Name         string
-	Group        string
-	DisplayName  string
-	RedirectURIs []string
-	Public       bool
-	RS256        bool
-	Claims       []ClaimMapping
+	Name                    string
+	Group                   string
+	DisplayName             string
+	RedirectURIs            []string
+	Public                  bool
+	AllowLocalhostRedirects bool
+	RS256                   bool
+	Claims                  []ClaimMapping
 }
 
 // ClaimMapping assigns a claim value to members of an existing group.
@@ -83,8 +84,14 @@ func EnsureClient(ctx context.Context, options Options, config ClientConfig) err
 	if config.Group != "" && !groupNamePattern.MatchString(config.Group) {
 		return fmt.Errorf("access group name must start with a lowercase letter and contain at most 64 lowercase letters, digits, dots, underscores, or hyphens")
 	}
-	for _, uri := range config.RedirectURIs {
-		if err := validateURL(uri); err != nil {
+	if config.AllowLocalhostRedirects && !config.Public {
+		return fmt.Errorf("localhost redirects require a public client")
+	}
+	if err := validateURL(config.RedirectURIs[0]); err != nil {
+		return fmt.Errorf("landing redirect URI: %w", err)
+	}
+	for _, uri := range config.RedirectURIs[1:] {
+		if err := validateRedirectURI(uri); err != nil {
 			return fmt.Errorf("redirect URI: %w", err)
 		}
 	}
@@ -117,6 +124,17 @@ func validateURL(value string) error {
 	parsed, err := url.Parse(value)
 	if err != nil || parsed.Scheme != "https" || parsed.Hostname() == "" || parsed.User != nil || parsed.Fragment != "" {
 		return fmt.Errorf("a valid HTTPS URL without credentials or a fragment is required")
+	}
+	return nil
+}
+
+func validateRedirectURI(value string) error {
+	parsed, err := url.Parse(value)
+	if err != nil || parsed.Scheme == "" || parsed.Scheme == "http" || parsed.User != nil || parsed.Fragment != "" || (parsed.Host == "" && parsed.Path == "" && parsed.Opaque == "") {
+		return fmt.Errorf("an absolute callback URI without HTTP, credentials, or a fragment is required")
+	}
+	if parsed.Scheme == "https" {
+		return validateURL(value)
 	}
 	return nil
 }
@@ -302,7 +320,9 @@ func (c *client) ensureClient(ctx context.Context, config ClientConfig) error {
 		"oauth2_prefer_short_username":    {"true"},
 		"oauth2_jwt_legacy_crypto_enable": {strconv.FormatBool(config.RS256)},
 	}}
-	if !config.Public {
+	if config.Public {
+		attrs.Attrs["oauth2_allow_localhost_redirect"] = []string{strconv.FormatBool(config.AllowLocalhostRedirects)}
+	} else {
 		attrs.Attrs["oauth2_allow_insecure_client_disable_pkce"] = []string{"false"}
 	}
 	method, path := "PATCH", "/v1/oauth2/"+name

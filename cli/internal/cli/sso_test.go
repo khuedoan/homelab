@@ -57,6 +57,13 @@ func TestSSOClaimValidationBeforeClusterAccess(t *testing.T) {
 	}
 }
 
+func TestSSOLocalhostRedirectsRequirePublicClient(t *testing.T) {
+	_, _, err := operationExecute("sso", "--kubeconfig", "absent", "--url", "https://auth.example.test", "client", "ensure", "files", "--redirect-uri", "https://files.example.test/", "--allow-localhost-redirects")
+	if err == nil || !strings.Contains(err.Error(), "localhost redirects require a public client") {
+		t.Fatalf("accepted localhost redirects for a confidential client: %v", err)
+	}
+}
+
 func TestSSODeadlineAllowsReadinessAndOperation(t *testing.T) {
 	dir := t.TempDir()
 	config := clientapi.Config{CurrentContext: "test", Clusters: map[string]*clientapi.Cluster{"test": {Server: "http://kubernetes.example.test"}}, AuthInfos: map[string]*clientapi.AuthInfo{"test": {}}, Contexts: map[string]*clientapi.Context{"test": {Cluster: "test", AuthInfo: "test"}}}

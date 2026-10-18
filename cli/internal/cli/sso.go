@@ -64,10 +64,11 @@ func newSSOCmd() *cobra.Command {
 			return err
 		},
 	}
-	ensure.Flags().StringArrayVar(&config.RedirectURIs, "redirect-uri", nil, "Application HTTPS callback URI (required; repeat for multiple callbacks)")
+	ensure.Flags().StringArrayVar(&config.RedirectURIs, "redirect-uri", nil, "Application callback URI (first must be an HTTPS landing URL; repeat for additional callbacks)")
 	ensure.Flags().StringVar(&config.DisplayName, "display-name", "", "Client display name (defaults to NAME)")
 	ensure.Flags().StringVar(&config.Group, "group", "users", "Existing login access group")
 	ensure.Flags().BoolVar(&config.Public, "public", false, "Create a public PKCE client without a client secret")
+	ensure.Flags().BoolVar(&config.AllowLocalhostRedirects, "allow-localhost-redirects", false, "Allow loopback callbacks on arbitrary ports (requires --public)")
 	ensure.Flags().BoolVar(&config.RS256, "rs256", false, "Sign ID tokens with RS256 for applications that require it")
 	ensure.Flags().StringArrayVar(&claims, "claim", nil, "Set a group claim mapping as NAME:GROUP=VALUE (repeat; other mappings are retained)")
 	requireFlags(ensure, "redirect-uri")
