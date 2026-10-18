@@ -16,6 +16,7 @@ func TestCluster(t *testing.T) {
 		return
 	}
 	t.Run("Networking", func(t *testing.T) { checkNetworking(t, cluster) })
+	t.Run("NetworkPolicy", func(t *testing.T) { checkNetworkPolicy(t, cluster) })
 	t.Run("LoadBalancer", func(t *testing.T) { checkLoadBalancer(t, cluster) })
 	t.Run("Storage", func(t *testing.T) { checkStorage(t, cluster) })
 	t.Run("Snapshots", func(t *testing.T) { checkSnapshots(t, cluster) })
