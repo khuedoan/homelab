@@ -10,6 +10,7 @@ controllers:
           DB_USERNAME: immich
           REDIS_HOSTNAME: immich-valkey
           IMMICH_CONFIG_FILE: /config/immich-config.yaml
+          IMMICH_ALLOW_SETUP: "false"
           TZ: Asia/Ho_Chi_Minh
         envFrom:
           - secretRef:
