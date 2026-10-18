@@ -11,7 +11,6 @@ import (
 	"github.com/stretchr/testify/require"
 	authenticationv1 "k8s.io/api/authentication/v1"
 	corev1 "k8s.io/api/core/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/utils/ptr"
 )
@@ -60,13 +59,6 @@ func checkSecrets(t *testing.T, cluster fixture.Cluster) {
 	t.Helper()
 	owner := fixture.Namespace(t, cluster.Client)
 	other := fixture.Namespace(t, cluster.Client)
-	for _, namespace := range []string{owner, other} {
-		_, err := cluster.Client.CoreV1().ServiceAccounts(namespace).Create(t.Context(),
-			&corev1.ServiceAccount{ObjectMeta: metav1.ObjectMeta{Name: "default"}}, metav1.CreateOptions{})
-		if err != nil {
-			require.True(t, apierrors.IsAlreadyExists(err), "default ServiceAccount must exist")
-		}
-	}
 	unseal, err := cluster.Client.CoreV1().Secrets("openbao").Get(t.Context(), "openbao-unseal", metav1.GetOptions{})
 	require.NoError(t, err)
 	root := string(unseal.Data["vault-root"])
