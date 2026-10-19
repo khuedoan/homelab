@@ -42,3 +42,8 @@ variable "ceph_replica_count" {
     error_message = "Ceph replica count must be a positive integer."
   }
 }
+
+variable "load_balancer_cidr" {
+  type        = string
+  description = "Application LoadBalancer subnet advertised by kube-vip and Tailscale."
+}
