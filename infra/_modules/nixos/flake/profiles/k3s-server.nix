@@ -70,6 +70,7 @@
       "local-storage" # use Rook Ceph for storage
     ];
     extraFlags = [
+      "--secrets-encryption"
       "--etcd-expose-metrics"
       "--kube-controller-manager-arg=bind-address=0.0.0.0"
       "--kube-scheduler-arg=bind-address=0.0.0.0"
