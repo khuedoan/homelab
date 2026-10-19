@@ -33,6 +33,7 @@ in
       k3s = {
         clusterInit = name == initHost;
         vip = cluster.vip;
+        loadBalancerCIDR = cluster.load_balancer_cidr;
         nodeIPs = nixpkgs.lib.mapAttrsToList (_: host: host.ip) hosts;
       };
     };

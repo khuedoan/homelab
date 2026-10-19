@@ -67,6 +67,7 @@
     tokenFile = if k3s.clusterInit then null else "/var/lib/rancher/k3s/enrollment/token";
     disable = [
       "traefik" # Use Istio for Gateway API
+      "servicelb" # Use kube-vip for LoadBalancer services
       "local-storage" # use Rook Ceph for storage
     ];
     extraFlags = [

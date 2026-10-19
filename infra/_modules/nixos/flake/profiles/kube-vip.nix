@@ -1,4 +1,9 @@
-{ k3s, lib, ... }:
+{
+  k3s,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   metadata = {
@@ -7,6 +12,19 @@ let
   };
 in
 {
+  services.k3s.manifests.kube-vip-cloud-controller.source = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/v0.0.13/manifest/kube-vip-cloud-controller.yaml";
+    hash = "sha256-rHjtJsI5TalHFfJM/yDg1DaWmFoK0vXhaHdxmF3aNoA=";
+  };
+  services.k3s.manifests.kube-vip-pool.content = {
+    apiVersion = "v1";
+    kind = "ConfigMap";
+    metadata = {
+      name = "kubevip";
+      namespace = "kube-system";
+    };
+    data.cidr-global = k3s.loadBalancerCIDR;
+  };
   services.k3s.manifests.kube-vip.content = [
     {
       apiVersion = "v1";
@@ -15,8 +33,8 @@ in
     }
     {
       apiVersion = "rbac.authorization.k8s.io/v1";
-      kind = "Role";
-      inherit metadata;
+      kind = "ClusterRole";
+      metadata.name = "kube-vip";
       rules = [
         {
           apiGroups = [ "coordination.k8s.io" ];
@@ -27,15 +45,39 @@ in
             "update"
           ];
         }
+        {
+          apiGroups = [ "" ];
+          resources = [ "services" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+            "update"
+          ];
+        }
+        {
+          apiGroups = [ "" ];
+          resources = [ "services/status" ];
+          verbs = [ "update" ];
+        }
+        {
+          apiGroups = [ "discovery.k8s.io" ];
+          resources = [ "endpointslices" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
       ];
     }
     {
       apiVersion = "rbac.authorization.k8s.io/v1";
-      kind = "RoleBinding";
-      inherit metadata;
+      kind = "ClusterRoleBinding";
+      metadata.name = "kube-vip";
       roleRef = {
         apiGroup = "rbac.authorization.k8s.io";
-        kind = "Role";
+        kind = "ClusterRole";
         name = "kube-vip";
       };
       subjects = [
@@ -57,7 +99,6 @@ in
           spec = {
             serviceAccountName = "kube-vip";
             hostNetwork = true;
-            dnsPolicy = "ClusterFirstWithHostNet";
             affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms = [
               {
                 matchExpressions = [
@@ -90,26 +131,16 @@ in
                   ];
                   drop = [ "ALL" ];
                 };
-                env =
-                  lib.mapAttrsToList (name: value: { inherit name value; }) {
-                    address = k3s.vip;
-                    vip_arp = "true";
-                    cp_enable = "true";
-                    cp_namespace = "kube-system";
-                    vip_leaderelection = "true";
-                    vip_leasename = "plndr-cp-lock";
-                    svc_enable = "false";
-                    lb_enable = "false";
-                    enable_node_labeling = "false";
-                    KUBERNETES_SERVICE_HOST = "127.0.0.1";
-                    KUBERNETES_SERVICE_PORT = "6443";
-                  }
-                  ++ [
-                    {
-                      name = "vip_nodename";
-                      valueFrom.fieldRef.fieldPath = "spec.nodeName";
-                    }
-                  ];
+                env = lib.mapAttrsToList (name: value: { inherit name value; }) {
+                  address = k3s.vip;
+                  vip_arp = "true";
+                  cp_enable = "true";
+                  vip_leaderelection = "true";
+                  svc_enable = "true";
+                  svc_election = "true";
+                  KUBERNETES_SERVICE_HOST = "127.0.0.1";
+                  KUBERNETES_SERVICE_PORT = "6443";
+                };
               }
             ];
           };

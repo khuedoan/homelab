@@ -5,8 +5,9 @@ variable "hosts" {
 
 variable "cluster" {
   type = object({
-    init_host = string
-    vip       = string
+    init_host          = string
+    vip                = string
+    load_balancer_cidr = string
     network = object({
       prefix_length = number
       gateway       = string
