@@ -19,6 +19,60 @@ They are not permanent, we can change them in the future if better alternatives 
 
     - CHANGEME
 
+## Use Velero for backups
+
+**Context**
+
+Requirements:
+
+- All apps backed up by default, without additional configuration for new apps.
+- The backups need to work even if we lose the entire cluster.
+
+We used to use [VolSync](https://volsync.readthedocs.io/en/stable/usage/restic/index.html),
+but its Restic workflow requires per-volume replication resources and credentials,
+and the backup & restore flow is not really declarative.
+We would need additional resource generation and orchestration to provide this experience.
+
+**Decision**
+
+Use Velero to back up cluster resources and supported persistent volumes:
+
+- Use [CSI snapshot data movement](https://velero.io/docs/v1.18/csi-snapshot-data-movement)
+  to copy volume data into object storage,
+  so recovery does not depend on the original Ceph cluster.
+- Use Velero's [ReadOnly recovery mode](https://velero.io/docs/v1.18/disaster-case)
+  to prevent backup creation and deletion while restoring and verifying data.
+
+**Consequences**
+
+- The backup schedule includes all apps,
+  without backup resources or storage credentials to distribute to app namespaces.
+- Backup and restore operations use Velero's native resources
+  and CLI instead of custom orchestration in `lab` CLI.
+- Velero requires broad cluster permissions.
+- Database applications may still need backup hooks or native exports for consistent backups.
+
+## Switch metal provisioning from Ansible to Nixie
+
+**Context**
+
+The metal nodes used to use Ansible to install Fedora.
+When we switched to NixOS, while technically we can still use Ansible to do the same thing,
+but it's still hard to test and debug.
+
+**Decision**
+
+Build a custom bare metal orchestration engine for NixOS - [nixie](https://github.com/khuedoan/nixie).
+
+**Consequences**
+
+- It has much better integration to the OS, since it's built specically for NixOS
+- It's much more reliable and testable (Nixie has a full test suite in QEMU)
+- There's much better visibility into the PXE boot process with tracing
+- The PXE installer can be reused with other projects
+  (e.g., my [dotfiles](https://github.com/khuedoan/dotfiles)),
+  not just this homelab.
+
 ## Remove the Docker wrapper for Nix shell
 
 **Context**
