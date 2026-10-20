@@ -13,12 +13,12 @@ Literally anything that works.
 Good enough for tinkering and personal usage, and reasonably secure.
 
 - [x] Automated bare metal provisioning
-    - [x] Controller set up (Docker)
+    - [x] Controller set up (Nix development shell)
     - [x] OS installation (PXE boot)
 - [x] Automated cluster creation (k3s)
 - [x] Automated application deployment (ArgoCD)
 - [x] Automated DNS management
-- [x] Initialize GitOps repository on Gitea automatically
+- [x] Initialize GitOps repository on Forgejo automatically
 - [x] Observability
     - [x] Monitoring
     - [x] Logging
@@ -29,13 +29,13 @@ Good enough for tinkering and personal usage, and reasonably secure.
     - [x] Declarative secret management
     - [x] Replace all default passwords with randomly generated ones
     - [x] Expose services to the internet securely with Cloudflare Tunnel
-- [x] Only use open-source technologies (except external managed services in `./external`)
+- [x] Only use open-source technologies (except external managed services)
 - [x] Everything is defined as code
-- [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
+- [ ] Backup solution (3 copies, 2 separate devices, 1 offsite)
 - [ ] Define [SLOs](https://en.wikipedia.org/wiki/Service-level_objective):
     - [ ] 70% availability (might break in the weekend due to new experimentation)
 - [x] Core applications
-    - [x] Gitea
+    - [x] Forgejo
     - [x] Woodpecker
     - [x] Private container registry
     - [x] Homepage
@@ -45,25 +45,25 @@ Good enough for tinkering and personal usage, and reasonably secure.
 Can be used in "production" (for family or even small scale businesses).
 
 - [x] A single command to deploy everything
-- [x] Fast deployment time (from empty hard drive to running services in under 1 hour)
+- [ ] Verify deployment time from empty disks to running services
 - [ ] Fully _automatic_, not just _automated_
-    - [x] Bare-metal OS rolling upgrade
-    - [x] Kubernetes version rolling upgrade
-    - [x] Application version upgrade
+    - [ ] Automated flake updates and node configuration deployment for OS and Kubernetes upgrades
+    - [x] Kured reboot coordination after kernel changes
+    - [ ] Application version upgrade
     - [x] Encrypted backups
     - [ ] Secrets rotation
     - [x] Self healing
 - [ ] Secure by default
-    - [ ] SELinux
-    - [ ] Network policies
-- [ ] Static code analysis
+    - [ ] Host security hardening
+    - [ ] Default application network policies
+- [x] Static code analysis
 - [ ] Chaos testing
 - [x] Minimal dependency on external services
 - [ ] Complete documentation
     - [x] Diagram as code
     - [x] Book (this book)
     - [ ] Walkthrough tutorial and feature demo (video)
-- [x] Configuration script for new users
+- [x] User onboarding (with `lab` CLI)
 - [ ] More dashboards and alert rules
 - [ ] SLOs:
     - [ ] 99,9% availability (less than 9 hours of downtime per year)
@@ -80,4 +80,4 @@ Can be used in "production" (for family or even small scale businesses).
 Nice to have
 
 - [ ] Air-gap install
-- [ ] Automated testing
+- [x] Automated testing
