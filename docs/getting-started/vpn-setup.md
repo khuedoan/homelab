@@ -1,7 +1,7 @@
 # VPN setup
 
 You can choose between [Tailscale](https://tailscale.com),
-[Wireguard](https://www.wireguard.com), or use both like me. I primarily use
+[WireGuard](https://www.wireguard.com), or use both like me. I primarily use
 WireGuard but keep Tailscale as a backup for when the WireGuard server is down.
 
 ## Tailscale (requires third-party account)
