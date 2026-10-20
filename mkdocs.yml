@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
 site_name: Khue's Homelab
-copyright: Copyright &copy; 2020 - 2024 Khue Doan
+copyright: Copyright &copy; 2020 - 2026 Khue Doan
 
 repo_url: https://github.com/khuedoan/homelab
 
@@ -49,7 +49,6 @@ nav:
   - Getting started:
     - getting-started/vpn-setup.md
     - getting-started/user-onboarding.md
-    - getting-started/install-pre-commit-hooks.md
   - Concepts:
     - concepts/pxe-boot.md
     - concepts/secrets-management.md
@@ -64,8 +63,6 @@ nav:
     - how-to-guides/add-or-remove-nodes.md
     - how-to-guides/run-commands-on-multiple-nodes.md
     - how-to-guides/single-node-cluster-adjustments.md
-    - how-to-guides/disable-dhcp-proxy-in-dnsmasq.md
-    - how-to-guides/media-management.md
     - how-to-guides/updating-documentation.md
     - Troubleshooting:
       - how-to-guides/troubleshooting/pxe-boot.md
@@ -74,6 +71,8 @@ nav:
       - reference/architecture/overview.md
       - reference/architecture/networking.md
       - reference/architecture/decision-records.md
+    - reference/cli.md
+    - reference/testing.md
     - reference/license.md
     - reference/changelog.md
     - reference/roadmap.md
