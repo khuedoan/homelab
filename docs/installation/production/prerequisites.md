@@ -25,7 +25,9 @@ By using this project you agree to [the license](../../reference/license.md).
 
     The initial controller is the machine used to bootstrap the cluster, we only need it once, you can use your laptop or desktop
 
-- A **Linux** machine that can run Docker (because the `host` networking driver used for PXE boot [only supports Linux](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows).
+- A **Linux** machine with Nix and `sudo` access (for privileged ports when PXE booting with [Nixie](https://github.com/khuedoan/nixie)).
+- An SSH agent, preferably with a TPM-backed key to keep the private key in hardware.
+- Authorize your public SSH key in `infra/_modules/nixos/flake/profiles/installer.nix` and `infra/_modules/nixos/flake/configuration.nix`.
 
 ### Servers
 
@@ -100,5 +102,6 @@ Boot order options (select one, each has their pros and cons):
 
 - [ ] MAC address for each machine
 - [ ] OS disk name (for example `/dev/sda`)
-- [ ] Network interface name (for example `eth0`)
 - [ ] Choose a static IP address for each machine (just the desired address, we don't set anything up yet)
+- [ ] Choose an unused IP range for LoadBalancer Services (e.g. `192.168.1.224/27`) and a control-plane VIP (e.g. `192.168.1.100`)
+- [ ] Subnet prefix length and gateway
