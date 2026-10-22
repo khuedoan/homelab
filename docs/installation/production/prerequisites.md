@@ -50,11 +50,11 @@ Additional capabilities:
 ### Network setup
 
 - All servers must be connected to the same **wired** network with the initial controller
-- You have the access to change DNS config (on your router or at your domain registrar)
+- Access to your domain's DNS settings in Cloudflare
 
 ## Domain
 
-Buying a domain is highly recommended, but if you don't have one, see [alternate DNS setup](../../how-to-guides/alternate-dns-setup.md).
+A domain managed by Cloudflare is required.
 
 ## BIOS setup
 

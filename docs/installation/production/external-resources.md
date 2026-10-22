@@ -1,9 +1,5 @@
 # External resources
 
-!!! info
-
-    These resources are optional, the homelab still works without them but will lack some features like trusted certificates and offsite backup
-
 Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
 Below is a list of external resources and why we need them (also see some [alternatives](#alternatives) below).
 
@@ -66,9 +62,6 @@ To avoid vendor lock-in, each external provider must have an equivalent alternat
 
 - Terraform Cloud:
     - Any other [Terraform backends](https://www.terraform.io/language/settings/backends)
-- Cloudflare DNS:
-    - Update cert-manager and external-dns to use a different provider
-    - [Alternate DNS setup](../../how-to-guides/alternate-dns-setup.md)
 - Cloudflare Tunnel:
     - Use port forwarding if it's available
     - Create a small VPS in the cloud and utilize Wireguard to route traffic via it
