@@ -1,44 +1,26 @@
 # Post-installation
 
-## Backup secrets
+## Create users
 
-Save the following files to a safe location like a password manager (if you're using the sandbox, you can skip this step):
+Follow the [user onboarding guide](../getting-started/user-onboarding.md) to create accounts and assign access.
+Use SSO to sign in to applications.
 
-- `~/.ssh/id_ed25519`
-- `~/.ssh/id_ed25519.pub`
-- `./metal/kubeconfig.yaml`
-- `~/.terraform.d/credentials.tfrc.json`
-- `./external/terraform.tfvars`
+## Verify backups
 
-## Admin credentials
+Follow the [backup and restore guide](../how-to-guides/backup-and-restore.md) to check backups and restore data.
 
-- ArgoCD:
-    - Username: `admin`
-    - Password: run `./scripts/argocd-admin-password`
-- Gitea:
-    - Username: `gitea_admin`
-    - Password: get from `global-secrets` namespace
-- Kanidm:
-    - Usernames: `admin` and `idm_admin`
-    - Password: run `./scripts/kanidm-reset-password admin` and `./scripts/kanidm-reset-password idm_admin`
-- Jellyfin and other applications in the \*arr stack: see the [dedicated guide for media management](../how-to-guides/media-management.md)
-- Other apps:
-    - Username: `admin`
-    - Password: get from `global-secrets` namespace
+## Run tests
 
-## Backup
-
-Now is a good time to set up backups for your homelab.
-Follow the [backup and restore guide](../how-to-guides/backup-and-restore.md) to get started.
-
-## Run the full test suite
-
-After the homelab has been stabilized, you can run the full test suite to ensure that everything is working properly:
+Run offline checks:
 
 ```sh
 make test
 ```
 
-!!! info
+Run live tests against staging:
 
-    The "full" test suit is still in its early stages, so any contribution is greatly appreciated.
+```sh
+make -C tests e2e env=staging
+```
+
+See the [testing reference](../reference/testing.md) for individual checks.
