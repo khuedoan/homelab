@@ -1,5 +1,13 @@
 # Post-installation
 
+## Access the cluster
+
+Export the environment's kubeconfig, e.g., production:
+
+```sh
+export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
+```
+
 ## Create users
 
 Follow the [user onboarding guide](../getting-started/user-onboarding.md) to create accounts and assign access.

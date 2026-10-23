@@ -24,6 +24,23 @@ flowchart TD
 - Bank-Vaults generates secrets configured in `infra/_modules/platform/openbao.tf`, keeping existing values.
 - The lab CLI syncs infrastructure credentials from OpenTofu's `secrets` outputs, along with SSO and Forgejo credentials.
 
+## Infra secret outputs
+
+To publish secrets from an OpenTofu module, add a sensitive `secrets` output.
+
+```hcl
+output "secrets" {
+  sensitive = true
+  value = {
+    "cert-manager/cloudflare" = { # OpenBao path
+      api_token = cloudflare_account_token.cert_manager.value # secret values
+    }
+  }
+}
+```
+
+`lab infra secrets sync` writes these under OpenBao's `secret` KV mount.
+
 ## Secret injection
 
 Secrets use `<namespace>/<name>` paths, for example `forgejo/admin`.
