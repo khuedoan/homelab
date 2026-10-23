@@ -1,40 +1,44 @@
 # Configuration
 
-Open the [development shell](../../concepts/development-shell.md), which includes all the tools needed:
+## Configure nodes
 
-```sh
-nix develop
+Edit `infra/production/metal/hosts.json` with your machines' static IPs, MAC addresses, and disk paths.
+Installation erases the disks.
+
+> [!NOTE]
+> **Example**
+>
+> ```json title="infra/production/metal/hosts.json"
+> {
+>   "homelab-1": {"ip": "192.168.1.110", "mac_address": "02:00:00:00:00:01", "disk": "/dev/sda"},
+>   "homelab-2": {"ip": "192.168.1.111", "mac_address": "02:00:00:00:00:02", "disk": "/dev/sda"},
+>   "homelab-3": {"ip": "192.168.1.112", "mac_address": "02:00:00:00:00:03", "disk": "/dev/sda"},
+>   "homelab-4": {"ip": "192.168.1.113", "mac_address": "02:00:00:00:00:04", "disk": "/dev/sda"}
+> }
+> ```
+
+## Configure the cluster
+
+Edit `infra/production/cluster/config.json` with your network settings.
+Set `init_host` to a host in the inventory:
+
+```json
+{
+  "init_host": "homelab-1",
+  "vip": "192.168.1.100",
+  "load_balancer_cidr": "192.168.1.224/27",
+  "network": {"prefix_length": 24, "gateway": "192.168.1.1"}
+}
 ```
 
-Run the following script to configure the homelab:
+## Configure services
 
-```sh
-make configure
-```
+Update the following settings in `infra/production/`:
 
-!!! example
+- `domain` in the `cloudflare`, `argocd`, and `platform` Terragrunt units
+- `zone_name` in the Cloudflare unit
 
-    <!-- TODO update example input -->
+Review the settings in `apps/*.yaml`, including image registries and homepage links.
 
-    ```
-    Text editor (nvim):
-    Enter seed repo (github.com/khuedoan/homelab): github.com/example/homelab
-    Enter your domain (khuedoan.com): example.com
-    ```
-
-It will prompt you to edit the inventory:
-
-- IP address: the desired one, not the current one, since your servers have no operating system installed yet
-- Disk: based on `/dev/$DISK`, in my case it's `sda`, but yours can be `sdb`, `nvme0n1`...
-- Network interface: usually it's `eth0`, mine is `eno1`
-- MAC address: the **lowercase, colon separated** MAC address of the above network interface
-
-!!! example
-
-    ```yaml title="metal/inventories/prod.yml"
-    --8<--
-    metal/inventories/prod.yml
-    --8<--
-    ```
-
-At the end it will show what has changed. After examining the diff, commit and push the changes.
+After examining the diff, commit and push the changes.
+Continue with [deployment](deployment.md).
