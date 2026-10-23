@@ -48,8 +48,13 @@ resource "kubectl_manifest" "wireguard" {
               }
             }]
             config = {
-              core = { disable_admin_user = true }
-              web  = { external_url = "https://vpn.${var.domain}" }
+              core = {
+                disable_admin_user           = true
+                create_default_peer_on_login = true
+                self_provisioning_allowed    = true
+              }
+              advanced = { use_ip_v6 = false } # TODO enable IPv6
+              web      = { external_url = "https://vpn.${var.domain}" }
               auth = {
                 hide_login_form = true
                 oidc = [{
