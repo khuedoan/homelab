@@ -73,6 +73,35 @@ Build a custom bare metal orchestration engine for NixOS - [nixie](https://githu
   (e.g., my [dotfiles](https://github.com/khuedoan/dotfiles)),
   not just this homelab.
 
+## Using NixOS as the base OS
+
+**Context**
+
+With Fedora and Ansible, I sometimes make manual changes and forget to put them back in the playbooks.
+If a playbook fails halfway, it's also hard to roll back to the previous system.
+
+Talos is smaller and has better integration for Kubernetes operations,
+but I want a general-purpose OS that can stay even if we move away from Kubernetes.
+I don't want the OS to depend on a single company that could change its license,
+and I already use NixOS on my other machines.
+
+**Decision**
+
+Use NixOS as the base OS.
+
+**Consequences**
+
+- System changes have to go through the NixOS configuration, so it's easier to keep the system clean and reproducible.
+- NixOS builds the new system before switching to it, and we can roll back to a previous generation.
+  Switching to the new system is almost fully atomic, except for service activation and restarts, which are still imperative.
+- We can use Nix for both the OS and development shells, without installing project dependencies into the base system.
+- We can test the same configurations in QEMU before applying them to real hardware.
+- We can keep the OS even if we replace Kubernetes later.
+- The system is larger than Talos, with a larger attack surface, and we need to coordinate rolling upgrades ourselves.
+
+See the [original discussion](https://github.com/khuedoan/homelab/pull/197#issuecomment-3440096206)
+and [NixOS cured my OCD](https://www.khuedoan.com/posts/nixos-cured-my-ocd) for more background.
+
 ## Remove the Docker wrapper for Nix shell
 
 **Context**
@@ -96,6 +125,11 @@ everyone has Nix installed, not everyone has the same Docker setup either.
 
 ## Remove HashiCorp Vault
 
+**Status**: we added back OpenBao, the community fork of Vault.
+It has more management overhead than our previous global secret store,
+but its security features, API for dynamic configuration, and removal of External Secrets are worth the additional complexity.
+See [Secrets management](../../concepts/secrets-management.md).
+
 **Context**
 
 - HashiCorp changed their license, and it's no longer free/libre software.
@@ -113,7 +147,7 @@ everyone has Nix installed, not everyone has the same Docker setup either.
 
 **Decision**
 
-Replace Vault with a simplier in-cluster global secret store.
+Replace Vault with a simpler in-cluster global secret store.
 
 **Consequences**
 
@@ -139,6 +173,8 @@ Update secret references in `kind: ExternalSecret`:
 ```
 
 ## Manage package versions in development shell
+
+**Status**: we no longer need this, since we use Nix from the development shell to NixOS on the nodes.
 
 **Context**
 
@@ -172,6 +208,8 @@ and we can make a conscious decision to take the necessary steps prior to upgrad
 
 ## Refactor the tools container from plain Dockerfile to [Nix](https://nixos.org)
 
+**Status**: the Docker wrapper was later removed in [Remove the Docker wrapper for Nix shell](#remove-the-docker-wrapper-for-nix-shell).
+
 **Context**
 
 The previous implementation of the tools container is not reproducible, if someone builds it a few weeks after me, they will receive different versions of the tools.
@@ -187,6 +225,8 @@ Move to Nix shell with a Docker wrapper, in case Nix is not available (see commi
 - When you change the list of tools, rebuilding is much faster
 
 ## Combine dhcpd and tftpd to dnsmasq in PXE server
+
+**Status**: replaced by [Nixie](#switch-metal-provisioning-from-ansible-to-nixie).
 
 **Context**
 
@@ -241,7 +281,9 @@ Migrate documentation from mdBook to MkDocs (see commit `cd41343`).
 
 - We can no longer include only a portion of a file, see [facelessuser/pymdown-extensions#1462](https://github.com/facelessuser/pymdown-extensions/issues/1462).
 
-## Choosing the base OS
+## Using Fedora as the base OS
+
+**Status**: superseded by [Using NixOS as the base OS](#using-nixos-as-the-base-os)
 
 **Context**
 
