@@ -8,48 +8,17 @@
     Using a single node could lead to data loss unless your backup strategy is rock solid,
     make sure you are **ABSOLUTELY CERTAIN** this is what you want.
 
-Update the following changes, then commit and push.
+Make the following changes, then commit and push.
+
+## Configure the node
+
+- Keep one host in `infra/production/metal/hosts.json`.
+- Set it as `init_host` in `infra/production/cluster/config.json`.
 
 ## Remove storage redundancy
 
-Set pod counts and number of data copies to `1`:
+Set `ceph_replica_count` to `1` in the `inputs` block of `infra/production/platform/terragrunt.hcl`:
 
-```yaml title="system/rook-ceph/values.yaml" hl_lines="4 6 11 12 18 22 25"
-rook-ceph-cluster:
-  cephClusterSpec:
-    mon:
-      count: 1
-    mgr:
-      count: 1
-  cephBlockPools:
-    - name: standard-rwo
-      spec:
-        replicated:
-          size: 1
-          requireSafeReplicaSize: false
-  cephFileSystems:
-    - name: standard-rwx
-      spec:
-        metadataPool:
-          replicated:
-            size: 1
-        dataPools:
-          - name: data0
-            replicated:
-              size: 1
-        metadataServer:
-          activeCount: 1
-          activeStandby: false
+```hcl title="infra/production/platform/terragrunt.hcl"
+ceph_replica_count = 1
 ```
-
-## Disable automatic upgrade
-
-Because they will try to drain the only node, the pods will have no place to go.
-Remove them entirely:
-
-```sh
-rm -rf system/kured
-```
-
-Commit and push the change.
-You can revert it later when you add more nodes.
