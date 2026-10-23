@@ -54,9 +54,51 @@ Additional capabilities:
 - All servers must be connected to the same **wired** network with the initial controller
 - Access to your domain's DNS settings in Cloudflare
 
-## Domain
+## External resources
 
 A domain managed by Cloudflare is required.
+
+Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
+Below is a list of external resources and why we need them (also see some [alternatives](#alternatives) below).
+
+| Provider        | Resource  | Purpose                                                                                                     |
+| --------        | --------  | -------                                                                                                     |
+| Cloudflare      | R2 bucket | OpenTofu state and encrypted volume backups                                                                  |
+| Cloudflare      | DNS       | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates |
+| Cloudflare      | Tunnel    | Public services to the internet without port forwarding                                                     |
+| ntfy.sh         | Upstream  | Push relay for self-hosted ntfy notifications                                                                 |
+
+### Create credentials
+
+#### Cloudflare
+
+- Add your domain to Cloudflare if you haven't already
+- Log in from the development shell:
+
+```sh
+cf auth login
+```
+
+Grant the following permissions:
+
+- Account API Tokens Write
+- R2 bucket and object access
+- DNS
+- Tunnel
+
+If your existing login lacks these permissions, run `cf auth login --force` and approve them.
+
+### Alternatives
+
+To avoid vendor lock-in, each external provider must have an equivalent alternative that is easy to replace:
+
+- Cloudflare R2:
+    - Update the backend and bootstrap hook in `infra/root.hcl` for another state backend
+- Cloudflare Tunnel:
+    - Use port forwarding if it's available
+    - Create a small VPS in the cloud and use WireGuard to route traffic via it
+    - Access everything via VPN
+    - See also [awesome tunneling](https://github.com/anderspitman/awesome-tunneling)
 
 ## BIOS setup
 

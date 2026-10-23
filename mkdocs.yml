@@ -42,7 +42,6 @@ nav:
     - installation/sandbox.md
     - Production:
       - installation/production/prerequisites.md
-      - installation/production/external-resources.md
       - installation/production/configuration.md
       - installation/production/deployment.md
     - installation/post-installation.md
