@@ -6,4 +6,7 @@ book/
 *.png
 *.tgz
 *kubeconfig.yaml
+.terraform.lock.hcl
+.terragrunt-cache/
 Chart.lock
+result

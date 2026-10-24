@@ -21,14 +21,26 @@
 
     - [ ] [Docker](https://docs.docker.com/engine/install)
     - [ ] [Nix](https://nixos.org/download) and [direnv](https://direnv.net) (optional, but highly recommended)
-    - [ ] [Lens](https://k8slens.dev) (optional, you can use the included `kubectl` or `k9s` command in the tools container)
+    - [ ] [Lens](https://k8slens.dev) (optional, you can use `kubectl` in the development shell)
 
 === "For admin"
 
-    Run the following script:
+    Run the following command:
 
     ```sh
-    ./scripts/onboard-user johndoe "John Doe" "johndoe@example.com"
+    lab user create johndoe \
+      --kubeconfig infra/production/kubeconfig.yaml \
+      --url https://auth.example.com \
+      --display-name "John Doe" \
+      --email johndoe@example.com
     ```
 
-    Let the user scan the QR code or follow the link to set up passkeys or password + TOTP.
+    Share the one-time link privately for the user to setup passkeys or password + TOTP.
+
+    Add `--group` to add more access:
+
+    | Group | Access |
+    | --- | --- |
+    | `users` (default) | Use applications and view dashboards |
+    | `developers` | Edit dashboards and push to the GitOps repository |
+    | `admins` | Admin access to applications |

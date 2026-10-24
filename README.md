@@ -42,21 +42,21 @@ More information can be found in [the roadmap](#roadmap) below.
 
 ### Features
 
-- [x] Common applications: Gitea, Jellyfin, Paperless...
+- [x] Common applications: Forgejo, Immich, OpenCloud, Matrix...
 - [x] Automated bare metal provisioning with PXE boot
 - [x] Automated Kubernetes installation and management
 - [x] Installing and managing applications using GitOps
-- [x] Automatic rolling upgrade for OS and Kubernetes
-- [x] Automatically update apps (with approval)
+- [x] Automatic OS rolling upgrade
+- [ ] Automated version update (with approval)
 - [x] Modular architecture, easy to add or remove features/components
 - [x] Automated certificate management
 - [x] Automatically update DNS records for exposed services
-- [x] VPN (Tailscale or Wireguard)
+- [x] VPN (Tailscale or WireGuard)
 - [x] Expose services to the internet securely with [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
 - [x] CI/CD platform
 - [x] Private container registry
 - [x] Distributed storage
-- [x] Support multiple environments (dev, prod)
+- [x] Support multiple environments (staging, production)
 - [x] Monitoring and alerting
 - [x] Automated backup and restore
 - [x] Single sign-on
@@ -71,14 +71,14 @@ They can't capture all the project's features, but they are sufficient to get a 
 | Deploy with a single command (after updating the configuration files)                                           |
 | [![][pxe-demo]](https://www.youtube.com/watch?v=y-d7btNNAT8)                                                    |
 | PXE boot                                                                                                        |
-| [![][hubble-demo]][hubble-demo]                                                                                 |
-| Observe network traffic with Hubble, built on top of [Cilium](https://cilium.io) and eBPF                       |
+| TODO: Kiali demo                                                                                               |
+| Observe network traffic with [Kiali](https://kiali.io)                                                         |
 | [![][homepage-demo]][homepage-demo]                                                                             |
 | Homepage powered by... [Homepage](https://gethomepage.dev)                                                      |
 | [![][grafana-demo]][grafana-demo]                                                                               |
 | Monitoring dashboard powered by [Grafana](https://grafana.com)                                                  |
-| [![][gitea-demo]][gitea-demo]                                                                                   |
-| Git server powered by [Gitea](https://gitea.io/en-us)                                                           |
+| TODO: Forgejo demo                                                                                             |
+| Git server powered by [Forgejo](https://forgejo.org)                                                           |
 | [![][matrix-demo]][matrix-demo]                                                                                 |
 | [Matrix](https://matrix.org/) chat server                                                                       |
 | [![][woodpecker-demo]][woodpecker-demo]                                                                         |
@@ -92,10 +92,8 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 [deploy-demo]: https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg
 [pxe-demo]: https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png
-[hubble-demo]: https://github.com/khuedoan/homelab/assets/27996771/9c6677d0-3564-47c0-852b-24b6a554b4a3
 [homepage-demo]: https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b
 [grafana-demo]: https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f
-[gitea-demo]: https://github.com/khuedoan/homelab/assets/27996771/c245534f-88d9-4565-bde8-b39f60ccee9e
 [matrix-demo]: https://user-images.githubusercontent.com/27996771/149448510-7163310c-2049-4ccd-901d-f11f605bfc32.png
 [woodpecker-demo]: https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4
 [argocd-demo]: https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20
@@ -111,13 +109,8 @@ They can't capture all the project's features, but they are sufficient to get a 
         <th>Description</th>
     </tr>
     <tr>
-        <td><img width="32" src="https://simpleicons.org/icons/ansible.svg"></td>
-        <td><a href="https://www.ansible.com">Ansible</a></td>
-        <td>Automate bare metal provisioning and configuration</td>
-    </tr>
-    <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/30269780"></td>
-        <td><a href="https://argoproj.github.io/cd">ArgoCD</a></td>
+        <td><a href="https://argo-cd.readthedocs.io">Argo CD</a></td>
         <td>GitOps tool built to deploy applications to Kubernetes</td>
     </tr>
     <tr>
@@ -126,33 +119,18 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Cloud native certificate management</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/21054566?s=200&v=4"></td>
-        <td><a href="https://cilium.io">Cilium</a></td>
-        <td>eBPF-based Networking, Observability and Security (CNI, LB, Network Policy, etc.)</td>
-    </tr>
-    <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/314135?s=200&v=4"></td>
         <td><a href="https://www.cloudflare.com">Cloudflare</a></td>
-        <td>DNS and Tunnel</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png"></td>
-        <td><a href="https://www.docker.com">Docker</a></td>
-        <td>Ephemeral PXE server</td>
+        <td>DNS, Tunnel and R2 for OpenTofu state</td>
     </tr>
     <tr>
         <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
         <td><a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a></td>
-        <td>Synchronizes exposed Kubernetes Services and Ingresses with DNS providers</td>
+        <td>Synchronizes exposed Kubernetes Services and HTTPRoutes with DNS providers</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/267px-Fedora_logo.svg.png"></td>
-        <td><a href="https://getfedora.org/en/server">Fedora Server</a></td>
-        <td>Base OS for Kubernetes nodes</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Gitea_Logo.svg"></td>
-        <td><a href="https://gitea.com">Gitea</a></td>
+        <td><img width="32" src="https://forgejo.org/favicon.svg"></td>
+        <td><a href="https://forgejo.org">Forgejo</a></td>
         <td>Self-hosted Git service</td>
     </tr>
     <tr>
@@ -166,6 +144,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>The package manager for Kubernetes</td>
     </tr>
     <tr>
+        <td><img width="32" src="https://istio.io/latest/favicons/android-192x192.png"></td>
+        <td><a href="https://istio.io">Istio</a></td>
+        <td>Kubernetes service mesh and gateway</td>
+    </tr>
+    <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/49319725"></td>
         <td><a href="https://k3s.io">K3s</a></td>
         <td>Lightweight distribution of Kubernetes</td>
@@ -174,6 +157,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://kanidm.com/images/logo.svg"></td>
         <td><a href="https://kanidm.com">Kanidm</a></td>
         <td>Modern and simple identity management platform</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://kube-vip.io/images/kube-vip.png"></td>
+        <td><a href="https://kube-vip.io">kube-vip</a></td>
+        <td>Provides virtual IPs and load balancer for the Kubernetes API and Services</td>
     </tr>
     <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/13629408"></td>
@@ -186,19 +174,24 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Log aggregation system</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/1412239?s=200&v=4"></td>
-        <td><a href="https://www.nginx.com">NGINX</a></td>
-        <td>Kubernetes Ingress Controller</td>
-    </tr>
-    <tr>
         <td><img width="32" src="https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nix-snowflake-colours.svg"></td>
-        <td><a href="https://nixos.org">Nix</a></td>
-        <td>Convenient development shell</td>
+        <td><a href="https://nixos.org">NixOS / Nix</a></td>
+        <td>Base OS and convenient development shell</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://ntfy.sh/_next/static/media/logo.077f6a13.svg"></td>
-        <td><a href="https://ntfy.sh">ntfy</a></td>
-        <td>Notification service to send notifications to your phone or desktop</td>
+        <td><img width="32" src="https://github.com/user-attachments/assets/41cabf10-213b-4099-aa0c-d711cdab2ed6"></td>
+        <td><a href="https://github.com/khuedoan/nixie">Nixie</a></td>
+        <td>Open-source bare metal provisioning engine for NixOS</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://openbao.org/img/favicon.svg"></td>
+        <td><a href="https://openbao.org">OpenBao</a></td>
+        <td>Secrets management</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/opentofu/brand-artifacts/main/favicon/android-chrome-192x192.png"></td>
+        <td><a href="https://opentofu.org">OpenTofu</a></td>
+        <td>Open-source Infrastructure as Code</td>
     </tr>
     <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/3380462"></td>
@@ -216,14 +209,14 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Cloud-Native Storage for Kubernetes</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/48932923?s=200&v=4"></td>
-        <td><a href="https://tailscale.com">Tailscale</a></td>
-        <td>VPN without port forwarding</td>
+        <td><img width="32" src="https://docs.terragrunt.com/favicon.svg"></td>
+        <td><a href="https://terragrunt.gruntwork.io">Terragrunt</a></td>
+        <td>Coordinate OpenTofu modules</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/13991055?s=200&v=4"></td>
-        <td><a href="https://www.wireguard.com">Wireguard</a></td>
-        <td>Fast, modern, secure VPN tunnel</td>
+        <td><img width="32" src="https://github.com/velero-io.png"></td>
+        <td><a href="https://velero.io">Velero</a></td>
+        <td>Backs up and restores Kubernetes</td>
     </tr>
     <tr>
         <td><img width="32" src="https://avatars.githubusercontent.com/u/84780935?s=200&v=4"></td>
@@ -239,7 +232,6 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 ## Get Started
 
-- [Try it out locally](https://homelab.khuedoan.com/installation/sandbox) without any hardware (just 4 commands!)
 - [Deploy on real hardware](https://homelab.khuedoan.com/installation/production/prerequisites) for production workload
 
 ## Roadmap
@@ -254,7 +246,7 @@ Please see [contributing guide](https://homelab.khuedoan.com/reference/contribut
 
 ## License
 
-Copyright &copy; 2020 - 2024 Khue Doan
+Copyright &copy; 2020 - 2026 Khue Doan
 
 Distributed under the GPLv3 License.
 See [license page](https://homelab.khuedoan.com/reference/license) or `LICENSE.md` file for more information.
@@ -306,4 +298,10 @@ If you feel you're missing from this list, please feel free to add yourself in a
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/khuedoan/homelab.svg)](https://starchart.cc/khuedoan/homelab)
+<a href="https://www.star-history.com/?repos=khuedoan%2Fhomelab&type=date&logscale=&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=khuedoan/homelab&type=date&legend=top-left" />
+ </picture>
+</a>

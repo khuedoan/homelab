@@ -2,20 +2,13 @@
 
 ## PXE server logs
 
-To view PXE server (includes DHCP, TFTP and HTTP server) logs:
+View the Nixie output in the terminal running `make infra env=production` (or staging).
+To retry metal provisioning:
 
 ```sh
-./scripts/pxe-logs
+cd infra/production/metal
+terragrunt run apply
 ```
-
-!!! tip
-
-    You can view the logs of one or more containers selectively, for example:
-
-    ```sh
-    ./scripts/pxe-logs dnsmasq
-    ./scripts/pxe-logs http
-    ```
 
 ## Nodes not booting from the network
 
@@ -23,11 +16,14 @@ To view PXE server (includes DHCP, TFTP and HTTP server) logs:
 - Check if the controller (PXE server) is on the same subnet with bare metal nodes (sometimes Wifi will not work or conflict with wired Ethernet, try to turn it off)
 - Check if bare metal nodes are configured to boot from the network
 - Check if Wake-on-LAN is enabled
-- Check if the operating system ISO file is mounted
 - Check the controller's firewall config to make sure that the following ports are open:
-    - DHCP (67/68)
-    - TFTP (69)
-    - HTTP (80)
-- Check PXE server Docker logs
-- Check if the servers are booting to the correct OS (Fedora Server installer instead of the previously installed OS), if not try to select it manually or remove the previous OS boot entry
+    - UDP 67 and 68 for DHCP
+    - UDP 69 for TFTP
+    - UDP 4011 for the PXE boot service
+    - TCP 80 for the boot files
+    - TCP 5000 for the installer callback API
+- Check if the servers are booting to the correct OS (NixOS installer instead of the previously installed OS), if not try to select it manually or remove the previous OS boot entry
 - Examine the network boot process with [Wireshark](https://www.wireshark.org) or [Termshark](https://termshark.io)
+
+Set `PXE_INTERFACE` and `PXE_ADDRESS` if the default route selects the wrong controller interface.
+Verify your authorized SSH keys and trusted host keys if provisioning succeeds but enrollment fails.

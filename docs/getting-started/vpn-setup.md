@@ -1,38 +1,37 @@
 # VPN setup
 
 You can choose between [Tailscale](https://tailscale.com),
-[Wireguard](https://www.wireguard.com), or use both like me. I primarily use
+[WireGuard](https://www.wireguard.com), or use both like me. I primarily use
 WireGuard but keep Tailscale as a backup for when the WireGuard server is down.
 
 ## Tailscale (requires third-party account)
 
-Get an [auth key](https://tailscale.com/kb/1085/auth-keys) from [Tailscale admin console](https://login.tailscale.com/admin/authkeys):
+Tailscale provides access through a [subnet router](https://tailscale.com/docs/features/subnet-routers) in the cluster.
 
-- Description: homelab
-- Reusable: optionally set this to true
 
-Add it to `external/terraform.tfvars` as an extra secret:
+1. Select the environment's kubeconfig:
 
-```hcl
-extra_secrets = {
-  tailscale-auth-key = "tskey-auth-myauthkeyhere"
-}
-```
+    ```sh
+    export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
+    ```
 
-You may want to back up the `external/terraform.tfvars` file to a secure location.
+2. Read the router's login URL:
 
-Apply the secret:
+    ```sh
+    kubectl -n tailscale logs deployment/tailscale
+    ```
 
-```sh
-make external
-```
+3. Open the login URL and enroll the device in your tailnet.
+4. Approve its advertised subnet in the Tailscale admin console.
+5. Install Tailscale on your devices, sign in, and enable subnet routes where
+   required by the client.
 
-Finally, [enable subnet routes](https://tailscale.com/kb/1019/subnets#step-3-enable-subnet-routes-from-the-admin-console) for `homelab-router`
-from the [admin console](https://login.tailscale.com/admin/machines).
 
-You can now connect to your homelab via Tailscale and [invite user to your Tailscale network](https://tailscale.com/kb/1371/invite-users).
+You can [invite users](https://tailscale.com/kb/1371/invite-users) to your tailnet.
 
-## Wireguard (requires port-forwarding)
+## WireGuard (requires port-forwarding)
+
+WireGuard Portal is available at `https://vpn.<domain>` with SSO.
 
 ### Prerequisites
 

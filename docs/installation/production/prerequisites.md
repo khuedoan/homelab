@@ -25,7 +25,9 @@ By using this project you agree to [the license](../../reference/license.md).
 
     The initial controller is the machine used to bootstrap the cluster, we only need it once, you can use your laptop or desktop
 
-- A **Linux** machine that can run Docker (because the `host` networking driver used for PXE boot [only supports Linux](https://docs.docker.com/network/host/), you can use a Linux virtual machine with bridged networking if you're on macOS or Windows).
+- A **Linux** machine with Nix and `sudo` access (for privileged ports when PXE booting with [Nixie](https://github.com/khuedoan/nixie)).
+- An SSH agent, preferably with a TPM-backed key to keep the private key in hardware.
+- Authorize your public SSH key in `infra/_modules/nixos/flake/profiles/installer.nix` and `infra/_modules/nixos/flake/configuration.nix`.
 
 ### Servers
 
@@ -50,11 +52,53 @@ Additional capabilities:
 ### Network setup
 
 - All servers must be connected to the same **wired** network with the initial controller
-- You have the access to change DNS config (on your router or at your domain registrar)
+- Access to your domain's DNS settings in Cloudflare
 
-## Domain
+## External resources
 
-Buying a domain is highly recommended, but if you don't have one, see [alternate DNS setup](../../how-to-guides/alternate-dns-setup.md).
+A domain managed by Cloudflare is required.
+
+Although I try to keep the amount of external resources to the minimum, there's still need for a few of them.
+Below is a list of external resources and why we need them (also see some [alternatives](#alternatives) below).
+
+| Provider        | Resource  | Purpose                                                                                                     |
+| --------        | --------  | -------                                                                                                     |
+| Cloudflare      | R2 bucket | OpenTofu state and encrypted volume backups                                                                  |
+| Cloudflare      | DNS       | DNS and [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) for certificates |
+| Cloudflare      | Tunnel    | Public services to the internet without port forwarding                                                     |
+| ntfy.sh         | Upstream  | Push relay for self-hosted ntfy notifications                                                                 |
+
+### Create credentials
+
+#### Cloudflare
+
+- Add your domain to Cloudflare if you haven't already
+- Log in from the development shell:
+
+```sh
+cf auth login
+```
+
+Grant the following permissions:
+
+- Account API Tokens Write
+- R2 bucket and object access
+- DNS
+- Tunnel
+
+If your existing login lacks these permissions, run `cf auth login --force` and approve them.
+
+### Alternatives
+
+To avoid vendor lock-in, each external provider must have an equivalent alternative that is easy to replace:
+
+- Cloudflare R2:
+    - Update the backend and bootstrap hook in `infra/root.hcl` for another state backend
+- Cloudflare Tunnel:
+    - Use port forwarding if it's available
+    - Create a small VPS in the cloud and use WireGuard to route traffic via it
+    - Access everything via VPN
+    - See also [awesome tunneling](https://github.com/anderspitman/awesome-tunneling)
 
 ## BIOS setup
 
@@ -100,5 +144,6 @@ Boot order options (select one, each has their pros and cons):
 
 - [ ] MAC address for each machine
 - [ ] OS disk name (for example `/dev/sda`)
-- [ ] Network interface name (for example `eth0`)
 - [ ] Choose a static IP address for each machine (just the desired address, we don't set anything up yet)
+- [ ] Choose an unused IP range for LoadBalancer Services (e.g. `192.168.1.224/27`) and a control-plane VIP (e.g. `192.168.1.100`)
+- [ ] Subnet prefix length and gateway

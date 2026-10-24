@@ -2,84 +2,67 @@
 
 ## Components
 
-```
-+--------------+
-|    ./apps    |
-|--------------|
-|  ./platform  |
-|--------------|       +------------+
-|   ./system   |- - - -| ./external |
-|--------------|       +------------+
-|   ./metal    |
-|--------------|
-|   HARDWARE   |
-+--------------+
-```
-
 Main components:
 
-- `./metal`: bare metal management, install Linux and Kubernetes
-- `./system`: critical system components for the cluster (load balancer, storage, ingress, operation tools...)
-- `./platform`: essential components for service hosting platform (git, build runners, dashboards...)
+- `./infra`: bare metal management, Kubernetes, and platform services
 - `./apps`: user facing applications
-- `./external` (optional): externally managed services
 
 Support components:
 
 - `./docs`: all documentation go here, this will generate a searchable web UI
-- `./scripts`: scripts to automate common tasks
+- `./cli`: automate common operations (cluster enrollment, secrets, SSO, Forgejo setup...)
+- `./tests`: automated tests for the entire system
 
 ## Provisioning flow
 
-Everything is automated, after you edit the configuration files, you just need to run a single `make` command and it will:
+After editing the configuration files, run a single make command to:
 
-- (1) Build the `./metal` layer:
+- (1) Build the `metal` and `cluster` units:
     - Create an ephemeral, stateless PXE server
-    - Install Linux on all servers in parallel
+    - Install NixOS on all servers in parallel
     - Build a Kubernetes cluster (based on k3s)
-- (2) Bootstrap the `./system` layer:
-    - Install ArgoCD and the root app to manage itself and other layers, from now on ArgoCD will do the rest
-    - Install the remaining components (storage, monitoring, etc)
-- (3) Build the `./platform` layer (Gitea, Grafana, SSO, etc)
-- (4) Deploy applications in the `./apps` layer
+    - Export and verify its kubeconfig
+- (2) Bootstrap GitOps with ArgoCD
+- (3) Deploy platform components
+- (4) Push the GitOps repo to Forgejo
+- (5) Deploy applications in `./apps` with ArgoCD
 
 ```mermaid
 flowchart TD
-  subgraph metal[./metal]
-    pxe[PXE Server] -.-> linux[Fedora Server] --> k3s
+  subgraph metal[metal]
+    pxe[PXE Server] -.-> linux[NixOS Server] --> k3s
   end
 
-  subgraph system[./system]
-    argocd[ArgoCD and root app]
-    nginx[NGINX]
+  metal --> cluster[Verified kubeconfig] --> argocd[ArgoCD] --> platform
+  cloudflare[Cloudflare resources]
+
+  subgraph platform[platform]
+    istio[Istio gateways]
     rook-ceph[Rook Ceph]
     cert-manager
     external-dns[External DNS]
     cloudflared
-  end
-
-  subgraph external[./external]
-    letsencrypt[Let's Encrypt]
-    cloudflare[Cloudflare]
-  end
-
-  letsencrypt -.-> cert-manager
-  cloudflare -.-> cert-manager
-  cloudflare -.-> external-dns
-  cloudflare -.-> cloudflared
-
-  subgraph platform[./platform]
-    Gitea
+    OpenBao
+    Kanidm
+    Forgejo
     Woodpecker
     Grafana
   end
 
+  letsencrypt[Let's Encrypt] -.-> cert-manager
+  cloudflare -.-> cert-manager
+  cloudflare -.-> external-dns
+  cloudflare -.-> cloudflared
+
   subgraph apps[./apps]
     homepage[Homepage]
-    jellyfin[Jellyfin]
+    budget[Actual Budget]
+    drive[OpenCloud]
     matrix[Matrix]
-    paperless[Paperless]
   end
 
-  make[Run make] -- 1 --> metal -- 2 --> system -. 3 .-> platform -. 4 .-> apps
+  platform --> sync[Lab setup and GitOps push] --> apps
+  cloudflare --> sync
+  backup[Backup storage] --> sync
+  backup --> velero[Velero]
 ```
