@@ -1,104 +1,60 @@
 package e2e
 
 import (
-	"context"
-	"testing"
 	"time"
 
-	"github.com/khuedoan/homelab/tests/internal/fixture"
-	"github.com/stretchr/testify/require"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/client-go/dynamic"
 )
 
-func checkGitOps(t *testing.T, cluster fixture.Cluster) {
-	t.Helper()
-	namespace := fixture.Namespace(t, cluster.Client)
-	applications := cluster.Dynamic.Resource(schema.GroupVersionResource{
-		Group: "argoproj.io", Version: "v1alpha1", Resource: "applications",
-	}).Namespace("argocd")
-	const revision = "8088f4c0d970abb09e250248cc97e35623447cb5"
-	app, err := applications.Create(t.Context(), &unstructured.Unstructured{Object: map[string]any{
-		"apiVersion": "argoproj.io/v1alpha1",
-		"kind":       "Application",
-		"metadata":   map[string]any{"name": namespace},
-		"spec": map[string]any{
-			"project": "default",
-			"source": map[string]any{
-				"repoURL":        "https://github.com/argoproj/argocd-example-apps.git",
-				"targetRevision": revision,
-				"path":           "helm-guestbook",
-				"helm": map[string]any{"valuesObject": map[string]any{
-					"fullnameOverride": "web",
-					"image":            map[string]any{"repository": "docker.io/library/nginx", "tag": "1.28.0"},
-				}},
-			},
-			"destination": map[string]any{"name": "in-cluster", "namespace": namespace},
-			"syncPolicy":  map[string]any{"automated": map[string]any{"prune": true, "selfHeal": true}},
-		},
-	}}, metav1.CreateOptions{})
-	require.NoError(t, err)
-	name, uid := app.GetName(), app.GetUID()
-	t.Cleanup(func() {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-		defer cancel()
-		err := applications.Delete(ctx, name, metav1.DeleteOptions{Preconditions: &metav1.Preconditions{UID: &uid}})
-		if err != nil && !apierrors.IsNotFound(err) {
-			t.Errorf("delete GitOps application %s: %v", name, err)
-			return
-		}
-		err = wait.PollUntilContextCancel(ctx, time.Second, true, func(ctx context.Context) (bool, error) {
-			_, err := applications.Get(ctx, name, metav1.GetOptions{})
-			if apierrors.IsNotFound(err) {
-				return true, nil
-			}
-			return false, err
-		})
-		if err != nil {
-			t.Errorf("wait for GitOps application deletion: %v", err)
-		}
-	})
-	err = wait.PollUntilContextTimeout(t.Context(), 3*time.Second, 5*time.Minute, true, func(ctx context.Context) (bool, error) {
-		current, err := applications.Get(ctx, name, metav1.GetOptions{})
-		if err != nil {
-			return false, err
-		}
-		app = current
-		sync, _, err := unstructured.NestedString(app.Object, "status", "sync", "status")
-		if err != nil {
-			return false, err
-		}
-		health, _, err := unstructured.NestedString(app.Object, "status", "health", "status")
-		return sync == "Synced" && health == "Healthy", err
-	})
-	require.NoError(t, err, "GitOps application did not converge; last status: %v", app.Object["status"])
-	actualRevision, _, err := unstructured.NestedString(app.Object, "status", "sync", "revision")
-	require.NoError(t, err)
-	require.Equal(t, revision, actualRevision)
-	response, err := cluster.Client.CoreV1().RESTClient().Get().
-		AbsPath("/api/v1/namespaces", namespace, "services", "web:80", "proxy").DoRaw(t.Context())
-	require.NoError(t, err)
-	require.Contains(t, string(response), "<title>Welcome to nginx!</title>")
+var _ = Describe("GitOps", Label("gitops"), func() {
+	It("repairs a deliberate change to the deployed image", func(ctx SpecContext) {
+		client, err := dynamic.NewForConfig(lab.RESTConfig())
+		Expect(err).NotTo(HaveOccurred())
+		applications := client.Resource(schema.GroupVersionResource{Group: "argoproj.io", Version: "v1alpha1", Resource: "applications"}).Namespace("argocd")
+		Eventually(func(g Gomega) {
+			application, err := applications.Get(ctx, "test", metav1.GetOptions{})
+			g.Expect(err).NotTo(HaveOccurred())
+			sync, _, err := unstructured.NestedString(application.Object, "status", "sync", "status")
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(sync).To(Equal("Synced"), "application argocd/test")
+			health, _, err := unstructured.NestedString(application.Object, "status", "health", "status")
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(health).To(Equal("Healthy"), "application argocd/test")
+		}).WithContext(ctx).WithTimeout(5 * time.Minute).WithPolling(3 * time.Second).Should(Succeed())
 
-	deployment, err := cluster.Client.AppsV1().Deployments(namespace).Get(t.Context(), "web", metav1.GetOptions{})
-	require.NoError(t, err)
-	require.Equal(t, "docker.io/library/nginx:1.28.0", deployment.Spec.Template.Spec.Containers[0].Image)
-	patch := []byte(`{"spec":{"template":{"spec":{"containers":[{"name":"helm-guestbook","image":"docker.io/library/nginx:1.27.5"}]}}}}`)
-	patched, err := cluster.Client.AppsV1().Deployments(namespace).Patch(t.Context(), "web", types.StrategicMergePatchType, patch, metav1.PatchOptions{})
-	require.NoError(t, err)
-	require.Equal(t, "docker.io/library/nginx:1.27.5", patched.Spec.Template.Spec.Containers[0].Image)
-	err = wait.PollUntilContextTimeout(t.Context(), 3*time.Second, 3*time.Minute, true, func(ctx context.Context) (bool, error) {
-		current, err := cluster.Client.AppsV1().Deployments(namespace).Get(ctx, deployment.Name, metav1.GetOptions{})
-		if err != nil {
-			return false, err
-		}
-		return current.Spec.Template.Spec.Containers[0].Image == "docker.io/library/nginx:1.28.0" &&
-			current.Status.ObservedGeneration == current.Generation && current.Status.UpdatedReplicas == 1 &&
-			current.Status.Replicas == 1 && current.Status.AvailableReplicas == 1, nil
-	})
-	require.NoError(t, err, "GitOps controller did not repair workload drift")
-}
+		deployments := lab.Client.AppsV1().Deployments(testNamespace)
+		original, err := deployments.Get(ctx, "test-writer", metav1.GetOptions{})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(original.Spec.Template.Spec.Containers).To(HaveLen(1))
+		Expect(original.Spec.Template.Spec.Containers[0].Image).To(Equal("docker.io/library/busybox:1.37.0"))
+		DeferCleanup(func(ctx SpecContext) {
+			restore := []byte(`{"metadata":{"uid":"` + string(original.UID) + `"},"spec":{"template":{"spec":{"containers":[{"name":"main","image":"docker.io/library/busybox:1.37.0"}]}}}}`)
+			_, err := deployments.Patch(ctx, original.Name, types.StrategicMergePatchType, restore, metav1.PatchOptions{})
+			Expect(err).NotTo(HaveOccurred())
+		}, NodeTimeout(time.Minute))
+		patch := []byte(`{"spec":{"template":{"spec":{"containers":[{"name":"main","image":"docker.io/library/busybox:1.36.1"}]}}}}`)
+		changed, err := deployments.Patch(ctx, original.Name, types.StrategicMergePatchType, patch, metav1.PatchOptions{})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(changed.Spec.Template.Spec.Containers).To(HaveLen(1))
+		Expect(changed.Spec.Template.Spec.Containers[0].Image).To(Equal("docker.io/library/busybox:1.36.1"))
+
+		Eventually(func(g Gomega) {
+			current, err := deployments.Get(ctx, original.Name, metav1.GetOptions{})
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(current.UID).To(Equal(original.UID))
+			g.Expect(current.Spec.Template.Spec.Containers).To(HaveLen(1))
+			g.Expect(current.Spec.Template.Spec.Containers[0].Image).To(Equal("docker.io/library/busybox:1.37.0"))
+			g.Expect(current.Status.ObservedGeneration).To(Equal(current.Generation))
+			g.Expect(current.Status.UpdatedReplicas).To(Equal(int32(1)))
+			g.Expect(current.Status.Replicas).To(Equal(int32(1)))
+			g.Expect(current.Status.AvailableReplicas).To(Equal(int32(1)))
+		}).WithContext(ctx).WithTimeout(3 * time.Minute).WithPolling(3 * time.Second).Should(Succeed())
+		Expect(execInPod(ctx, fixturePod(ctx, "writer"), "wget", "-T", "5", "-qO-", "http://127.0.0.1:8080")).To(Equal("homelab-e2e"))
+	}, SpecTimeout(10*time.Minute))
+})

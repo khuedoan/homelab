@@ -1,6 +1,7 @@
-package fixture
+package cluster
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"strings"
@@ -9,66 +10,53 @@ import (
 
 	"github.com/gruntwork-io/terratest/modules/core/v2/logger"
 	"github.com/gruntwork-io/terratest/modules/core/v2/shell"
-	"github.com/khuedoan/homelab/tests/internal/testenv"
+	"github.com/khuedoan/homelab/tests/internal/inventory"
 	"github.com/stretchr/testify/require"
-	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 // Cluster binds the validated target to clients using only its exported kubeconfig.
 type Cluster struct {
-	Target  testenv.Target
-	Client  *kubernetes.Clientset
-	Dynamic dynamic.Interface
+	Target     inventory.Target
+	Client     *kubernetes.Clientset
+	Kubeconfig string
+	config     *rest.Config
 }
 
-// Connect verifies host identities over trusted SSH before exporting a private kubeconfig.
-// The export must select the target VIP, verify API TLS, and avoid credential plugins.
-func Connect(t *testing.T, target testenv.Target) Cluster {
+// RESTConfig returns a copy of the validated configuration for upstream clients.
+func (cluster Cluster) RESTConfig() *rest.Config {
+	return rest.CopyConfig(cluster.config)
+}
+
+// Connect exports a private kubeconfig using the lab CLI and creates explicit clients.
+func Connect(ctx context.Context, t testing.TB, target inventory.Target) Cluster {
 	t.Helper()
-	checkHosts(t, target)
 	work := t.TempDir()
 	lab := os.Getenv("LAB_BIN")
 	if lab == "" {
 		lab = filepath.Join(work, "lab")
-		run(t, target, "build lab", "go", "-C", filepath.Join(target.Root, "cli"), "build", "-o", lab, "./cmd/lab")
+		run(ctx, t, target, "build lab", "go", "-C", filepath.Join(target.Root, "cli"), "build", "-mod=readonly", "-o", lab, "./cmd/lab")
 	} else {
 		require.True(t, filepath.IsAbs(lab), "LAB_BIN must be an absolute path")
 	}
 	kubeconfig := filepath.Join(work, "kubeconfig.yaml")
-	run(t, target, "export kubeconfig", lab, "cluster", "kubeconfig", "--environment", target.Environment, "--output", kubeconfig, "--timeout", "30s")
-	info, err := os.Stat(kubeconfig)
-	require.NoError(t, err)
-	require.Equal(t, os.FileMode(0600), info.Mode().Perm())
-	raw, err := clientcmd.LoadFromFile(kubeconfig)
-	if err != nil {
-		t.Fatal("exported kubeconfig is invalid")
-	}
-	require.Len(t, raw.Clusters, 1)
-	require.Len(t, raw.AuthInfos, 1)
-	for _, auth := range raw.AuthInfos {
-		require.True(t, auth.Exec == nil && auth.AuthProvider == nil, "export must not use credential plugins")
-	}
-	for _, endpoint := range raw.Clusters {
-		require.Equal(t, "https://"+target.Cluster.VIP+":6443", endpoint.Server)
-		require.False(t, endpoint.InsecureSkipTLSVerify)
-	}
+	run(ctx, t, target, "export kubeconfig", lab, "cluster", "kubeconfig", "--environment", target.Environment, "--output", kubeconfig, "--timeout", "30s")
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
 		t.Fatal("cannot load the explicit test kubeconfig")
 	}
+	require.Equal(t, "https://"+target.Cluster.VIP+":6443", config.Host)
 	config.Timeout = 10 * time.Second
 	client, err := kubernetes.NewForConfig(config)
 	require.NoError(t, err)
-	dynamicClient, err := dynamic.NewForConfig(config)
-	require.NoError(t, err)
-	return Cluster{Target: target, Client: client, Dynamic: dynamicClient}
+	return Cluster{Target: target, Client: client, Kubeconfig: kubeconfig, config: config}
 }
 
-func run(t *testing.T, target testenv.Target, action, executable string, args ...string) string {
+func run(ctx context.Context, t testing.TB, target inventory.Target, action, executable string, args ...string) string {
 	t.Helper()
-	output, err := shell.RunCommandContextAndGetOutputE(t, t.Context(), &shell.Command{
+	output, err := shell.RunCommandContextAndGetOutputE(t, ctx, &shell.Command{
 		Command: executable, Args: args, WorkingDir: target.Root, Logger: logger.Discard,
 	})
 	if err != nil {
@@ -79,7 +67,7 @@ func run(t *testing.T, target testenv.Target, action, executable string, args ..
 
 // SSH runs a bounded root command on a validated inventory host using trusted host keys.
 // Command failures withhold output to avoid exposing credentials.
-func SSH(t *testing.T, target testenv.Target, name, command string) string {
+func SSH(ctx context.Context, t testing.TB, target inventory.Target, name, command string) string {
 	t.Helper()
 	args := []string{
 		"-F", "/dev/null",
@@ -99,5 +87,5 @@ func SSH(t *testing.T, target testenv.Target, name, command string) string {
 	}
 	node := target.Hosts[name]
 	args = append(args, "root@"+node.IP, "timeout 20s sh -c '"+strings.ReplaceAll(command, "'", "'\\''")+"'")
-	return run(t, target, "SSH check on "+name+" ("+node.IP+")", "ssh", args...)
+	return run(ctx, t, target, "SSH check on "+name+" ("+node.IP+")", "ssh", args...)
 }

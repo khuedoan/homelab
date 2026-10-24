@@ -1,63 +1,97 @@
 package e2e
 
 import (
-	"fmt"
+	"context"
+	"encoding/json"
+	"errors"
 	"net"
-	"testing"
+	"time"
 
-	"github.com/khuedoan/homelab/tests/internal/fixture"
-	"github.com/stretchr/testify/require"
+	"github.com/gruntwork-io/terratest/modules/k8s/v2"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
-	networkingv1 "k8s.io/api/networking/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
+	utilexec "k8s.io/client-go/util/exec"
 	"k8s.io/utils/ptr"
 )
 
-func checkNetworkPolicy(t *testing.T, cluster fixture.Cluster) {
-	t.Helper()
-	namespace := fixture.Namespace(t, cluster.Client)
-	server := echoServer(t, cluster, namespace)
-	address := "http://" + net.JoinHostPort(server.Status.PodIP, "8080")
-	probe := func(name, access, command string) string {
-		return runPod(t, cluster, namespace, &corev1.Pod{
-			ObjectMeta: metav1.ObjectMeta{Name: name, Labels: map[string]string{"access": access}},
-			Spec: corev1.PodSpec{
-				AutomountServiceAccountToken: ptr.To(false),
-				NodeSelector:                 map[string]string{"kubernetes.io/hostname": cluster.Target.Names[len(cluster.Target.Names)-1]},
-				Containers: []corev1.Container{{
-					Name: "probe", Image: "docker.io/library/busybox:1.37.0",
-					Command: []string{"sh", "-ec", command},
-					Resources: corev1.ResourceRequirements{
-						Requests: corev1.ResourceList{corev1.ResourceCPU: resource.MustParse("1m"), corev1.ResourceMemory: resource.MustParse("8Mi")},
-						Limits:   corev1.ResourceList{corev1.ResourceMemory: resource.MustParse("32Mi")},
-					},
-				}},
-			},
-		})
+var _ = Describe("NetworkPolicy", Label("networkpolicy"), func() {
+	It("denies egress from a selected pod", func(ctx SpecContext) {
+		server := fixturePod(ctx, "writer")
+		probes := probePods(ctx)
+		template := &probes[0]
+		for i := range probes {
+			if probes[i].Spec.NodeName != server.Spec.NodeName {
+				template = &probes[i]
+				break
+			}
+		}
+		if len(lab.Target.Names) > 1 {
+			Expect(template.Spec.NodeName).NotTo(Equal(server.Spec.NodeName))
+		}
+		control := fixturePod(ctx, "control")
+		Expect(control.UID).NotTo(Equal(server.UID))
+		address := "http://" + net.JoinHostPort(server.Status.PodIP, "8080")
+		By("checking the backend from an independent unselected workload")
+		Expect(execInPod(ctx, control, "wget", "-T", "5", "-qO-", address)).To(Equal("homelab-e2e"))
+
+		By("denying a new connection from a fresh selected probe")
+		var selected *corev1.Pod
+		// Reusing a source can retain an HBONE connection established before policy propagation.
+		Eventually(func(g Gomega, attempt context.Context) {
+			candidate, err := lab.Client.CoreV1().Pods(testNamespace).Create(attempt, &corev1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					GenerateName: "test-policy-probe-",
+					Labels:       map[string]string{"homelab.khuedoan.com/test-fixture": "true", denyLabel: "true"},
+				},
+				Spec: corev1.PodSpec{
+					NodeName:                     template.Spec.NodeName,
+					ServiceAccountName:           template.Spec.ServiceAccountName,
+					AutomountServiceAccountToken: ptr.To(false),
+					RestartPolicy:                corev1.RestartPolicyNever,
+					Containers: []corev1.Container{{
+						Name: "main", Image: template.Spec.Containers[0].Image, Command: []string{"sleep", "300"},
+						Resources: template.Spec.Containers[0].Resources,
+					}},
+				},
+			}, metav1.CreateOptions{})
+			Expect(err).NotTo(HaveOccurred())
+			DeferCleanup(func(cleanup context.Context) {
+				err := lab.Client.CoreV1().Pods(testNamespace).Delete(cleanup, candidate.Name, metav1.DeleteOptions{
+					Preconditions: &metav1.Preconditions{UID: &candidate.UID}, GracePeriodSeconds: ptr.To(int64(0)),
+				})
+				if !apierrors.IsNotFound(err) {
+					Expect(err).NotTo(HaveOccurred())
+				}
+			}, NodeTimeout(time.Minute))
+			Expect(k8s.WaitUntilPodAvailableContextE(GinkgoTB(), attempt, lab.Kubectl(testNamespace), candidate.Name, 30, time.Second)).To(Succeed())
+			output, err := lab.Exec(attempt, testNamespace, candidate.Name, "wget", "-T", "3", "-qO-", address)
+			var exit utilexec.ExitError
+			g.Expect(errors.As(err, &exit)).To(BeTrue(), "wget must fail inside the container, rather than the exec transport: %v; output: %q", err, output)
+			g.Expect(exit.ExitStatus()).To(Equal(1))
+			selected = candidate
+		}).WithContext(ctx).WithTimeout(2 * time.Minute).WithPolling(time.Second).Should(Succeed())
+
+		By("checking that the same backend remains healthy from an unselected workload")
+		Expect(execInPod(ctx, control, "wget", "-T", "5", "-qO-", address)).To(Equal("homelab-e2e"))
+		allowProbe(ctx, selected)
+		Eventually(func(g Gomega) {
+			output, err := lab.Exec(ctx, testNamespace, selected.Name, "wget", "-T", "5", "-qO-", address)
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(output).To(Equal("homelab-e2e"))
+		}).WithContext(ctx).WithTimeout(time.Minute).WithPolling(time.Second).Should(Succeed())
+	}, SpecTimeout(5*time.Minute))
+})
+
+func allowProbe(ctx context.Context, pod *corev1.Pod) {
+	GinkgoHelper()
+	patch, err := json.Marshal(map[string]any{"metadata": map[string]any{"uid": pod.UID, "labels": map[string]any{denyLabel: nil}}})
+	Expect(err).NotTo(HaveOccurred())
+	_, err = lab.Client.CoreV1().Pods(testNamespace).Patch(ctx, pod.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+	if !apierrors.IsNotFound(err) {
+		Expect(err).NotTo(HaveOccurred())
 	}
-	allowed := fmt.Sprintf(`test "$(wget -T 5 -qO- %s)" = homelab-e2e
-printf 'allowed\n'`, address)
-	require.Equal(t, "allowed\n", probe("before-policy", "blocked", allowed))
-	_, err := cluster.Client.NetworkingV1().NetworkPolicies(namespace).Create(t.Context(), &networkingv1.NetworkPolicy{
-		ObjectMeta: metav1.ObjectMeta{Name: "deny-egress"},
-		Spec: networkingv1.NetworkPolicySpec{
-			PodSelector: metav1.LabelSelector{MatchLabels: map[string]string{"access": "blocked"}},
-			PolicyTypes: []networkingv1.PolicyType{networkingv1.PolicyTypeEgress},
-		},
-	}, metav1.CreateOptions{})
-	require.NoError(t, err)
-	denied := fmt.Sprintf(`for attempt in 1 2 3 4; do
-  if wget -T 3 -qO- %s >/dev/null 2>&1; then
-    sleep 1
-  else
-    printf 'blocked\n'
-    exit 0
-  fi
-done
-printf 'Egress remained allowed\n' >&2
-exit 1`, address)
-	require.Equal(t, "blocked\n", probe("after-policy", "blocked", denied))
-	require.Equal(t, "allowed\n", probe("unselected-control", "allowed", allowed), "the server must remain reachable from an unselected pod")
-	t.Log("Verified egress before policy, denial after policy, and an unaffected control pod")
 }

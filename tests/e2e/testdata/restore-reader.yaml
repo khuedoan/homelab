@@ -1,0 +1,17 @@
+automountServiceAccountToken: false
+nodeSelector:
+  kubernetes.io/hostname: {{ printf "%q" .Node }}
+restartPolicy: Never
+containers:
+  - name: main
+    image: docker.io/library/busybox:1.37.0
+    command: [cat, /data/value]
+    resources:
+      requests: {cpu: 1m, memory: 8Mi}
+      limits: {memory: 32Mi}
+    volumeMounts:
+      - {name: data, mountPath: /data, readOnly: true}
+volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: {{ printf "%q" .Claim }}

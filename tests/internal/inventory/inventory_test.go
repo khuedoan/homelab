@@ -1,4 +1,4 @@
-package testenv
+package inventory
 
 import (
 	"encoding/json"
@@ -18,15 +18,15 @@ func writeJSON(t *testing.T, root, path string, value any) {
 	require.NoError(t, os.WriteFile(file, data, 0600))
 }
 
-type fixture struct {
+type inventoryFixture struct {
 	selected Cluster
 	excluded Cluster
 	hosts    map[string]Host
 	others   map[string]Host
 }
 
-func newFixture() fixture {
-	return fixture{
+func newFixture() inventoryFixture {
+	return inventoryFixture{
 		selected: Cluster{Initializer: "node-a", VIP: "192.0.2.100"},
 		excluded: Cluster{Initializer: "node-b", VIP: "192.0.2.200"},
 		hosts:    map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}},
@@ -34,7 +34,7 @@ func newFixture() fixture {
 	}
 }
 
-func (f fixture) write(t *testing.T, root string) {
+func (f inventoryFixture) write(t *testing.T, root string) {
 	t.Helper()
 	writeJSON(t, root, "infra/dev/cluster/config.json", f.selected)
 	writeJSON(t, root, "infra/dev/metal/hosts.json", f.hosts)
@@ -42,11 +42,25 @@ func (f fixture) write(t *testing.T, root string) {
 	writeJSON(t, root, "infra/prod/metal/hosts.json", f.others)
 }
 
-func TestSafetyCases(t *testing.T) {
+func TestLoadValidInventory(t *testing.T) {
+	f, root := newFixture(), t.TempDir()
+	f.write(t, root)
+
+	target, err := Load(root, "dev")
+
+	require.NoError(t, err)
+	require.Equal(t, Target{
+		Root: root, Environment: "dev",
+		Cluster: Cluster{Initializer: "node-a", VIP: "192.0.2.100"},
+		Hosts:   map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}},
+		Names:   []string{"node-a"},
+	}, target)
+}
+
+func TestLoadRejectsUnsafeInventory(t *testing.T) {
 	for _, tc := range []struct {
 		name, initializer, vip, address, mac, wantError string
 	}{
-		{"valid", "node-a", "192.0.2.100", "192.0.2.10", "02:00:00:00:00:10", ""},
 		{"missing initializer", "missing", "192.0.2.100", "192.0.2.10", "02:00:00:00:00:10", "dev initializer must exist in inventory"},
 		{"excluded VIP", "node-a", "192.0.2.200", "192.0.2.10", "02:00:00:00:00:10", "overlaps prod inventory at address 192.0.2.200"},
 		{"excluded IP as VIP", "node-a", "192.0.2.20", "192.0.2.10", "02:00:00:00:00:10", "overlaps prod inventory at address 192.0.2.20"},
@@ -61,13 +75,9 @@ func TestSafetyCases(t *testing.T) {
 			f.selected = Cluster{Initializer: tc.initializer, VIP: tc.vip}
 			f.hosts["node-a"] = Host{IP: tc.address, MAC: tc.mac}
 			f.write(t, root)
-			target, err := Load(root, "dev")
-			if tc.wantError != "" {
-				require.ErrorContains(t, err, tc.wantError)
-				return
-			}
-			require.NoError(t, err)
-			require.Equal(t, Target{Root: root, Environment: "dev", Cluster: Cluster{Initializer: "node-a", VIP: "192.0.2.100"}, Hosts: map[string]Host{"node-a": {IP: "192.0.2.10", MAC: "02:00:00:00:00:10"}}, Names: []string{"node-a"}}, target)
+			_, err := Load(root, "dev")
+
+			require.ErrorContains(t, err, tc.wantError)
 		})
 	}
 }
@@ -75,25 +85,25 @@ func TestSafetyCases(t *testing.T) {
 func TestInventoryValidation(t *testing.T) {
 	for _, tc := range []struct {
 		name      string
-		change    func(*fixture)
+		change    func(*inventoryFixture)
 		wantError string
 	}{
-		{"IPv6 VIP", func(f *fixture) { f.selected.VIP = "2001:db8::100" }, "unicast IPv4 VIP"},
-		{"broadcast VIP", func(f *fixture) { f.selected.VIP = "255.255.255.255" }, "unicast IPv4 VIP"},
-		{"multicast VIP", func(f *fixture) { f.selected.VIP = "224.0.0.1" }, "unicast IPv4 VIP"},
-		{"loopback address", func(f *fixture) { h := f.hosts["node-a"]; h.IP = "127.0.0.1"; f.hosts["node-a"] = h }, "unique management IP"},
-		{"unspecified address", func(f *fixture) { h := f.hosts["node-a"]; h.IP = "::"; f.hosts["node-a"] = h }, "unique management IP"},
-		{"multicast MAC", func(f *fixture) { h := f.hosts["node-a"]; h.MAC = "01:00:00:00:00:10"; f.hosts["node-a"] = h }, "unique unicast MAC"},
-		{"bad hostname", func(f *fixture) { f.hosts["../bad"] = f.hosts["node-a"] }, "invalid dev hostname"},
-		{"duplicate address", func(f *fixture) { f.hosts["node-c"] = Host{IP: "192.0.2.10", MAC: "02:00:00:00:00:30"} }, "unique management IP"},
-		{"duplicate normalized MAC", func(f *fixture) { f.hosts["node-c"] = Host{IP: "192.0.2.30", MAC: "02-00-00-00-00-10"} }, "unique unicast MAC"},
-		{"excluded unsafe address", func(f *fixture) { f.excluded.VIP = "127.0.0.1" }, "prod has an invalid excluded address"},
-		{"excluded unsafe MAC", func(f *fixture) { h := f.others["node-b"]; h.MAC = "invalid"; f.others["node-b"] = h }, "prod has an invalid excluded MAC"},
-		{"selected IP equals excluded VIP", func(f *fixture) { h := f.hosts["node-a"]; h.IP = "192.0.2.200"; f.hosts["node-a"] = h }, "overlaps prod inventory at address 192.0.2.200"},
-		{"primary overlaps another secondary", func(f *fixture) {
+		{"IPv6 VIP", func(f *inventoryFixture) { f.selected.VIP = "2001:db8::100" }, "unicast IPv4 VIP"},
+		{"broadcast VIP", func(f *inventoryFixture) { f.selected.VIP = "255.255.255.255" }, "unicast IPv4 VIP"},
+		{"multicast VIP", func(f *inventoryFixture) { f.selected.VIP = "224.0.0.1" }, "unicast IPv4 VIP"},
+		{"loopback address", func(f *inventoryFixture) { h := f.hosts["node-a"]; h.IP = "127.0.0.1"; f.hosts["node-a"] = h }, "unique management IP"},
+		{"unspecified address", func(f *inventoryFixture) { h := f.hosts["node-a"]; h.IP = "::"; f.hosts["node-a"] = h }, "unique management IP"},
+		{"multicast MAC", func(f *inventoryFixture) { h := f.hosts["node-a"]; h.MAC = "01:00:00:00:00:10"; f.hosts["node-a"] = h }, "unique unicast MAC"},
+		{"bad hostname", func(f *inventoryFixture) { f.hosts["../bad"] = f.hosts["node-a"] }, "invalid dev hostname"},
+		{"duplicate address", func(f *inventoryFixture) { f.hosts["node-c"] = Host{IP: "192.0.2.10", MAC: "02:00:00:00:00:30"} }, "unique management IP"},
+		{"duplicate normalized MAC", func(f *inventoryFixture) { f.hosts["node-c"] = Host{IP: "192.0.2.30", MAC: "02-00-00-00-00-10"} }, "unique unicast MAC"},
+		{"excluded unsafe address", func(f *inventoryFixture) { f.excluded.VIP = "127.0.0.1" }, "prod has an invalid excluded address"},
+		{"excluded unsafe MAC", func(f *inventoryFixture) { h := f.others["node-b"]; h.MAC = "invalid"; f.others["node-b"] = h }, "prod has an invalid excluded MAC"},
+		{"selected IP equals excluded VIP", func(f *inventoryFixture) { h := f.hosts["node-a"]; h.IP = "192.0.2.200"; f.hosts["node-a"] = h }, "overlaps prod inventory at address 192.0.2.200"},
+		{"primary overlaps another secondary", func(f *inventoryFixture) {
 			f.hosts["node-c"] = Host{IP: "192.0.2.30", IPv6: "::ffff:192.0.2.10", MAC: "02:00:00:00:00:30"}
 		}, "dev/node-c needs a unique management IP distinct from the VIP"},
-		{"excluded secondary IPv6 overlap", func(f *fixture) {
+		{"excluded secondary IPv6 overlap", func(f *inventoryFixture) {
 			h := f.hosts["node-a"]
 			h.IPv6 = "2001:db8::20"
 			f.hosts["node-a"] = h
@@ -101,7 +111,11 @@ func TestInventoryValidation(t *testing.T) {
 			h.IPv6 = "2001:0db8:0:0::20"
 			f.others["node-b"] = h
 		}, "overlaps prod inventory at address 2001:db8::20"},
-		{"secondary IP equals VIP", func(f *fixture) { h := f.hosts["node-a"]; h.IPv6 = "::ffff:192.0.2.100"; f.hosts["node-a"] = h }, "unique management IP distinct from the VIP"},
+		{"secondary IP equals VIP", func(f *inventoryFixture) {
+			h := f.hosts["node-a"]
+			h.IPv6 = "::ffff:192.0.2.100"
+			f.hosts["node-a"] = h
+		}, "unique management IP distinct from the VIP"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			f, root := newFixture(), t.TempDir()

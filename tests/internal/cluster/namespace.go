@@ -1,4 +1,4 @@
-package fixture
+package cluster
 
 import (
 	"context"
@@ -14,10 +14,10 @@ import (
 )
 
 // Namespace creates an isolated namespace and waits for its default ServiceAccount.
-// Cleanup waits for namespace deletion and reclamation of all PVs bound to its claims.
-func Namespace(t *testing.T, client *kubernetes.Clientset) string {
+// Cleanup is registered with t and waits for PV reclamation.
+func Namespace(ctx context.Context, t testing.TB, client *kubernetes.Clientset) string {
 	t.Helper()
-	namespace, err := client.CoreV1().Namespaces().Create(t.Context(), &corev1.Namespace{
+	namespace, err := client.CoreV1().Namespaces().Create(ctx, &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{GenerateName: "homelab-test-"},
 	}, metav1.CreateOptions{})
 	require.NoError(t, err)
@@ -28,9 +28,8 @@ func Namespace(t *testing.T, client *kubernetes.Clientset) string {
 		err := client.CoreV1().Namespaces().Delete(ctx, namespace.Name, metav1.DeleteOptions{
 			Preconditions: &metav1.Preconditions{UID: &uid},
 		})
-		if err != nil && !apierrors.IsNotFound(err) {
-			t.Errorf("delete namespace %s: %v", namespace.Name, err)
-			return
+		if !apierrors.IsNotFound(err) {
+			require.NoError(t, err, "delete namespace %s", namespace.Name)
 		}
 		err = wait.PollUntilContextCancel(ctx, 2*time.Second, true, func(ctx context.Context) (bool, error) {
 			_, err := client.CoreV1().Namespaces().Get(ctx, namespace.Name, metav1.GetOptions{})
@@ -39,15 +38,10 @@ func Namespace(t *testing.T, client *kubernetes.Clientset) string {
 			}
 			return false, err
 		})
-		if err != nil {
-			t.Errorf("wait for namespace %s deletion: %v", namespace.Name, err)
-			return
-		}
-		if err := waitForVolumeReclamation(ctx, client, namespace.Name); err != nil {
-			t.Errorf("volumes for namespace %s were not reclaimed: %v", namespace.Name, err)
-		}
+		require.NoError(t, err, "wait for namespace %s deletion", namespace.Name)
+		require.NoError(t, waitForVolumeReclamation(ctx, client, namespace.Name), "volumes for namespace %s were not reclaimed", namespace.Name)
 	})
-	err = wait.PollUntilContextTimeout(t.Context(), 200*time.Millisecond, 30*time.Second, true, func(ctx context.Context) (bool, error) {
+	err = wait.PollUntilContextTimeout(ctx, 200*time.Millisecond, 30*time.Second, true, func(ctx context.Context) (bool, error) {
 		_, err := client.CoreV1().ServiceAccounts(namespace.Name).Get(ctx, "default", metav1.GetOptions{})
 		if apierrors.IsNotFound(err) {
 			return false, nil

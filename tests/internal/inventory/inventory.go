@@ -1,4 +1,4 @@
-package testenv
+package inventory
 
 import (
 	"encoding/json"
@@ -224,7 +224,7 @@ func Load(root, environment string) (Target, error) {
 }
 
 // ForTest requires an explicit environment for live tests and skips offline runs.
-func ForTest(t *testing.T) Target {
+func ForTest(t testing.TB) Target {
 	t.Helper()
 	if os.Getenv("E2E") != "1" || testing.Short() {
 		t.Skip("live tests require E2E=1 without -short")

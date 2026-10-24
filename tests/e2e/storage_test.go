@@ -1,76 +1,47 @@
 package e2e
 
 import (
-	"context"
-	"testing"
+	"fmt"
 	"time"
 
-	"github.com/khuedoan/homelab/tests/internal/fixture"
-	"github.com/stretchr/testify/require"
-	corev1 "k8s.io/api/core/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/wait"
 )
 
-func storagePod(name, node, claim, script string) *corev1.Pod {
-	return &corev1.Pod{
-		ObjectMeta: metav1.ObjectMeta{Name: name},
-		Spec: corev1.PodSpec{
-			NodeSelector:  map[string]string{"kubernetes.io/hostname": node},
-			RestartPolicy: corev1.RestartPolicyNever,
-			Containers: []corev1.Container{{
-				Name: "storage", Image: "docker.io/library/busybox:1.37.0",
-				Command:      []string{"sh", "-c", script},
-				VolumeMounts: []corev1.VolumeMount{{Name: "data", MountPath: "/data"}},
-			}},
-			Volumes: []corev1.Volume{{Name: "data", VolumeSource: corev1.VolumeSource{
-				PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{ClaimName: claim},
-			}}},
-		},
-	}
-}
+var _ = Describe("Storage", Label("storage"), func() {
+	It("preserves bytes after the writer pod is deleted", func(ctx SpecContext) {
+		writer := fixturePod(ctx, "writer")
+		for _, volume := range sourceVolumes {
+			By("writing " + volume.Class)
+			Expect(execInPod(ctx, writer, "sh", "-ec", fmt.Sprintf(
+				"printf homelab-persistent-data > %s/value; sync; printf 'write-ok\\n'", volume.Path,
+			))).To(Equal("write-ok\n"))
+		}
+		By("deleting the observed writer pod")
+		Expect(lab.Client.CoreV1().Pods(testNamespace).Delete(ctx, writer.Name, metav1.DeleteOptions{
+			Preconditions: &metav1.Preconditions{UID: &writer.UID},
+		})).To(Succeed())
+		replacement := fixturePod(ctx, "writer")
+		Expect(replacement.UID).NotTo(Equal(writer.UID))
+		for _, volume := range sourceVolumes {
+			By("reading " + volume.Class + " from the replacement pod")
+			Expect(execInPod(ctx, replacement, "cat", volume.Path+"/value")).To(Equal("homelab-persistent-data"))
+		}
+	}, SpecTimeout(10*time.Minute))
 
-func checkStorage(t *testing.T, cluster fixture.Cluster) {
-	t.Helper()
-	classes, err := fixture.DiscoverStorage(t.Context(), cluster.Client)
-	require.NoError(t, err)
-	for _, storage := range classes {
-		t.Run(storage.Class, func(t *testing.T) {
-			namespace := fixture.Namespace(t, cluster.Client)
-			claim := fixture.Volume(t, cluster.Client, namespace, storage, "1Gi")
-			node := cluster.Target.Names[0]
-			logs := runPod(t, cluster, namespace, storagePod("writer", node, claim.Name, "set -eu; printf 'homelab-persistent-data' >/data/value; sync; printf 'write-ok\\n'"))
-			require.Equal(t, "write-ok\n", logs)
-			writer, err := cluster.Client.CoreV1().Pods(namespace).Get(t.Context(), "writer", metav1.GetOptions{})
-			require.NoError(t, err)
-			uid := writer.UID
-			err = cluster.Client.CoreV1().Pods(namespace).Delete(t.Context(), writer.Name, metav1.DeleteOptions{Preconditions: &metav1.Preconditions{UID: &uid}})
-			require.NoError(t, err)
-			err = wait.PollUntilContextTimeout(t.Context(), 2*time.Second, time.Minute, true, func(ctx context.Context) (bool, error) {
-				_, err := cluster.Client.CoreV1().Pods(namespace).Get(ctx, writer.Name, metav1.GetOptions{})
-				if apierrors.IsNotFound(err) {
-					return true, nil
-				}
-				return false, err
-			})
-			require.NoError(t, err)
-			other := node
-			if storage.Mode == corev1.ReadWriteMany {
-				other = cluster.Target.Names[len(cluster.Target.Names)-1]
+	Context("with RWX storage", func() {
+		It("shares bytes across simultaneous mounts", func(ctx SpecContext) {
+			writer := fixturePod(ctx, "writer")
+			Expect(execInPod(ctx, writer, "sh", "-ec",
+				"printf homelab-persistent-data > /rwx/value; sync; printf 'write-ok\\n'",
+			)).To(Equal("write-ok\n"))
+			probes := probePods(ctx)
+			for _, probe := range probes {
+				By("reading the shared mount on " + probe.Spec.NodeName)
+				Expect(execInPod(ctx, &probe, "cat", "/rwx/value")).To(Equal("homelab-persistent-data"))
 			}
-			logs = runPod(t, cluster, namespace, storagePod("reader", other, claim.Name, "set -eu; cat /data/value"))
-			require.Equal(t, "homelab-persistent-data", logs, "data must survive deletion of the writer pod")
-			if storage.Mode == corev1.ReadWriteMany {
-				_, err := cluster.Client.CoreV1().Pods(namespace).Create(t.Context(), storagePod("holder", node, claim.Name, "sleep 600"), metav1.CreateOptions{})
-				require.NoError(t, err)
-				readyPod(t, cluster, namespace, "holder")
-				if other == node {
-					t.Log("RWX uses simultaneous pods on one node; cross-node sharing requires a larger inventory")
-				}
-				logs = runPod(t, cluster, namespace, storagePod("shared-reader", other, claim.Name, "set -eu; cat /data/value"))
-				require.Equal(t, "homelab-persistent-data", logs, "simultaneous RWX mounts must expose the same data")
-			}
-		})
-	}
-}
+			Expect(fixturePod(ctx, "writer").UID).To(Equal(writer.UID), "the writer must remain mounted throughout the simultaneous-mount check")
+		}, SpecTimeout(10*time.Minute))
+	})
+})
