@@ -1,0 +1,186 @@
+namespace:
+  create: true
+  labels:
+    homelab.khuedoan.com/test-fixture: "true"
+    istio.io/dataplane-mode: ambient
+
+global:
+  createDefaultServiceAccount: false
+  propagateGlobalMetadataToPods: true
+  labels:
+    homelab.khuedoan.com/test-fixture: "true"
+
+controllers:
+  writer:
+    type: deployment
+    forceRename: test-writer
+    strategy: Recreate
+    replicas: 1
+    pod:
+      automountServiceAccountToken: false
+    containers:
+      main:
+        image:
+          repository: docker.io/library/busybox
+          tag: 1.37.0
+        command:
+          - sh
+          - -ec
+          - mkdir -p /www; printf homelab-e2e >/www/index.html; exec httpd -f -p 8080 -h /www
+        probes:
+          readiness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: 8080
+              periodSeconds: 2
+        resources:
+          requests:
+            cpu: 1m
+            memory: 8Mi
+          limits:
+            memory: 32Mi
+  probe:
+    type: daemonset
+    forceRename: test-probe
+    pod:
+      automountServiceAccountToken: false
+    containers:
+      main:
+        image:
+          repository: docker.io/library/busybox
+          tag: 1.37.0
+        command:
+          - sleep
+          - "2147483647"
+        resources:
+          requests:
+            cpu: 1m
+            memory: 8Mi
+          limits:
+            memory: 32Mi
+
+  control:
+    type: deployment
+    forceRename: test-control
+    replicas: 1
+    pod:
+      automountServiceAccountToken: false
+    containers:
+      main:
+        image:
+          repository: docker.io/library/busybox
+          tag: 1.37.0
+        command:
+          - sleep
+          - "2147483647"
+        resources:
+          requests:
+            cpu: 1m
+            memory: 8Mi
+          limits:
+            memory: 32Mi
+
+service:
+  echo:
+    forceRename: test-echo
+    controller: writer
+    ports:
+      http:
+        port: 8080
+        targetPort: 8080
+        protocol: HTTP
+
+route:
+  echo:
+    enabled: true
+    forceRename: test-echo
+    kind: HTTPRoute
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: http
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'test.{{ .Values.global.domain }}'
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - identifier: echo
+            port: 8080
+
+persistence:
+  rwo:
+    type: persistentVolumeClaim
+    forceRename: test-rwo
+    accessMode: ReadWriteOnce
+    storageClass: standard-rwo
+    size: 1Gi
+    labels:
+      homelab.khuedoan.com/test-source: "true"
+    advancedMounts:
+      writer:
+        main:
+          - path: /rwo
+  rwx:
+    type: persistentVolumeClaim
+    forceRename: test-rwx
+    accessMode: ReadWriteMany
+    storageClass: standard-rwx
+    size: 1Gi
+    labels:
+      homelab.khuedoan.com/test-source: "true"
+    advancedMounts:
+      writer:
+        main:
+          - path: /rwx
+      probe:
+        main:
+          - path: /rwx
+
+rawResources:
+  test-other:
+    forceRename: test-other
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        annotations:
+          argocd.argoproj.io/sync-wave: "-1"
+        labels:
+          homelab.khuedoan.com/test-fixture: "true"
+      spec:
+        finalizers: [kubernetes]
+  untrusted-service-account:
+    forceRename: untrusted
+    manifest:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        namespace: test
+        labels:
+          homelab.khuedoan.com/test-fixture: "true"
+      automountServiceAccountToken: false
+  deny-egress:
+    forceRename: test-deny-egress
+    manifest:
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        namespace: test
+        labels:
+          homelab.khuedoan.com/test-fixture: "true"
+      spec:
+        podSelector:
+          matchLabels:
+            homelab.khuedoan.com/deny-egress: "true"
+        policyTypes:
+          - Egress
+        egress: []
