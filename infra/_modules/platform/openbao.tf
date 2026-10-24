@@ -189,6 +189,7 @@ resource "kubectl_manifest" "openbao_resources" {
                             "forgejo/admin"   = { password = "$${randAlphaNum 32}" }
                             "immich/database" = { password = "$${randAlphaNum 32}" }
                             "kiali/session"   = { signing_key = "$${randAlphaNum 32}" }
+                            "test/e2e"        = { value = "homelab-secret-injection" }
                             "wireguard/web" = {
                               session_secret = "$${randAlphaNum 32}"
                               csrf_secret    = "$${randAlphaNum 32}"
