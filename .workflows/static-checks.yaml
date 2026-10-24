@@ -1,0 +1,17 @@
+when:
+  branch: ${CI_REPO_DEFAULT_BRANCH}
+
+steps:
+  tests:
+    image: nixery.dev/shell/git/go/gcc/just/golangci-lint/terragrunt/opentofu
+    commands:
+      - just test
+    when:
+      - event: pull_request
+        path:
+          include:
+            - 'justfile'
+            - 'tests/**'
+            - 'infra/**'
+            - '.workflows/static-checks.yaml'
+    depends_on: []

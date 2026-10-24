@@ -1,15 +1,20 @@
+set script-interpreter := ["python3"]
+set positional-arguments
+
 all:
     cd .. && just lint
     just unit
 
 lint:
-    @echo "TODO: follow up with new test suite"
+    golangci-lint fmt --diff ./...
+    golangci-lint run ./...
 
 unit:
-    @echo "TODO: follow up with new test suite"
+    go test -race -short -count=1 ./...
 
 fmt:
-    @echo "TODO: follow up with new test suite"
+    golangci-lint fmt ./...
+    just --fmt
 
 e2e env labels="" focus="": (_cluster-tests "e2e" env labels focus)
 
@@ -18,8 +23,31 @@ benchmarks env labels="" focus="": (_cluster-tests "benchmarks" env labels focus
 smoke env: (e2e env "apps")
 
 [private]
+[script]
 _cluster-tests suite env labels focus:
-    @echo "TODO: follow up with new test suite"
+    import os
+    from pathlib import Path
+    import subprocess
+    import sys
+
+    suite, environment, labels, focus = sys.argv[1:]
+    timeout, entry = {
+        "e2e": ("30m", "TestCluster"),
+        "benchmarks": ("60m", "TestBenchmarks"),
+    }[suite]
+    reports = Path("reports", suite).resolve()
+    subprocess.run(
+        [
+            "go", "tool", "ginkgo", "--race", f"--timeout={timeout}",
+            "--fail-on-empty", f"--focus={focus}", f"--label-filter={labels}",
+            "-v", "--poll-progress-after=60s", "--poll-progress-interval=30s",
+            f"--output-dir={reports}", "--json-report=report.json",
+            "--junit-report=junit.xml", f"./{suite}", "--",
+            f"-test.run=^{entry}$",
+        ],
+        env=os.environ | {"E2E": "1", "BENCHMARKS": "1", "TEST_ENV": environment, "KUBECONFIG": str(Path("../infra", environment, "kubeconfig.yaml").resolve())},
+        check=True,
+    )
 
 list:
-    @echo "TODO: follow up with new test suite"
+    E2E=1 BENCHMARKS=1 go tool ginkgo --dry-run -v ./e2e ./benchmarks -- -test.run='^(TestCluster|TestBenchmarks)$'
