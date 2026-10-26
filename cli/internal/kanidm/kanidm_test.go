@@ -319,7 +319,6 @@ func TestClientValidationBeforeClusterAccess(t *testing.T) {
 	for _, test := range []struct{ name, redirect string }{
 		{"../invalid", "https://app.example.test/callback"},
 		{"app", "http://app.example.test/callback"},
-		{"app", "oc://ios.opencloud.eu"},
 		{"app", "https://user:password@app.example.test/callback"},
 	} {
 		err := EnsureClient(context.Background(), options, ClientConfig{Name: test.name, RedirectURIs: []string{test.redirect}})
@@ -329,28 +328,35 @@ func TestClientValidationBeforeClusterAccess(t *testing.T) {
 	}
 }
 
-func TestRedirectURIValidation(t *testing.T) {
+func TestNativeRedirectValidation(t *testing.T) {
+	const landing = "https://files.example.test/"
 	for _, test := range []struct {
-		name    string
-		uri     string
-		invalid bool
+		name      string
+		redirects []string
+		wantError string
 	}{
-		{"web", "https://files.example.test/callback", false},
-		{"native", "oc://android.opencloud.eu", false},
-		{"insecure", "http://files.example.test/callback", true},
-		{"relative", "/callback", true},
-		{"empty native callback", "oc:", true},
-		{"empty HTTPS host", "https:///callback", true},
-		{"native credentials", "oc://user:password@ios.opencloud.eu", true},
-		{"native fragment", "oc://ios.opencloud.eu#fragment", true},
-		{"web credentials", "https://user:password@files.example.test/callback", true},
-		{"web fragment", "https://files.example.test/callback#fragment", true},
-		{"malformed", "oc://%invalid", true},
+		{"web", []string{landing, "https://files.example.test/callback"}, "kanidm URL"},
+		{"android", []string{landing, "oc://android.opencloud.eu"}, "kanidm URL"},
+		{"ios", []string{landing, "oc://ios.opencloud.eu"}, "kanidm URL"},
+		{"private scheme", []string{landing, "com.example.app:/callback"}, "kanidm URL"},
+		{"opaque URI", []string{landing, "com.example.app:callback"}, "kanidm URL"},
+		{"native landing", []string{"oc://ios.opencloud.eu"}, "redirect URI"},
+		{"insecure landing", []string{"http://files.example.test/"}, "redirect URI"},
+		{"insecure callback", []string{landing, "http://files.example.test/callback"}, "redirect URI"},
+		{"relative callback", []string{landing, "/callback"}, "redirect URI"},
+		{"empty native callback", []string{landing, "oc:"}, "redirect URI"},
+		{"empty HTTPS host", []string{landing, "https:///callback"}, "redirect URI"},
+		{"native credentials", []string{landing, "oc://user:password@ios.opencloud.eu"}, "redirect URI"},
+		{"native fragment", []string{landing, "oc://ios.opencloud.eu#fragment"}, "redirect URI"},
+		{"web credentials", []string{landing, "https://user:password@files.example.test/callback"}, "redirect URI"},
+		{"web fragment", []string{landing, "https://files.example.test/callback#fragment"}, "redirect URI"},
+		{"malformed URI", []string{landing, "oc://%invalid"}, "redirect URI"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			err := validateRedirectURI(test.uri)
-			if (err != nil) != test.invalid {
-				t.Fatalf("callback %q: got %v, want invalid=%t", test.uri, err, test.invalid)
+			// An invalid server URL stops accepted callbacks before any cluster access.
+			err := EnsureClient(t.Context(), Options{URL: "http://auth.example.test"}, ClientConfig{Name: "files", Public: true, RedirectURIs: test.redirects})
+			if err == nil || !strings.Contains(err.Error(), test.wantError) {
+				t.Fatalf("wanted %q, got %v", test.wantError, err)
 			}
 		})
 	}
@@ -419,7 +425,7 @@ func TestNativePublicClientReconciliation(t *testing.T) {
 	for _, test := range []struct {
 		allow bool
 		want  string
-	}{{true, "true"}, {false, "false"}} {
+	}{{true, "true"}, {true, "true"}, {false, "false"}} {
 		config := ClientConfig{Name: "files", Public: true, AllowLocalhostRedirects: test.allow,
 			RedirectURIs: []string{"https://files.example.test/", "oc://android.opencloud.eu", "oc://ios.opencloud.eu"}}
 		if err := c.ensureClient(t.Context(), config); err != nil {

@@ -57,10 +57,25 @@ func TestSSOClaimValidationBeforeClusterAccess(t *testing.T) {
 	}
 }
 
-func TestSSOLocalhostRedirectsRequirePublicClient(t *testing.T) {
-	_, _, err := operationExecute("sso", "--kubeconfig", "absent", "--url", "https://auth.example.test", "client", "ensure", "files", "--redirect-uri", "https://files.example.test/", "--allow-localhost-redirects")
-	if err == nil || !strings.Contains(err.Error(), "localhost redirects require a public client") {
-		t.Fatalf("accepted localhost redirects for a confidential client: %v", err)
+func TestSSOPublicLocalhostRedirects(t *testing.T) {
+	for _, test := range []struct {
+		name      string
+		public    bool
+		wantError string
+	}{
+		{"public", true, "kanidm URL"},
+		{"confidential", false, "localhost redirects require a public client"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			args := []string{"sso", "--kubeconfig", "absent", "--url", "http://auth.example.test", "client", "ensure", "files", "--redirect-uri", "https://files.example.test/", "--allow-localhost-redirects"}
+			if test.public {
+				args = append(args, "--public")
+			}
+			_, _, err := operationExecute(args...)
+			if err == nil || !strings.Contains(err.Error(), test.wantError) {
+				t.Fatalf("wanted %q, got %v", test.wantError, err)
+			}
+		})
 	}
 }
 
