@@ -1,184 +1,94 @@
 # VPN setup
 
 You can choose between [Tailscale](https://tailscale.com),
-[Wireguard](https://www.wireguard.com), or use both like me. I primarily use
+[WireGuard](https://www.wireguard.com), or use both like me. I primarily use
 WireGuard but keep Tailscale as a backup for when the WireGuard server is down.
 
 ## Tailscale (requires third-party account)
 
-Get an [auth key](https://tailscale.com/kb/1085/auth-keys) from [Tailscale admin console](https://login.tailscale.com/admin/authkeys):
+Tailscale provides access through a [subnet router](https://tailscale.com/docs/features/subnet-routers) in the cluster.
 
-- Description: homelab
-- Reusable: optionally set this to true
 
-Add it to `external/terraform.tfvars` as an extra secret:
+1. Select the environment's kubeconfig:
 
-```hcl
-extra_secrets = {
-  tailscale-auth-key = "tskey-auth-myauthkeyhere"
-}
-```
+    ```sh
+    export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
+    ```
 
-You may want to back up the `external/terraform.tfvars` file to a secure location.
+2. Read the router's login URL:
 
-Apply the secret:
+    ```sh
+    kubectl -n tailscale logs deployment/tailscale
+    ```
 
-```sh
-make external
-```
+3. Open the login URL and enroll the device in your tailnet.
+4. Approve its advertised subnet in the Tailscale admin console.
+5. Install Tailscale on your devices, sign in, and enable subnet routes where
+   required by the client.
 
-Finally, [enable subnet routes](https://tailscale.com/kb/1019/subnets#step-3-enable-subnet-routes-from-the-admin-console) for `homelab-router`
-from the [admin console](https://login.tailscale.com/admin/machines).
 
-You can now connect to your homelab via Tailscale and [invite user to your Tailscale network](https://tailscale.com/kb/1371/invite-users).
+You can [invite users](https://tailscale.com/kb/1371/invite-users) to your tailnet.
 
-## Wireguard (requires port-forwarding)
+## WireGuard (requires port-forwarding)
+
+WireGuard Portal is available at `https://vpn.<domain>` with SSO.
 
 ### Prerequisites
 
-Find your public IP address using:
+Configure port forwarding in your router for the WireGuard service.
+
+> [!NOTE]
+> **Example**
+>
+> Each router is different, here's mine for reference:
+>
+> - Protocol: `UDP`
+> - Start Port: `51820`
+> - End Port: `51820`
+> - Local IP Address: `192.168.1.226` (find it with `kubectl get service -n wireguard wireguard-wireguard`)
+> - Start Port Local: `51820`
+> - End Port Local: `51820`
+
+### Configure the server
+
+Sign in to the portal with an account in the `admins` group and create a server interface:
+
+- Name: `wg0`
+- Address: `10.44.0.1/24`
+- Listen port: `51820`
+- Enable default peer creation
+- Client network: `10.44.0.0/24`
+- Client endpoint: `wg.<domain>:51820`
+- Client allowed IPs: `10.44.0.0/24` and your application LoadBalancer subnet
+
+Choose a tunnel network that doesn't overlap your LAN, pod, or Service networks.
+
+### Add a new device
+
+WireGuard Portal will create one device by default. Users can add more if needed.
+
+Install [WireGuard](https://www.wireguard.com/install/), then download the configuration as `wg0.conf` or scan its QR code.
+Keep the configuration private.
+
+#### Mobile
+
+Scan the QR code from the portal using the official WireGuard app.
+
+#### Linux
+
+Import the WireGuard configuration using NetworkManager:
 
 ```sh
-curl -4 ifconfig.me
+nmcli connection import type wireguard file wg0.conf
 ```
 
-If you don’t have a static IP address, use dynamic DNS and replace the IP with
-your domain name.
-
-Next, configure port forwarding in your router for the WireGuard service.
-
-!!! example
-
-    Each router is different, here's mine for reference:
-
-    - Protocol: `UDP`
-    - Start Port: `51820`
-    - End Port: `51820`
-    - Local IP Address: `192.168.1.226` (find it with `kubectl get service -n wireguard wireguard`)
-    - Start Port Local: `51820`
-    - End Port Local: `51820`
-
-Generate a key pair for the server:
+Activate the connection:
 
 ```sh
-wg genkey | tee /dev/tty | wg pubkey
+nmcli connection up wg0
 ```
 
-This will generate a private key and a public key, in that order. Add the
-private key to `external/terraform.tfvars` as an extra secret:
-
-```hcl
-extra_secrets = {
-  wireguard-private-key = "privatekeyhere"
-}
-```
-
-You may want to back up the `external/terraform.tfvars` file to a secure location.
-
-Apply the secret:
-
-```sh
-make external
-```
-
-I use `172.16.0.0/12` as the private IP range for WireGuard, but you can choose
-any private IP address range you prefer in `./apps/wireguard/values.yaml`. I
-also recommend removing my peers and adding your own.
-
-### Add a new device to the server
-
-!!! info
-
-    Each device requires its own configuration.
-
-Generate a new key pair for the device. You can generate it for the user, or
-they can generate it themselves if they prefer to keep the private key
-confidential:
-
-```sh
-wg genkey | tee /dev/tty | wg pubkey
-```
-
-This will generate a private key and a public key, in that order. The private
-key must be saved in a secure password manager, and save the public key for the
-next step.
-
-Update the list of peers in `./apps/wireguard/values.yaml`, make sure you
-replace all of my peers with yours.
-
-!!! example
-
-    Example configuration for my phone:
-
-    ```ini
-    [Peer]
-    PublicKey = nITHFdgTkNZOTWeSWqnGXjgwlCJMKRCnnUsjMx2yp2U=
-    AllowedIPs = 172.16.0.12/32
-    ```
-
-    - The public key is the one generated in the previous step.
-    - `172.16.0.12/32` is the device's private IP address, manually selected from
-      the `172.16.0.0/12` range mentioned above.
-
-### Add the Wireguard config to the device
-
-Create a new configuration file for the device:
-
-```ini
-[Interface]
-Address = <CLIENT PRIVATE IP>/32
-PrivateKey = <CLIENT PRIVATE KEY>
-
-[Peer]
-PublicKey = <SERVER PUBLIC KEY>
-Endpoint = <SERVER PUBLIC IP>:51820
-AllowedIPs = <SERVER PRIVATE IP>/32, <LOAD BALANCER IP RANGE>
-```
-
-Replace placeholders with actual values and save as `wg0.conf`.
-
-!!! example
-
-    Example configuration for my phone:
-
-    ```ini
-    [Interface]
-    Address = 172.16.0.12/32
-    PrivateKey = <REDACTED>
-
-    [Peer]
-    PublicKey = sSAZS1Z3vB7Wx8e2yVqXfeHjgWTa80wnSYoma3mZkiU
-    Endpoint = <HOME IP>:51820
-    AllowedIPs = 172.16.0.1/32, 192.168.1.224/27
-    ```
-
-The client can now import this configuration and connect to your WireGuard
-mesh. Make sure you clean up the `wg0.conf` file after importing it to the
-client.
-
-=== "Mobile"
-
-    Generate a QR code from the configuration file:
-
-    ```sh
-    qrencode -t ansiutf8 -r wg0.conf
-    ```
-
-    Then scan the QR code using the official WireGuard app.
-
-=== "Linux"
-
-    Import the WireGuard configuration using NetworkManager:
-
-    ```sh
-    nmcli connection import type wireguard file wg0.conf
-    ```
-
-    Activate the connection:
-
-    ```sh
-    nmcli connection up wg0
-    ```
+Connect and test access to a private application while outside your LAN.
 
 ## Headscale
 
