@@ -30,7 +30,10 @@ resource "helm_release" "release" {
   values = [yamlencode({
     global = { domain = "argocd.${var.domain}" }
     configs = {
-      rbac = { "policy.default" = "role:readonly" }
+      rbac = {
+        "policy.default" = "role:readonly"
+        "policy.csv"     = "g, admins@auth.${var.domain}, role:admin"
+      }
       params = {
         "server.insecure"              = true
         "controller.diff.server.side"  = true
