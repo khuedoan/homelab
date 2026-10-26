@@ -139,6 +139,8 @@ func TestCreateUserValidationBeforeClusterAccess(t *testing.T) {
 	}{
 		{"username", func(c *UserConfig) { c.Username = "../admin" }},
 		{"display name", func(c *UserConfig) { c.DisplayName = " " }},
+		{"email", func(c *UserConfig) { c.Email = "Jane <jane@example.test>" }},
+		{"email", func(c *UserConfig) { c.Email = "invalid" }},
 		{"access group", func(c *UserConfig) { c.Groups = []string{"../admins"} }},
 	} {
 		config := valid

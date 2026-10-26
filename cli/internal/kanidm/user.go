@@ -3,6 +3,7 @@ package kanidm
 import (
 	"context"
 	"fmt"
+	"net/mail"
 	"net/url"
 	"slices"
 	"strings"
@@ -24,6 +25,10 @@ func CreateUser(ctx context.Context, options Options, config UserConfig) (string
 	}
 	if strings.TrimSpace(config.DisplayName) == "" {
 		return "", fmt.Errorf("display name is required")
+	}
+	address, err := mail.ParseAddress(config.Email)
+	if err != nil || address.Address != config.Email {
+		return "", fmt.Errorf("a valid email address without a display name is required")
 	}
 	for _, group := range config.Groups {
 		if !groupNamePattern.MatchString(group) {
