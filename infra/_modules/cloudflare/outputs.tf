@@ -8,6 +8,9 @@ output "secrets" {
       api_token = cloudflare_account_token.external_dns.value
       zone_id   = data.cloudflare_zone.zone.id
     }
+    "cloudflare-ddns/cloudflare" = {
+      api_token = cloudflare_account_token.ddns.value
+    }
     "cloudflared/cloudflare" = {
       "credentials.json" = jsonencode({
         AccountTag   = var.cloudflare_account_id

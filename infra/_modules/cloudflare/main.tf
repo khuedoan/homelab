@@ -56,3 +56,9 @@ resource "cloudflare_account_token" "cert_manager" {
   name       = "${var.resource_prefix}-cert-manager"
   policies   = local.dns_policies
 }
+
+resource "cloudflare_account_token" "ddns" {
+  account_id = var.cloudflare_account_id
+  name       = "${var.resource_prefix}-ddns"
+  policies   = local.dns_policies
+}
