@@ -24,6 +24,24 @@ resource "kubectl_manifest" "wireguard" {
             resources        = { requests = { cpu = "50m", memory = "64Mi" } }
             persistence      = { enabled = true }
             envFrom          = [{ secretRef = { name = "wireguard-env" } }]
+            initContainers = [{
+              name            = "nat"
+              image           = "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              securityContext = { capabilities = { add = ["NET_ADMIN"] } }
+              command = ["sh", "-ec", <<-EOF
+                iptables -t nat -C POSTROUTING -o eth0 -j MASQUERADE 2>/dev/null ||
+                  iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+              EOF
+              ]
+            }]
+            service = {
+              wireguard = {
+                annotations = {
+                  "external-dns.kubernetes.io/hostname" = "wg.${var.domain}"
+                  "external-dns.kubernetes.io/target"   = "public.${var.domain}"
+                }
+              }
+            }
             extraDeploy = [{
               apiVersion = "v1"
               kind       = "Secret"
@@ -65,8 +83,11 @@ resource "kubectl_manifest" "wireguard" {
                   client_secret        = "$${OIDC_CLIENT_SECRET}"
                   extra_scopes         = ["profile", "email", "groups"]
                   registration_enabled = true
-                  field_map            = { user_groups = "groups" }
-                  admin_mapping        = { admin_group_regex = "^admins@auth\\.${replace(var.domain, ".", "\\.")}$" }
+                  field_map = {
+                    firstname   = "preferred_username"
+                    user_groups = "groups"
+                  }
+                  admin_mapping = { admin_group_regex = "^admins@auth\\.${replace(var.domain, ".", "\\.")}$" }
                 }]
               }
             }
