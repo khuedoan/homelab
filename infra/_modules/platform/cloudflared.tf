@@ -50,7 +50,7 @@ EOT
                     args = ["tunnel", "--config", "/etc/cloudflared/config.yaml", "run"]
                     image = {
                       repository = "docker.io/cloudflare/cloudflared"
-                      tag        = "2024.4.0"
+                      tag        = "2026.10.3"
                     }
                     # TODO: Revisit resource sizing after measuring usage.
                     resources = { requests = { cpu = "10m", memory = "32Mi" } }
