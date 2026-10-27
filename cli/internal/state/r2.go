@@ -84,11 +84,12 @@ func waitForR2Credentials(ctx context.Context, client *http.Client, account, buc
 	probeClient := *client
 	probeClient.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
 	endpoint := url.URL{Scheme: "https", Host: account + ".r2.cloudflarestorage.com", Path: "/" + bucket}
+	endpoint.RawQuery = "list-type=2&max-keys=1"
 	identity := aws.Credentials{AccessKeyID: credentials.AccessKeyID, SecretAccessKey: credentials.SecretAccessKey}
 	payload := sha256.Sum256(nil)
 	signer := v4.NewSigner()
 	for {
-		request, err := http.NewRequestWithContext(ctx, http.MethodHead, endpoint.String(), nil)
+		request, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint.String(), nil)
 		if err != nil {
 			return errors.New("construct R2 bucket access probe failed")
 		}

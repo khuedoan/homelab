@@ -66,7 +66,7 @@ func newR2ActivationFixture(t *testing.T, handler http.HandlerFunc) *r2Activatio
 
 func checkR2Probe(t *testing.T, r *http.Request) {
 	t.Helper()
-	if r.Method != http.MethodHead || r.URL.Path != "/tfstate-test" || r.Host != "test-account.r2.cloudflarestorage.com" {
+	if r.Method != http.MethodGet || r.URL.Path != "/tfstate-test" || r.URL.RawQuery != "list-type=2&max-keys=1" || r.Host != "test-account.r2.cloudflarestorage.com" {
 		t.Errorf("unexpected R2 probe target: %s %s host=%s", r.Method, r.URL.Path, r.Host)
 	}
 	authorization := r.Header.Get("Authorization")
