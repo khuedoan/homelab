@@ -27,7 +27,7 @@ By using this project you agree to [the license](../../reference/license.md).
 
 - A **Linux** machine with Nix and `sudo` access (for privileged ports when PXE booting with [Nixie](https://github.com/khuedoan/nixie)).
 - An SSH agent, preferably with a TPM-backed key to keep the private key in hardware.
-- Authorize your public SSH key in `infra/_modules/metal/flake/profiles/installer.nix` and `infra/_modules/metal/flake/configuration.nix`.
+- Add your public SSH key to `infra/_modules/metal/flake/authorized_keys`.
 
 ### Servers
 

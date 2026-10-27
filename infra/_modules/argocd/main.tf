@@ -49,11 +49,10 @@ resource "helm_release" "release" {
           requestedScopes          = ["openid", "profile", "email", "groups"]
           enablePKCEAuthentication = true
         })
-        "resource.ignoreResourceUpdatesEnabled"             = true
-        "resource.customizations.ignoreResourceUpdates.all" = <<-EOT
-          jsonPointers:
-            - /status
-        EOT
+        "resource.ignoreResourceUpdatesEnabled" = true
+        "resource.customizations.ignoreResourceUpdates.all" = yamlencode({
+          jsonPointers = ["/status"]
+        })
       }
     }
     server = {

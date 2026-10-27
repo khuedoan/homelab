@@ -20,25 +20,32 @@ resource "kubectl_manifest" "cloudflared" {
             configMaps = {
               config = {
                 data = {
-                  "config.yaml" = <<-EOT
-tunnel: ${var.resource_prefix}-tunnel
-credentials-file: /etc/cloudflared/credentials.json
-metrics: 0.0.0.0:2000
-no-autoupdate: true
-ingress:
-  - hostname: www.${var.domain}
-    service: https://public-istio.istio-system
-  - hostname: draw.${var.domain}
-    service: https://public-istio.istio-system
-  - hostname: chat.${var.domain}
-    service: https://public-istio.istio-system
-  - hostname: '*.${var.domain}'
-    service: https://gateway-istio.istio-system
-  - service: http_status:404
-originRequest:
-  originServerName: tunnel.${var.domain}
-EOT
-
+                  "config.yaml" = yamlencode({
+                    tunnel           = "${var.resource_prefix}-tunnel"
+                    credentials-file = "/etc/cloudflared/credentials.json"
+                    metrics          = "0.0.0.0:2000"
+                    no-autoupdate    = true
+                    ingress = [
+                      {
+                        hostname = "www.${var.domain}"
+                        service  = "https://public-istio.istio-system"
+                      },
+                      {
+                        hostname = "draw.${var.domain}"
+                        service  = "https://public-istio.istio-system"
+                      },
+                      {
+                        hostname = "chat.${var.domain}"
+                        service  = "https://public-istio.istio-system"
+                      },
+                      {
+                        hostname = "*.${var.domain}"
+                        service  = "https://gateway-istio.istio-system"
+                      },
+                      { service = "http_status:404" },
+                    ]
+                    originRequest = { originServerName = "tunnel.${var.domain}" }
+                  })
                 }
                 enabled = true
               }
