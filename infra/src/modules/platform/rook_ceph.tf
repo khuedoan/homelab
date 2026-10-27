@@ -13,7 +13,7 @@ resource "kubectl_manifest" "rook_ceph" {
       sources = [{
         repoURL        = "https://charts.rook.io/release"
         chart          = "rook-ceph"
-        targetRevision = "1.13.5"
+        targetRevision = "1.19.12"
         helm = {
           releaseName = "rook-ceph"
           values = yamlencode({
@@ -56,7 +56,7 @@ resource "kubectl_manifest" "rook_ceph" {
         }, {
         repoURL        = "https://charts.rook.io/release"
         chart          = "rook-ceph-cluster"
-        targetRevision = "1.13.5"
+        targetRevision = "1.19.12"
         helm = {
           releaseName = "rook-ceph"
           values = yamlencode({
