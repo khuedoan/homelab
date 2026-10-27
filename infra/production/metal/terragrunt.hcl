@@ -3,8 +3,6 @@ include "root" {
 }
 
 terraform {
-  source = "${find_in_parent_folders("_modules")}/nixos//"
-
   after_hook "nixie" {
     commands    = ["apply"]
     working_dir = "${get_working_dir()}/flake"

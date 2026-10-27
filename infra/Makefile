@@ -1,11 +1,6 @@
 .POSIX:
 .PHONY: default check graph apply
 
-KUBECONFIG ?= $(CURDIR)/kubeconfig.yaml
-KUBE_CONFIG_PATH ?= $(KUBECONFIG)
-
-.EXPORT_ALL_VARIABLES:
-
 default: check
 
 check:

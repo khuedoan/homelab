@@ -1,11 +1,10 @@
 locals {
   # nixie records the installation identity after installing. Exclude it from
   # the flake input to avoid drift; the node IP is required by K3s.
-  nixie_state_fields = ["machine_id_hash"]
   inventory = {
     for name, host in var.hosts : name => {
       for key, value in host : key => value
-      if !contains(local.nixie_state_fields, key)
+      if key != "machine_id_hash"
     }
   }
 }
