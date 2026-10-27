@@ -28,7 +28,7 @@ make test
 Run live tests against staging:
 
 ```sh
-make -C tests e2e env=staging
+make e2e env=staging
 ```
 
 See the [testing reference](../reference/testing.md) for individual checks.

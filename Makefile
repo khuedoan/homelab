@@ -1,8 +1,14 @@
 .POSIX:
-.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test docs fmt
+.PHONY: default infra sync sync-secrets sync-forgejo push-forgejo sso smoke-test test lint check graph e2e benchmarks list render-fixture docs fmt
 .EXPORT_ALL_VARIABLES:
 
 env ?=
+filter ?= .
+override filter := $(value filter)
+labels ?=
+report_dir ?= $(CURDIR)/tests/reports
+fixture_chart ?= app-template
+fixture_chart_args ?= --repo https://bjw-s-labs.github.io/helm-charts --version 5.3.0
 kubeconfig ?= infra/$(env)/kubeconfig.yaml
 sso_args = --kubeconfig "$(kubeconfig)" --url "https://auth.$$domain" --bootstrap
 
@@ -55,11 +61,51 @@ sso:
 	lab sso $(sso_args) openbao configure --redirect-uri "https://openbao.$$domain/ui/vault/auth/oidc/oidc/callback"
 
 smoke-test:
-	make -C tests e2e filter='^Apps$$' env='$(env)'
+	$(MAKE) e2e filter='^Apps$$' env='$(env)'
 
 test:
-	make -C cli test
-	make -C tests test
+	cd cli && go vet ./...
+	cd cli && go test -race ./...
+	cd tests && go vet ./...
+	cd tests && go test -race -short -count=1 ./...
+
+lint:
+	cd cli && golangci-lint fmt --config ../.golangci.yml --diff ./...
+	cd cli && golangci-lint run --config ../.golangci.yml ./...
+	cd tests && golangci-lint fmt --config ../.golangci.yml --diff ./...
+	cd tests && golangci-lint run --config ../.golangci.yml ./...
+
+check:
+	cd infra && terragrunt hcl validate
+	tofu fmt -check -recursive infra
+
+graph:
+	@test -n "$(env)" || { echo 'Usage: make graph env=production (or staging)' >&2; exit 1; }
+	cd "infra/$(env)" && terragrunt dag graph
+
+e2e benchmarks:
+	@test -n "$(env)" || { echo 'Usage: make $@ env=staging' >&2; exit 1; }
+	@focus='$(filter)'; \
+	case "$$focus" in \
+	  '^Networking$$'|'^NetworkPolicy$$'|'^LoadBalancer$$'|'^Storage$$'|'^Snapshots$$'|'^Backups$$'|'^Registry$$'|'^GitOps$$'|'^Secrets$$'|'^Apps$$'|'^Security$$') focus="$${focus%?} " ;; \
+	esac; \
+	case '$@' in \
+	  e2e) timeout=30m; entry=TestCluster ;; \
+	  benchmarks) timeout=60m; entry=TestBenchmarks ;; \
+	esac; \
+	cd tests && E2E=1 BENCHMARKS=1 TEST_ENV='$(env)' go tool ginkgo --race --timeout="$$timeout" \
+		--fail-on-empty --focus="$$focus" --label-filter='$(labels)' -v \
+		--poll-progress-after=60s --poll-progress-interval=30s \
+		--output-dir='$(report_dir)/$@' --json-report=report.json --junit-report=junit.xml ./$@ -- -test.run="^$${entry}\$$"
+
+list:
+	cd tests && E2E=1 BENCHMARKS=1 go tool ginkgo --dry-run -v ./e2e ./benchmarks -- -test.run='^(TestCluster|TestBenchmarks)$$'
+
+render-fixture:
+	@mkdir -p '$(report_dir)/fixture'
+	helm template test $(fixture_chart) $(fixture_chart_args) --namespace test -f apps/test.yaml \
+		--set global.domain=staging.khuedoan.com --api-versions gateway.networking.k8s.io/v1/HTTPRoute \
+		> '$(report_dir)/fixture/manifest.yaml'
 
 docs:
 	mkdocs serve

@@ -13,7 +13,7 @@ make test
 Run tests against staging:
 
 ```sh
-make -C tests e2e env=staging
+make e2e env=staging
 ```
 
 | Check | What it tests |
@@ -33,13 +33,13 @@ make -C tests e2e env=staging
 You can also run individual checks:
 
 ```sh
-make -C tests e2e env=staging filter='^Networking$'
+make e2e env=staging filter='^Networking$'
 ```
 
 ## Benchmarks
 
 ```sh
-make -C tests benchmarks env=staging
+make benchmarks env=staging
 ```
 
 | Check | What it tests |

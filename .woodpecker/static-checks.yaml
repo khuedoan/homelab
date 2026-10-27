@@ -5,12 +5,12 @@ steps:
   unit-tests:
     image: nixery.dev/shell/git/go/gcc/gnumake
     commands:
-      - make -C cli test
-      - make -C tests test
+      - make test
     when:
       - event: pull_request
         path:
           include:
+            - 'Makefile'
             - 'cli/**'
             - 'tests/**'
             - '.woodpecker/static-checks.yaml'
