@@ -36,7 +36,6 @@ Update the following settings in `infra/production/`:
 
 - `domain` in the `cloudflare`, `argocd`, and `platform` Terragrunt units
 - `zone_name` in the Cloudflare unit
-- `resource_prefix` in the `cloudflare`, `backup`, and `platform` units (use the same value, e.g. `homelab-production`)
 
 Review the settings in `apps/*.yaml`, including image registries and homepage links.
 

@@ -1,7 +1,6 @@
 locals {
   env        = split("/", path_relative_to_include())[0]
-  unit       = basename(get_original_terragrunt_dir())
-  state_key  = trimprefix(path_relative_to_include(), "${local.env}/")
+  unit       = basename(path_relative_to_include())
   kubeconfig = "${get_repo_root()}/infra/${local.env}/kubeconfig.yaml"
   identity = jsondecode(run_cmd(
     "--terragrunt-global-cache", "--terragrunt-quiet",
@@ -23,7 +22,7 @@ remote_state {
   }
   config = {
     bucket                      = local.state_bucket
-    key                         = "${local.state_key}/tfstate.json"
+    key                         = "${local.unit}/tfstate.json"
     region                      = "auto"
     endpoints                   = { s3 = "https://${local.r2_account_id}.r2.cloudflarestorage.com" }
     use_lockfile                = true
@@ -47,6 +46,8 @@ generate "r2_credentials" {
 }
 
 terraform {
+  source = "${find_in_parent_folders("_modules")}/${local.unit}//"
+
   extra_arguments "cloudflare_oauth" {
     commands = ["plan", "apply", "import", "refresh"]
     env_vars = {
@@ -54,17 +55,6 @@ terraform {
       CLOUDFLARE_API_KEY   = ""
       CLOUDFLARE_EMAIL     = ""
     }
-  }
-
-  before_hook "verify_cluster" {
-    commands    = ["plan", "apply", "refresh", "import"]
-    if          = contains(["argocd", "platform"], local.unit)
-    working_dir = get_repo_root()
-    execute = [
-      "lab", "cluster", "kubeconfig",
-      "--environment", local.env,
-      "--output", local.kubeconfig,
-    ]
   }
 
   before_hook "bootstrap_tfstate" {
@@ -75,14 +65,10 @@ terraform {
       "--bucket", local.state_bucket,
     ]
   }
-
-  before_hook "unsupported_destroy" {
-    commands = ["destroy"]
-    execute  = ["sh", "-c", "echo 'Infrastructure teardown is unsupported' >&2; exit 1"]
-  }
 }
 
 inputs = {
   cloudflare_account_id = local.r2_account_id
   kubeconfig            = local.kubeconfig
+  resource_prefix       = "homelab-${local.env}"
 }

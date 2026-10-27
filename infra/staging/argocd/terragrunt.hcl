@@ -3,11 +3,7 @@ include "root" {
 }
 
 dependencies {
-  paths = ["../cluster"]
-}
-
-terraform {
-  source = "${find_in_parent_folders("_modules")}//argocd"
+  paths = ["../metal"]
 }
 
 inputs = {

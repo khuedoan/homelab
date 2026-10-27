@@ -27,7 +27,7 @@ func newClusterEnrollCmd() *cobra.Command {
 			if err := cluster.Enroll(ctx, environment, cmd.ErrOrStderr()); err != nil {
 				return err
 			}
-			_, err := fmt.Fprintln(cmd.OutOrStdout(), "All configured servers are Ready in the intended cluster. Export kubeconfig through the cluster stage next.")
+			_, err := fmt.Fprintln(cmd.OutOrStdout(), "All configured servers are Ready in the intended cluster. Export kubeconfig with lab cluster kubeconfig next.")
 			return err
 		},
 	}

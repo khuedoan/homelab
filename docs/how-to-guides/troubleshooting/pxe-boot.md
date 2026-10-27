@@ -25,5 +25,4 @@ terragrunt run apply
 - Check if the servers are booting to the correct OS (NixOS installer instead of the previously installed OS), if not try to select it manually or remove the previous OS boot entry
 - Examine the network boot process with [Wireshark](https://www.wireshark.org) or [Termshark](https://termshark.io)
 
-Set `PXE_INTERFACE` and `PXE_ADDRESS` if the default route selects the wrong controller interface.
 Verify your authorized SSH keys and trusted host keys if provisioning succeeds but enrollment fails.

@@ -11,6 +11,10 @@ variable "repository" {
     url      = string
     revision = string
   })
+  default = {
+    url      = "http://forgejo-http.forgejo:3000/ops/homelab.git"
+    revision = "master"
+  }
 }
 
 variable "backup_location" {

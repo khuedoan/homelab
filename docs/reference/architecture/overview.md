@@ -17,7 +17,7 @@ Support components:
 
 After editing the configuration files, run a single make command to:
 
-- (1) Build the `metal` and `cluster` units:
+- (1) Apply the `metal` unit:
     - Create an ephemeral, stateless PXE server
     - Install NixOS on all servers in parallel
     - Build a Kubernetes cluster (based on k3s)
@@ -30,10 +30,10 @@ After editing the configuration files, run a single make command to:
 ```mermaid
 flowchart TD
   subgraph metal[metal]
-    pxe[PXE Server] -.-> linux[NixOS Server] --> k3s
+    pxe[PXE Server] -.-> linux[NixOS Server] --> k3s --> kubeconfig[Verified kubeconfig]
   end
 
-  metal --> cluster[Verified kubeconfig] --> argocd[ArgoCD] --> platform
+  metal --> argocd[ArgoCD] --> platform
   cloudflare[Cloudflare resources]
 
   subgraph platform[platform]
