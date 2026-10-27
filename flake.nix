@@ -17,7 +17,7 @@
 
       pkgs = nixpkgs.legacyPackages.${system};
       # TODO use cf on nixpkgs stable
-      inherit (nixpkgs-unstable.legacyPackages.${system}) cf;
+      inherit (nixpkgs-unstable.legacyPackages.${system}) cf mdbook mdbook-mermaid;
     in
     {
       packages.${system}.cf = cf;
@@ -32,6 +32,8 @@
           jq
           kubectl
           kubernetes-helm
+          mdbook
+          mdbook-mermaid
           nixfmt-tree
           nixos-anywhere
           nixos-rebuild

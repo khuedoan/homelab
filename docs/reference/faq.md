@@ -10,4 +10,4 @@ and it will install the operating system for you automatically and in parallel o
 
 No, the ephemeral PXE server is stateless, once Linux is installed on your servers,
 you can shut it down (or not, ideally, you don't even need to be aware of its existence).
-The Ansible setup in `./metal` is idempotent and will start the PXE server if needed.
+The Terragrunt metal module runs Nixie when you apply it.

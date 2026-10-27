@@ -4,9 +4,9 @@ The development shell makes it easy to get all of the dependencies needed to int
 
 ## Prerequisites
 
-!!! info
-
-    NixOS users can skip this step.
+> [!NOTE]
+>
+> NixOS users can skip this step.
 
 Install Nix using one of the following methods:
 
@@ -35,8 +35,8 @@ It will open a shell with all the dependencies defined in `./flake.nix`:
 /nix/store/0558zzzqynzw7rx9dp2i7jymvznd1cqx-kubectl-1.30.1/bin/kubectl
 ```
 
-!!! tip
-
-    If you have [`direnv`](https://direnv.net) installed, you can run `direnv
-    allow` once and it will automatically enter the Nix shell every time you
-    `cd` into the project.
+> [!TIP]
+>
+> If you have [`direnv`](https://direnv.net) installed, you can run `direnv
+> allow` once and it will automatically enter the Nix shell every time you
+> `cd` into the project.
