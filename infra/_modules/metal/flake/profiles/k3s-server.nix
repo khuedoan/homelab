@@ -55,11 +55,9 @@
   services.k3s = {
     enable = true;
     role = "server";
-    manifests = {
-      gateway-api.source = pkgs.fetchurl {
-        url = "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml";
-        hash = "sha256-akAp5mFEbWSt2GagDs3EDBQhm2h3erYUxc2qwK20gfE=";
-      };
+    manifests.gateway-api.source = pkgs.fetchurl {
+      url = "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml";
+      hash = "sha256-akAp5mFEbWSt2GagDs3EDBQhm2h3erYUxc2qwK20gfE=";
     };
     # Joiners remain stopped until lab enrolls them with the secure token.
     clusterInit = k3s.clusterInit;
