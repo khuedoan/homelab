@@ -134,6 +134,11 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td>Self-hosted Git service</td>
     </tr>
     <tr>
+        <td><img width="32" src="https://go.dev/images/go-logo-blue.svg"></td>
+        <td><a href="https://go.dev">Go</a></td>
+        <td>Custom CLI and infrastructure tests with Terratest</td>
+    </tr>
+    <tr>
         <td><img width="32" src="https://grafana.com/static/img/menu/grafana2.svg"></td>
         <td><a href="https://grafana.com">Grafana</a></td>
         <td>Observability platform</td>
