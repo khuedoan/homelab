@@ -254,7 +254,6 @@ Please see [contributing guide](https://homelab.khuedoan.com/reference/contribut
 Copyright &copy; 2020 - 2026 Khue Doan
 
 Distributed under the GPLv3 License.
-See [license page](https://homelab.khuedoan.com/reference/license) or `LICENSE.md` file for more information.
 
 ## Acknowledgements
 

@@ -1,8 +1,8 @@
 # Roadmap
 
-!!! info
-
-    Current status: **ALPHA**
+> [!NOTE]
+>
+> Current status: **ALPHA**
 
 ## Alpha requirements
 

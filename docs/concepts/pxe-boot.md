@@ -4,7 +4,7 @@
 sequenceDiagram
     participant Nixie
     participant Router as Router (DHCP)
-    participant Machines@{ "type" : "collections" }
+    participant Machines
 
     Nixie->>Nixie: Load hosts.json
     Nixie->>Machines: Check recorded machine IDs over SSH

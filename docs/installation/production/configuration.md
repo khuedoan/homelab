@@ -5,16 +5,17 @@
 Edit `infra/production/metal/hosts.json` with your machines' static IPs, MAC addresses, and disk paths.
 Installation erases the disks.
 
-!!! example
-
-    ```json title="infra/production/metal/hosts.json"
-    {
-      "homelab-1": {"ip": "192.168.1.110", "mac_address": "02:00:00:00:00:01", "disk": "/dev/sda"},
-      "homelab-2": {"ip": "192.168.1.111", "mac_address": "02:00:00:00:00:02", "disk": "/dev/sda"},
-      "homelab-3": {"ip": "192.168.1.112", "mac_address": "02:00:00:00:00:03", "disk": "/dev/sda"},
-      "homelab-4": {"ip": "192.168.1.113", "mac_address": "02:00:00:00:00:04", "disk": "/dev/sda"}
-    }
-    ```
+> [!NOTE]
+> **Example**
+>
+> ```json title="infra/production/metal/hosts.json"
+> {
+>   "homelab-1": {"ip": "192.168.1.110", "mac_address": "02:00:00:00:00:01", "disk": "/dev/sda"},
+>   "homelab-2": {"ip": "192.168.1.111", "mac_address": "02:00:00:00:00:02", "disk": "/dev/sda"},
+>   "homelab-3": {"ip": "192.168.1.112", "mac_address": "02:00:00:00:00:03", "disk": "/dev/sda"},
+>   "homelab-4": {"ip": "192.168.1.113", "mac_address": "02:00:00:00:00:04", "disk": "/dev/sda"}
+> }
+> ```
 
 ## Configure the cluster
 

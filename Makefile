@@ -108,7 +108,8 @@ render-fixture:
 		> '$(report_dir)/fixture/manifest.yaml'
 
 docs:
-	mkdocs serve
+	mdbook-mermaid install docs
+	mdbook serve docs --port 8000
 
 fmt:
 	treefmt

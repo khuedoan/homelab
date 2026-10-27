@@ -1,7 +1,7 @@
 # Updating documentation (this website)
 
 This project uses the [Diátaxis](https://diataxis.fr) technical documentation framework.
-The website is generated using [Material for MkDocs](https://squidfunk.github.io/mkdocs-material) and can be viewed at [homelab.khuedoan.com](https://homelab.khuedoan.com).
+The website is generated using [mdBook](https://rust-lang.github.io/mdBook) and can be viewed at [homelab.khuedoan.com](https://homelab.khuedoan.com).
 
 There are 4 main parts:
 

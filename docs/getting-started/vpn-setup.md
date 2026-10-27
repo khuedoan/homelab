@@ -37,16 +37,17 @@ WireGuard Portal is available at `https://vpn.<domain>` with SSO.
 
 Configure port forwarding in your router for the WireGuard service.
 
-!!! example
-
-    Each router is different, here's mine for reference:
-
-    - Protocol: `UDP`
-    - Start Port: `51820`
-    - End Port: `51820`
-    - Local IP Address: `192.168.1.226` (find it with `kubectl get service -n wireguard wireguard-wireguard`)
-    - Start Port Local: `51820`
-    - End Port Local: `51820`
+> [!NOTE]
+> **Example**
+>
+> Each router is different, here's mine for reference:
+>
+> - Protocol: `UDP`
+> - Start Port: `51820`
+> - End Port: `51820`
+> - Local IP Address: `192.168.1.226` (find it with `kubectl get service -n wireguard wireguard-wireguard`)
+> - Start Port Local: `51820`
+> - End Port Local: `51820`
 
 ### Configure the server
 
@@ -69,23 +70,23 @@ WireGuard Portal will create one device by default. Users can add more if needed
 Install [WireGuard](https://www.wireguard.com/install/), then download the configuration as `wg0.conf` or scan its QR code.
 Keep the configuration private.
 
-=== "Mobile"
+#### Mobile
 
-    Scan the QR code from the portal using the official WireGuard app.
+Scan the QR code from the portal using the official WireGuard app.
 
-=== "Linux"
+#### Linux
 
-    Import the WireGuard configuration using NetworkManager:
+Import the WireGuard configuration using NetworkManager:
 
-    ```sh
-    nmcli connection import type wireguard file wg0.conf
-    ```
+```sh
+nmcli connection import type wireguard file wg0.conf
+```
 
-    Activate the connection:
+Activate the connection:
 
-    ```sh
-    nmcli connection up wg0
-    ```
+```sh
+nmcli connection up wg0
+```
 
 Connect and test access to a private application while outside your LAN.
 

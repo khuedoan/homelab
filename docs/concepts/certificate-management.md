@@ -49,7 +49,7 @@ flowchart LR
 
   Challenge -- 4.a --> TXT
   ACMEServer -.- Challenge
-  ACMEServer -. 4.b .-> TXT
+  ACMEServer -. "4.b" .-> TXT
 ```
 
 1. cert-manager creates a corresponding `Certificate` resource

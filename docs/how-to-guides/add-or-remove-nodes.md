@@ -4,9 +4,9 @@ Or how to scale horizontally. To replace the same node with a clean OS, remove i
 
 ## Add new nodes
 
-!!! tip
-
-    You can add multiple nodes at the same time
+> [!TIP]
+>
+> You can add multiple nodes at the same time
 
 Add its details to the inventory:
 
@@ -36,9 +36,9 @@ That's it!
 
 ## Remove a node
 
-!!! danger
-
-    It is recommended to remove nodes one at a time
+> [!WARNING]
+>
+> It is recommended to remove nodes one at a time
 
 Use the environment's kubeconfig:
 

@@ -3,21 +3,24 @@
 These are the records of design decisions for future reference in order to understand why things are the way they are.
 They are not permanent, we can change them in the future if better alternatives become available.
 
-??? Template
+<details>
+<summary>Template</summary>
 
-    ## Description of the the change
+## Description of the the change
 
-    **Context**
+**Context**
 
-    CHANGEME
+CHANGEME
 
-    **Decision**
+**Decision**
 
-    CHANGEME
+CHANGEME
 
-    **Consequences**
+**Consequences**
 
-    - CHANGEME
+- CHANGEME
+
+</details>
 
 ## Use Velero for backups
 
@@ -267,6 +270,9 @@ Migrate to dnsmasq (see commit `f650c89`, thanks to [@Bourne-ID](https://github.
 - DHCP proxy is enabled by default because most people have a standard home network with existing DHCP server, but it can still be disabled to restore the previous behavior
 
 ## Migrate documentation from [mdBook](https://rust-lang.github.io/mdBook) to [MkDocs](https://squidfunk.github.io/mkdocs-material)
+
+**Status**: I no longer plan to use Backstage for this homelab (I may build something else),
+so it's back to mdBook, which has fewer dependencies and is faster.
 
 **Context**
 

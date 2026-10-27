@@ -1,6 +1,3 @@
-.venv/
-book/
-
 *.iso
 *.log
 *.png

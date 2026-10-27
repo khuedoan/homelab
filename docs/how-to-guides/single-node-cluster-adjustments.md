@@ -1,12 +1,12 @@
 # Single node cluster adjustments
 
-!!! danger
-
-    This is not officially supported and I don't regularly test it,
-    I highly recommend using multiple nodes.
-
-    Using a single node could lead to data loss unless your backup strategy is rock solid,
-    make sure you are **ABSOLUTELY CERTAIN** this is what you want.
+> [!WARNING]
+>
+> This is not officially supported and I don't regularly test it,
+> I highly recommend using multiple nodes.
+>
+> Using a single node could lead to data loss unless your backup strategy is rock solid,
+> make sure you are **ABSOLUTELY CERTAIN** this is what you want.
 
 Make the following changes, then commit and push.
 

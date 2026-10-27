@@ -19,7 +19,7 @@ git checkout -b contrib-fix-something
 
 # Make your changes here
 #
-# nvim README.md
+# nvim docs/README.md
 # git cherry-pick a1b2c3
 #
 # commit, push, etc. as usual
