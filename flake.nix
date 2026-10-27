@@ -18,18 +18,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       # TODO use cf on nixpkgs stable
       inherit (nixpkgs-unstable.legacyPackages.${system}) cf;
-      sftpServer = "${pkgs.openssh}/libexec/sftp-server";
-
-      lab = pkgs.buildGoModule {
-        pname = "lab";
-        version = "0.1.0";
-        src = pkgs.lib.cleanSource ./cli;
-        vendorHash = "sha256-bxxqUoFcmMxXXNM43SOu9dmMVLCj/uWkWtmJymTIVaY=";
-        subPackages = [ "cmd/lab" ];
-        nativeCheckInputs = [ pkgs.git ];
-        SFTP_SERVER = sftpServer;
-        meta.mainProgram = "lab";
-      };
+      lab = pkgs.callPackage ./cli { };
     in
     {
       packages.${system} = {
@@ -41,7 +30,7 @@
       formatter.${system} = pkgs.nixfmt-tree;
 
       devShells.${system}.default = pkgs.mkShell {
-        SFTP_SERVER = sftpServer;
+        inherit (lab) SFTP_SERVER;
         packages = with pkgs; [
           cf
           lab
