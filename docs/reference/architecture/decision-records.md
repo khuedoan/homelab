@@ -3,21 +3,107 @@
 These are the records of design decisions for future reference in order to understand why things are the way they are.
 They are not permanent, we can change them in the future if better alternatives become available.
 
-??? Template
+<details>
+<summary>Template</summary>
 
-    ## Description of the the change
+## Description of the the change
 
-    **Context**
+**Context**
 
-    CHANGEME
+CHANGEME
 
-    **Decision**
+**Decision**
 
-    CHANGEME
+CHANGEME
 
-    **Consequences**
+**Consequences**
 
-    - CHANGEME
+- CHANGEME
+
+</details>
+
+## Use Velero for backups
+
+**Context**
+
+Requirements:
+
+- All apps backed up by default, without additional configuration for new apps.
+- The backups need to work even if we lose the entire cluster.
+
+We used to use [VolSync](https://volsync.readthedocs.io/en/stable/usage/restic/index.html),
+but its Restic workflow requires per-volume replication resources and credentials,
+and the backup & restore flow is not really declarative.
+We would need additional resource generation and orchestration to provide this experience.
+
+**Decision**
+
+Use Velero to back up cluster resources and supported persistent volumes:
+
+- Use [CSI snapshot data movement](https://velero.io/docs/v1.18/csi-snapshot-data-movement)
+  to copy volume data into object storage,
+  so recovery does not depend on the original Ceph cluster.
+- Use Velero's [ReadOnly recovery mode](https://velero.io/docs/v1.18/disaster-case)
+  to prevent backup creation and deletion while restoring and verifying data.
+
+**Consequences**
+
+- The backup schedule includes all apps,
+  without backup resources or storage credentials to distribute to app namespaces.
+- Backup and restore operations use Velero's native resources
+  and CLI instead of custom orchestration in `lab` CLI.
+- Velero requires broad cluster permissions.
+- Database applications may still need backup hooks or native exports for consistent backups.
+
+## Switch metal provisioning from Ansible to Nixie
+
+**Context**
+
+The metal nodes used to use Ansible to install Fedora.
+When we switched to NixOS, while technically we can still use Ansible to do the same thing,
+but it's still hard to test and debug.
+
+**Decision**
+
+Build a custom bare metal orchestration engine for NixOS - [nixie](https://github.com/khuedoan/nixie).
+
+**Consequences**
+
+- It has much better integration to the OS, since it's built specically for NixOS
+- It's much more reliable and testable (Nixie has a full test suite in QEMU)
+- There's much better visibility into the PXE boot process with tracing
+- The PXE installer can be reused with other projects
+  (e.g., my [dotfiles](https://github.com/khuedoan/dotfiles)),
+  not just this homelab.
+
+## Using NixOS as the base OS
+
+**Context**
+
+With Fedora and Ansible, I sometimes make manual changes and forget to put them back in the playbooks.
+If a playbook fails halfway, it's also hard to roll back to the previous system.
+
+Talos is smaller and has better integration for Kubernetes operations,
+but I want a general-purpose OS that can stay even if we move away from Kubernetes.
+I don't want the OS to depend on a single company that could change its license,
+and I already use NixOS on my other machines.
+
+**Decision**
+
+Use NixOS as the base OS.
+
+**Consequences**
+
+- System changes have to go through the NixOS configuration, so it's easier to keep the system clean and reproducible.
+- NixOS builds the new system before switching to it, and we can roll back to a previous generation.
+  Switching to the new system is almost fully atomic, except for service activation and restarts, which are still imperative.
+- We can use Nix for both the OS and development shells, without installing project dependencies into the base system.
+- We can test the same configurations in QEMU before applying them to real hardware.
+- We can keep the OS even if we replace Kubernetes later.
+- The system is larger than Talos, with a larger attack surface, and we need to coordinate rolling upgrades ourselves.
+
+See the [original discussion](https://github.com/khuedoan/homelab/pull/197#issuecomment-3440096206)
+and [NixOS cured my OCD](https://www.khuedoan.com/posts/nixos-cured-my-ocd) for more background.
 
 ## Remove the Docker wrapper for Nix shell
 
@@ -42,6 +128,11 @@ everyone has Nix installed, not everyone has the same Docker setup either.
 
 ## Remove HashiCorp Vault
 
+**Status**: we added back OpenBao, the community fork of Vault.
+It has more management overhead than our previous global secret store,
+but its security features, API for dynamic configuration, and removal of External Secrets are worth the additional complexity.
+See [Secrets management](../../concepts/secrets-management.md).
+
 **Context**
 
 - HashiCorp changed their license, and it's no longer free/libre software.
@@ -59,7 +150,7 @@ everyone has Nix installed, not everyone has the same Docker setup either.
 
 **Decision**
 
-Replace Vault with a simplier in-cluster global secret store.
+Replace Vault with a simpler in-cluster global secret store.
 
 **Consequences**
 
@@ -85,6 +176,8 @@ Update secret references in `kind: ExternalSecret`:
 ```
 
 ## Manage package versions in development shell
+
+**Status**: we no longer need this, since we use Nix from the development shell to NixOS on the nodes.
 
 **Context**
 
@@ -118,6 +211,8 @@ and we can make a conscious decision to take the necessary steps prior to upgrad
 
 ## Refactor the tools container from plain Dockerfile to [Nix](https://nixos.org)
 
+**Status**: the Docker wrapper was later removed in [Remove the Docker wrapper for Nix shell](#remove-the-docker-wrapper-for-nix-shell).
+
 **Context**
 
 The previous implementation of the tools container is not reproducible, if someone builds it a few weeks after me, they will receive different versions of the tools.
@@ -133,6 +228,8 @@ Move to Nix shell with a Docker wrapper, in case Nix is not available (see commi
 - When you change the list of tools, rebuilding is much faster
 
 ## Combine dhcpd and tftpd to dnsmasq in PXE server
+
+**Status**: replaced by [Nixie](#switch-metal-provisioning-from-ansible-to-nixie).
 
 **Context**
 
@@ -174,6 +271,9 @@ Migrate to dnsmasq (see commit `f650c89`, thanks to [@Bourne-ID](https://github.
 
 ## Migrate documentation from [mdBook](https://rust-lang.github.io/mdBook) to [MkDocs](https://squidfunk.github.io/mkdocs-material)
 
+**Status**: I no longer plan to use Backstage for this homelab (I may build something else),
+so it's back to mdBook, which has fewer dependencies and is faster.
+
 **Context**
 
 mdBook is very minimal and light weight, which I personally prefer.
@@ -187,7 +287,9 @@ Migrate documentation from mdBook to MkDocs (see commit `cd41343`).
 
 - We can no longer include only a portion of a file, see [facelessuser/pymdown-extensions#1462](https://github.com/facelessuser/pymdown-extensions/issues/1462).
 
-## Choosing the base OS
+## Using Fedora as the base OS
+
+**Status**: superseded by [Using NixOS as the base OS](#using-nixos-as-the-base-os)
 
 **Context**
 

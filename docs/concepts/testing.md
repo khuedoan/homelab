@@ -1,6 +1,10 @@
-# Testing infrastructure code
+# Testing the system
 
-We use [Terratest](https://terratest.gruntwork.io) for automated tests.
-The tests are written in Go and can be found at `./test`.
+`tests/` cover cluster access, networking, storage, backups, GitOps, secrets, etc.
 
-TODO: more docs here (PR welcomed)
+```sh
+make test
+make e2e env=staging
+```
+
+See the [testing reference](../reference/testing.md) for more.

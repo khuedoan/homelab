@@ -1,60 +1,57 @@
 {
-  description = "Homelab";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixie.url = "github:khuedoan/nixie";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      with pkgs;
-      {
-        devShells.default = mkShell {
-          packages = [
-            ansible
-            ansible-lint
-            bmake
-            diffutils
-            docker
-            docker-compose
-            dyff
-            git
-            glibcLocales
-            go
-            gotestsum
-            iproute2
-            jq
-            k9s
-            kanidm
-            kube3d
-            kubectl
-            kubernetes-helm
-            kustomize
-            libisoburn
-            neovim
-            openssh_gssapi
-            opentofu # Drop-in replacement for Terraform
-            p7zip
-            pre-commit
-            qrencode
-            shellcheck
-            wireguard-tools
-            yamllint
+  outputs =
+    {
+      nixpkgs,
+      nixpkgs-unstable,
+      nixie,
+      ...
+    }:
+    let
+      system = "x86_64-linux";
 
-            (python3.withPackages (p: with p; [
-              jinja2
-              kubernetes
-              mkdocs-material
-              netaddr
-              pexpect
-              rich
-            ]))
-          ];
-        };
-      }
-    );
+      pkgs = nixpkgs.legacyPackages.${system};
+      # TODO use cf on nixpkgs stable
+      inherit (nixpkgs-unstable.legacyPackages.${system}) cf mdbook mdbook-mermaid;
+      lab = pkgs.callPackage ./cli { };
+    in
+    {
+      packages.${system} = {
+        inherit lab cf;
+        default = lab;
+      };
+
+      checks.${system}.lab = lab;
+      formatter.${system} = pkgs.nixfmt-tree;
+
+      devShells.${system}.default = pkgs.mkShell {
+        inherit (lab) SFTP_SERVER;
+        packages = with pkgs; [
+          cf
+          lab
+          nixie.packages.${system}.default
+          gnumake
+          go
+          golangci-lint
+          gotestsum
+          jq
+          kubectl
+          kubernetes-helm
+          mdbook
+          mdbook-mermaid
+          nixfmt-tree
+          nixos-anywhere
+          nixos-rebuild
+          openssh
+          opentofu
+          terragrunt
+          velero
+        ];
+      };
+    };
 }

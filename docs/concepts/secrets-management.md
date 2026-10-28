@@ -2,101 +2,69 @@
 
 ## Overview
 
-- Global secrets are stored in the `global-secrets` namespace.
-- Integrate with GitOps using [External Secrets Operator](https://external-secrets.io).
-- Secrets that can be generated are automatically generated and stored in the `global-secrets` namespace.
-
-!!! info
-
-    Despite the name _External_ Secrets Operator, global secrets are created in the same cluster and synced
-    to other namespaces using the [Kubernetes provider](https://external-secrets.io/latest/provider/kubernetes).
-
-    While not supported by default in this project, you can also use other external providers such as HashiCorp Vault,
-    AWS Secret Manager, Google Cloud Secret Manager, Azure Key Vault, 1Password, etc.
+- Secrets are stored in [OpenBao](https://openbao.org/docs/).
+- Integrate with GitOps using the [Bank-Vaults secrets webhook](https://bank-vaults.dev/docs/mutating-webhook/).
+- Secrets that can be generated are automatically generated and stored in OpenBao.
 
 ```mermaid
 flowchart TD
-  subgraph global-secrets-namespace[global-secrets namespace]
-    secret-generator[Secret Generator] -- generate if not exist --> source-secrets[Source Secrets]
-  end
+  operator[Bank-Vaults operator] -- generate --> OpenBao
+  lab[lab CLI] -- sync infrastructure secrets --> OpenBao
+  webhook[Secrets webhook] -- read --> OpenBao
 
   subgraph app-namespace[application namespace]
-    ExternalSecret -- create --> Secret
-    App -- read --> Secret
+    Secret --> App
   end
 
-  ClusterSecretStore -- read --> source-secrets
-  ExternalSecret --- ClusterSecretStore
+  webhook -- inject --> Secret
 ```
 
-## Randomly generated secrets
+## Generated and external secrets
 
-This is useful when you want to generate random secrets like admin password and store in global secrets.
+- Bank-Vaults generates secrets configured in `infra/_modules/platform/openbao.tf`, keeping existing values.
+- The lab CLI syncs infrastructure credentials from OpenTofu's `secrets` outputs, along with SSO and Forgejo credentials.
 
-```yaml title="./platform/global-secrets/files/secret-generator/config.yaml" hl_lines="2-6"
---8<--
-./platform/global-secrets/files/secret-generator/config.yaml
---8<--
+## Infra secret outputs
+
+To publish secrets from an OpenTofu module, add a sensitive `secrets` output.
+
+```hcl
+output "secrets" {
+  sensitive = true
+  value = {
+    "cert-manager/cloudflare" = { # OpenBao path
+      api_token = cloudflare_account_token.cert_manager.value # secret values
+    }
+  }
+}
 ```
 
-## Extra third-party secrets
+`lab infra secrets sync` writes these under OpenBao's `secret` KV mount.
 
-For third-party secrets that you don't control, add them to `external/terraform.tfvars` under the `extra_secrets` key,
-then run `make external`.
+## Secret injection
 
-They will be available as a Secret named `external` in the `global-secrets` namespace.
-You can use it with `ExternalSecret` just like any other global secret.
+Secrets use `<namespace>/<name>` paths, for example `forgejo/admin`.
+Applications can only read secrets for their own namespace.
 
-## How secrets are pulled from global secrets to other namespaces
+When you apply a labeled Secret, for example:
 
-When you apply an `ExternalSecret` object, for example:
-
-```yaml hl_lines="4 21-23"
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
+```yaml
+apiVersion: v1
+kind: Secret
 metadata:
-  name: gitea-admin-secret
-  namespace: gitea
-spec:
-  data:
-  - remoteRef:
-      conversionStrategy: Default
-      key: gitea.admin
-      property: password
-    secretKey: password
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: global-secrets
-  target:
-    creationPolicy: Owner
-    deletionPolicy: Retain
-    template:
-      data:
-        password: '{{ .password }}'
-        username: gitea_admin
-      engineVersion: v2
+  name: forgejo-admin
+  namespace: forgejo
+  labels:
+    homelab.khuedoan.com/bao-secret: "true"
+stringData:
+  username: forgejo_admin
+  password: bao:secret/data/forgejo/admin#password
 ```
 
-This will create a corresponding Kubernetes secret:
+The webhook reads the password from OpenBao and stores it in the Kubernetes Secret.
+The OpenBao record must already exist. Argo CD ignores the injected values.
 
-`kubectl describe secrets -n gitea gitea-admin-secret`
+References are resolved when the Secret is created or updated.
+After rotation, reapply the references and restart the applications using the Secret.
 
-```yaml hl_lines="1 8-11"
-Name:         gitea-admin-secret
-Namespace:    gitea
-Labels:       <none>
-Annotations:  reconcile.external-secrets.io/data-hash: <REDACTED>
-
-Type:  Opaque
-
-Data
-====
-password:  32 bytes
-username:  11 bytes
-```
-
-Please see the official documentation for more information:
-
-- [External Secrets Operator](https://external-secrets.io)
-- [API specification](https://external-secrets.io/latest/spec)
+Please see the [official documentation](https://bank-vaults.dev/docs/mutating-webhook/) for more information.

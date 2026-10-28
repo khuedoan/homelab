@@ -1,0 +1,26 @@
+nodeSelector:
+  kubernetes.io/hostname: {{ printf "%q" .Node }}
+hostPID: true
+tolerations:
+  - operator: Exists
+containers:
+  - name: kube-bench
+    image: docker.io/aquasec/kube-bench:v0.7.2
+    command: [kube-bench, run, --benchmark, k3s-cis-1.7, --targets, 'master,node,etcd', --json]
+    volumeMounts:
+      - {name: k3s, mountPath: /var/lib/rancher/k3s, readOnly: true}
+      - {name: kubelet, mountPath: /var/lib/kubelet, readOnly: true}
+      - {name: config, mountPath: /etc/rancher/k3s, readOnly: true}
+      - {name: systemd, mountPath: /etc/systemd, readOnly: true}
+      - {name: nix, mountPath: /nix/store, readOnly: true}
+volumes:
+  - name: k3s
+    hostPath: {path: /var/lib/rancher/k3s, type: Directory}
+  - name: kubelet
+    hostPath: {path: /var/lib/kubelet, type: Directory}
+  - name: config
+    hostPath: {path: /etc/rancher/k3s, type: Directory}
+  - name: systemd
+    hostPath: {path: /etc/systemd, type: Directory}
+  - name: nix
+    hostPath: {path: /nix/store, type: Directory}

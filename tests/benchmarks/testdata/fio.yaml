@@ -1,0 +1,25 @@
+nodeSelector:
+  kubernetes.io/hostname: {{ printf "%q" .Node }}
+containers:
+  - name: storage
+    image: docker.io/zayashv/dbench@sha256:5186d2e2acca33d98b0f50a2fba3463bf0ebe30864c8dbd529f234651c462db4
+    command:
+      - fio
+      - --name=homelab-storage
+      - --filename=/data/benchmark
+      - --size=256M
+      - --rw=randrw
+      - --rwmixread=70
+      - --bs=4k
+      - --ioengine=libaio
+      - --iodepth=16
+      - --direct=1
+      - --runtime=30
+      - --time_based
+      - --output-format=json
+    volumeMounts:
+      - {name: data, mountPath: /data}
+volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: {{ printf "%q" .Claim }}
