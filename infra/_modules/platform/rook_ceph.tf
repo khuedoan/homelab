@@ -202,7 +202,7 @@ resource "kubectl_manifest" "rook_ceph" {
         }, {
         repoURL        = "https://piraeus.io/helm-charts"
         chart          = "snapshot-controller"
-        targetRevision = "2.2.1"
+        targetRevision = "5.0.4"
         helm = {
           releaseName = "rook-ceph"
           values = yamlencode({
