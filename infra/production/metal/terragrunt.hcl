@@ -7,7 +7,7 @@ terraform {
     commands    = ["apply"]
     working_dir = "${get_working_dir()}/flake"
     execute = [
-      "sudo", "env", "PATH=${get_env("PATH")}", "nixie",
+      "sudo", run_cmd("--terragrunt-global-cache", "--terragrunt-quiet", "sh", "-c", "command -v nixie"),
       "--installer", "path:.#nixosConfigurations.installer",
       "--flake", "path:.",
       "--hosts", "${get_terragrunt_dir()}/hosts.json",
