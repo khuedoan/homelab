@@ -31,7 +31,7 @@ Good enough for tinkering and personal usage, and reasonably secure.
     - [x] Expose services to the internet securely with Cloudflare Tunnel
 - [x] Only use open-source technologies (except external managed services in `./external`)
 - [x] Everything is defined as code
-- [ ] Backup solution (3 copies, 2 seperate devices, 1 offsite)
+- [ ] Backup solution (3 copies, 2 separate devices, 1 offsite)
 - [ ] Define [SLOs](https://en.wikipedia.org/wiki/Service-level_objective):
     - [ ] 70% availability (might break in the weekend due to new experimentation)
 - [x] Core applications

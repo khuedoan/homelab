@@ -60,7 +60,7 @@ Buying a domain is highly recommended, but if you don't have one, see [alternate
 
 !!! info
 
-    You need to do it once per machine if the default config is not sufficent,
+    You need to do it once per machine if the default config is not sufficient,
     usually for consumer hardware this can not be automated
     (it requires something like [IPMI](https://en.wikipedia.org/wiki/Intelligent_Platform_Management_Interface) to automate).
 
@@ -73,7 +73,7 @@ Common settings:
 Boot order options (select one, each has their pros and cons):
 
 1. Only boot from the network if no operating system found: works on most hardware but you need to manually wipe your hard drive or delete the existing boot record for the current OS
-2. Prefer booting from the network if turned on via WoL: more convenience but your BIOS must support it, and you must test it throughly to ensure you don't accidentally wipe your servers
+2. Prefer booting from the network if turned on via WoL: more convenience but your BIOS must support it, and you must test it thoroughly to ensure you don't accidentally wipe your servers
 
 !!! example
 
