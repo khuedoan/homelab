@@ -59,7 +59,7 @@ everyone has Nix installed, not everyone has the same Docker setup either.
 
 **Decision**
 
-Replace Vault with a simplier in-cluster global secret store.
+Replace Vault with a simpler in-cluster global secret store.
 
 **Consequences**
 

@@ -1,6 +1,6 @@
 # Install pre-commit hooks
 
-Git hook scripts are useful for identifying simple issues before commiting changes.
+Git hook scripts are useful for identifying simple issues before committing changes.
 
 Install [pre-commit](https://pre-commit.com/#install) first, one-liner for Arch users:
 
