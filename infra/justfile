@@ -1,6 +1,11 @@
 set positional-arguments
 
-deploy target: (tfstate target) (apply target)
+[script("sh", "-ea")]
+@deploy target: (tfstate target)
+    . "$1/.env"
+
+    just apply "$1"
+    just secrets "$1"
 
 lint:
     terragrunt hcl fmt --check
@@ -81,8 +86,49 @@ fmt:
             f"{key}={value}\n" for key, value in credentials.items()
         ))
 
-[script("sh", "-ea")]
+[script("sh", "-e")]
 @apply target *arguments:
     cd "$1" && shift \
-        && . ./.env \
         && exec terragrunt run --all --non-interactive "$@" -- apply
+
+[script("python3")]
+@secrets target:
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    import hvac
+
+    sys.path.insert(0, str(Path("src/scripts").resolve()))
+    from openbao import openbao
+
+    def outputs(unit):
+        output = subprocess.check_output(
+            [
+                "terragrunt", "run", "--non-interactive", "--no-color",
+                "--tf-forward-stdout", "--", "output", "-json",
+            ],
+            cwd=unit,
+        )
+        return json.loads(output).get("secrets", {}).get("value", {})
+
+    target = Path(sys.argv[1]).resolve()
+    # TODO revisit if we can get the entire stack output at once
+    records = {
+        path: values
+        for config in sorted(target.glob("*/terragrunt.hcl"))
+        for path, values in outputs(config.parent).items()
+    }
+
+    with openbao(target / "kubeconfig.yaml") as client:
+        for path, values in records.items():
+            try:
+                current = client.secrets.kv.v2.read_secret_version(
+                    path, raise_on_deleted_version=True,
+                )["data"]["data"]
+            except hvac.exceptions.InvalidPath:
+                current = {}
+
+            if current != values:
+                client.secrets.kv.v2.create_or_update_secret(path, values)
