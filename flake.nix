@@ -28,13 +28,21 @@
         packages = with pkgs; [
           cf
           nixie.packages.${system}.default
-          (python3.withPackages (ps: [ ps.pyyaml ]))
+          just
+          (python3.withPackages (ps: [
+            ps.hvac
+            ps.kanidm
+            ps.pyyaml
+            ps.requests
+          ]))
           jq
+          kanidm_1_11
           kubectl
           kubernetes-helm
           mdbook
           mdbook-mermaid
           nixfmt-tree
+          ruff
           nixos-anywhere
           nixos-rebuild
           openssh
