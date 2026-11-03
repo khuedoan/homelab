@@ -4,6 +4,8 @@ default:
 mod test "tests/justfile"
 mod infra "infra/justfile"
 
+deploy target: (infra::deploy target)
+
 docs:
     mdbook-mermaid install docs
     mdbook serve docs --port 8000

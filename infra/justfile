@@ -1,3 +1,7 @@
+set positional-arguments
+
+deploy target: (tfstate target) (apply target)
+
 lint:
     terragrunt hcl fmt --check
     tofu fmt -check -recursive .
@@ -6,3 +10,79 @@ fmt:
     terragrunt hcl fmt
     tofu fmt -recursive .
     just --fmt
+
+[script("python3")]
+@tfstate target:
+    import hashlib
+    import json
+    import os
+    import subprocess
+    import sys
+    from datetime import datetime, timedelta, timezone
+    from pathlib import Path
+
+    def bucket_policy(account: str, bucket: str, groups: list[dict]) -> dict:
+        permission = next(
+            group["id"]
+            for group in groups
+            if group["name"] == "Workers R2 Storage Bucket Item Write"
+        )
+
+        return {
+            "effect": "allow",
+            "permission_groups": [{"id": permission}],
+            "resources": {
+                f"com.cloudflare.edge.r2.bucket.{account}_default_{bucket}": "*",
+            },
+        }
+
+    def cf(*arguments):
+        output = subprocess.check_output(
+            ["cf", "--quiet", *arguments],
+        )
+        return json.loads(output)
+
+    target = sys.argv[1]
+    credentials_file = Path(target) / ".env"
+
+    identity = cf("auth", "whoami")
+    account = identity["accounts"][0]["id"]
+    bucket = f"homelab-{target}-tfstate"
+
+    exists = subprocess.run(
+        ["cf", "--quiet", "r2", "buckets", "get", bucket],
+        capture_output=True,
+    )
+
+    if exists.returncode:
+        cf("r2", "buckets", "create", "--name", bucket)
+
+    groups = cf("accounts", "tokens", "permission-groups", "list")
+    policy = bucket_policy(account, bucket, groups)
+    expires = datetime.now(timezone.utc) + timedelta(hours=4)
+    token = cf(
+        "accounts", "tokens", "create",
+        "--name", bucket,
+        "--expires-on", expires.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "--policies", json.dumps([policy]),
+    )
+    login_file = Path(identity["authSource"].removeprefix("OAuth token from "))
+    login = json.loads(login_file.read_text())
+    credentials = {
+        "AWS_ACCESS_KEY_ID": token["id"],
+        "AWS_SECRET_ACCESS_KEY": hashlib.sha256(token["value"].encode()).hexdigest(),
+        "AWS_SESSION_TOKEN": "",
+        "CLOUDFLARE_ACCOUNT_ID": account,
+        "CLOUDFLARE_API_TOKEN": login["oauth_token"],
+    }
+
+    with open(credentials_file, "w", opener=lambda path, flags: os.open(path, flags, 0o600)) as output:
+        output.write("".join(
+            f"{key}={value}\n" for key, value in credentials.items()
+        ))
+
+[script("sh", "-ea")]
+@apply target *arguments:
+    cd "$1" && shift \
+        && . ./.env \
+        && exec terragrunt run --all --non-interactive "$@" -- apply
