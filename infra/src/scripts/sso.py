@@ -1,3 +1,21 @@
+from contextlib import asynccontextmanager
+
+from kanidm import KanidmClient
+
+
+@asynccontextmanager
+async def kanidm(domain, password):
+    client = KanidmClient(uri=f"https://auth.{domain}")
+
+    async with client.openapi_client:
+        await client.authenticate_password(
+            "idm_admin",
+            password,
+            update_internal_auth_token=True,
+        )
+        yield client
+
+
 def oauth_clients(domain):
     def url(host, path):
         return f"https://{host}.{domain}{path}"
