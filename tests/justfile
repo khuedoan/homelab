@@ -1,0 +1,25 @@
+all:
+    cd .. && just lint
+    just unit
+
+lint:
+    @echo "TODO: follow up with new test suite"
+
+unit:
+    @echo "TODO: follow up with new test suite"
+
+fmt:
+    @echo "TODO: follow up with new test suite"
+
+e2e env labels="" focus="": (_cluster-tests "e2e" env labels focus)
+
+benchmarks env labels="" focus="": (_cluster-tests "benchmarks" env labels focus)
+
+smoke env: (e2e env "apps")
+
+[private]
+_cluster-tests suite env labels focus:
+    @echo "TODO: follow up with new test suite"
+
+list:
+    @echo "TODO: follow up with new test suite"

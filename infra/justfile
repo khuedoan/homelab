@@ -1,0 +1,8 @@
+lint:
+    terragrunt hcl fmt --check
+    tofu fmt -check -recursive .
+
+fmt:
+    terragrunt hcl fmt
+    tofu fmt -recursive .
+    just --fmt
