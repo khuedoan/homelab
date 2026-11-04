@@ -57,3 +57,16 @@ def openbao(kubeconfig):
     finally:
         process.terminate()
         process.wait()
+
+
+def write_secret(client, path, values):
+    try:
+        current = client.secrets.kv.v2.read_secret_version(
+            path,
+            raise_on_deleted_version=True,
+        )["data"]["data"]
+    except hvac.exceptions.InvalidPath:
+        current = {}
+
+    if current != values:
+        client.secrets.kv.v2.create_or_update_secret(path, values)

@@ -98,10 +98,8 @@ fmt:
     import sys
     from pathlib import Path
 
-    import hvac
-
     sys.path.insert(0, str(Path("src/scripts").resolve()))
-    from openbao import openbao
+    from openbao import openbao, write_secret
 
     def outputs(unit):
         output = subprocess.check_output(
@@ -123,12 +121,4 @@ fmt:
 
     with openbao(target / "kubeconfig.yaml") as client:
         for path, values in records.items():
-            try:
-                current = client.secrets.kv.v2.read_secret_version(
-                    path, raise_on_deleted_version=True,
-                )["data"]["data"]
-            except hvac.exceptions.InvalidPath:
-                current = {}
-
-            if current != values:
-                client.secrets.kv.v2.create_or_update_secret(path, values)
+            write_secret(client, path, values)

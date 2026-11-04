@@ -8,6 +8,8 @@ from kanidm_openapi_client.api.group_api import GroupApi
 from kanidm_openapi_client.api.oauth2_api import Oauth2Api
 from kanidm_openapi_client.models.entry import Entry
 
+from openbao import write_secret
+
 
 def admin_password(kubeconfig, bao):
     path = "kanidm/idm-admin"
@@ -136,6 +138,20 @@ async def configure_access(client, domain):
 
         for claim, membership, value in definition.get("claims", []):
             await oauth.oauth2_id_claimmap_post(name, claim, membership, [value])
+
+
+async def sync_client_secrets(client, domain, bao):
+    records = {
+        f"{definition['name']}/sso": {
+            "client_id": definition["name"],
+            "client_secret": await client.oauth2_rs_secret_get(definition["name"]),
+        }
+        for definition in oauth_clients(domain)
+        if not definition.get("public")
+    }
+
+    for path, values in records.items():
+        write_secret(bao, path, values)
 
 
 def oauth_clients(domain):
