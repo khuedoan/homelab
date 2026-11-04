@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 import hvac
 from kanidm import KanidmClient
 from kanidm_openapi_client.api.group_api import GroupApi
+from kanidm_openapi_client.api.oauth2_api import Oauth2Api
 from kanidm_openapi_client.models.entry import Entry
 
 
@@ -68,6 +69,49 @@ async def configure_groups(client):
 
     for name in sorted(missing):
         await groups.group_post(Entry(attrs={"name": [name]}))
+
+
+def client_attributes(client):
+    attributes = {
+        "displayname": [client["title"]],
+        "oauth2_rs_origin_landing": [client["redirects"][0]],
+        "oauth2_rs_origin": client["redirects"],
+        "oauth2_strict_redirect_uri": ["true"],
+        "oauth2_prefer_short_username": ["true"],
+        "oauth2_jwt_legacy_crypto_enable": [str(client.get("rs256", False)).lower()],
+    }
+    authentication = (
+        {
+            "oauth2_allow_localhost_redirect": [
+                str(client.get("localhost", False)).lower()
+            ]
+        }
+        if client.get("public")
+        else {"oauth2_allow_insecure_client_disable_pkce": ["false"]}
+    )
+    return attributes | authentication
+
+
+async def configure_clients(client, domain):
+    oauth = Oauth2Api(client.openapi_client)
+    existing = {entry.attrs["name"][0]: entry for entry in await oauth.oauth2_get()}
+
+    for definition in oauth_clients(domain):
+        name = definition["name"]
+        attributes = client_attributes(definition)
+        kind = "public" if definition.get("public") else "basic"
+
+        if name in existing:
+            if f"oauth2_resource_server_{kind}" not in existing[name].attrs["class"]:
+                raise ValueError(f"OAuth client {name} has a different client type")
+            await oauth.oauth2_id_patch(name, Entry(attrs=attributes))
+        else:
+            create = (
+                oauth.oauth2_public_post
+                if definition.get("public")
+                else oauth.oauth2_basic_post
+            )
+            await create(Entry(attrs=attributes | {"name": [name]}))
 
 
 def oauth_clients(domain):
