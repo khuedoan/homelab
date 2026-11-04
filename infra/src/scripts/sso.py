@@ -1,6 +1,49 @@
+import json
+import subprocess
 from contextlib import asynccontextmanager
 
+import hvac
 from kanidm import KanidmClient
+
+
+def admin_password(kubeconfig, bao):
+    path = "kanidm/idm-admin"
+
+    try:
+        return bao.secrets.kv.v2.read_secret_version(
+            path,
+            raise_on_deleted_version=True,
+        )["data"]["data"]["password"]
+    except hvac.exceptions.InvalidPath:
+        pass
+
+    kubectl = ["kubectl", "--kubeconfig", kubeconfig, "--namespace", "kanidm"]
+
+    for condition in ("create", "condition=Ready"):
+        subprocess.run(
+            kubectl + ["wait", f"--for={condition}", "pod/kanidm-0", "--timeout=15m"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+
+    output = subprocess.check_output(
+        kubectl
+        + [
+            "exec",
+            "kanidm-0",
+            "--",
+            "/sbin/kanidmd",
+            "scripting",
+            "recover-account",
+            "-c",
+            "/data/server.toml",
+            "idm_admin",
+        ]
+    )
+    password = json.loads(output)["output"]
+
+    bao.secrets.kv.v2.create_or_update_secret(path, {"password": password})
+    return password
 
 
 @asynccontextmanager
