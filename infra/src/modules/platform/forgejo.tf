@@ -41,9 +41,10 @@ resource "kubectl_manifest" "forgejo" {
                 actions       = { ENABLED = false }
                 oauth2_client = { ENABLE_AUTO_REGISTRATION = true, USERNAME = "preferred_username" }
                 repository = {
-                  DEFAULT_BRANCH      = "master"
-                  DISABLED_REPO_UNITS = "repo.wiki,repo.projects,repo.packages"
-                  DISABLE_STARS       = true
+                  ENABLE_PUSH_CREATE_ORG = true
+                  DEFAULT_BRANCH         = "master"
+                  DISABLED_REPO_UNITS    = "repo.wiki,repo.projects,repo.packages"
+                  DISABLE_STARS          = true
                 }
                 "service.explore" = { DISABLE_USERS_PAGE = true }
                 server = {

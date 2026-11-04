@@ -7,6 +7,7 @@ set positional-arguments
     just apply "$1"
     just secrets "$1"
     just sso "$1"
+    just forgejo "$1"
 
 lint:
     terragrunt hcl fmt --check
@@ -145,3 +146,23 @@ fmt:
 
     with openbao(kubeconfig) as bao:
         asyncio.run(setup(domain, kubeconfig, bao))
+
+[script("python3")]
+@forgejo target:
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path("src/scripts").resolve()))
+    from openbao import openbao
+    from forgejo import setup
+
+    target = Path(sys.argv[1]).resolve()
+    output = subprocess.check_output(
+        ["terragrunt", "render", "--json"], cwd=target / "platform",
+    )
+    domain = json.loads(output)["inputs"]["domain"]
+
+    with openbao(target / "kubeconfig.yaml") as bao:
+        setup(domain, bao, Path.cwd().parent)
