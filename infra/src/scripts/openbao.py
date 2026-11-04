@@ -19,7 +19,7 @@ def openbao(kubeconfig):
                 "wait",
                 f"--for={condition}",
                 "secret/openbao-unseal",
-                "--timeout=15m",
+                "--timeout=30m",
             ],
             check=True,
             stdout=subprocess.DEVNULL,
