@@ -47,7 +47,7 @@ More information can be found in [the roadmap](#roadmap) below.
 - [x] Automated Kubernetes installation and management
 - [x] Installing and managing applications using GitOps
 - [x] Automatic OS rolling upgrade
-- [ ] Automated version update (with approval)
+- [x] Automated version update (with approval)
 - [x] Modular architecture, easy to add or remove features/components
 - [x] Automated certificate management
 - [x] Automatically update DNS records for exposed services
@@ -65,34 +65,45 @@ More information can be found in [the roadmap](#roadmap) below.
 Some demo videos and screenshots are shown here.
 They can't capture all the project's features, but they are sufficient to get a concept of it.
 
-| Demo                                                                                                            |
-| :--:                                                                                                            |
-| [![][deploy-demo]](https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7)                                           |
-| Deploy with a single command (after updating the configuration files)                                           |
-| [![][pxe-demo]](https://www.youtube.com/watch?v=y-d7btNNAT8)                                                    |
-| PXE boot                                                                                                        |
-| TODO: Kiali demo                                                                                               |
-| Observe network traffic with [Kiali](https://kiali.io)                                                         |
-| [![][homepage-demo]][homepage-demo]                                                                             |
-| Homepage powered by... [Homepage](https://gethomepage.dev)                                                      |
-| [![][grafana-demo]][grafana-demo]                                                                               |
-| Monitoring dashboard powered by [Grafana](https://grafana.com)                                                  |
-| TODO: Forgejo demo                                                                                             |
-| Git server powered by [Forgejo](https://forgejo.org)                                                           |
-| [![][matrix-demo]][matrix-demo]                                                                                 |
-| [Matrix](https://matrix.org/) chat server                                                                       |
-| [![][woodpecker-demo]][woodpecker-demo]                                                                         |
-| Continuous integration with [Woodpecker CI](https://woodpecker-ci.org)                                          |
-| [![][argocd-demo]][argocd-demo]                                                                                 |
-| Continuous deployment with [ArgoCD](https://argoproj.github.io/cd)                                              |
-| [![][alert-demo]][alert-demo]                                                                                   |
-| [ntfy](https://ntfy.sh) displaying received alerts                                                              |
+| Demo |
+| :--: |
+| [![][deploy-demo]](https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7) |
+| Deploy with a single command (after updating the configuration files) |
+| [![][pxe-demo]](https://www.youtube.com/watch?v=y-d7btNNAT8) |
+| PXE boot |
+| [![][kiali-demo]][kiali-demo] |
+| Observe network traffic with [Kiali](https://kiali.io) |
+| [![][homepage-demo]][homepage-demo] |
+| Homepage powered by... [Homepage](https://gethomepage.dev) |
+| [![][grafana-demo]][grafana-demo] |
+| Monitoring dashboard powered by [Grafana](https://grafana.com) |
+| [![][forgejo-demo]][forgejo-demo] |
+| Git server powered by [Forgejo](https://forgejo.org) |
+| [![][matrix-demo]][matrix-demo] |
+| [Matrix](https://matrix.org/) chat (FluffyChat UI) |
+| [![][immich-demo]][immich-demo] |
+| Photo library powered by [Immich](https://immich.app) |
+| [![][opencloud-demo]][opencloud-demo] |
+| File storage powered by [OpenCloud](https://opencloud.eu) |
+| [![][zot-demo]][zot-demo] |
+| Container registry powered by [Zot](https://zotregistry.dev) |
+| [![][woodpecker-demo]][woodpecker-demo] |
+| Continuous integration with [Woodpecker CI](https://woodpecker-ci.org) |
+| [![][argocd-demo]][argocd-demo] |
+| Continuous deployment with [ArgoCD](https://argoproj.github.io/cd) |
+| [![][alert-demo]][alert-demo] |
+| [ntfy](https://ntfy.sh) displaying received alerts |
 
 [deploy-demo]: https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg
 [pxe-demo]: https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png
+[kiali-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg
+[forgejo-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg
+[immich-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/immich-photos.jpg
+[opencloud-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/opencloud-files.jpg
+[zot-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg
 [homepage-demo]: https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b
 [grafana-demo]: https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f
-[matrix-demo]: https://user-images.githubusercontent.com/27996771/149448510-7163310c-2049-4ccd-901d-f11f605bfc32.png
+[matrix-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg
 [woodpecker-demo]: https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4
 [argocd-demo]: https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20
 [alert-demo]: https://github.com/khuedoan/homelab/assets/27996771/c922f755-e911-4ca0-9d4a-6e552d387f18
