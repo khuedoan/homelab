@@ -1,12 +1,15 @@
+import asyncio
 import json
 import subprocess
 from contextlib import asynccontextmanager
 
 import hvac
+from aiohttp import ClientConnectionError
 from kanidm import KanidmClient
 from kanidm_openapi_client.api.group_api import GroupApi
 from kanidm_openapi_client.api.oauth2_api import Oauth2Api
 from kanidm_openapi_client.models.entry import Entry
+from kanidm_openapi_client.exceptions import ServiceException
 
 from openbao import write_secret
 
@@ -56,6 +59,16 @@ async def kanidm(domain, password):
     client = KanidmClient(uri=f"https://auth.{domain}")
 
     async with client.openapi_client:
+        async with asyncio.timeout(900):
+            while True:
+                try:
+                    if await client.status():
+                        break
+                except (ClientConnectionError, ServiceException):
+                    pass
+
+                await asyncio.sleep(2)
+
         await client.authenticate_password(
             "idm_admin",
             password,
@@ -183,6 +196,16 @@ def configure_openbao(domain, bao):
         token_policies=["default"],
         token_ttl="1h",
     )
+
+
+async def setup(domain, kubeconfig, bao):
+    async with kanidm(domain, admin_password(kubeconfig, bao)) as client:
+        await configure_groups(client)
+        await configure_clients(client, domain)
+        await configure_access(client, domain)
+        await sync_client_secrets(client, domain, bao)
+
+    configure_openbao(domain, bao)
 
 
 def oauth_clients(domain):

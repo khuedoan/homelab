@@ -6,6 +6,7 @@ set positional-arguments
 
     just apply "$1"
     just secrets "$1"
+    just sso "$1"
 
 lint:
     terragrunt hcl fmt --check
@@ -122,3 +123,25 @@ fmt:
     with openbao(target / "kubeconfig.yaml") as client:
         for path, values in records.items():
             write_secret(client, path, values)
+
+[script("python3")]
+@sso target:
+    import asyncio
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path("src/scripts").resolve()))
+    from openbao import openbao
+    from sso import setup
+
+    target = Path(sys.argv[1]).resolve()
+    output = subprocess.check_output(
+        ["terragrunt", "render", "--json"], cwd=target / "platform",
+    )
+    domain = json.loads(output)["inputs"]["domain"]
+    kubeconfig = target / "kubeconfig.yaml"
+
+    with openbao(kubeconfig) as bao:
+        asyncio.run(setup(domain, kubeconfig, bao))
