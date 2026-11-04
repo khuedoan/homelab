@@ -1,0 +1,8 @@
+when:
+  - event: manual
+    branch: ${CI_REPO_DEFAULT_BRANCH}
+
+steps:
+  renovate:
+    image: renovate/renovate:44.211.0
+    directory: .workflows/renovate

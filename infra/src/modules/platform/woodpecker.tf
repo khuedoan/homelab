@@ -36,13 +36,15 @@ resource "kubectl_manifest" "woodpecker" {
                 size = "2Gi"
               }
               env = {
-                WOODPECKER_ADMIN                    = "forgejo_admin"
-                WOODPECKER_GITEA                    = true
-                WOODPECKER_GITEA_URL                = "https://git.${var.domain}"
-                WOODPECKER_HOST                     = "https://ci.${var.domain}"
-                WOODPECKER_OPEN                     = true
-                WOODPECKER_EXPERT_WEBHOOK_HOST      = "http://woodpecker-server.woodpecker"
-                WOODPECKER_DEFAULT_PIPELINE_CONFIGS = ".workflows/"
+                WOODPECKER_ADMIN                     = "forgejo_admin"
+                WOODPECKER_GITEA                     = true
+                WOODPECKER_GITEA_URL                 = "https://git.${var.domain}"
+                WOODPECKER_HOST                      = "https://ci.${var.domain}"
+                WOODPECKER_OPEN                      = true
+                WOODPECKER_EXPERT_WEBHOOK_HOST       = "http://woodpecker-server.woodpecker"
+                WOODPECKER_DEFAULT_PIPELINE_CONFIGS  = ".workflows/"
+                WOODPECKER_AUTHENTICATE_PUBLIC_REPOS = true
+                WOODPECKER_PLUGINS_TRUSTED_CLONE     = "docker.io/woodpeckerci/plugin-git,quay.io/woodpeckerci/plugin-git,docker.io/renovate/renovate"
               }
             }
           })
