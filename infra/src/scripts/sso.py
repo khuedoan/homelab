@@ -4,6 +4,8 @@ from contextlib import asynccontextmanager
 
 import hvac
 from kanidm import KanidmClient
+from kanidm_openapi_client.api.group_api import GroupApi
+from kanidm_openapi_client.models.entry import Entry
 
 
 def admin_password(kubeconfig, bao):
@@ -57,6 +59,15 @@ async def kanidm(domain, password):
             update_internal_auth_token=True,
         )
         yield client
+
+
+async def configure_groups(client):
+    existing = {group.name for group in await client.group_list()}
+    missing = {"users", "developers", "admins"} - existing
+    groups = GroupApi(client.openapi_client)
+
+    for name in sorted(missing):
+        await groups.group_post(Entry(attrs={"name": [name]}))
 
 
 def oauth_clients(domain):
