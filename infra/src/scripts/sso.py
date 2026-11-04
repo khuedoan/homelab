@@ -114,6 +114,30 @@ async def configure_clients(client, domain):
             await create(Entry(attrs=attributes | {"name": [name]}))
 
 
+async def configure_access(client, domain):
+    oauth = Oauth2Api(client.openapi_client)
+    groups = {group.name: group for group in await client.group_list()}
+    existing = {entry.name: entry for entry in await client.oauth2_rs_list()}
+
+    for definition in oauth_clients(domain):
+        name = definition["name"]
+        group = groups[definition.get("group", "users")]
+
+        previous = {mapping.group for mapping in existing[name].oauth2_rs_scope_map}
+
+        await oauth.oauth2_id_scopemap_post(
+            name,
+            group.uuid,
+            ["openid", "profile", "email", "groups"],
+        )
+
+        for membership in sorted(previous - {group.spn}):
+            await oauth.oauth2_id_scopemap_delete(name, membership)
+
+        for claim, membership, value in definition.get("claims", []):
+            await oauth.oauth2_id_claimmap_post(name, claim, membership, [value])
+
+
 def oauth_clients(domain):
     def url(host, path):
         return f"https://{host}.{domain}{path}"
