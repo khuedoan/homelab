@@ -6,6 +6,8 @@ mod infra "infra/justfile"
 
 deploy target: (infra::deploy target)
 
+user target username display_name email groups="": (infra::user target username display_name email groups)
+
 docs:
     mdbook-mermaid install docs
     mdbook serve docs --port 8000

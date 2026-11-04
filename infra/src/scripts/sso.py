@@ -2,12 +2,15 @@ import asyncio
 import json
 import subprocess
 from contextlib import asynccontextmanager
+from urllib.parse import urlencode
 
 import hvac
 from aiohttp import ClientConnectionError
 from kanidm import KanidmClient
 from kanidm_openapi_client.api.group_api import GroupApi
+from kanidm_openapi_client.api.group_attr_api import GroupAttrApi
 from kanidm_openapi_client.api.oauth2_api import Oauth2Api
+from kanidm_openapi_client.api.person_api import PersonApi
 from kanidm_openapi_client.models.entry import Entry
 from kanidm_openapi_client.exceptions import ServiceException
 
@@ -84,6 +87,33 @@ async def configure_groups(client):
 
     for name in sorted(missing):
         await groups.group_post(Entry(attrs={"name": [name]}))
+
+
+async def create_user(
+    domain, kubeconfig, bao, username, display_name, email, groups=()
+):
+    async with kanidm(domain, admin_password(kubeconfig, bao)) as client:
+        memberships = dict.fromkeys(["users", *groups])
+        existing = {group.name for group in await client.group_list()}
+        missing = memberships.keys() - existing
+        if missing:
+            raise ValueError(f"Unknown groups: {', '.join(sorted(missing))}")
+
+        await PersonApi(client.openapi_client).person_post(
+            Entry(
+                attrs={
+                    "name": [username],
+                    "displayname": [display_name],
+                    "mail": [email],
+                }
+            )
+        )
+        group_attrs = GroupAttrApi(client.openapi_client)
+        for group in memberships:
+            await group_attrs.group_id_attr_post(group, "member", [username])
+        token = await client.person_account_credential_update_token(username)
+
+    return f"https://auth.{domain}/ui/reset?{urlencode({'token': token.token})}"
 
 
 def client_attributes(client):
