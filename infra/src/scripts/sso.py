@@ -154,6 +154,37 @@ async def sync_client_secrets(client, domain, bao):
         write_secret(bao, path, values)
 
 
+def configure_openbao(domain, bao):
+    secret = bao.secrets.kv.v2.read_secret_version(
+        "openbao/sso",
+        raise_on_deleted_version=True,
+    )["data"]["data"]
+
+    if "oidc/" not in bao.sys.list_auth_methods()["data"]:
+        bao.sys.enable_auth_method("oidc", path="oidc", description="SSO")
+
+    bao.auth.oidc.configure(
+        oidc_discovery_url=f"https://auth.{domain}/oauth2/openid/openbao",
+        oidc_client_id=secret["client_id"],
+        oidc_client_secret=secret["client_secret"],
+        default_role="sso",
+        jwt_supported_algs=["ES256"],
+    )
+
+    bao.auth.oidc.create_role(
+        name="sso",
+        role_type="oidc",
+        user_claim="sub",
+        bound_audiences=[secret["client_id"]],
+        allowed_redirect_uris=[
+            f"https://openbao.{domain}/ui/vault/auth/oidc/oidc/callback"
+        ],
+        oidc_scopes=["profile", "email", "groups"],
+        token_policies=["default"],
+        token_ttl="1h",
+    )
+
+
 def oauth_clients(domain):
     def url(host, path):
         return f"https://{host}.{domain}{path}"
