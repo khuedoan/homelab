@@ -165,7 +165,7 @@ resource "kubectl_manifest" "kanidm_resources" {
                   metadata   = { namespace = "kanidm" }
                   spec = {
                     secretName = "kanidm-backend-tls"
-                    issuerRef  = { kind = "ClusterIssuer", name = "letsencrypt-prod" }
+                    issuerRef  = { kind = "ClusterIssuer", name = "acme" }
                     dnsNames   = ["auth.${var.domain}"]
                   }
                 }

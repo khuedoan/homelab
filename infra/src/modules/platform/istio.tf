@@ -106,7 +106,7 @@ resource "kubectl_manifest" "istio_resources" {
                   kind       = "Gateway"
                   metadata = {
                     namespace   = "istio-system"
-                    annotations = { "cert-manager.io/cluster-issuer" = "letsencrypt-prod" }
+                    annotations = { "cert-manager.io/cluster-issuer" = "acme" }
                   }
                   spec = {
                     gatewayClassName = "istio"

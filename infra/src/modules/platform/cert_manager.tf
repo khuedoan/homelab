@@ -98,15 +98,15 @@ resource "kubectl_manifest" "cert_manager_resources" {
                   spec       = { selfSigned = {} }
                 }
               }
-              letsencrypt-prod = {
-                forceRename = "letsencrypt-prod"
+              acme = {
+                forceRename = "acme"
                 manifest = {
                   apiVersion = "cert-manager.io/v1"
                   kind       = "ClusterIssuer"
                   spec = {
                     acme = {
                       server              = "https://acme-v02.api.letsencrypt.org/directory"
-                      privateKeySecretRef = { name = "letsencrypt-prod" }
+                      privateKeySecretRef = { name = "acme" }
                       solvers = [{
                         selector = { dnsZones = [var.domain] }
                         dns01 = {
