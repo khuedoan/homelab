@@ -41,6 +41,25 @@ output "secrets" {
 
 `just deploy production` writes these under OpenBao's `secret` KV mount.
 
+## SSO access
+
+OpenBao uses Kanidm groups to restrict its OIDC roles:
+
+| Role | Required group | Access to the `secret` mount |
+| --- | --- | --- |
+| `admins` | `admins` | Read, create, update, patch, list, and delete secrets |
+| `developers` | `developers` | Create, update, and patch secrets |
+
+Both roles cover all application paths, including service credentials.
+Developers cannot read values or metadata, list names, or delete secrets.
+Neither role can manage access policies, authentication methods, or secret engines.
+Application service accounts keep their namespace-scoped read access.
+
+In the OpenBao GUI, select **OIDC** and enter the role in the **Role** field.
+The default role is `admins`. Developers must enter `developers`.
+A user in both groups can select either role.
+Sign in again after a role change to receive its new policy.
+
 ## Secret injection
 
 Secrets use `<namespace>/<name>` paths, for example `forgejo/admin`.

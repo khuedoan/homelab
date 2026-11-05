@@ -166,17 +166,19 @@ async def configure_access(client, domain):
 
     for definition in oauth_clients(domain):
         name = definition["name"]
-        group = groups[definition.get("group", "users")]
+        memberships = definition.get("groups", [definition.get("group", "users")])
+        allowed = [groups[membership] for membership in memberships]
 
         previous = {mapping.group for mapping in existing[name].oauth2_rs_scope_map}
 
-        await oauth.oauth2_id_scopemap_post(
-            name,
-            group.uuid,
-            ["openid", "profile", "email", "groups"],
-        )
+        for group in allowed:
+            await oauth.oauth2_id_scopemap_post(
+                name,
+                group.uuid,
+                ["openid", "profile", "email", "groups"],
+            )
 
-        for membership in sorted(previous - {group.spn}):
+        for membership in sorted(previous - {group.spn for group in allowed}):
             await oauth.oauth2_id_scopemap_delete(name, membership)
 
         for claim, membership, value in definition.get("claims", []):
@@ -210,22 +212,43 @@ def configure_openbao(domain, bao):
         oidc_discovery_url=f"https://auth.{domain}/oauth2/openid/openbao",
         oidc_client_id=secret["client_id"],
         oidc_client_secret=secret["client_secret"],
-        default_role="sso",
+        default_role="admins",
         jwt_supported_algs=["ES256"],
     )
 
-    bao.auth.oidc.create_role(
-        name="sso",
-        role_type="oidc",
-        user_claim="sub",
-        bound_audiences=[secret["client_id"]],
-        allowed_redirect_uris=[
-            f"https://openbao.{domain}/ui/vault/auth/oidc/oidc/callback"
-        ],
-        oidc_scopes=["profile", "email", "groups"],
-        token_policies=["default"],
-        token_ttl="1h",
-    )
+    policies = {
+        "developers": """
+path "secret/data/*" {
+  capabilities = ["create", "update", "patch"]
+}
+""",
+        "admins": """
+path "secret/data/*" {
+  capabilities = ["create", "read", "update", "patch", "delete"]
+}
+path "secret/metadata/*" {
+  capabilities = ["read", "list", "update", "delete"]
+}
+""",
+    }
+    for group, policy in policies.items():
+        bao.sys.create_or_update_policy(f"secret-{group}", policy)
+        bao.auth.oidc.create_role(
+            name=group,
+            role_type="oidc",
+            user_claim="sub",
+            bound_audiences=[secret["client_id"]],
+            bound_claims={"groups": f"{group}@auth.{domain}"},
+            allowed_redirect_uris=[
+                f"https://openbao.{domain}/ui/vault/auth/oidc/oidc/callback"
+            ],
+            oidc_scopes=["profile", "email", "groups"],
+            token_policies=[f"secret-{group}"],
+            token_ttl="1h",
+        )
+
+    if "sso" in bao.auth.oidc.list_roles()["data"]["keys"]:
+        bao.auth.oidc.delete_role("sso")
 
 
 async def setup(domain, kubeconfig, bao):
@@ -331,7 +354,7 @@ def oauth_clients(domain):
             "name": "openbao",
             "title": "OpenBao",
             "landing": url("openbao", "/"),
-            "group": "admins",
+            "groups": ["admins", "developers"],
             "redirects": [url("openbao", "/ui/vault/auth/oidc/oidc/callback")],
         },
     ]
