@@ -91,6 +91,8 @@ They can't capture all the project's features, but they are sufficient to get a 
 | Continuous integration with [Woodpecker CI](https://woodpecker-ci.org) |
 | [![][argocd-demo]][argocd-demo] |
 | Continuous deployment with [ArgoCD](https://argoproj.github.io/cd) |
+| [![][kanidm-demo]][kanidm-demo] |
+| Single sign-on powered by [Kanidm](https://kanidm.com) |
 | [![][alert-demo]][alert-demo] |
 | [ntfy](https://ntfy.sh) displaying received alerts |
 
@@ -106,6 +108,7 @@ They can't capture all the project's features, but they are sufficient to get a 
 [matrix-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg
 [woodpecker-demo]: https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4
 [argocd-demo]: https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20
+[kanidm-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/kanidm-applications.jpg
 [alert-demo]: https://github.com/khuedoan/homelab/assets/27996771/c922f755-e911-4ca0-9d4a-6e552d387f18
 
 ### Tech stack

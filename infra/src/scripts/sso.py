@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from urllib.parse import urlencode
 
 import hvac
-from aiohttp import ClientConnectionError
+from aiohttp import ClientConnectionError, ClientSession, ClientTimeout, FormData
 from kanidm import KanidmClient
 from kanidm_openapi_client.api.group_api import GroupApi
 from kanidm_openapi_client.api.group_attr_api import GroupAttrApi
@@ -159,6 +159,25 @@ async def configure_clients(client, domain):
             await create(Entry(attrs=attributes | {"name": [name]}))
 
 
+async def configure_icons(client, domain):
+    async with ClientSession(timeout=ClientTimeout(total=30)) as session:
+        for definition in oauth_clients(domain):
+            name = definition["name"]
+            async with session.get(definition["icon_url"]) as response:
+                response.raise_for_status()
+                image = await response.read()
+                content_type = response.content_type
+
+            form = FormData()
+            form.add_field("image", image, filename=name, content_type=content_type)
+            async with session.post(
+                f"https://auth.{domain}/v1/oauth2/{name}/_image",
+                headers={"Authorization": f"Bearer {client.config.auth_token}"},
+                data=form,
+            ) as response:
+                response.raise_for_status()
+
+
 async def configure_access(client, domain):
     oauth = Oauth2Api(client.openapi_client)
     groups = {group.name: group for group in await client.group_list()}
@@ -232,6 +251,7 @@ async def setup(domain, kubeconfig, bao):
     async with kanidm(domain, admin_password(kubeconfig, bao)) as client:
         await configure_groups(client)
         await configure_clients(client, domain)
+        await configure_icons(client, domain)
         await configure_access(client, domain)
         await sync_client_secrets(client, domain, bao)
 
@@ -246,21 +266,25 @@ def oauth_clients(domain):
         {
             "name": "grafana",
             "title": "Grafana",
+            "icon_url": "https://grafana.com/static/img/menu/grafana2.svg",
             "redirects": [url("grafana", "/login/generic_oauth")],
         },
         {
             "name": "forgejo",
             "title": "Forgejo",
+            "icon_url": "https://forgejo.org/favicon.svg",
             "redirects": [url("git", "/user/oauth2/SSO/callback")],
         },
         {
             "name": "argocd",
             "title": "Argo CD",
+            "icon_url": "https://avatars.githubusercontent.com/u/30269780",
             "redirects": [url("argocd", "/auth/callback")],
         },
         {
             "name": "actualbudget",
             "title": "Actual Budget",
+            "icon_url": "https://github.com/actualbudget.png?size=128",
             # TODO remove RS256 once Actual Budget supports ES256: https://github.com/actualbudget/actual/issues/6524
             "rs256": True,
             "redirects": [url("budget", "/openid/callback")],
@@ -268,6 +292,7 @@ def oauth_clients(domain):
         {
             "name": "matrix",
             "title": "Matrix",
+            "icon_url": "https://raw.githubusercontent.com/krille-chan/fluffychat/main/assets/logo/mini/logo_mini.png",
             "redirects": [
                 url("matrix", "/_matrix/client/unstable/login/sso/callback/matrix")
             ],
@@ -275,6 +300,7 @@ def oauth_clients(domain):
         {
             "name": "immich",
             "title": "Immich",
+            "icon_url": "https://github.com/immich-app.png?size=128",
             "redirects": [
                 url("photos", path)
                 for path in (
@@ -291,6 +317,7 @@ def oauth_clients(domain):
         {
             "name": "kiali",
             "title": "Kiali",
+            "icon_url": "https://raw.githubusercontent.com/kiali/kiali.io/staging/static/apple-touch-icon-180x180.png",
             "group": "admins",
             "rs256": True,
             "redirects": [url("kiali", "/")],
@@ -298,11 +325,13 @@ def oauth_clients(domain):
         {
             "name": "wireguard",
             "title": "WireGuard Portal",
+            "icon_url": "https://www.wireguard.com/img/icons/favicon-192.png",
             "redirects": [url("vpn", "/api/v0/auth/login/sso/callback")],
         },
         {
             "name": "opencloud",
             "title": "OpenCloud",
+            "icon_url": "https://github.com/opencloud-eu.png?size=128",
             "public": True,
             "localhost": True,
             "redirects": [
@@ -314,12 +343,14 @@ def oauth_clients(domain):
         {
             "name": "zot",
             "title": "Zot",
+            "icon_url": "https://zotregistry.dev/v2.0.2/assets/images/logo.svg",
             "public": True,
             "redirects": [url("registry", "/zot/auth/callback/oidc")],
         },
         {
             "name": "openbao",
             "title": "OpenBao",
+            "icon_url": "https://openbao.org/img/favicon.svg",
             "group": "admins",
             "redirects": [url("openbao", "/ui/vault/auth/oidc/oidc/callback")],
         },
