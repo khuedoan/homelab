@@ -6,7 +6,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixie = {
-      url = "github:khuedoan/nixie";
+      # TODO switch nixie back to master or release (testing out a new refactor)
+      url = "github:khuedoan/nixie/pull-based-install";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

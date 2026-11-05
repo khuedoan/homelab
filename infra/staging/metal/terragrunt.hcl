@@ -11,7 +11,6 @@ terraform {
       "--installer", "path:.#nixosConfigurations.installer",
       "--flake", "path:.",
       "--hosts", "hosts.json",
-      "--ssh-agent-socket", get_env("SSH_AUTH_SOCK", ""),
     ]
   }
 }

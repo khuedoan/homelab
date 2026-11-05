@@ -2,7 +2,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixie.url = "github:khuedoan/nixie";
+    # TODO switch nixie back to master or release (testing out a new refactor)
+    nixie.url = "github:khuedoan/nixie/pull-based-install";
   };
 
   outputs =
