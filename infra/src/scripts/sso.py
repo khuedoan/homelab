@@ -119,7 +119,7 @@ async def create_user(
 def client_attributes(client):
     attributes = {
         "displayname": [client["title"]],
-        "oauth2_rs_origin_landing": [client["redirects"][0]],
+        "oauth2_rs_origin_landing": [client["landing"]],
         "oauth2_rs_origin": client["redirects"],
         "oauth2_strict_redirect_uri": ["true"],
         "oauth2_prefer_short_username": ["true"],
@@ -246,21 +246,25 @@ def oauth_clients(domain):
         {
             "name": "grafana",
             "title": "Grafana",
+            "landing": url("grafana", "/"),
             "redirects": [url("grafana", "/login/generic_oauth")],
         },
         {
             "name": "forgejo",
             "title": "Forgejo",
+            "landing": url("git", "/"),
             "redirects": [url("git", "/user/oauth2/SSO/callback")],
         },
         {
             "name": "argocd",
             "title": "Argo CD",
+            "landing": url("argocd", "/"),
             "redirects": [url("argocd", "/auth/callback")],
         },
         {
             "name": "actualbudget",
             "title": "Actual Budget",
+            "landing": url("budget", "/"),
             # TODO remove RS256 once Actual Budget supports ES256: https://github.com/actualbudget/actual/issues/6524
             "rs256": True,
             "redirects": [url("budget", "/openid/callback")],
@@ -268,6 +272,7 @@ def oauth_clients(domain):
         {
             "name": "matrix",
             "title": "Matrix",
+            "landing": url("chat", "/"),
             "redirects": [
                 url("matrix", "/_matrix/client/unstable/login/sso/callback/matrix")
             ],
@@ -275,6 +280,7 @@ def oauth_clients(domain):
         {
             "name": "immich",
             "title": "Immich",
+            "landing": url("photos", "/"),
             "redirects": [
                 url("photos", path)
                 for path in (
@@ -291,6 +297,7 @@ def oauth_clients(domain):
         {
             "name": "kiali",
             "title": "Kiali",
+            "landing": url("kiali", "/"),
             "group": "admins",
             "rs256": True,
             "redirects": [url("kiali", "/")],
@@ -298,11 +305,13 @@ def oauth_clients(domain):
         {
             "name": "wireguard",
             "title": "WireGuard Portal",
+            "landing": url("vpn", "/"),
             "redirects": [url("vpn", "/api/v0/auth/login/sso/callback")],
         },
         {
             "name": "opencloud",
             "title": "OpenCloud",
+            "landing": url("drive", "/"),
             "public": True,
             "localhost": True,
             "redirects": [
@@ -315,11 +324,13 @@ def oauth_clients(domain):
             "name": "zot",
             "title": "Zot",
             "public": True,
+            "landing": url("registry", "/"),
             "redirects": [url("registry", "/zot/auth/callback/oidc")],
         },
         {
             "name": "openbao",
             "title": "OpenBao",
+            "landing": url("openbao", "/"),
             "group": "admins",
             "redirects": [url("openbao", "/ui/vault/auth/oidc/oidc/callback")],
         },
