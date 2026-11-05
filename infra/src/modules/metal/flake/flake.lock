@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793887817,
-        "narHash": "sha256-ifPS9hc/4K8o3EY7O/iuFWV/194YRoYTGRFMWZgv6sg=",
+        "lastModified": 1793891632,
+        "narHash": "sha256-a2yjOGVtvFIC7819ODzAchnbeua0HRBN/WL8rpMugSw=",
         "owner": "khuedoan",
         "repo": "nixie",
-        "rev": "65a37f2b7ddd450e3d7946db4399b278402d5f8f",
+        "rev": "2be7f56b543aef4898b6ba89b157fa691cdaee29",
         "type": "github"
       },
       "original": {
