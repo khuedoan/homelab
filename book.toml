@@ -9,7 +9,6 @@ create-missing = false
 [preprocessor.mermaid]
 
 [output.html]
-default-theme = "ayu"
 git-repository-url = "https://github.com/khuedoan/homelab"
 edit-url-template = "https://github.com/khuedoan/homelab/edit/master/docs/{path}"
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
