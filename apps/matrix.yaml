@@ -135,7 +135,8 @@ configMaps:
     data:
       config.json: |
         {
-          "defaultHomeserver": "matrix.{{ .Values.global.domain }}"
+          "defaultHomeserver": "matrix.{{ .Values.global.domain }}",
+          "enableMatrixNativeOIDC": false
         }
 secrets:
   sso:
