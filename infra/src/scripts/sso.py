@@ -119,7 +119,7 @@ async def create_user(
 def client_attributes(client):
     attributes = {
         "displayname": [client["title"]],
-        "oauth2_rs_origin_landing": [client["redirects"][0]],
+        "oauth2_rs_origin_landing": [client["landing"]],
         "oauth2_rs_origin": client["redirects"],
         "oauth2_strict_redirect_uri": ["true"],
         "oauth2_prefer_short_username": ["true"],
@@ -266,24 +266,28 @@ def oauth_clients(domain):
         {
             "name": "grafana",
             "title": "Grafana",
+            "landing": url("grafana", "/"),
             "icon_url": "https://grafana.com/static/img/menu/grafana2.svg",
             "redirects": [url("grafana", "/login/generic_oauth")],
         },
         {
             "name": "forgejo",
             "title": "Forgejo",
+            "landing": url("git", "/"),
             "icon_url": "https://forgejo.org/favicon.svg",
             "redirects": [url("git", "/user/oauth2/SSO/callback")],
         },
         {
             "name": "argocd",
             "title": "Argo CD",
+            "landing": url("argocd", "/"),
             "icon_url": "https://avatars.githubusercontent.com/u/30269780",
             "redirects": [url("argocd", "/auth/callback")],
         },
         {
             "name": "actualbudget",
             "title": "Actual Budget",
+            "landing": url("budget", "/"),
             "icon_url": "https://github.com/actualbudget.png?size=128",
             # TODO remove RS256 once Actual Budget supports ES256: https://github.com/actualbudget/actual/issues/6524
             "rs256": True,
@@ -292,6 +296,7 @@ def oauth_clients(domain):
         {
             "name": "matrix",
             "title": "Matrix",
+            "landing": url("chat", "/"),
             "icon_url": "https://raw.githubusercontent.com/krille-chan/fluffychat/main/assets/logo/mini/logo_mini.png",
             "redirects": [
                 url("matrix", "/_matrix/client/unstable/login/sso/callback/matrix")
@@ -300,6 +305,7 @@ def oauth_clients(domain):
         {
             "name": "immich",
             "title": "Immich",
+            "landing": url("photos", "/"),
             "icon_url": "https://github.com/immich-app.png?size=128",
             "redirects": [
                 url("photos", path)
@@ -317,6 +323,7 @@ def oauth_clients(domain):
         {
             "name": "kiali",
             "title": "Kiali",
+            "landing": url("kiali", "/"),
             "icon_url": "https://raw.githubusercontent.com/kiali/kiali.io/staging/static/apple-touch-icon-180x180.png",
             "group": "admins",
             "rs256": True,
@@ -325,12 +332,14 @@ def oauth_clients(domain):
         {
             "name": "wireguard",
             "title": "WireGuard Portal",
+            "landing": url("vpn", "/"),
             "icon_url": "https://www.wireguard.com/img/icons/favicon-192.png",
             "redirects": [url("vpn", "/api/v0/auth/login/sso/callback")],
         },
         {
             "name": "opencloud",
             "title": "OpenCloud",
+            "landing": url("drive", "/"),
             "icon_url": "https://github.com/opencloud-eu.png?size=128",
             "public": True,
             "localhost": True,
@@ -343,6 +352,7 @@ def oauth_clients(domain):
         {
             "name": "zot",
             "title": "Zot",
+            "landing": url("registry", "/"),
             "icon_url": "https://zotregistry.dev/v2.0.2/assets/images/logo.svg",
             "public": True,
             "redirects": [url("registry", "/zot/auth/callback/oidc")],
@@ -350,6 +360,7 @@ def oauth_clients(domain):
         {
             "name": "openbao",
             "title": "OpenBao",
+            "landing": url("openbao", "/"),
             "icon_url": "https://openbao.org/img/favicon.svg",
             "group": "admins",
             "redirects": [url("openbao", "/ui/vault/auth/oidc/oidc/callback")],
