@@ -1,0 +1,583 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Home - Khue&#x27;s Homelab</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3704e539.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-c961d344.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Khue&#x27;s Homelab</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/khuedoan/homelab" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/khuedoan/homelab/edit/master/docs/./README.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="khues-homelab"><a class="header" href="#khues-homelab">Khue’s Homelab</a></h1>
+<p><strong><a href="#features">Features</a> • <a href="#get-started">Get Started</a> • <a href="https://homelab.khuedoan.com">Documentation</a></strong></p>
+<p><a href="https://github.com/khuedoan/homelab/tags"><img src="https://img.shields.io/github/v/tag/khuedoan/homelab?style=flat-square&amp;logo=semver&amp;logoColor=white" alt="tag"></a>
+<a href="https://homelab.khuedoan.com"><img src="https://img.shields.io/website?label=document&amp;logo=gitbook&amp;logoColor=white&amp;style=flat-square&amp;url=https%3A%2F%2Fhomelab.khuedoan.com" alt="document"></a>
+<a href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/github/license/khuedoan/homelab?style=flat-square&amp;logo=gnu&amp;logoColor=white" alt="license"></a>
+<a href="https://github.com/khuedoan/homelab"><img src="https://img.shields.io/github/stars/khuedoan/homelab?logo=github&amp;logoColor=white&amp;color=gold&amp;style=flat-square" alt="stars"></a></p>
+<p>This project utilizes <a href="https://en.wikipedia.org/wiki/Infrastructure_as_code">Infrastructure as Code</a> and <a href="https://www.weave.works/technologies/gitops">GitOps</a> to automate provisioning, operating, and updating self-hosted services in my homelab.
+It can be used as a highly customizable framework to build your own homelab.</p>
+<blockquote>
+<p><strong>What is a homelab?</strong></p>
+<p>Homelab is a laboratory at home where you can self-host, experiment with new technologies, practice for certifications, and so on.
+For more information, please see the <a href="https://www.reddit.com/r/homelab/wiki/introduction">r/homelab introduction</a> and the
+<a href="https://discord.gg/home-operations">Home Operations Discord community</a> (formerly known as <a href="https://k8s-at-home.com">k8s-at-home</a>).</p>
+</blockquote>
+<p>If you encounter an issue, please create <a href="https://github.com/khuedoan/homelab/issues/new?template=bug_report.md">a bug report</a>
+(avoid asking for support about issues specific to this project in other communication channels).</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Project status: <strong>ALPHA</strong></p>
+<p>This project is still in the experimental stage, and I don’t use anything critical on it.
+Expect breaking changes that may require a complete redeployment.
+A proper upgrade path is planned for the stable release.
+More information can be found in <a href="#roadmap">the roadmap</a> below.</p>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG" alt="Hardware"><span class="img-wrapper"><img src="https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG" alt="Hardware"></span></label></p>
+<ul>
+<li>4 × NEC SFF <code>PC-MK26ECZDR</code> (Japanese version of the ThinkCentre M700):
+<ul>
+<li>CPU: <code>Intel Core i5-6600T @ 2.70GHz</code></li>
+<li>RAM: <code>16GB</code></li>
+<li>SSD: <code>128GB</code></li>
+</ul>
+</li>
+<li>TP-Link <code>TL-SG108</code> switch:
+<ul>
+<li>Ports: <code>8</code></li>
+<li>Speed: <code>1000Mbps</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="features"><a class="header" href="#features">Features</a></h3>
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Common applications: Forgejo, Immich, OpenCloud, Matrix…</li>
+<li><input disabled="" type="checkbox" checked=""> Automated bare metal provisioning with PXE boot</li>
+<li><input disabled="" type="checkbox" checked=""> Automated Kubernetes installation and management</li>
+<li><input disabled="" type="checkbox" checked=""> Installing and managing applications using GitOps</li>
+<li><input disabled="" type="checkbox" checked=""> Automatic OS rolling upgrade</li>
+<li><input disabled="" type="checkbox" checked=""> Automated version update (with approval)</li>
+<li><input disabled="" type="checkbox" checked=""> Modular architecture, easy to add or remove features/components</li>
+<li><input disabled="" type="checkbox" checked=""> Automated certificate management</li>
+<li><input disabled="" type="checkbox" checked=""> Automatically update DNS records for exposed services</li>
+<li><input disabled="" type="checkbox" checked=""> VPN (Tailscale or WireGuard)</li>
+<li><input disabled="" type="checkbox" checked=""> Expose services to the internet securely with <a href="https://www.cloudflare.com/products/tunnel/">Cloudflare Tunnel</a></li>
+<li><input disabled="" type="checkbox" checked=""> CI/CD platform</li>
+<li><input disabled="" type="checkbox" checked=""> Private container registry</li>
+<li><input disabled="" type="checkbox" checked=""> Distributed storage</li>
+<li><input disabled="" type="checkbox" checked=""> Support multiple environments (staging, production)</li>
+<li><input disabled="" type="checkbox" checked=""> Monitoring and alerting</li>
+<li><input disabled="" type="checkbox" checked=""> Automated backup and restore</li>
+<li><input disabled="" type="checkbox" checked=""> Single sign-on</li>
+<li><input disabled="" type="checkbox" checked=""> Infrastructure testing</li>
+</ul>
+<p>Some demo videos and screenshots are shown here.
+They can’t capture all the project’s features, but they are sufficient to get a concept of it.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: center">Demo</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: center"><a href="https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7"><img src="https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Deploy with a single command (after updating the configuration files)</td></tr>
+<tr><td style="text-align: center"><a href="https://www.youtube.com/watch?v=y-d7btNNAT8"><img src="https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png" alt=""></a></td></tr>
+<tr><td style="text-align: center">PXE boot</td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Observe network traffic with <a href="https://kiali.io">Kiali</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b"><img src="https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b" alt=""></a></td></tr>
+<tr><td style="text-align: center">Homepage powered by… <a href="https://gethomepage.dev">Homepage</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f"><img src="https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f" alt=""></a></td></tr>
+<tr><td style="text-align: center">Monitoring dashboard powered by <a href="https://grafana.com">Grafana</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Git server powered by <a href="https://forgejo.org">Forgejo</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center"><a href="https://matrix.org/">Matrix</a> chat (FluffyChat UI)</td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/immich-photos.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/immich-photos.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Photo library powered by <a href="https://immich.app">Immich</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/opencloud-files.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/opencloud-files.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">File storage powered by <a href="https://opencloud.eu">OpenCloud</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Container registry powered by <a href="https://zotregistry.dev">Zot</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4"><img src="https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4" alt=""></a></td></tr>
+<tr><td style="text-align: center">Continuous integration with <a href="https://woodpecker-ci.org">Woodpecker CI</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20"><img src="https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20" alt=""></a></td></tr>
+<tr><td style="text-align: center">Continuous deployment with <a href="https://argoproj.github.io/cd">ArgoCD</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/c922f755-e911-4ca0-9d4a-6e552d387f18"><img src="https://github.com/khuedoan/homelab/assets/27996771/c922f755-e911-4ca0-9d4a-6e552d387f18" alt=""></a></td></tr>
+<tr><td style="text-align: center"><a href="https://ntfy.sh">ntfy</a> displaying received alerts</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="tech-stack"><a class="header" href="#tech-stack">Tech stack</a></h3>
+<table>
+    
+<tr>
+        <th>Logo</th>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/30269780"></td>
+        <td><a href="https://argo-cd.readthedocs.io">Argo CD</a></td>
+        <td>GitOps tool built to deploy applications to Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png"></td>
+        <td><a href="https://cert-manager.io">cert-manager</a></td>
+        <td>Cloud native certificate management</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/314135?s=200&amp;v=4"></td>
+        <td><a href="https://www.cloudflare.com">Cloudflare</a></td>
+        <td>DNS, Tunnel and R2 for OpenTofu state</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
+        <td><a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a></td>
+        <td>Synchronizes exposed Kubernetes Services and HTTPRoutes with DNS providers</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://forgejo.org/favicon.svg"></td>
+        <td><a href="https://forgejo.org">Forgejo</a></td>
+        <td>Self-hosted Git service</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://go.dev/images/go-logo-blue.svg"></td>
+        <td><a href="https://go.dev">Go</a></td>
+        <td>Custom CLI and infrastructure tests with Terratest</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://grafana.com/static/img/menu/grafana2.svg"></td>
+        <td><a href="https://grafana.com">Grafana</a></td>
+        <td>Observability platform</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://helm.sh/img/helm.svg"></td>
+        <td><a href="https://helm.sh">Helm</a></td>
+        <td>The package manager for Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://istio.io/latest/favicons/android-192x192.png"></td>
+        <td><a href="https://istio.io">Istio</a></td>
+        <td>Kubernetes service mesh and gateway</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/49319725"></td>
+        <td><a href="https://k3s.io">K3s</a></td>
+        <td>Lightweight distribution of Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://kanidm.com/images/logo.svg"></td>
+        <td><a href="https://kanidm.com">Kanidm</a></td>
+        <td>Modern and simple identity management platform</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://kube-vip.io/images/kube-vip.png"></td>
+        <td><a href="https://kube-vip.io">kube-vip</a></td>
+        <td>Provides virtual IPs and load balancer for the Kubernetes API and Services</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/13629408"></td>
+        <td><a href="https://kubernetes.io">Kubernetes</a></td>
+        <td>Container-orchestration system, the backbone of this project</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/grafana/loki/blob/main/docs/sources/logo.png?raw=true"></td>
+        <td><a href="https://grafana.com/oss/loki">Loki</a></td>
+        <td>Log aggregation system</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nix-snowflake-colours.svg"></td>
+        <td><a href="https://nixos.org">NixOS / Nix</a></td>
+        <td>Base OS and convenient development shell</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/user-attachments/assets/41cabf10-213b-4099-aa0c-d711cdab2ed6"></td>
+        <td><a href="https://github.com/khuedoan/nixie">Nixie</a></td>
+        <td>Open-source bare metal provisioning engine for NixOS</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://openbao.org/img/favicon.svg"></td>
+        <td><a href="https://openbao.org">OpenBao</a></td>
+        <td>Secrets management</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/opentofu/brand-artifacts/main/favicon/android-chrome-192x192.png"></td>
+        <td><a href="https://opentofu.org">OpenTofu</a></td>
+        <td>Open-source Infrastructure as Code</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/3380462"></td>
+        <td><a href="https://prometheus.io">Prometheus</a></td>
+        <td>Systems monitoring and alerting toolkit</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://docs.renovatebot.com/assets/images/logo.png"></td>
+        <td><a href="https://www.whitesourcesoftware.com/free-developer-tools/renovate">Renovate</a></td>
+        <td>Automatically update dependencies</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/rook/artwork/master/logo/blue.svg"></td>
+        <td><a href="https://rook.io">Rook Ceph</a></td>
+        <td>Cloud-Native Storage for Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://docs.terragrunt.com/favicon.svg"></td>
+        <td><a href="https://terragrunt.gruntwork.io">Terragrunt</a></td>
+        <td>Coordinate OpenTofu modules</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/velero-io.png"></td>
+        <td><a href="https://velero.io">Velero</a></td>
+        <td>Backs up and restores Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/84780935?s=200&amp;v=4"></td>
+        <td><a href="https://woodpecker-ci.org">Woodpecker CI</a></td>
+        <td>Simple yet powerful CI/CD engine with great extensibility</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://zotregistry.dev/v2.0.2/assets/images/logo.svg"></td>
+        <td><a href="https://zotregistry.dev">Zot Registry</a></td>
+        <td>Private container registry</td>
+    </tr>
+
+</table>
+
+<h2 id="get-started"><a class="header" href="#get-started">Get Started</a></h2>
+<ul>
+<li><a href="https://homelab.khuedoan.com/installation/production/prerequisites">Deploy on real hardware</a> for production workload</li>
+</ul>
+<h2 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h2>
+<p>See <a href="https://homelab.khuedoan.com/reference/roadmap">roadmap</a> and <a href="https://github.com/khuedoan/homelab/issues">open issues</a> for a list of proposed features and known issues.</p>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Any contributions you make are greatly appreciated.</p>
+<p>Please see <a href="https://homelab.khuedoan.com/reference/contributing">contributing guide</a> for more information.</p>
+<h2 id="license"><a class="header" href="#license">License</a></h2>
+<p>Copyright © 2020 - 2026 Khue Doan</p>
+<p>Distributed under the GPLv3 License.</p>
+<h2 id="acknowledgements"><a class="header" href="#acknowledgements">Acknowledgements</a></h2>
+<p>References:</p>
+<ul>
+<li><a href="https://speakerdeck.com/amcguign/minimal-first-machine-in-the-dc">Ephemeral PXE server inspired by Minimal First Machine in the DC</a></li>
+<li><a href="https://github.com/locmai/humble">ArgoCD usage and monitoring configuration in locmai/humble</a></li>
+<li><a href="https://github.com/othneildrew/Best-README-Template">README template</a></li>
+<li><a href="https://developers.cloudflare.com/cloudflare-one/tutorials/many-cfd-one-tunnel">Run the same Cloudflare Tunnel across many <code>cloudflared</code> processes</a></li>
+<li><a href="https://askubuntu.com/questions/1272400/how-do-i-automate-network-installation-of-many-ubuntu-18-04-systems-with-efi-and">MAC address environment variable in GRUB config</a></li>
+<li><a href="https://github.com/k3s-io/k3s/blob/master/k3s.service">Official k3s systemd service file</a></li>
+<li><a href="https://github.com/cloudflare/argo-tunnel-examples">Official Cloudflare Tunnel examples</a></li>
+<li><a href="https://github.com/redhat-scholars/tekton-tutorial/tree/master/triggers">Initialize GitOps repository on Gitea and integrate with Tekton by RedHat</a></li>
+<li><a href="https://github.com/xUnholy/k8s-gitops">SSO configuration from xUnholy/k8s-gitops</a></li>
+<li><a href="https://github.com/k8s-at-home/flux-cluster-template">Pre-commit config from k8s-at-home/flux-cluster-template</a></li>
+<li><a href="https://diataxis.fr">Diátaxis technical documentation framework</a></li>
+<li><a href="https://github.com/gruntwork-io/terratest/tree/master/test">Official Terratest examples</a></li>
+<li><a href="https://zerodya.net/self-host-jellyfin-media-streaming-stack">Self-host an automated Jellyfin media streaming stack</a></li>
+<li><a href="https://bjw-s-labs.github.io/helm-charts/docs/app-template">App Template Helm chart by bjw-s</a></li>
+<li><a href="https://github.com/onedr0p/home-ops">Various application configurations in onedr0p/home-ops</a></li>
+</ul>
+<p>Here is a list of the contributors who have helped to improve this project.
+Big shout-out to them!</p>
+<ul>
+<li><img width="24" height="24" src="https://github.com/locmai.png?size=24" /> <a href="https://github.com/locmai">@locmai</a></li>
+<li><img width="24" height="24" src="https://github.com/MatthewJohn.png?size=24" /> <a href="https://github.com/MatthewJohn">@MatthewJohn</a></li>
+<li><img width="24" height="24" src="https://github.com/karpfediem.png?size=24" /> <a href="https://github.com/karpfediem">@karpfediem</a></li>
+<li><img width="24" height="24" src="https://github.com/linhng98.png?size=24" /> <a href="https://github.com/linhng98">@linhng98</a></li>
+<li><img width="24" height="24" src="https://github.com/elliotblackburn.png?size=24" /> <a href="https://github.com/elliotblackburn">@elliotblackburn</a></li>
+<li><img width="24" height="24" src="https://github.com/dotdiego.png?size=24" /> <a href="https://github.com/dotdiego">@dotdiego</a></li>
+<li><img width="24" height="24" src="https://github.com/Crimrose.png?size=24" /> <a href="https://github.com/Crimrose">@Crimrose</a></li>
+<li><img width="24" height="24" src="https://github.com/eventi.png?size=24" /> <a href="https://github.com/eventi">@eventi</a></li>
+<li><img width="24" height="24" src="https://github.com/Bourne-ID.png?size=24" /> <a href="https://github.com/Bourne-ID">@Bourne-ID</a></li>
+<li><img width="24" height="24" src="https://github.com/akwan.png?size=24" /> <a href="https://github.com/akwan">@akwan</a></li>
+<li><img width="24" height="24" src="https://github.com/trangmaiq.png?size=24" /> <a href="https://github.com/trangmaiq">@trangmaiq</a></li>
+<li><img width="24" height="24" src="https://github.com/tangowithfoxtrot.png?size=24" /> <a href="https://github.com/tangowithfoxtrot">@tangowithfoxtrot</a></li>
+<li><img width="24" height="24" src="https://github.com/raedkit.png?size=24" /> <a href="https://github.com/raedkit">@raedkit</a></li>
+<li><img width="24" height="24" src="https://github.com/ClashTheBunny.png?size=24" /> <a href="https://github.com/ClashTheBunny">@ClashTheBunny</a></li>
+<li><img width="24" height="24" src="https://github.com/retX0.png?size=24" /> <a href="https://github.com/retX0">@retX0</a></li>
+<li><img width="24" height="24" src="https://github.com/zalsader.png?size=24" /> <a href="https://github.com/zalsader">@zalsader</a></li>
+<li><img width="24" height="24" src="https://github.com/serpro69.png?size=24" /> <a href="https://github.com/serpro69">@serpro69</a></li>
+<li><img width="24" height="24" src="https://github.com/llajas.png?size=24" /> <a href="https://github.com/llajas">@llajas</a></li>
+<li><img width="24" height="24" src="https://github.com/zalsader.png?size=24" /> <a href="https://github.com/zalsader">@zalsader</a></li>
+</ul>
+<p>If you feel you’re missing from this list, please feel free to add yourself in a PR.</p>
+<h2 id="stargazers-over-time"><a class="header" href="#stargazers-over-time">Stargazers over time</a></h2>
+<a href="https://www.star-history.com/?repos=khuedoan%2Fhomelab&amp;type=date&amp;logscale=&amp;legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&amp;type=date&amp;theme=dark&amp;legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&amp;type=date&amp;legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=khuedoan/homelab&amp;type=date&amp;legend=top-left" />
+ </picture>
+</a>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="installation/production/prerequisites.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="installation/production/prerequisites.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid-eefea253.min.js"></script>
+        <script src="mermaid-init-53b67c53.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,2590 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Khue&#x27;s Homelab</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3704e539.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-c961d344.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Khue&#x27;s Homelab</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/khuedoan/homelab" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="khues-homelab"><a class="header" href="#khues-homelab">Khue’s Homelab</a></h1>
+<p><strong><a href="#features">Features</a> • <a href="#get-started">Get Started</a> • <a href="https://homelab.khuedoan.com">Documentation</a></strong></p>
+<p><a href="https://github.com/khuedoan/homelab/tags"><img src="https://img.shields.io/github/v/tag/khuedoan/homelab?style=flat-square&amp;logo=semver&amp;logoColor=white" alt="tag"></a>
+<a href="https://homelab.khuedoan.com"><img src="https://img.shields.io/website?label=document&amp;logo=gitbook&amp;logoColor=white&amp;style=flat-square&amp;url=https%3A%2F%2Fhomelab.khuedoan.com" alt="document"></a>
+<a href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/github/license/khuedoan/homelab?style=flat-square&amp;logo=gnu&amp;logoColor=white" alt="license"></a>
+<a href="https://github.com/khuedoan/homelab"><img src="https://img.shields.io/github/stars/khuedoan/homelab?logo=github&amp;logoColor=white&amp;color=gold&amp;style=flat-square" alt="stars"></a></p>
+<p>This project utilizes <a href="https://en.wikipedia.org/wiki/Infrastructure_as_code">Infrastructure as Code</a> and <a href="https://www.weave.works/technologies/gitops">GitOps</a> to automate provisioning, operating, and updating self-hosted services in my homelab.
+It can be used as a highly customizable framework to build your own homelab.</p>
+<blockquote>
+<p><strong>What is a homelab?</strong></p>
+<p>Homelab is a laboratory at home where you can self-host, experiment with new technologies, practice for certifications, and so on.
+For more information, please see the <a href="https://www.reddit.com/r/homelab/wiki/introduction">r/homelab introduction</a> and the
+<a href="https://discord.gg/home-operations">Home Operations Discord community</a> (formerly known as <a href="https://k8s-at-home.com">k8s-at-home</a>).</p>
+</blockquote>
+<p>If you encounter an issue, please create <a href="https://github.com/khuedoan/homelab/issues/new?template=bug_report.md">a bug report</a>
+(avoid asking for support about issues specific to this project in other communication channels).</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Project status: <strong>ALPHA</strong></p>
+<p>This project is still in the experimental stage, and I don’t use anything critical on it.
+Expect breaking changes that may require a complete redeployment.
+A proper upgrade path is planned for the stable release.
+More information can be found in <a href="#roadmap">the roadmap</a> below.</p>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG" alt="Hardware"><span class="img-wrapper"><img src="https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG" alt="Hardware"></span></label></p>
+<ul>
+<li>4 × NEC SFF <code>PC-MK26ECZDR</code> (Japanese version of the ThinkCentre M700):
+<ul>
+<li>CPU: <code>Intel Core i5-6600T @ 2.70GHz</code></li>
+<li>RAM: <code>16GB</code></li>
+<li>SSD: <code>128GB</code></li>
+</ul>
+</li>
+<li>TP-Link <code>TL-SG108</code> switch:
+<ul>
+<li>Ports: <code>8</code></li>
+<li>Speed: <code>1000Mbps</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="features"><a class="header" href="#features">Features</a></h3>
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Common applications: Forgejo, Immich, OpenCloud, Matrix…</li>
+<li><input disabled="" type="checkbox" checked=""> Automated bare metal provisioning with PXE boot</li>
+<li><input disabled="" type="checkbox" checked=""> Automated Kubernetes installation and management</li>
+<li><input disabled="" type="checkbox" checked=""> Installing and managing applications using GitOps</li>
+<li><input disabled="" type="checkbox" checked=""> Automatic OS rolling upgrade</li>
+<li><input disabled="" type="checkbox" checked=""> Automated version update (with approval)</li>
+<li><input disabled="" type="checkbox" checked=""> Modular architecture, easy to add or remove features/components</li>
+<li><input disabled="" type="checkbox" checked=""> Automated certificate management</li>
+<li><input disabled="" type="checkbox" checked=""> Automatically update DNS records for exposed services</li>
+<li><input disabled="" type="checkbox" checked=""> VPN (Tailscale or WireGuard)</li>
+<li><input disabled="" type="checkbox" checked=""> Expose services to the internet securely with <a href="https://www.cloudflare.com/products/tunnel/">Cloudflare Tunnel</a></li>
+<li><input disabled="" type="checkbox" checked=""> CI/CD platform</li>
+<li><input disabled="" type="checkbox" checked=""> Private container registry</li>
+<li><input disabled="" type="checkbox" checked=""> Distributed storage</li>
+<li><input disabled="" type="checkbox" checked=""> Support multiple environments (staging, production)</li>
+<li><input disabled="" type="checkbox" checked=""> Monitoring and alerting</li>
+<li><input disabled="" type="checkbox" checked=""> Automated backup and restore</li>
+<li><input disabled="" type="checkbox" checked=""> Single sign-on</li>
+<li><input disabled="" type="checkbox" checked=""> Infrastructure testing</li>
+</ul>
+<p>Some demo videos and screenshots are shown here.
+They can’t capture all the project’s features, but they are sufficient to get a concept of it.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: center">Demo</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: center"><a href="https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7"><img src="https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Deploy with a single command (after updating the configuration files)</td></tr>
+<tr><td style="text-align: center"><a href="https://www.youtube.com/watch?v=y-d7btNNAT8"><img src="https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png" alt=""></a></td></tr>
+<tr><td style="text-align: center">PXE boot</td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Observe network traffic with <a href="https://kiali.io">Kiali</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b"><img src="https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b" alt=""></a></td></tr>
+<tr><td style="text-align: center">Homepage powered by… <a href="https://gethomepage.dev">Homepage</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f"><img src="https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f" alt=""></a></td></tr>
+<tr><td style="text-align: center">Monitoring dashboard powered by <a href="https://grafana.com">Grafana</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Git server powered by <a href="https://forgejo.org">Forgejo</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center"><a href="https://matrix.org/">Matrix</a> chat (FluffyChat UI)</td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/immich-photos.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/immich-photos.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Photo library powered by <a href="https://immich.app">Immich</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/opencloud-files.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/opencloud-files.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">File storage powered by <a href="https://opencloud.eu">OpenCloud</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg" alt=""></a></td></tr>
+<tr><td style="text-align: center">Container registry powered by <a href="https://zotregistry.dev">Zot</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4"><img src="https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4" alt=""></a></td></tr>
+<tr><td style="text-align: center">Continuous integration with <a href="https://woodpecker-ci.org">Woodpecker CI</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20"><img src="https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20" alt=""></a></td></tr>
+<tr><td style="text-align: center">Continuous deployment with <a href="https://argoproj.github.io/cd">ArgoCD</a></td></tr>
+<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/c922f755-e911-4ca0-9d4a-6e552d387f18"><img src="https://github.com/khuedoan/homelab/assets/27996771/c922f755-e911-4ca0-9d4a-6e552d387f18" alt=""></a></td></tr>
+<tr><td style="text-align: center"><a href="https://ntfy.sh">ntfy</a> displaying received alerts</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="tech-stack"><a class="header" href="#tech-stack">Tech stack</a></h3>
+<table>
+    
+<tr>
+        <th>Logo</th>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/30269780"></td>
+        <td><a href="https://argo-cd.readthedocs.io">Argo CD</a></td>
+        <td>GitOps tool built to deploy applications to Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png"></td>
+        <td><a href="https://cert-manager.io">cert-manager</a></td>
+        <td>Cloud native certificate management</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/314135?s=200&amp;v=4"></td>
+        <td><a href="https://www.cloudflare.com">Cloudflare</a></td>
+        <td>DNS, Tunnel and R2 for OpenTofu state</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
+        <td><a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a></td>
+        <td>Synchronizes exposed Kubernetes Services and HTTPRoutes with DNS providers</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://forgejo.org/favicon.svg"></td>
+        <td><a href="https://forgejo.org">Forgejo</a></td>
+        <td>Self-hosted Git service</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://go.dev/images/go-logo-blue.svg"></td>
+        <td><a href="https://go.dev">Go</a></td>
+        <td>Custom CLI and infrastructure tests with Terratest</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://grafana.com/static/img/menu/grafana2.svg"></td>
+        <td><a href="https://grafana.com">Grafana</a></td>
+        <td>Observability platform</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://helm.sh/img/helm.svg"></td>
+        <td><a href="https://helm.sh">Helm</a></td>
+        <td>The package manager for Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://istio.io/latest/favicons/android-192x192.png"></td>
+        <td><a href="https://istio.io">Istio</a></td>
+        <td>Kubernetes service mesh and gateway</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/49319725"></td>
+        <td><a href="https://k3s.io">K3s</a></td>
+        <td>Lightweight distribution of Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://kanidm.com/images/logo.svg"></td>
+        <td><a href="https://kanidm.com">Kanidm</a></td>
+        <td>Modern and simple identity management platform</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://kube-vip.io/images/kube-vip.png"></td>
+        <td><a href="https://kube-vip.io">kube-vip</a></td>
+        <td>Provides virtual IPs and load balancer for the Kubernetes API and Services</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/13629408"></td>
+        <td><a href="https://kubernetes.io">Kubernetes</a></td>
+        <td>Container-orchestration system, the backbone of this project</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/grafana/loki/blob/main/docs/sources/logo.png?raw=true"></td>
+        <td><a href="https://grafana.com/oss/loki">Loki</a></td>
+        <td>Log aggregation system</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nix-snowflake-colours.svg"></td>
+        <td><a href="https://nixos.org">NixOS / Nix</a></td>
+        <td>Base OS and convenient development shell</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/user-attachments/assets/41cabf10-213b-4099-aa0c-d711cdab2ed6"></td>
+        <td><a href="https://github.com/khuedoan/nixie">Nixie</a></td>
+        <td>Open-source bare metal provisioning engine for NixOS</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://openbao.org/img/favicon.svg"></td>
+        <td><a href="https://openbao.org">OpenBao</a></td>
+        <td>Secrets management</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/opentofu/brand-artifacts/main/favicon/android-chrome-192x192.png"></td>
+        <td><a href="https://opentofu.org">OpenTofu</a></td>
+        <td>Open-source Infrastructure as Code</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/3380462"></td>
+        <td><a href="https://prometheus.io">Prometheus</a></td>
+        <td>Systems monitoring and alerting toolkit</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://docs.renovatebot.com/assets/images/logo.png"></td>
+        <td><a href="https://www.whitesourcesoftware.com/free-developer-tools/renovate">Renovate</a></td>
+        <td>Automatically update dependencies</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://raw.githubusercontent.com/rook/artwork/master/logo/blue.svg"></td>
+        <td><a href="https://rook.io">Rook Ceph</a></td>
+        <td>Cloud-Native Storage for Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://docs.terragrunt.com/favicon.svg"></td>
+        <td><a href="https://terragrunt.gruntwork.io">Terragrunt</a></td>
+        <td>Coordinate OpenTofu modules</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://github.com/velero-io.png"></td>
+        <td><a href="https://velero.io">Velero</a></td>
+        <td>Backs up and restores Kubernetes</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/84780935?s=200&amp;v=4"></td>
+        <td><a href="https://woodpecker-ci.org">Woodpecker CI</a></td>
+        <td>Simple yet powerful CI/CD engine with great extensibility</td>
+    </tr>
+
+    
+<tr>
+        <td><img width="32" src="https://zotregistry.dev/v2.0.2/assets/images/logo.svg"></td>
+        <td><a href="https://zotregistry.dev">Zot Registry</a></td>
+        <td>Private container registry</td>
+    </tr>
+
+</table>
+
+<h2 id="get-started"><a class="header" href="#get-started">Get Started</a></h2>
+<ul>
+<li><a href="https://homelab.khuedoan.com/installation/production/prerequisites">Deploy on real hardware</a> for production workload</li>
+</ul>
+<h2 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h2>
+<p>See <a href="https://homelab.khuedoan.com/reference/roadmap">roadmap</a> and <a href="https://github.com/khuedoan/homelab/issues">open issues</a> for a list of proposed features and known issues.</p>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Any contributions you make are greatly appreciated.</p>
+<p>Please see <a href="https://homelab.khuedoan.com/reference/contributing">contributing guide</a> for more information.</p>
+<h2 id="license"><a class="header" href="#license">License</a></h2>
+<p>Copyright © 2020 - 2026 Khue Doan</p>
+<p>Distributed under the GPLv3 License.</p>
+<h2 id="acknowledgements"><a class="header" href="#acknowledgements">Acknowledgements</a></h2>
+<p>References:</p>
+<ul>
+<li><a href="https://speakerdeck.com/amcguign/minimal-first-machine-in-the-dc">Ephemeral PXE server inspired by Minimal First Machine in the DC</a></li>
+<li><a href="https://github.com/locmai/humble">ArgoCD usage and monitoring configuration in locmai/humble</a></li>
+<li><a href="https://github.com/othneildrew/Best-README-Template">README template</a></li>
+<li><a href="https://developers.cloudflare.com/cloudflare-one/tutorials/many-cfd-one-tunnel">Run the same Cloudflare Tunnel across many <code>cloudflared</code> processes</a></li>
+<li><a href="https://askubuntu.com/questions/1272400/how-do-i-automate-network-installation-of-many-ubuntu-18-04-systems-with-efi-and">MAC address environment variable in GRUB config</a></li>
+<li><a href="https://github.com/k3s-io/k3s/blob/master/k3s.service">Official k3s systemd service file</a></li>
+<li><a href="https://github.com/cloudflare/argo-tunnel-examples">Official Cloudflare Tunnel examples</a></li>
+<li><a href="https://github.com/redhat-scholars/tekton-tutorial/tree/master/triggers">Initialize GitOps repository on Gitea and integrate with Tekton by RedHat</a></li>
+<li><a href="https://github.com/xUnholy/k8s-gitops">SSO configuration from xUnholy/k8s-gitops</a></li>
+<li><a href="https://github.com/k8s-at-home/flux-cluster-template">Pre-commit config from k8s-at-home/flux-cluster-template</a></li>
+<li><a href="https://diataxis.fr">Diátaxis technical documentation framework</a></li>
+<li><a href="https://github.com/gruntwork-io/terratest/tree/master/test">Official Terratest examples</a></li>
+<li><a href="https://zerodya.net/self-host-jellyfin-media-streaming-stack">Self-host an automated Jellyfin media streaming stack</a></li>
+<li><a href="https://bjw-s-labs.github.io/helm-charts/docs/app-template">App Template Helm chart by bjw-s</a></li>
+<li><a href="https://github.com/onedr0p/home-ops">Various application configurations in onedr0p/home-ops</a></li>
+</ul>
+<p>Here is a list of the contributors who have helped to improve this project.
+Big shout-out to them!</p>
+<ul>
+<li><img width="24" height="24" src="https://github.com/locmai.png?size=24" /> <a href="https://github.com/locmai">@locmai</a></li>
+<li><img width="24" height="24" src="https://github.com/MatthewJohn.png?size=24" /> <a href="https://github.com/MatthewJohn">@MatthewJohn</a></li>
+<li><img width="24" height="24" src="https://github.com/karpfediem.png?size=24" /> <a href="https://github.com/karpfediem">@karpfediem</a></li>
+<li><img width="24" height="24" src="https://github.com/linhng98.png?size=24" /> <a href="https://github.com/linhng98">@linhng98</a></li>
+<li><img width="24" height="24" src="https://github.com/elliotblackburn.png?size=24" /> <a href="https://github.com/elliotblackburn">@elliotblackburn</a></li>
+<li><img width="24" height="24" src="https://github.com/dotdiego.png?size=24" /> <a href="https://github.com/dotdiego">@dotdiego</a></li>
+<li><img width="24" height="24" src="https://github.com/Crimrose.png?size=24" /> <a href="https://github.com/Crimrose">@Crimrose</a></li>
+<li><img width="24" height="24" src="https://github.com/eventi.png?size=24" /> <a href="https://github.com/eventi">@eventi</a></li>
+<li><img width="24" height="24" src="https://github.com/Bourne-ID.png?size=24" /> <a href="https://github.com/Bourne-ID">@Bourne-ID</a></li>
+<li><img width="24" height="24" src="https://github.com/akwan.png?size=24" /> <a href="https://github.com/akwan">@akwan</a></li>
+<li><img width="24" height="24" src="https://github.com/trangmaiq.png?size=24" /> <a href="https://github.com/trangmaiq">@trangmaiq</a></li>
+<li><img width="24" height="24" src="https://github.com/tangowithfoxtrot.png?size=24" /> <a href="https://github.com/tangowithfoxtrot">@tangowithfoxtrot</a></li>
+<li><img width="24" height="24" src="https://github.com/raedkit.png?size=24" /> <a href="https://github.com/raedkit">@raedkit</a></li>
+<li><img width="24" height="24" src="https://github.com/ClashTheBunny.png?size=24" /> <a href="https://github.com/ClashTheBunny">@ClashTheBunny</a></li>
+<li><img width="24" height="24" src="https://github.com/retX0.png?size=24" /> <a href="https://github.com/retX0">@retX0</a></li>
+<li><img width="24" height="24" src="https://github.com/zalsader.png?size=24" /> <a href="https://github.com/zalsader">@zalsader</a></li>
+<li><img width="24" height="24" src="https://github.com/serpro69.png?size=24" /> <a href="https://github.com/serpro69">@serpro69</a></li>
+<li><img width="24" height="24" src="https://github.com/llajas.png?size=24" /> <a href="https://github.com/llajas">@llajas</a></li>
+<li><img width="24" height="24" src="https://github.com/zalsader.png?size=24" /> <a href="https://github.com/zalsader">@zalsader</a></li>
+</ul>
+<p>If you feel you’re missing from this list, please feel free to add yourself in a PR.</p>
+<h2 id="stargazers-over-time"><a class="header" href="#stargazers-over-time">Stargazers over time</a></h2>
+<a href="https://www.star-history.com/?repos=khuedoan%2Fhomelab&amp;type=date&amp;logscale=&amp;legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&amp;type=date&amp;theme=dark&amp;legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=khuedoan/homelab&amp;type=date&amp;legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=khuedoan/homelab&amp;type=date&amp;legend=top-left" />
+ </picture>
+</a>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h1>
+<h2 id="fork-this-repository"><a class="header" href="#fork-this-repository">Fork this repository</a></h2>
+<p>Because <a href="https://github.com/khuedoan/homelab">this project</a> applies GitOps practices,
+it’s the source of truth for <em>my</em> homelab, so you’ll need to fork it to make it yours:</p>
+<p><a href="https://github.com/khuedoan/homelab/fork">Fork khuedoan/homelab</a></p>
+<p>By using this project you agree to <a href="#license-1">the license</a>.</p>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p><strong>License TL;DR</strong></p>
+<ul>
+<li>This project is free to use for any purpose, but it comes with no warranty</li>
+<li>You must use the same <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3 license</a>  in <code>docs/reference/license.md</code></li>
+<li>You must keep the copy right notice and/or include an acknowledgement</li>
+<li>Your project must remain open-source</li>
+</ul>
+</blockquote>
+<h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware requirements</a></h2>
+<h3 id="initial-controller"><a class="header" href="#initial-controller">Initial controller</a></h3>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>The initial controller is the machine used to bootstrap the cluster, we only need it once, you can use your laptop or desktop</p>
+</blockquote>
+<ul>
+<li>A <strong>Linux</strong> machine with Nix and <code>sudo</code> access (for privileged ports when PXE booting with <a href="https://github.com/khuedoan/nixie">Nixie</a>).</li>
+<li>An SSH agent, preferably with a TPM-backed key to keep the private key in hardware.</li>
+<li>Add your public SSH key to <code>infra/src/modules/metal/flake/authorized_keys</code>.</li>
+</ul>
+<h3 id="servers"><a class="header" href="#servers">Servers</a></h3>
+<p>Any modern <code>x86_64</code> computer(s) should work, you can use old PCs, laptops or servers.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>This is the requirements for <em>each</em> node</p>
+</blockquote>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">Component</th><th style="text-align: left">Minimum</th><th style="text-align: left">Recommended</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">CPU</td><td style="text-align: left">2 cores</td><td style="text-align: left">4 cores</td></tr>
+<tr><td style="text-align: left">RAM</td><td style="text-align: left">8 GB</td><td style="text-align: left">16 GB</td></tr>
+<tr><td style="text-align: left">Hard drive</td><td style="text-align: left">128 GB</td><td style="text-align: left">512 GB (depending on your storage usage, the base installation will not use more than 128GB)</td></tr>
+<tr><td style="text-align: left">Node count</td><td style="text-align: left">1 (checkout the <a href="#single-node-cluster-adjustments">single node cluster adjustments</a> tutorial)</td><td style="text-align: left">3 or more for high availability</td></tr>
+</tbody>
+</table>
+</div>
+<p>Additional capabilities:</p>
+<ul>
+<li>Ability to boot from the network (PXE boot)</li>
+<li>Wake-on-LAN capability, used to wake the machines up automatically without physically touching the power button</li>
+</ul>
+<h3 id="network-setup"><a class="header" href="#network-setup">Network setup</a></h3>
+<ul>
+<li>All servers must be connected to the same <strong>wired</strong> network with the initial controller</li>
+<li>Access to your domain’s DNS settings in Cloudflare</li>
+</ul>
+<h2 id="external-resources"><a class="header" href="#external-resources">External resources</a></h2>
+<p>A domain managed by Cloudflare is required.</p>
+<p>Although I try to keep the amount of external resources to the minimum, there’s still need for a few of them.
+Below is a list of external resources and why we need them (also see some <a href="#alternatives">alternatives</a> below).</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Provider</th><th>Resource</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>Cloudflare</td><td>R2 bucket</td><td>OpenTofu state and encrypted volume backups</td></tr>
+<tr><td>Cloudflare</td><td>DNS</td><td>DNS and <a href="https://letsencrypt.org/docs/challenge-types/#dns-01-challenge">DNS-01 challenge</a> for certificates</td></tr>
+<tr><td>Cloudflare</td><td>Tunnel</td><td>Public services to the internet without port forwarding</td></tr>
+<tr><td>ntfy.sh</td><td>Upstream</td><td>Push relay for self-hosted ntfy notifications</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="create-credentials"><a class="header" href="#create-credentials">Create credentials</a></h3>
+<h4 id="cloudflare"><a class="header" href="#cloudflare">Cloudflare</a></h4>
+<ul>
+<li>Add your domain to Cloudflare if you haven’t already</li>
+<li>Log in from the development shell:</li>
+</ul>
+<pre><code class="language-sh">cf auth login
+</code></pre>
+<p>Grant the following permissions:</p>
+<ul>
+<li>Account API Tokens Write</li>
+<li>R2 bucket and object access</li>
+<li>DNS</li>
+<li>Tunnel</li>
+</ul>
+<p>If your existing login lacks these permissions, run <code>cf auth login --force</code> and approve them.</p>
+<h3 id="alternatives"><a class="header" href="#alternatives">Alternatives</a></h3>
+<p>To avoid vendor lock-in, each external provider must have an equivalent alternative that is easy to replace:</p>
+<ul>
+<li>Cloudflare R2:
+<ul>
+<li>Update the backend and bootstrap hook in <code>infra/root.hcl</code> for another state backend</li>
+</ul>
+</li>
+<li>Cloudflare Tunnel:
+<ul>
+<li>Use port forwarding if it’s available</li>
+<li>Create a small VPS in the cloud and use WireGuard to route traffic via it</li>
+<li>Access everything via VPN</li>
+<li>See also <a href="https://github.com/anderspitman/awesome-tunneling">awesome tunneling</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="bios-setup"><a class="header" href="#bios-setup">BIOS setup</a></h2>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>You need to do it once per machine if the default config is not sufficient,
+usually for consumer hardware this can not be automated
+(it requires something like <a href="https://en.wikipedia.org/wiki/Intelligent_Platform_Management_Interface">IPMI</a> to automate).</p>
+</blockquote>
+<p>Common settings:</p>
+<ul>
+<li>Enable Wake-on-LAN (WoL) and network boot</li>
+<li>Use UEFI mode and disable CSM (legacy) mode</li>
+<li>Disable secure boot</li>
+</ul>
+<p>Boot order options (select one, each has their pros and cons):</p>
+<ol>
+<li>Only boot from the network if no operating system found: works on most hardware but you need to manually wipe your hard drive or delete the existing boot record for the current OS</li>
+<li>Prefer booting from the network if turned on via WoL: more convenience but your BIOS must support it, and you must test it thoroughly to ensure you don’t accidentally wipe your servers</li>
+</ol>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><strong>Example</strong></p>
+<p>Below is my BIOS setup for reference. Your motherboard may have a different name for the options, so you’ll need to adapt it to your hardware.</p>
+<pre><code class="language-yaml">Devices:
+  NetworkSetup:
+    PXEIPv4: true
+    PXEIPv6: false
+Advanced:
+  CPUSetup:
+    VT-d: true
+Power:
+  AutomaticPowerOn:
+    WoL: Automatic  # Use network boot if Wake-on-LAN
+Security:
+  SecureBoot: false
+Startup:
+  CSM: false
+</code></pre>
+</blockquote>
+<h2 id="gather-information"><a class="header" href="#gather-information">Gather information</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"> MAC address for each machine</li>
+<li><input disabled="" type="checkbox"> OS disk name (for example <code>/dev/sda</code>)</li>
+<li><input disabled="" type="checkbox"> Choose a static IP address for each machine (just the desired address, we don’t set anything up yet)</li>
+<li><input disabled="" type="checkbox"> Choose an unused IP range for LoadBalancer Services (e.g. <code>192.168.1.224/27</code>) and a control-plane VIP (e.g. <code>192.168.1.100</code>)</li>
+<li><input disabled="" type="checkbox"> Subnet prefix length and gateway</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<h2 id="configure-nodes"><a class="header" href="#configure-nodes">Configure nodes</a></h2>
+<p>Edit <code>infra/production/metal/hosts.json</code> with your machines’ static IPs, MAC addresses, and disk paths.
+Installation erases the disks.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><strong>Example</strong></p>
+<pre><code class="language-json title=&quot;infra/production/metal/hosts.json&quot;">{
+  "homelab-1": {"ip": "192.168.1.110", "mac_address": "02:00:00:00:00:01", "disk": "/dev/sda"},
+  "homelab-2": {"ip": "192.168.1.111", "mac_address": "02:00:00:00:00:02", "disk": "/dev/sda"},
+  "homelab-3": {"ip": "192.168.1.112", "mac_address": "02:00:00:00:00:03", "disk": "/dev/sda"},
+  "homelab-4": {"ip": "192.168.1.113", "mac_address": "02:00:00:00:00:04", "disk": "/dev/sda"}
+}
+</code></pre>
+</blockquote>
+<h2 id="configure-the-cluster"><a class="header" href="#configure-the-cluster">Configure the cluster</a></h2>
+<p>Edit <code>infra/production/cluster/config.json</code> with your network settings.
+Set <code>init_host</code> to a host in the inventory:</p>
+<pre><code class="language-json">{
+  "init_host": "homelab-1",
+  "vip": "192.168.1.100",
+  "load_balancer_cidr": "192.168.1.224/27",
+  "network": {"prefix_length": 24, "gateway": "192.168.1.1"}
+}
+</code></pre>
+<h2 id="configure-services"><a class="header" href="#configure-services">Configure services</a></h2>
+<p>Update the following settings in <code>infra/production/</code>:</p>
+<ul>
+<li><code>domain</code> in the <code>cloudflare</code>, <code>argocd</code>, and <code>platform</code> Terragrunt units</li>
+<li><code>zone_name</code> in the Cloudflare unit</li>
+</ul>
+<p>Review the settings in <code>apps/*.yaml</code>, including image registries and homepage links.</p>
+<p>After examining the diff, commit and push the changes.
+Continue with <a href="#deployment">deployment</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="deployment"><a class="header" href="#deployment">Deployment</a></h1>
+<p>Open the development shell if you haven’t already:</p>
+<pre><code class="language-sh">nix develop
+</code></pre>
+<p>Build the lab:</p>
+<pre><code class="language-sh">just deploy production
+</code></pre>
+<p>Yes it’s that simple!</p>
+<p>It will take a while to download everything,
+you can read the <a href="#overview-2">architecture document</a> while waiting for the deployment to complete.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="post-installation"><a class="header" href="#post-installation">Post-installation</a></h1>
+<h2 id="access-the-cluster"><a class="header" href="#access-the-cluster">Access the cluster</a></h2>
+<p>Export the environment’s kubeconfig, e.g., production:</p>
+<pre><code class="language-sh">export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
+</code></pre>
+<h2 id="create-users"><a class="header" href="#create-users">Create users</a></h2>
+<p>Follow the <a href="#user-onboarding">user onboarding guide</a> to create accounts and assign access.
+Use SSO to sign in to applications.</p>
+<h2 id="verify-backups"><a class="header" href="#verify-backups">Verify backups</a></h2>
+<p>Follow the <a href="#backup-and-restore">backup and restore guide</a> to check backups and restore data.</p>
+<h2 id="run-tests"><a class="header" href="#run-tests">Run tests</a></h2>
+<p>Run offline checks:</p>
+<pre><code class="language-sh">just test
+</code></pre>
+<p>Run live tests against staging:</p>
+<pre><code class="language-sh">just test e2e staging
+</code></pre>
+<p>See the <a href="#testing">testing reference</a> for individual checks.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="vpn-setup"><a class="header" href="#vpn-setup">VPN setup</a></h1>
+<p>You can choose between <a href="https://tailscale.com">Tailscale</a>,
+<a href="https://www.wireguard.com">WireGuard</a>, or use both like me. I primarily use
+WireGuard but keep Tailscale as a backup for when the WireGuard server is down.</p>
+<h2 id="tailscale-requires-third-party-account"><a class="header" href="#tailscale-requires-third-party-account">Tailscale (requires third-party account)</a></h2>
+<p>Tailscale provides access through a <a href="https://tailscale.com/docs/features/subnet-routers">subnet router</a> in the cluster.</p>
+<ol>
+<li>
+<p>Select the environment’s kubeconfig:</p>
+<pre><code class="language-sh">export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
+</code></pre>
+</li>
+<li>
+<p>Read the router’s login URL:</p>
+<pre><code class="language-sh">kubectl -n tailscale logs deployment/tailscale
+</code></pre>
+</li>
+<li>
+<p>Open the login URL and enroll the device in your tailnet.</p>
+</li>
+<li>
+<p>Approve its advertised subnet in the Tailscale admin console.</p>
+</li>
+<li>
+<p>Install Tailscale on your devices, sign in, and enable subnet routes where
+required by the client.</p>
+</li>
+</ol>
+<p>You can <a href="https://tailscale.com/kb/1371/invite-users">invite users</a> to your tailnet.</p>
+<h2 id="wireguard-requires-port-forwarding"><a class="header" href="#wireguard-requires-port-forwarding">WireGuard (requires port-forwarding)</a></h2>
+<p>WireGuard Portal is available at <code>https://vpn.&lt;domain&gt;</code> with SSO.</p>
+<h3 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h3>
+<p>Configure port forwarding in your router for the WireGuard service.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><strong>Example</strong></p>
+<p>Each router is different, here’s mine for reference:</p>
+<ul>
+<li>Protocol: <code>UDP</code></li>
+<li>Start Port: <code>51820</code></li>
+<li>End Port: <code>51820</code></li>
+<li>Local IP Address: <code>192.168.1.226</code> (find it with <code>kubectl get service -n wireguard wireguard-wireguard</code>)</li>
+<li>Start Port Local: <code>51820</code></li>
+<li>End Port Local: <code>51820</code></li>
+</ul>
+</blockquote>
+<h3 id="configure-the-server"><a class="header" href="#configure-the-server">Configure the server</a></h3>
+<p>Sign in to the portal with an account in the <code>admins</code> group and create a server interface:</p>
+<ul>
+<li>Name: <code>wg0</code></li>
+<li>Address: <code>10.44.0.1/24</code></li>
+<li>Listen port: <code>51820</code></li>
+<li>Enable default peer creation</li>
+<li>Client network: <code>10.44.0.0/24</code></li>
+<li>Client endpoint: <code>wg.&lt;domain&gt;:51820</code></li>
+<li>Client allowed IPs: <code>10.44.0.0/24</code> and your application LoadBalancer subnet</li>
+</ul>
+<p>Choose a tunnel network that doesn’t overlap your LAN, pod, or Service networks.</p>
+<h3 id="add-a-new-device"><a class="header" href="#add-a-new-device">Add a new device</a></h3>
+<p>WireGuard Portal will create one device by default. Users can add more if needed.</p>
+<p>Install <a href="https://www.wireguard.com/install/">WireGuard</a>, then download the configuration as <code>wg0.conf</code> or scan its QR code.
+Keep the configuration private.</p>
+<h4 id="mobile"><a class="header" href="#mobile">Mobile</a></h4>
+<p>Scan the QR code from the portal using the official WireGuard app.</p>
+<h4 id="linux"><a class="header" href="#linux">Linux</a></h4>
+<p>Import the WireGuard configuration using NetworkManager:</p>
+<pre><code class="language-sh">nmcli connection import type wireguard file wg0.conf
+</code></pre>
+<p>Activate the connection:</p>
+<pre><code class="language-sh">nmcli connection up wg0
+</code></pre>
+<p>Connect and test access to a private application while outside your LAN.</p>
+<h2 id="headscale"><a class="header" href="#headscale">Headscale</a></h2>
+<p><a href="https://headscale.net">Headscale</a> is a self-hosted implementation of the
+Tailscale control server that does not require a third-party account. To set it
+up, take a look at the changes proposed by <a href="https://github.com/khuedoan/homelab/pull/190">this PR</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="user-onboarding"><a class="header" href="#user-onboarding">User onboarding</a></h1>
+<h2 id="for-user"><a class="header" href="#for-user">For user</a></h2>
+<h3 id="create-user"><a class="header" href="#create-user">Create user</a></h3>
+<p>Ask an admin to create your account, provide the following information:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Full name (John Doe)</li>
+<li><input disabled="" type="checkbox"> Select a username (<code>johndoe</code>)</li>
+<li><input disabled="" type="checkbox"> Email address (<code>johndoe@example.com</code>)</li>
+</ul>
+<h3 id="install-companion-apps"><a class="header" href="#install-companion-apps">Install companion apps</a></h3>
+<p>For all users:</p>
+<ul>
+<li><input disabled="" type="checkbox"> A password manager (I personally recommend <a href="https://bitwarden.com/download">Bitwarden</a>)</li>
+<li><input disabled="" type="checkbox"> A <a href="https://matrix.org/clients">Matrix chat client</a> (optional, you can use the web version)</li>
+</ul>
+<p>For technical users:</p>
+<ul>
+<li><input disabled="" type="checkbox"> <a href="https://docs.docker.com/engine/install">Docker</a></li>
+<li><input disabled="" type="checkbox"> <a href="https://nixos.org/download">Nix</a> and <a href="https://direnv.net">direnv</a> (optional, but highly recommended)</li>
+<li><input disabled="" type="checkbox"> <a href="https://k8slens.dev">Lens</a> (optional, you can use <code>kubectl</code> in the development shell)</li>
+</ul>
+<h2 id="for-admin"><a class="header" href="#for-admin">For admin</a></h2>
+<p>Create the account:</p>
+<pre><code class="language-sh">just user production johndoe "John Doe" johndoe@example.com
+</code></pre>
+<p>Share the one-time link privately for the user to set up passkeys or password + TOTP.</p>
+<p>To include additional access groups when creating the account, pass a comma-separated list:</p>
+<pre><code class="language-sh">just user production johndoe "John Doe" johndoe@example.com admins,developers
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Group</th><th>Access</th></tr>
+</thead>
+<tbody>
+<tr><td><code>users</code></td><td>Use applications and view dashboards (added by default)</td></tr>
+<tr><td><code>developers</code></td><td>Edit dashboards and push to the GitOps repository</td></tr>
+<tr><td><code>admins</code></td><td>Admin access to applications</td></tr>
+</tbody>
+</table>
+</div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="pxe-boot"><a class="header" href="#pxe-boot">PXE boot</a></h1>
+<pre class="mermaid">sequenceDiagram
+    participant Nixie
+    participant Router as Router (DHCP)
+    participant Machines
+
+    Nixie-&gt;&gt;Nixie: Load hosts.json
+    Nixie-&gt;&gt;Machines: Check recorded machine IDs over SSH
+    Note over Nixie: Skip recorded hosts, even if unreachable&lt;br/&gt;or their identity differs. Stop if all are recorded.
+
+    Nixie-&gt;&gt;Nixie: Build NixOS installer with Nix
+    Nixie-&gt;&gt;Nixie: Start ProxyDHCP, TFTP, HTTP, and API services
+    loop Each uninstalled machine
+        Nixie-&gt;&gt;Machines: Send Wake-on-LAN packet
+    end
+
+    par Machines boot and install concurrently
+        Note over Machines: UEFI PXE boot
+        Machines-&gt;&gt;Router: Broadcast DHCP discovery
+        Machines-&gt;&gt;Nixie: Same broadcast
+        par IP configuration
+            Router--&gt;&gt;Machines: Assign IP address
+        and PXE discovery
+            Nixie--&gt;&gt;Machines: Offer PXE boot server (ProxyDHCP)
+        end
+        Machines-&gt;&gt;Nixie: Discover boot file (UDP 4011)
+        Nixie--&gt;&gt;Machines: iPXE bootloader path
+        Machines-&gt;&gt;Nixie: Request bootloader (TFTP)
+        Nixie--&gt;&gt;Machines: iPXE bootloader
+
+        Note over Router,Machines: iPXE repeats DHCP discovery&lt;br/&gt;ProxyDHCP supplies the boot-script URL
+        Machines-&gt;&gt;Nixie: Request boot script, then kernel and initrd (HTTP)
+        Nixie--&gt;&gt;Machines: Boot script, kernel, and initrd
+        Note over Machines: Boot NixOS installer&lt;br/&gt;systemd starts nixie-agent
+
+        Machines-&gt;&gt;Nixie: POST /install with MAC address
+        Nixie-&gt;&gt;Nixie: Select host flake by MAC&lt;br/&gt;Use request's source IP for SSH
+        Nixie-&gt;&gt;Machines: Run nixos-anywhere to install NixOS over SSH
+        Note over Machines: Reboot into installed system
+        Nixie-&gt;&gt;Machines: Read installed /etc/machine-id over SSH
+        Machines--&gt;&gt;Nixie: Machine ID
+        Nixie-&gt;&gt;Nixie: Save IP and machine ID hash to hosts.json&lt;br/&gt;Mark host installed
+    end
+
+    Note over Nixie: Shut down after all hosts are installed
+</pre>
+
+<p>Here’s how it looks like in action (this is an old clip so the logs look different now):</p>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/y-d7btNNAT8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="secrets-management"><a class="header" href="#secrets-management">Secrets management</a></h1>
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<ul>
+<li>Secrets are stored in <a href="https://openbao.org/docs/">OpenBao</a>.</li>
+<li>Integrate with GitOps using the <a href="https://bank-vaults.dev/docs/mutating-webhook/">Bank-Vaults secrets webhook</a>.</li>
+<li>Secrets that can be generated are automatically generated and stored in OpenBao.</li>
+</ul>
+<pre class="mermaid">flowchart TD
+  operator[Bank-Vaults operator] -- generate --&gt; OpenBao
+  setup[Just recipes] -- sync infrastructure secrets --&gt; OpenBao
+  webhook[Secrets webhook] -- read --&gt; OpenBao
+
+  subgraph app-namespace[application namespace]
+    Secret --&gt; App
+  end
+
+  webhook -- inject --&gt; Secret
+</pre>
+
+<h2 id="generated-and-external-secrets"><a class="header" href="#generated-and-external-secrets">Generated and external secrets</a></h2>
+<ul>
+<li>Bank-Vaults generates secrets configured in <code>infra/src/modules/platform/openbao.tf</code>, keeping existing values.</li>
+<li><code>just deploy</code> syncs infrastructure credentials from OpenTofu’s <code>secrets</code> outputs, along with SSO and Forgejo credentials.</li>
+</ul>
+<h2 id="infra-secret-outputs"><a class="header" href="#infra-secret-outputs">Infra secret outputs</a></h2>
+<p>To publish secrets from an OpenTofu module, add a sensitive <code>secrets</code> output.</p>
+<pre><code class="language-hcl">output "secrets" {
+  sensitive = true
+  value = {
+    "cert-manager/cloudflare" = { # OpenBao path
+      api_token = cloudflare_account_token.cert_manager.value # secret values
+    }
+  }
+}
+</code></pre>
+<p><code>just deploy production</code> writes these under OpenBao’s <code>secret</code> KV mount.</p>
+<h2 id="secret-injection"><a class="header" href="#secret-injection">Secret injection</a></h2>
+<p>Secrets use <code>&lt;namespace&gt;/&lt;name&gt;</code> paths, for example <code>forgejo/admin</code>.
+Applications can only read secrets for their own namespace.</p>
+<p>When you apply a labeled Secret, for example:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: forgejo-admin
+  namespace: forgejo
+  labels:
+    homelab.khuedoan.com/bao-secret: "true"
+stringData:
+  username: forgejo_admin
+  password: bao:secret/data/forgejo/admin#password
+</code></pre>
+<p>The webhook reads the password from OpenBao and stores it in the Kubernetes Secret.
+The OpenBao record must already exist. Argo CD ignores the injected values.</p>
+<p>References are resolved when the Secret is created or updated.
+After rotation, reapply the references and restart the applications using the Secret.</p>
+<p>Please see the <a href="https://bank-vaults.dev/docs/mutating-webhook/">official documentation</a> for more information.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="certificate-management"><a class="header" href="#certificate-management">Certificate management</a></h1>
+<p>Certificates are generated and managed by <a href="https://cert-manager.io">cert-manager</a> with <a href="https://letsencrypt.org">Let’s Encrypt</a>,
+and renewed automatically.</p>
+<p>cert-manager watches <code>Gateway</code> resources across the cluster.
+When you create a <code>Gateway</code> with the issuer annotation:</p>
+<pre><code class="language-yaml">apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: acme
+  name: gateway
+  namespace: istio-system
+spec:
+  gatewayClassName: istio
+  listeners:
+    - name: https
+      hostname: '*.example.com'
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: wildcard-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+</code></pre>
+<pre class="mermaid">flowchart LR
+  User -- 6 --&gt; Gateway
+
+  subgraph cluster[Homelab cluster]
+    Gateway --- Secret
+    Gateway -. 1 .-&gt; Certificate
+    Certificate -. 5 .-&gt; Secret
+    Certificate -- 2 --&gt; CertificateRequest -- 3 --&gt; Order -- 4 --&gt; Challenge
+  end
+
+  Order -.- ACMEServer[ACME server]
+
+  subgraph dnsprovider[DNS provider]
+    TXT
+  end
+
+  Challenge -- 4.a --&gt; TXT
+  ACMEServer -.- Challenge
+  ACMEServer -. "4.b" .-&gt; TXT
+</pre>
+
+<ol>
+<li>cert-manager creates a corresponding <code>Certificate</code> resource</li>
+<li>Based on the <code>Certificate</code> resource, cert-manager creates a <code>CertificateRequest</code> resource to request a signed certificate from the configured <code>ClusterIssuer</code></li>
+<li>The <code>CertificateRequest</code> will create an order with an ACME server (we use Let’s Encrypt), which is represented by the <code>Order</code> resource</li>
+<li>Then cert-manager will perform a <a href="https://cert-manager.io/docs/configuration/acme/dns01">DNS-01</a> <code>Challenge</code>:
+<ol>
+<li>Create a DNS TXT record (contains a computed key)</li>
+<li>The ACME server retrieve this key via a DNS lookup and validate that we own the domain for the requested certificate</li>
+</ol>
+</li>
+<li>cert-manager stores the certificate (typically <code>tls.crt</code> and <code>tls.key</code>) in the <code>Secret</code> specified in the <code>Gateway</code> configuration</li>
+<li>Now you can access the HTTPS website with a valid certificate</li>
+</ol>
+<p>A much more detailed diagram can be found in the official documentation under <a href="https://cert-manager.io/docs/concepts/certificate/#certificate-lifecycle">certificate lifecycle</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="development-shell"><a class="header" href="#development-shell">Development shell</a></h1>
+<p>The development shell makes it easy to get all of the dependencies needed to interact with the homelab.</p>
+<h2 id="prerequisites-2"><a class="header" href="#prerequisites-2">Prerequisites</a></h2>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>NixOS users can skip this step.</p>
+</blockquote>
+<p>Install Nix using one of the following methods:</p>
+<ul>
+<li><a href="https://nixos.org/download">Official Nix installer</a></li>
+<li><a href="https://docs.determinate.systems/getting-started/#installer">Determinate Nix Installer</a></li>
+</ul>
+<p>If you’re using the official installer, add the following to your
+<code>~/.config/nix/nix.conf</code> to enable <a href="https://nixos.wiki/wiki/Flakes">Flakes</a>:</p>
+<pre><code class="language-conf">experimental-features = nix-command flakes
+</code></pre>
+<h2 id="how-to-open-it"><a class="header" href="#how-to-open-it">How to open it</a></h2>
+<p>Run the following command:</p>
+<pre><code class="language-sh">nix develop
+</code></pre>
+<p>It will open a shell with all the dependencies defined in <code>./flake.nix</code>:</p>
+<pre><code>[khuedoan@ryzentower:~/Documents/homelab]$ which kubectl
+/nix/store/0558zzzqynzw7rx9dp2i7jymvznd1cqx-kubectl-1.30.1/bin/kubectl
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>If you have <a href="https://direnv.net"><code>direnv</code></a> installed, you can run <code>direnv allow</code> once and it will automatically enter the Nix shell every time you
+<code>cd</code> into the project.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="testing-the-system"><a class="header" href="#testing-the-system">Testing the system</a></h1>
+<p><code>tests/</code> cover cluster access, networking, storage, backups, GitOps, secrets, etc.</p>
+<pre><code class="language-sh">just test
+just test e2e staging
+</code></pre>
+<p>See the <a href="#testing">testing reference</a> for more.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="expose-services-to-the-internet"><a class="header" href="#expose-services-to-the-internet">Expose services to the internet</a></h1>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>This tutorial is for Cloudflare Tunnel users, please skip if you use port forwarding.</p>
+</blockquote>
+<p>Apply the environment’s Cloudflare unit to create a tunnel if you haven’t already,
+then attach your <code>HTTPRoute</code> to the <code>public</code> Gateway (replace <code>example.com</code> with your domain):</p>
+<pre><code class="language-yaml">apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: website
+  namespace: website
+  annotations:
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  parentRefs:
+    - name: public
+      namespace: istio-system
+      sectionName: https
+  hostnames:
+    - www.example.com
+  rules:
+    - backendRefs:
+        - name: website
+          port: 3000
+</code></pre>
+<p>The <code>public</code> Gateway supplies the DNS target for the environment’s tunnel.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="backup-and-restore"><a class="header" href="#backup-and-restore">Backup and restore</a></h1>
+<h2 id="prerequisites-3"><a class="header" href="#prerequisites-3">Prerequisites</a></h2>
+<p>Keep access to your Cloudflare account and existing OpenTofu state in R2. The state contains the backup credentials and Kopia repository password.</p>
+<p>From the development shell, select the environment and its kubeconfig:</p>
+<pre><code class="language-sh">env=production
+export KUBECONFIG="$PWD/infra/$env/kubeconfig.yaml"
+</code></pre>
+<h2 id="back-up-the-cluster"><a class="header" href="#back-up-the-cluster">Back up the cluster</a></h2>
+<p>Velero runs hourly backups. To create one now:</p>
+<pre><code class="language-sh">velero backup create --from-schedule cluster --wait
+velero backup get
+velero backup describe BACKUP_NAME --details
+</code></pre>
+<p>Check the result for warnings and failed uploads.</p>
+<h2 id="restore-an-application"><a class="header" href="#restore-an-application">Restore an application</a></h2>
+<p>Pause the affected Argo CD Applications and their ApplicationSet, then stop the workloads.</p>
+<p>Start in read-only mode:</p>
+<pre><code class="language-sh">export TF_VAR_backup_read_only=true
+(cd "infra/$env/platform" &amp;&amp; terragrunt run apply)
+</code></pre>
+<p>Check that app reconciliation remains paused after applying the platform.</p>
+<p>Select a backup and restore the app namespace:</p>
+<pre><code class="language-sh">velero backup get
+velero restore create --from-backup BACKUP_NAME --include-namespaces APP_NAMESPACE --wait
+velero restore get
+velero restore describe RESTORE_NAME --details
+</code></pre>
+<p>Verify the restored data before resuming workloads and GitOps reconciliation.
+Then resume scheduled backups:</p>
+<pre><code class="language-sh">unset TF_VAR_backup_read_only
+(cd "infra/$env/platform" &amp;&amp; terragrunt run apply)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="dependency-updates"><a class="header" href="#dependency-updates">Dependency updates</a></h1>
+<p>We use Renovate to update dependencies automatically.
+In Woodpecker, under the <code>homelab</code> project:</p>
+<ol>
+<li>Start a manual pipeline on the default branch.</li>
+<li>Select the <code>renovate</code> workflow.</li>
+<li>Review its PRs and merge them.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="use-both-github-and-forgejo"><a class="header" href="#use-both-github-and-forgejo">Use both GitHub and Forgejo</a></h1>
+<p>Even though we self-host Forgejo, you may still want to use GitHub as a backup and for discovery.</p>
+<p>Add both push URLs (replace my repositories with yours):</p>
+<pre><code class="language-sh">git remote set-url --add --push origin https://git.khuedoan.com/ops/homelab.git
+git remote set-url --add --push origin git@github.com:khuedoan/homelab
+</code></pre>
+<p>Now you can just run <code>git push</code> like usual and it will push to both GitHub and Forgejo.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="add-or-remove-nodes"><a class="header" href="#add-or-remove-nodes">Add or remove nodes</a></h1>
+<p>Or how to scale horizontally. To replace the same node with a clean OS, remove it and add it again.</p>
+<h2 id="add-new-nodes"><a class="header" href="#add-new-nodes">Add new nodes</a></h2>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>You can add multiple nodes at the same time</p>
+</blockquote>
+<p>Add its details to the inventory:</p>
+<pre><code class="language-diff title=&quot;infra/production/metal/hosts.json&quot;"> {
+  "homelab-1": {"ip": "192.168.1.110", "mac_address": "02:00:00:00:00:01", "disk": "/dev/sda"},
+  "homelab-2": {"ip": "192.168.1.111", "mac_address": "02:00:00:00:00:02", "disk": "/dev/sda"},
+  "homelab-3": {"ip": "192.168.1.112", "mac_address": "02:00:00:00:00:03", "disk": "/dev/sda"},
++ "homelab-4": {"ip": "192.168.1.113", "mac_address": "02:00:00:00:00:04", "disk": "/dev/sda"}
+ }
+</code></pre>
+<p>Install the OS and join the cluster:</p>
+<pre><code>just deploy production
+</code></pre>
+<p>Then verify the new node:</p>
+<pre><code class="language-sh">export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
+kubectl get nodes
+</code></pre>
+<p>That’s it!</p>
+<h2 id="remove-a-node"><a class="header" href="#remove-a-node">Remove a node</a></h2>
+<blockquote class="blockquote-tag blockquote-tag-warning">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p>It is recommended to remove nodes one at a time</p>
+</blockquote>
+<p>Use the environment’s kubeconfig:</p>
+<pre><code class="language-sh">export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
+</code></pre>
+<p>Drain the node:</p>
+<pre><code class="language-sh">kubectl drain ${NODE_NAME} --delete-emptydir-data --ignore-daemonsets --force
+</code></pre>
+<p>Remove the node from the cluster</p>
+<pre><code class="language-sh">kubectl delete node ${NODE_NAME}
+</code></pre>
+<p>Shutdown the node:</p>
+<pre><code>ssh root@${NODE_IP} poweroff
+</code></pre>
+<p>Remove it from the inventory:</p>
+<pre><code class="language-diff title=&quot;infra/production/metal/hosts.json&quot;"> {
+  "homelab-1": {"ip": "192.168.1.110", "mac_address": "02:00:00:00:00:01", "disk": "/dev/sda"},
+  "homelab-2": {"ip": "192.168.1.111", "mac_address": "02:00:00:00:00:02", "disk": "/dev/sda"},
+  "homelab-3": {"ip": "192.168.1.112", "mac_address": "02:00:00:00:00:03", "disk": "/dev/sda"},
+- "homelab-4": {"ip": "192.168.1.113", "mac_address": "02:00:00:00:00:04", "disk": "/dev/sda"}
+ }
+</code></pre>
+<p>Reapply the environment with <code>just deploy production</code>.
+Don’t replace the initializer with a fresh server in an existing cluster.</p>
+<p>Optionally, after Ceph finishes recovering, clean up the removed node’s OSD records using the <a href="https://rook.io/docs/rook/latest/Storage-Configuration/Advanced/ceph-osd-mgmt/#remove-an-osd">Rook guide</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="single-node-cluster-adjustments"><a class="header" href="#single-node-cluster-adjustments">Single node cluster adjustments</a></h1>
+<blockquote class="blockquote-tag blockquote-tag-warning">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p>This is not officially supported and I don’t regularly test it,
+I highly recommend using multiple nodes.</p>
+<p>Using a single node could lead to data loss unless your backup strategy is rock solid,
+make sure you are <strong>ABSOLUTELY CERTAIN</strong> this is what you want.</p>
+</blockquote>
+<p>Make the following changes, then commit and push.</p>
+<h2 id="configure-the-node"><a class="header" href="#configure-the-node">Configure the node</a></h2>
+<ul>
+<li>Keep one host in <code>infra/production/metal/hosts.json</code>.</li>
+<li>Set it as <code>init_host</code> in <code>infra/production/cluster/config.json</code>.</li>
+</ul>
+<h2 id="remove-storage-redundancy"><a class="header" href="#remove-storage-redundancy">Remove storage redundancy</a></h2>
+<p>Set <code>ceph_replica_count</code> to <code>1</code> in the <code>inputs</code> block of <code>infra/production/platform/terragrunt.hcl</code>:</p>
+<pre><code class="language-hcl title=&quot;infra/production/platform/terragrunt.hcl&quot;">ceph_replica_count = 1
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="updating-documentation-this-website"><a class="header" href="#updating-documentation-this-website">Updating documentation (this website)</a></h1>
+<p>This project uses the <a href="https://diataxis.fr">Diátaxis</a> technical documentation framework.
+The website is generated using <a href="https://rust-lang.github.io/mdBook">mdBook</a> and can be viewed at <a href="https://homelab.khuedoan.com">homelab.khuedoan.com</a>.</p>
+<p>There are 4 main parts:</p>
+<ul>
+<li><a href="https://diataxis.fr/tutorials">Getting started (tutorials)</a>: learning-oriented</li>
+<li><a href="https://diataxis.fr/explanation">Concepts (explanation)</a>: understanding-oriented</li>
+<li><a href="https://diataxis.fr/how-to-guides">How-to guides</a>: goal-oriented</li>
+<li><a href="https://diataxis.fr/reference">Reference</a>: information-oriented</li>
+</ul>
+<h2 id="local-development"><a class="header" href="#local-development">Local development</a></h2>
+<p>To edit and view locally, run:</p>
+<pre><code class="language-sh">just docs
+</code></pre>
+<p>Then visit <a href="http://localhost:8000">localhost:8000</a></p>
+<h2 id="deployment-1"><a class="header" href="#deployment-1">Deployment</a></h2>
+<p>It’s running on my other cluster in the <a href="https://github.com/khuedoan/horus">khuedoan/horus</a> project
+(so if the homelab goes down everyone can still read the documentation).</p>
+<!-- TODO -->
+<!-- This website is running in both my homelab cluster and on my other cluster in the [khuedoan/horus](https://github.com/khuedoan/horus) project (both in `apps/homelab-docs`), -->
+<!-- with manual DNS switch over in case I want to rebuild either of them (this is the most cost effective way to do this that I can think of). -->
+<!-- You don't have to do this, you can host it on 1 cluster just fine. -->
+<!-- But for 0.000000000001% of you who have 2 clusters like me, here's how to switch between them: -->
+<!-- - Add the following annotation to the Ingress on the new cluster: `TODO` -->
+<!-- - Go to DNS config on Cloudflare dashboard -->
+<!-- - Find the TXT record for `homelab.khuedoan.com` and switch the `ownerID` between `homelab` and `horus` -->
+<!-- - Wait for the matching CNAME or A record to change -->
+<!-- - Check if you can still access the website -->
+<!-- - Do what ever you want to do -->
+<!-- - (Optional) Switch back to the previous cluster -->
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="pxe-boot-1"><a class="header" href="#pxe-boot-1">PXE boot</a></h1>
+<h2 id="pxe-server-logs"><a class="header" href="#pxe-server-logs">PXE server logs</a></h2>
+<p>View the Nixie output in the terminal running <code>just deploy production</code> (or staging).
+To retry metal provisioning:</p>
+<pre><code class="language-sh">just --dotenv-path infra/production/.env infra apply production --filter metal
+</code></pre>
+<h2 id="nodes-not-booting-from-the-network"><a class="header" href="#nodes-not-booting-from-the-network">Nodes not booting from the network</a></h2>
+<ul>
+<li>Plug a monitor and a keyboard to one of the bare metal node if possible to make the debugging process easier</li>
+<li>Check if the controller (PXE server) is on the same subnet with bare metal nodes (sometimes Wifi will not work or conflict with wired Ethernet, try to turn it off)</li>
+<li>Check if bare metal nodes are configured to boot from the network</li>
+<li>Check if Wake-on-LAN is enabled</li>
+<li>Check the controller’s firewall config to make sure that the following ports are open:
+<ul>
+<li>UDP 67 and 68 for DHCP</li>
+<li>UDP 69 for TFTP</li>
+<li>UDP 4011 for the PXE boot service</li>
+<li>TCP 80 for the boot files</li>
+<li>TCP 5000 for the installer callback API</li>
+</ul>
+</li>
+<li>Check if the servers are booting to the correct OS (NixOS installer instead of the previously installed OS), if not try to select it manually or remove the previous OS boot entry</li>
+<li>Examine the network boot process with <a href="https://www.wireshark.org">Wireshark</a> or <a href="https://termshark.io">Termshark</a></li>
+</ul>
+<p>Verify your authorized SSH keys and trusted host keys if provisioning succeeds but enrollment fails.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="overview-2"><a class="header" href="#overview-2">Overview</a></h1>
+<h2 id="components"><a class="header" href="#components">Components</a></h2>
+<p>Main components:</p>
+<ul>
+<li><code>./infra</code>: bare metal management, Kubernetes, and platform services</li>
+<li><code>./apps</code>: user facing applications</li>
+</ul>
+<p>Support components:</p>
+<ul>
+<li><code>./docs</code>: all documentation go here, this will generate a searchable web UI</li>
+<li><code>./tests</code>: automated tests for the entire system</li>
+</ul>
+<h2 id="provisioning-flow"><a class="header" href="#provisioning-flow">Provisioning flow</a></h2>
+<p>After editing the configuration files, run a single <code>just</code> command to:</p>
+<ul>
+<li>(1) Apply the <code>metal</code> and <code>cluster</code> units:
+<ul>
+<li>Create an ephemeral, stateless PXE server</li>
+<li>Install NixOS on all servers in parallel</li>
+<li>Build a Kubernetes cluster (based on k3s)</li>
+<li>Export and verify its kubeconfig</li>
+</ul>
+</li>
+<li>(2) Bootstrap GitOps with ArgoCD</li>
+<li>(3) Deploy platform components</li>
+<li>(4) Push the GitOps repo to Forgejo</li>
+<li>(5) Deploy applications in <code>./apps</code> with ArgoCD</li>
+</ul>
+<pre class="mermaid">flowchart TD
+  subgraph metal[metal]
+    pxe[PXE Server] -.-&gt; linux[NixOS Server] --&gt; k3s --&gt; kubeconfig[Verified kubeconfig]
+  end
+
+  metal --&gt; argocd[ArgoCD] --&gt; platform
+  cloudflare[Cloudflare resources]
+
+  subgraph platform[platform]
+    istio[Istio gateways]
+    rook-ceph[Rook Ceph]
+    cert-manager
+    external-dns[External DNS]
+    cloudflared
+    OpenBao
+    Kanidm
+    Forgejo
+    Woodpecker
+    Grafana
+  end
+
+  letsencrypt[Let's Encrypt] -.-&gt; cert-manager
+  cloudflare -.-&gt; cert-manager
+  cloudflare -.-&gt; external-dns
+  cloudflare -.-&gt; cloudflared
+
+  subgraph apps[./apps]
+    homepage[Homepage]
+    budget[Actual Budget]
+    drive[OpenCloud]
+    matrix[Matrix]
+  end
+
+  platform --&gt; sync[Lab setup and GitOps push] --&gt; apps
+  cloudflare --&gt; sync
+  backup[Backup storage] --&gt; sync
+  backup --&gt; velero[Velero]
+</pre>
+
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="networking"><a class="header" href="#networking">Networking</a></h1>
+<pre class="mermaid">flowchart TD
+  subgraph LAN
+    laptop/desktop/phone &lt;--&gt; LoadBalancer
+    subgraph k8s[Kubernetes cluster]
+      Gateway --&gt; Service
+      Service --&gt; Pod
+
+      LoadBalancer[kube-vip Service VIP]
+      Gateway[Istio gateways]
+
+      cloudflared
+      cloudflared &lt;--&gt; Gateway
+    end
+    LoadBalancer &lt;--&gt; Gateway
+  end
+
+  cloudflared -- outbound --&gt; Cloudflare
+  Internet -- inbound --&gt; Cloudflare
+</pre>
+
+<ul>
+<li>Flannel provides pod networking.</li>
+<li>kube-vip provides the control-plane VIP and Service load balancing.</li>
+<li>Tailscale and WireGuard provide remote access when you’re not at home.</li>
+<li>Istio gateways route HTTP traffic to applications.</li>
+<li>Cloudflare Tunnel exposes services to the internet through an outbound connection.</li>
+<li>Istio ambient mesh encrypts traffic between application Pods without sidecars, with traffic visualization using Kiali.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="decision-records"><a class="header" href="#decision-records">Decision records</a></h1>
+<p>These are the records of design decisions for future reference in order to understand why things are the way they are.
+They are not permanent, we can change them in the future if better alternatives become available.</p>
+<details>
+<summary>Template</summary>
+<h2 id="description-of-the-the-change"><a class="header" href="#description-of-the-the-change">Description of the the change</a></h2>
+<p><strong>Context</strong></p>
+<p>CHANGEME</p>
+<p><strong>Decision</strong></p>
+<p>CHANGEME</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>CHANGEME</li>
+</ul>
+</details>
+<h2 id="use-velero-for-backups"><a class="header" href="#use-velero-for-backups">Use Velero for backups</a></h2>
+<p><strong>Context</strong></p>
+<p>Requirements:</p>
+<ul>
+<li>All apps backed up by default, without additional configuration for new apps.</li>
+<li>The backups need to work even if we lose the entire cluster.</li>
+</ul>
+<p>We used to use <a href="https://volsync.readthedocs.io/en/stable/usage/restic/index.html">VolSync</a>,
+but its Restic workflow requires per-volume replication resources and credentials,
+and the backup &amp; restore flow is not really declarative.
+We would need additional resource generation and orchestration to provide this experience.</p>
+<p><strong>Decision</strong></p>
+<p>Use Velero to back up cluster resources and supported persistent volumes:</p>
+<ul>
+<li>Use <a href="https://velero.io/docs/v1.18/csi-snapshot-data-movement">CSI snapshot data movement</a>
+to copy volume data into object storage,
+so recovery does not depend on the original Ceph cluster.</li>
+<li>Use Velero’s <a href="https://velero.io/docs/v1.18/disaster-case">ReadOnly recovery mode</a>
+to prevent backup creation and deletion while restoring and verifying data.</li>
+</ul>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>The backup schedule includes all apps,
+without backup resources or storage credentials to distribute to app namespaces.</li>
+<li>Backup and restore operations use Velero’s native resources and CLI.</li>
+<li>Velero requires broad cluster permissions.</li>
+<li>Database applications may still need backup hooks or native exports for consistent backups.</li>
+</ul>
+<h2 id="switch-metal-provisioning-from-ansible-to-nixie"><a class="header" href="#switch-metal-provisioning-from-ansible-to-nixie">Switch metal provisioning from Ansible to Nixie</a></h2>
+<p><strong>Context</strong></p>
+<p>The metal nodes used to use Ansible to install Fedora.
+When we switched to NixOS, while technically we can still use Ansible to do the same thing,
+but it’s still hard to test and debug.</p>
+<p><strong>Decision</strong></p>
+<p>Build a custom bare metal orchestration engine for NixOS - <a href="https://github.com/khuedoan/nixie">nixie</a>.</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>Single binary with native OS process instead of complex Ansible &amp; Docker Compose setup (&amp; its host networking baggage)</li>
+<li>It has much better integration to the OS, since it’s built specically for NixOS</li>
+<li>It’s much more reliable and testable (Nixie has a full test suite in QEMU)</li>
+<li>There’s much better visibility into the PXE boot process with tracing</li>
+<li>The PXE installer can be reused with other projects
+(e.g., my <a href="https://github.com/khuedoan/dotfiles">dotfiles</a>),
+not just this homelab.</li>
+</ul>
+<h2 id="using-nixos-as-the-base-os"><a class="header" href="#using-nixos-as-the-base-os">Using NixOS as the base OS</a></h2>
+<p><strong>Context</strong></p>
+<p>With Fedora and Ansible, I sometimes make manual changes and forget to put them back in the playbooks.
+If a playbook fails halfway, it’s also hard to roll back to the previous system.</p>
+<p>Talos is smaller and has better integration for Kubernetes operations,
+but I want a general-purpose OS that can stay even if we move away from Kubernetes.
+I don’t want the OS to depend on a single company that could change its license,
+and I already use NixOS on my other machines.</p>
+<p><strong>Decision</strong></p>
+<p>Use NixOS as the base OS.</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>System changes have to go through the NixOS configuration, so it’s easier to keep the system clean and reproducible.</li>
+<li>NixOS builds the new system before switching to it, and we can roll back to a previous generation.
+Switching to the new system is almost fully atomic, except for service activation and restarts, which are still imperative.</li>
+<li>We can use Nix for both the OS and development shells, without installing project dependencies into the base system.</li>
+<li>We can test the same configurations in QEMU before applying them to real hardware.</li>
+<li>We can keep the OS even if we replace Kubernetes later.</li>
+<li>The system is larger than Talos, with a larger attack surface, and we need to coordinate rolling upgrades ourselves.</li>
+</ul>
+<p>See the <a href="https://github.com/khuedoan/homelab/pull/197#issuecomment-3440096206">original discussion</a>
+and <a href="https://www.khuedoan.com/posts/nixos-cured-my-ocd">NixOS cured my OCD</a> for more background.</p>
+<h2 id="remove-the-docker-wrapper-for-nix-shell"><a class="header" href="#remove-the-docker-wrapper-for-nix-shell">Remove the Docker wrapper for Nix shell</a></h2>
+<p><strong>Context</strong></p>
+<p>The Docker wrapper was originally added because not everyone has Nix installed.
+However, it is not a good abstraction. Depending on how Docker (or Podman) was
+installed, there may be permission issues, and it is slower than running Nix
+directly on the host.</p>
+<p><strong>Decision</strong></p>
+<p>Remove the Docker wrapper and run the Nix development shell directly. While not
+everyone has Nix installed, not everyone has the same Docker setup either.</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>Requires an additional step to install Nix, but this is a one-time setup.</li>
+<li>The <code>make tools</code> command has been removed, you now need to run <code>nix develop</code>
+directly. Although it can be added to the <code>Makefile</code>, this requires <code>make</code> to
+be installed, and not everyone has the same version of <code>make</code>.</li>
+</ul>
+<h2 id="remove-hashicorp-vault"><a class="header" href="#remove-hashicorp-vault">Remove HashiCorp Vault</a></h2>
+<p><strong>Status</strong>: we added back OpenBao, the community fork of Vault.
+It has more management overhead than our previous global secret store,
+but its security features, API for dynamic configuration, and removal of External Secrets are worth the additional complexity.
+See <a href="#secrets-management">Secrets management</a>.</p>
+<p><strong>Context</strong></p>
+<ul>
+<li>HashiCorp changed their license, and it’s no longer free/libre software.
+One of the highest priorities of this project is to minimize
+the usage of non-free software as much as possible, so I don’t really
+want to keep Vault, especially considering the next point.</li>
+<li>Vault is fairly complex to maintain properly. This project only uses
+Vault for two things: basic key-value secret store and its API to
+create and manage secrets dynamically. With the new Kubernetes secret
+provider in External Secrets, both features can be replaced with
+Kubernetes’s built-in secrets and API server.</li>
+<li>A related goal of using Vault as an identity provider for SSO will be
+discarded, and we’ll use Authelia instead, which has a beta identity
+provider feature (or use another alternative).</li>
+</ul>
+<p><strong>Decision</strong></p>
+<p>Replace Vault with a simpler in-cluster global secret store.</p>
+<p><strong>Consequences</strong></p>
+<p>Unlike secret path in Vault, Kubernetes does not support <code>/</code> in object name.
+We need to change secret convention from <code>path</code> to <code>name</code> and replace <code>/</code> with <code>.</code>.</p>
+<p>Update secret generator config:</p>
+<pre><code class="language-diff">-- path: gitea/admin
++- name: gitea.admin
+   data:
+     - key: password
+       length: 32
+</code></pre>
+<p>Update secret references in <code>kind: ExternalSecret</code>:</p>
+<pre><code class="language-diff"> remoteRef:
+-  key: /gitea/admin
++  key: gitea.admin
+</code></pre>
+<h2 id="manage-package-versions-in-development-shell"><a class="header" href="#manage-package-versions-in-development-shell">Manage package versions in development shell</a></h2>
+<p><strong>Status</strong>: we no longer need this, since we use Nix from the development shell to NixOS on the nodes.</p>
+<p><strong>Context</strong></p>
+<p>While Nix is reproducible, we need a way to control the versions of the tools and keep them up-to-date.
+For example, if we update the nixpkgs hash (in <code>flake.nix</code>) from <code>abcd1234</code> to <code>defa5678</code>:</p>
+<ul>
+<li><code>ansible</code>: 2.12.1 -&gt; 2.12.6</li>
+<li><code>terraform</code>: 1.2.0 -&gt; 1.2.2</li>
+<li><code>foobar</code>: 1.8.0 -&gt; 1.9.0</li>
+</ul>
+<p>That looks good. But when we update it from <code>defa5678</code> to <code>cdef9012</code>:</p>
+<ul>
+<li><code>ansible</code>: 2.12.6 -&gt; 2.13.0</li>
+<li><code>terraform</code>: 1.2.2 -&gt; 1.3.1</li>
+<li><code>foobar</code>: 1.9.0 -&gt; 2.0.0</li>
+</ul>
+<p>This time it breaks <code>foobar</code> because the new major version contains a breaking change.</p>
+<p>We can pin the specific version of each dependency in <code>flake.nix</code>,
+however, the maintenance burden is too high (even with Renovate) because we need to update the version of each package regularly rather than just the nixpkgs hash.
+Instead, we can just bump the nixpkgs hash and run some tests to ensure there is no breaking change.</p>
+<p><strong>Decision</strong></p>
+<p>Update the tests to ensure that the versions remain within the desired range (i.e. no breaking change).</p>
+<p><strong>Consequences</strong></p>
+<p>We have the rail guard from the tests to ensure that we don’t upgrade to a new major version with breaking changes,
+and we can make a conscious decision to take the necessary steps prior to upgrading to the new major version.</p>
+<h2 id="refactor-the-tools-container-from-plain-dockerfile-to-nix"><a class="header" href="#refactor-the-tools-container-from-plain-dockerfile-to-nix">Refactor the tools container from plain Dockerfile to <a href="https://nixos.org">Nix</a></a></h2>
+<p><strong>Status</strong>: the Docker wrapper was later removed in <a href="#remove-the-docker-wrapper-for-nix-shell">Remove the Docker wrapper for Nix shell</a>.</p>
+<p><strong>Context</strong></p>
+<p>The previous implementation of the tools container is not reproducible, if someone builds it a few weeks after me, they will receive different versions of the tools.
+Also, if you change something in the tool list, everything will be downloaded again, with no caching.</p>
+<p><strong>Decision</strong></p>
+<p>Move to Nix shell with a Docker wrapper, in case Nix is not available (see commit <code>adbaf32</code>).</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>All versions are pinned</li>
+<li>When you change the list of tools, rebuilding is much faster</li>
+</ul>
+<h2 id="combine-dhcpd-and-tftpd-to-dnsmasq-in-pxe-server"><a class="header" href="#combine-dhcpd-and-tftpd-to-dnsmasq-in-pxe-server">Combine dhcpd and tftpd to dnsmasq in PXE server</a></h2>
+<p><strong>Status</strong>: replaced by <a href="#switch-metal-provisioning-from-ansible-to-nixie">Nixie</a>.</p>
+<p><strong>Context</strong></p>
+<p><a href="https://github.com/khuedoan/homelab/issues/70">Original proposal from @Bourne-ID</a>:</p>
+<blockquote>
+<p><strong>Issue statement</strong></p>
+<p>The use of dhcpd is great for air-gap solutions where a new DHCP is required. However for some home networks which does not have the VLAN capability or for users who would like to use common router DHCP services, the use of DHCPD will cause duplicate DHCP servers and will result in potential network disruption, or will limit the ability to auto-provision the Metal stage of this project.</p>
+<p><strong>Proposed Solution: DHCP Proxy</strong></p>
+<p>Use DHCP Proxy services to add PXE features such as Next Server into this project. This allows for users to use the existing DHCP servers which may be locked down or incapable of using Next Server/PXE settings on their network to be able to auto-provision hardware through PXE (with certain common configurations, like static IP allocation or reduction in DHCP request ranges on the DHCP server)</p>
+<p><strong>Proposed Application: DNSMasq</strong></p>
+<p>DNSMasq in Proxy mode interoperates with existing DHCP servers over IPv4 to add features such as next-server, TFTP, etc. where such hardware is either locked or unconfigurable for such services. This would be an opt-in change, configurable through the pxe_server defaults file.</p>
+<p><strong>Proposed Target Audience</strong></p>
+<p>Users who either do not want to create their own VLAN or lack the hardware to configure such services. Users who want to use common router services for DHCP and have router access to configure static IP and/or DHCP allocation ranges.</p>
+<p><strong>Additional Risks with Proposed Change</strong></p>
+<ul>
+<li>Additional Surface Area for Break-Out Attacks: Originally this project is locked to its own DHCP/VLAN, so any break-outs should be contained accordingly. Using common home networks increases the surface area of break-out attacks if the deployment is compromised.</li>
+<li>Mitigation: Enrolment into this change is opt in only.</li>
+</ul>
+<p><strong>Proposed Next Steps</strong></p>
+<ol>
+<li>Trial/Adopt/Halt - A discussion with all or a decision by the project maintainers to identify if this change should exist in this project or live on a fork.</li>
+<li>Documentation (This is in flight in any situation).</li>
+</ol>
+</blockquote>
+<p><strong>Decision</strong></p>
+<p>Migrate to dnsmasq (see commit <code>f650c89</code>, thanks to <a href="https://github.com/Bourne-ID">@Bourne-ID</a>)</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>DHCP proxy is enabled by default because most people have a standard home network with existing DHCP server, but it can still be disabled to restore the previous behavior</li>
+</ul>
+<h2 id="migrate-documentation-from-mdbook-to-mkdocs"><a class="header" href="#migrate-documentation-from-mdbook-to-mkdocs">Migrate documentation from <a href="https://rust-lang.github.io/mdBook">mdBook</a> to <a href="https://squidfunk.github.io/mkdocs-material">MkDocs</a></a></h2>
+<p><strong>Status</strong>: I no longer plan to use Backstage for this homelab (I may build something else),
+so it’s back to mdBook, which has fewer dependencies and is faster.</p>
+<p><strong>Context</strong></p>
+<p>mdBook is very minimal and light weight, which I personally prefer.
+However, <a href="https://backstage.io/docs/features/techdocs/techdocs-overview">Backstage TechDocs</a> which I plan to use currently only supports mkDocs.</p>
+<p><strong>Decision</strong></p>
+<p>Migrate documentation from mdBook to MkDocs (see commit <code>cd41343</code>).</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>We can no longer include only a portion of a file, see <a href="https://github.com/facelessuser/pymdown-extensions/issues/1462">facelessuser/pymdown-extensions#1462</a>.</li>
+</ul>
+<h2 id="using-fedora-as-the-base-os"><a class="header" href="#using-fedora-as-the-base-os">Using Fedora as the base OS</a></h2>
+<p><strong>Status</strong>: superseded by <a href="#using-nixos-as-the-base-os">Using NixOS as the base OS</a></p>
+<p><strong>Context</strong></p>
+<p>I’ve tried several distributions, and each has advantages and disadvantages.
+Fedora has a good (enough) balance between stability and new features.</p>
+<p>Alternatives considered:</p>
+<ul>
+<li>Fedora CoreOS (moved to Rocky in <code>7667254</code>):
+<ul>
+<li>Pros: automatic and atomic upgrade, immutable, quick installation</li>
+<li>Cons: hard to run Ansible on (Python is not included)</li>
+</ul>
+</li>
+<li>CentOS/Rocky Linux (moved to Fedora in <code>022b816</code>):
+<ul>
+<li>Pros: relatively stable (however we did encounter a breaking change <a href="https://github.com/khuedoan/homelab/issues/63">#63</a>, still not sure why)</li>
+<li>Cons: kernel and packages are too old</li>
+</ul>
+</li>
+<li>Debian: couldn’t get it to work with PXE boot and Rocky Linux was sufficient so I didn’t push any further</li>
+<li>Cluster API (previous attempt in <code> a8e4a85</code>, I hope to get this to work someday):
+<ul>
+<li>Pros: control bare metal machines via Kubernetes API, open the possibility for autoscaling and autohealing</li>
+<li>Cons: doesn’t support simple WoL and shutdown via SSH (or similar)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Decision</strong></p>
+<p>Use Fedora as the base OS.</p>
+<p><strong>Consequences</strong></p>
+<p><code>¯\_(ツ)_/¯</code></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="cli"><a class="header" href="#cli">CLI</a></h1>
+<p>Use <code>just</code> to run common tasks.</p>
+<pre><code class="language-sh">just --list
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Command</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><code>just deploy ENV</code></td><td>Deploy the lab and configure services</td></tr>
+<tr><td><code>just user ENV NAME "FULL NAME" EMAIL [GROUPS]</code></td><td>Create a user and print an enrollment link; optional groups are comma-separated</td></tr>
+<tr><td><code>just infra tfstate ENV</code></td><td>Create the state bucket and credentials</td></tr>
+<tr><td><code>just infra apply ENV</code></td><td>Apply infrastructure</td></tr>
+<tr><td><code>just infra secrets ENV</code></td><td>Copy OpenTofu secret outputs to OpenBao</td></tr>
+<tr><td><code>just infra sso ENV</code></td><td>Configure SSO and sync OAuth credentials</td></tr>
+<tr><td><code>just infra forgejo ENV</code></td><td>Configure Forgejo and push committed <code>HEAD</code></td></tr>
+<tr><td><code>just test</code></td><td>Run local checks</td></tr>
+<tr><td><code>just lint</code></td><td>Check Go and infrastructure code</td></tr>
+<tr><td><code>just fmt</code></td><td>Format code</td></tr>
+<tr><td><code>just docs</code></td><td>Preview the documentation</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>just deploy</code> loads the environment’s credentials. For individual apply or setup commands, load them explicitly:</p>
+<pre><code class="language-sh">just --dotenv-path infra/production/.env infra secrets production
+</code></pre>
+<p>See the <a href="#testing">testing reference</a> for integration tests and benchmarks.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
+<p>Run these commands from the repository root.</p>
+<h2 id="local-checks"><a class="header" href="#local-checks">Local checks</a></h2>
+<pre><code class="language-sh">just test
+</code></pre>
+<p>List available tests:</p>
+<pre><code class="language-sh">just test list
+</code></pre>
+<h2 id="integration-tests"><a class="header" href="#integration-tests">Integration tests</a></h2>
+<p>Run tests against staging:</p>
+<pre><code class="language-sh">just test e2e staging
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Check</th><th>What it tests</th></tr>
+</thead>
+<tbody>
+<tr><td>API</td><td>API readiness, node identities, and membership through the VIP</td></tr>
+<tr><td>Networking</td><td>DNS, pod traffic, and Service traffic across nodes when available</td></tr>
+<tr><td>NetworkPolicy</td><td>Selective egress denial and connectivity from unselected pods</td></tr>
+<tr><td>LoadBalancer</td><td>HTTP traffic through Istio’s advertised gateway addresses</td></tr>
+<tr><td>Storage</td><td>Data persistence with RBD and CephFS, including shared mounts</td></tr>
+<tr><td>Snapshots</td><td>CSI snapshot creation and restore</td></tr>
+<tr><td>Backups</td><td>Velero backup and restore through object storage</td></tr>
+<tr><td>Secrets</td><td>OpenBao Secret injection and namespace permissions</td></tr>
+<tr><td>Registry</td><td>HTTPS registry API, not image push or pull</td></tr>
+<tr><td>GitOps</td><td>Argo CD deployment and self-healing</td></tr>
+<tr><td>Apps</td><td>HTTPS responses from application routes</td></tr>
+</tbody>
+</table>
+</div>
+<p>You can also run individual checks:</p>
+<pre><code class="language-sh">just test e2e staging networking
+</code></pre>
+<h2 id="benchmarks"><a class="header" href="#benchmarks">Benchmarks</a></h2>
+<pre><code class="language-sh">just test benchmarks staging
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Check</th><th>What it tests</th></tr>
+</thead>
+<tbody>
+<tr><td>Storage</td><td>Storage performance</td></tr>
+<tr><td>Security</td><td><a href="https://docs.k3s.io/security/hardening-guide">K3s CIS checks</a></td></tr>
+</tbody>
+</table>
+</div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="license-1"><a href="#license-1" class="header">License</a></h1>
+<p>Copyright © 2020 - 2024 Khue Doan</p>
+<h3 id="gnu-general-public-license"><a class="header" href="#gnu-general-public-license">GNU GENERAL PUBLIC LICENSE</a></h3>
+<p>Version 3, 29 June 2007</p>
+<p>Copyright (C) 2007 Free Software Foundation, Inc.
+<a href="https://fsf.org/">https://fsf.org/</a></p>
+<p>Everyone is permitted to copy and distribute verbatim copies of this
+license document, but changing it is not allowed.</p>
+<h3 id="preamble"><a class="header" href="#preamble">Preamble</a></h3>
+<p>The GNU General Public License is a free, copyleft license for
+software and other kinds of works.</p>
+<p>The licenses for most software and other practical works are designed
+to take away your freedom to share and change the works. By contrast,
+the GNU General Public License is intended to guarantee your freedom
+to share and change all versions of a program–to make sure it remains
+free software for all its users. We, the Free Software Foundation, use
+the GNU General Public License for most of our software; it applies
+also to any other work released this way by its authors. You can apply
+it to your programs, too.</p>
+<p>When we speak of free software, we are referring to freedom, not
+price. Our General Public Licenses are designed to make sure that you
+have the freedom to distribute copies of free software (and charge for
+them if you wish), that you receive source code or can get it if you
+want it, that you can change the software or use pieces of it in new
+free programs, and that you know you can do these things.</p>
+<p>To protect your rights, we need to prevent others from denying you
+these rights or asking you to surrender the rights. Therefore, you
+have certain responsibilities if you distribute copies of the
+software, or if you modify it: responsibilities to respect the freedom
+of others.</p>
+<p>For example, if you distribute copies of such a program, whether
+gratis or for a fee, you must pass on to the recipients the same
+freedoms that you received. You must make sure that they, too, receive
+or can get the source code. And you must show them these terms so they
+know their rights.</p>
+<p>Developers that use the GNU GPL protect your rights with two steps:
+(1) assert copyright on the software, and (2) offer you this License
+giving you legal permission to copy, distribute and/or modify it.</p>
+<p>For the developers’ and authors’ protection, the GPL clearly explains
+that there is no warranty for this free software. For both users’ and
+authors’ sake, the GPL requires that modified versions be marked as
+changed, so that their problems will not be attributed erroneously to
+authors of previous versions.</p>
+<p>Some devices are designed to deny users access to install or run
+modified versions of the software inside them, although the
+manufacturer can do so. This is fundamentally incompatible with the
+aim of protecting users’ freedom to change the software. The
+systematic pattern of such abuse occurs in the area of products for
+individuals to use, which is precisely where it is most unacceptable.
+Therefore, we have designed this version of the GPL to prohibit the
+practice for those products. If such problems arise substantially in
+other domains, we stand ready to extend this provision to those
+domains in future versions of the GPL, as needed to protect the
+freedom of users.</p>
+<p>Finally, every program is threatened constantly by software patents.
+States should not allow patents to restrict development and use of
+software on general-purpose computers, but in those that do, we wish
+to avoid the special danger that patents applied to a free program
+could make it effectively proprietary. To prevent this, the GPL
+assures that patents cannot be used to render the program non-free.</p>
+<p>The precise terms and conditions for copying, distribution and
+modification follow.</p>
+<h3 id="terms-and-conditions"><a class="header" href="#terms-and-conditions">TERMS AND CONDITIONS</a></h3>
+<h4 id="0-definitions"><a class="header" href="#0-definitions">0. Definitions.</a></h4>
+<p>“This License” refers to version 3 of the GNU General Public License.</p>
+<p>“Copyright” also means copyright-like laws that apply to other kinds
+of works, such as semiconductor masks.</p>
+<p>“The Program” refers to any copyrightable work licensed under this
+License. Each licensee is addressed as “you”. “Licensees” and
+“recipients” may be individuals or organizations.</p>
+<p>To “modify” a work means to copy from or adapt all or part of the work
+in a fashion requiring copyright permission, other than the making of
+an exact copy. The resulting work is called a “modified version” of
+the earlier work or a work “based on” the earlier work.</p>
+<p>A “covered work” means either the unmodified Program or a work based
+on the Program.</p>
+<p>To “propagate” a work means to do anything with it that, without
+permission, would make you directly or secondarily liable for
+infringement under applicable copyright law, except executing it on a
+computer or modifying a private copy. Propagation includes copying,
+distribution (with or without modification), making available to the
+public, and in some countries other activities as well.</p>
+<p>To “convey” a work means any kind of propagation that enables other
+parties to make or receive copies. Mere interaction with a user
+through a computer network, with no transfer of a copy, is not
+conveying.</p>
+<p>An interactive user interface displays “Appropriate Legal Notices” to
+the extent that it includes a convenient and prominently visible
+feature that (1) displays an appropriate copyright notice, and (2)
+tells the user that there is no warranty for the work (except to the
+extent that warranties are provided), that licensees may convey the
+work under this License, and how to view a copy of this License. If
+the interface presents a list of user commands or options, such as a
+menu, a prominent item in the list meets this criterion.</p>
+<h4 id="1-source-code"><a class="header" href="#1-source-code">1. Source Code.</a></h4>
+<p>The “source code” for a work means the preferred form of the work for
+making modifications to it. “Object code” means any non-source form of
+a work.</p>
+<p>A “Standard Interface” means an interface that either is an official
+standard defined by a recognized standards body, or, in the case of
+interfaces specified for a particular programming language, one that
+is widely used among developers working in that language.</p>
+<p>The “System Libraries” of an executable work include anything, other
+than the work as a whole, that (a) is included in the normal form of
+packaging a Major Component, but which is not part of that Major
+Component, and (b) serves only to enable use of the work with that
+Major Component, or to implement a Standard Interface for which an
+implementation is available to the public in source code form. A
+“Major Component”, in this context, means a major essential component
+(kernel, window system, and so on) of the specific operating system
+(if any) on which the executable work runs, or a compiler used to
+produce the work, or an object code interpreter used to run it.</p>
+<p>The “Corresponding Source” for a work in object code form means all
+the source code needed to generate, install, and (for an executable
+work) run the object code and to modify the work, including scripts to
+control those activities. However, it does not include the work’s
+System Libraries, or general-purpose tools or generally available free
+programs which are used unmodified in performing those activities but
+which are not part of the work. For example, Corresponding Source
+includes interface definition files associated with source files for
+the work, and the source code for shared libraries and dynamically
+linked subprograms that the work is specifically designed to require,
+such as by intimate data communication or control flow between those
+subprograms and other parts of the work.</p>
+<p>The Corresponding Source need not include anything that users can
+regenerate automatically from other parts of the Corresponding Source.</p>
+<p>The Corresponding Source for a work in source code form is that same
+work.</p>
+<h4 id="2-basic-permissions"><a class="header" href="#2-basic-permissions">2. Basic Permissions.</a></h4>
+<p>All rights granted under this License are granted for the term of
+copyright on the Program, and are irrevocable provided the stated
+conditions are met. This License explicitly affirms your unlimited
+permission to run the unmodified Program. The output from running a
+covered work is covered by this License only if the output, given its
+content, constitutes a covered work. This License acknowledges your
+rights of fair use or other equivalent, as provided by copyright law.</p>
+<p>You may make, run and propagate covered works that you do not convey,
+without conditions so long as your license otherwise remains in force.
+You may convey covered works to others for the sole purpose of having
+them make modifications exclusively for you, or provide you with
+facilities for running those works, provided that you comply with the
+terms of this License in conveying all material for which you do not
+control copyright. Those thus making or running the covered works for
+you must do so exclusively on your behalf, under your direction and
+control, on terms that prohibit them from making any copies of your
+copyrighted material outside their relationship with you.</p>
+<p>Conveying under any other circumstances is permitted solely under the
+conditions stated below. Sublicensing is not allowed; section 10 makes
+it unnecessary.</p>
+<h4 id="3-protecting-users-legal-rights-from-anti-circumvention-law"><a class="header" href="#3-protecting-users-legal-rights-from-anti-circumvention-law">3. Protecting Users’ Legal Rights From Anti-Circumvention Law.</a></h4>
+<p>No covered work shall be deemed part of an effective technological
+measure under any applicable law fulfilling obligations under article
+11 of the WIPO copyright treaty adopted on 20 December 1996, or
+similar laws prohibiting or restricting circumvention of such
+measures.</p>
+<p>When you convey a covered work, you waive any legal power to forbid
+circumvention of technological measures to the extent such
+circumvention is effected by exercising rights under this License with
+respect to the covered work, and you disclaim any intention to limit
+operation or modification of the work as a means of enforcing, against
+the work’s users, your or third parties’ legal rights to forbid
+circumvention of technological measures.</p>
+<h4 id="4-conveying-verbatim-copies"><a class="header" href="#4-conveying-verbatim-copies">4. Conveying Verbatim Copies.</a></h4>
+<p>You may convey verbatim copies of the Program’s source code as you
+receive it, in any medium, provided that you conspicuously and
+appropriately publish on each copy an appropriate copyright notice;
+keep intact all notices stating that this License and any
+non-permissive terms added in accord with section 7 apply to the code;
+keep intact all notices of the absence of any warranty; and give all
+recipients a copy of this License along with the Program.</p>
+<p>You may charge any price or no price for each copy that you convey,
+and you may offer support or warranty protection for a fee.</p>
+<h4 id="5-conveying-modified-source-versions"><a class="header" href="#5-conveying-modified-source-versions">5. Conveying Modified Source Versions.</a></h4>
+<p>You may convey a work based on the Program, or the modifications to
+produce it from the Program, in the form of source code under the
+terms of section 4, provided that you also meet all of these
+conditions:</p>
+<ul>
+<li>a) The work must carry prominent notices stating that you modified
+it, and giving a relevant date.</li>
+<li>b) The work must carry prominent notices stating that it is
+released under this License and any conditions added under
+section 7. This requirement modifies the requirement in section 4
+to “keep intact all notices”.</li>
+<li>c) You must license the entire work, as a whole, under this
+License to anyone who comes into possession of a copy. This
+License will therefore apply, along with any applicable section 7
+additional terms, to the whole of the work, and all its parts,
+regardless of how they are packaged. This License gives no
+permission to license the work in any other way, but it does not
+invalidate such permission if you have separately received it.</li>
+<li>d) If the work has interactive user interfaces, each must display
+Appropriate Legal Notices; however, if the Program has interactive
+interfaces that do not display Appropriate Legal Notices, your
+work need not make them do so.</li>
+</ul>
+<p>A compilation of a covered work with other separate and independent
+works, which are not by their nature extensions of the covered work,
+and which are not combined with it such as to form a larger program,
+in or on a volume of a storage or distribution medium, is called an
+“aggregate” if the compilation and its resulting copyright are not
+used to limit the access or legal rights of the compilation’s users
+beyond what the individual works permit. Inclusion of a covered work
+in an aggregate does not cause this License to apply to the other
+parts of the aggregate.</p>
+<h4 id="6-conveying-non-source-forms"><a class="header" href="#6-conveying-non-source-forms">6. Conveying Non-Source Forms.</a></h4>
+<p>You may convey a covered work in object code form under the terms of
+sections 4 and 5, provided that you also convey the machine-readable
+Corresponding Source under the terms of this License, in one of these
+ways:</p>
+<ul>
+<li>a) Convey the object code in, or embodied in, a physical product
+(including a physical distribution medium), accompanied by the
+Corresponding Source fixed on a durable physical medium
+customarily used for software interchange.</li>
+<li>b) Convey the object code in, or embodied in, a physical product
+(including a physical distribution medium), accompanied by a
+written offer, valid for at least three years and valid for as
+long as you offer spare parts or customer support for that product
+model, to give anyone who possesses the object code either (1) a
+copy of the Corresponding Source for all the software in the
+product that is covered by this License, on a durable physical
+medium customarily used for software interchange, for a price no
+more than your reasonable cost of physically performing this
+conveying of source, or (2) access to copy the Corresponding
+Source from a network server at no charge.</li>
+<li>c) Convey individual copies of the object code with a copy of the
+written offer to provide the Corresponding Source. This
+alternative is allowed only occasionally and noncommercially, and
+only if you received the object code with such an offer, in accord
+with subsection 6b.</li>
+<li>d) Convey the object code by offering access from a designated
+place (gratis or for a charge), and offer equivalent access to the
+Corresponding Source in the same way through the same place at no
+further charge. You need not require recipients to copy the
+Corresponding Source along with the object code. If the place to
+copy the object code is a network server, the Corresponding Source
+may be on a different server (operated by you or a third party)
+that supports equivalent copying facilities, provided you maintain
+clear directions next to the object code saying where to find the
+Corresponding Source. Regardless of what server hosts the
+Corresponding Source, you remain obligated to ensure that it is
+available for as long as needed to satisfy these requirements.</li>
+<li>e) Convey the object code using peer-to-peer transmission,
+provided you inform other peers where the object code and
+Corresponding Source of the work are being offered to the general
+public at no charge under subsection 6d.</li>
+</ul>
+<p>A separable portion of the object code, whose source code is excluded
+from the Corresponding Source as a System Library, need not be
+included in conveying the object code work.</p>
+<p>A “User Product” is either (1) a “consumer product”, which means any
+tangible personal property which is normally used for personal,
+family, or household purposes, or (2) anything designed or sold for
+incorporation into a dwelling. In determining whether a product is a
+consumer product, doubtful cases shall be resolved in favor of
+coverage. For a particular product received by a particular user,
+“normally used” refers to a typical or common use of that class of
+product, regardless of the status of the particular user or of the way
+in which the particular user actually uses, or expects or is expected
+to use, the product. A product is a consumer product regardless of
+whether the product has substantial commercial, industrial or
+non-consumer uses, unless such uses represent the only significant
+mode of use of the product.</p>
+<p>“Installation Information” for a User Product means any methods,
+procedures, authorization keys, or other information required to
+install and execute modified versions of a covered work in that User
+Product from a modified version of its Corresponding Source. The
+information must suffice to ensure that the continued functioning of
+the modified object code is in no case prevented or interfered with
+solely because modification has been made.</p>
+<p>If you convey an object code work under this section in, or with, or
+specifically for use in, a User Product, and the conveying occurs as
+part of a transaction in which the right of possession and use of the
+User Product is transferred to the recipient in perpetuity or for a
+fixed term (regardless of how the transaction is characterized), the
+Corresponding Source conveyed under this section must be accompanied
+by the Installation Information. But this requirement does not apply
+if neither you nor any third party retains the ability to install
+modified object code on the User Product (for example, the work has
+been installed in ROM).</p>
+<p>The requirement to provide Installation Information does not include a
+requirement to continue to provide support service, warranty, or
+updates for a work that has been modified or installed by the
+recipient, or for the User Product in which it has been modified or
+installed. Access to a network may be denied when the modification
+itself materially and adversely affects the operation of the network
+or violates the rules and protocols for communication across the
+network.</p>
+<p>Corresponding Source conveyed, and Installation Information provided,
+in accord with this section must be in a format that is publicly
+documented (and with an implementation available to the public in
+source code form), and must require no special password or key for
+unpacking, reading or copying.</p>
+<h4 id="7-additional-terms"><a class="header" href="#7-additional-terms">7. Additional Terms.</a></h4>
+<p>“Additional permissions” are terms that supplement the terms of this
+License by making exceptions from one or more of its conditions.
+Additional permissions that are applicable to the entire Program shall
+be treated as though they were included in this License, to the extent
+that they are valid under applicable law. If additional permissions
+apply only to part of the Program, that part may be used separately
+under those permissions, but the entire Program remains governed by
+this License without regard to the additional permissions.</p>
+<p>When you convey a copy of a covered work, you may at your option
+remove any additional permissions from that copy, or from any part of
+it. (Additional permissions may be written to require their own
+removal in certain cases when you modify the work.) You may place
+additional permissions on material, added by you to a covered work,
+for which you have or can give appropriate copyright permission.</p>
+<p>Notwithstanding any other provision of this License, for material you
+add to a covered work, you may (if authorized by the copyright holders
+of that material) supplement the terms of this License with terms:</p>
+<ul>
+<li>a) Disclaiming warranty or limiting liability differently from the
+terms of sections 15 and 16 of this License; or</li>
+<li>b) Requiring preservation of specified reasonable legal notices or
+author attributions in that material or in the Appropriate Legal
+Notices displayed by works containing it; or</li>
+<li>c) Prohibiting misrepresentation of the origin of that material,
+or requiring that modified versions of such material be marked in
+reasonable ways as different from the original version; or</li>
+<li>d) Limiting the use for publicity purposes of names of licensors
+or authors of the material; or</li>
+<li>e) Declining to grant rights under trademark law for use of some
+trade names, trademarks, or service marks; or</li>
+<li>f) Requiring indemnification of licensors and authors of that
+material by anyone who conveys the material (or modified versions
+of it) with contractual assumptions of liability to the recipient,
+for any liability that these contractual assumptions directly
+impose on those licensors and authors.</li>
+</ul>
+<p>All other non-permissive additional terms are considered “further
+restrictions” within the meaning of section 10. If the Program as you
+received it, or any part of it, contains a notice stating that it is
+governed by this License along with a term that is a further
+restriction, you may remove that term. If a license document contains
+a further restriction but permits relicensing or conveying under this
+License, you may add to a covered work material governed by the terms
+of that license document, provided that the further restriction does
+not survive such relicensing or conveying.</p>
+<p>If you add terms to a covered work in accord with this section, you
+must place, in the relevant source files, a statement of the
+additional terms that apply to those files, or a notice indicating
+where to find the applicable terms.</p>
+<p>Additional terms, permissive or non-permissive, may be stated in the
+form of a separately written license, or stated as exceptions; the
+above requirements apply either way.</p>
+<h4 id="8-termination"><a class="header" href="#8-termination">8. Termination.</a></h4>
+<p>You may not propagate or modify a covered work except as expressly
+provided under this License. Any attempt otherwise to propagate or
+modify it is void, and will automatically terminate your rights under
+this License (including any patent licenses granted under the third
+paragraph of section 11).</p>
+<p>However, if you cease all violation of this License, then your license
+from a particular copyright holder is reinstated (a) provisionally,
+unless and until the copyright holder explicitly and finally
+terminates your license, and (b) permanently, if the copyright holder
+fails to notify you of the violation by some reasonable means prior to
+60 days after the cessation.</p>
+<p>Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.</p>
+<p>Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License. If your rights have been terminated and not permanently
+reinstated, you do not qualify to receive new licenses for the same
+material under section 10.</p>
+<h4 id="9-acceptance-not-required-for-having-copies"><a class="header" href="#9-acceptance-not-required-for-having-copies">9. Acceptance Not Required for Having Copies.</a></h4>
+<p>You are not required to accept this License in order to receive or run
+a copy of the Program. Ancillary propagation of a covered work
+occurring solely as a consequence of using peer-to-peer transmission
+to receive a copy likewise does not require acceptance. However,
+nothing other than this License grants you permission to propagate or
+modify any covered work. These actions infringe copyright if you do
+not accept this License. Therefore, by modifying or propagating a
+covered work, you indicate your acceptance of this License to do so.</p>
+<h4 id="10-automatic-licensing-of-downstream-recipients"><a class="header" href="#10-automatic-licensing-of-downstream-recipients">10. Automatic Licensing of Downstream Recipients.</a></h4>
+<p>Each time you convey a covered work, the recipient automatically
+receives a license from the original licensors, to run, modify and
+propagate that work, subject to this License. You are not responsible
+for enforcing compliance by third parties with this License.</p>
+<p>An “entity transaction” is a transaction transferring control of an
+organization, or substantially all assets of one, or subdividing an
+organization, or merging organizations. If propagation of a covered
+work results from an entity transaction, each party to that
+transaction who receives a copy of the work also receives whatever
+licenses to the work the party’s predecessor in interest had or could
+give under the previous paragraph, plus a right to possession of the
+Corresponding Source of the work from the predecessor in interest, if
+the predecessor has it or can get it with reasonable efforts.</p>
+<p>You may not impose any further restrictions on the exercise of the
+rights granted or affirmed under this License. For example, you may
+not impose a license fee, royalty, or other charge for exercise of
+rights granted under this License, and you may not initiate litigation
+(including a cross-claim or counterclaim in a lawsuit) alleging that
+any patent claim is infringed by making, using, selling, offering for
+sale, or importing the Program or any portion of it.</p>
+<h4 id="11-patents"><a class="header" href="#11-patents">11. Patents.</a></h4>
+<p>A “contributor” is a copyright holder who authorizes use under this
+License of the Program or a work on which the Program is based. The
+work thus licensed is called the contributor’s “contributor version”.</p>
+<p>A contributor’s “essential patent claims” are all patent claims owned
+or controlled by the contributor, whether already acquired or
+hereafter acquired, that would be infringed by some manner, permitted
+by this License, of making, using, or selling its contributor version,
+but do not include claims that would be infringed only as a
+consequence of further modification of the contributor version. For
+purposes of this definition, “control” includes the right to grant
+patent sublicenses in a manner consistent with the requirements of
+this License.</p>
+<p>Each contributor grants you a non-exclusive, worldwide, royalty-free
+patent license under the contributor’s essential patent claims, to
+make, use, sell, offer for sale, import and otherwise run, modify and
+propagate the contents of its contributor version.</p>
+<p>In the following three paragraphs, a “patent license” is any express
+agreement or commitment, however denominated, not to enforce a patent
+(such as an express permission to practice a patent or covenant not to
+sue for patent infringement). To “grant” such a patent license to a
+party means to make such an agreement or commitment not to enforce a
+patent against the party.</p>
+<p>If you convey a covered work, knowingly relying on a patent license,
+and the Corresponding Source of the work is not available for anyone
+to copy, free of charge and under the terms of this License, through a
+publicly available network server or other readily accessible means,
+then you must either (1) cause the Corresponding Source to be so
+available, or (2) arrange to deprive yourself of the benefit of the
+patent license for this particular work, or (3) arrange, in a manner
+consistent with the requirements of this License, to extend the patent
+license to downstream recipients. “Knowingly relying” means you have
+actual knowledge that, but for the patent license, your conveying the
+covered work in a country, or your recipient’s use of the covered work
+in a country, would infringe one or more identifiable patents in that
+country that you have reason to believe are valid.</p>
+<p>If, pursuant to or in connection with a single transaction or
+arrangement, you convey, or propagate by procuring conveyance of, a
+covered work, and grant a patent license to some of the parties
+receiving the covered work authorizing them to use, propagate, modify
+or convey a specific copy of the covered work, then the patent license
+you grant is automatically extended to all recipients of the covered
+work and works based on it.</p>
+<p>A patent license is “discriminatory” if it does not include within the
+scope of its coverage, prohibits the exercise of, or is conditioned on
+the non-exercise of one or more of the rights that are specifically
+granted under this License. You may not convey a covered work if you
+are a party to an arrangement with a third party that is in the
+business of distributing software, under which you make payment to the
+third party based on the extent of your activity of conveying the
+work, and under which the third party grants, to any of the parties
+who would receive the covered work from you, a discriminatory patent
+license (a) in connection with copies of the covered work conveyed by
+you (or copies made from those copies), or (b) primarily for and in
+connection with specific products or compilations that contain the
+covered work, unless you entered into that arrangement, or that patent
+license was granted, prior to 28 March 2007.</p>
+<p>Nothing in this License shall be construed as excluding or limiting
+any implied license or other defenses to infringement that may
+otherwise be available to you under applicable patent law.</p>
+<h4 id="12-no-surrender-of-others-freedom"><a class="header" href="#12-no-surrender-of-others-freedom">12. No Surrender of Others’ Freedom.</a></h4>
+<p>If conditions are imposed on you (whether by court order, agreement or
+otherwise) that contradict the conditions of this License, they do not
+excuse you from the conditions of this License. If you cannot convey a
+covered work so as to satisfy simultaneously your obligations under
+this License and any other pertinent obligations, then as a
+consequence you may not convey it at all. For example, if you agree to
+terms that obligate you to collect a royalty for further conveying
+from those to whom you convey the Program, the only way you could
+satisfy both those terms and this License would be to refrain entirely
+from conveying the Program.</p>
+<h4 id="13-use-with-the-gnu-affero-general-public-license"><a class="header" href="#13-use-with-the-gnu-affero-general-public-license">13. Use with the GNU Affero General Public License.</a></h4>
+<p>Notwithstanding any other provision of this License, you have
+permission to link or combine any covered work with a work licensed
+under version 3 of the GNU Affero General Public License into a single
+combined work, and to convey the resulting work. The terms of this
+License will continue to apply to the part which is the covered work,
+but the special requirements of the GNU Affero General Public License,
+section 13, concerning interaction through a network will apply to the
+combination as such.</p>
+<h4 id="14-revised-versions-of-this-license"><a class="header" href="#14-revised-versions-of-this-license">14. Revised Versions of this License.</a></h4>
+<p>The Free Software Foundation may publish revised and/or new versions
+of the GNU General Public License from time to time. Such new versions
+will be similar in spirit to the present version, but may differ in
+detail to address new problems or concerns.</p>
+<p>Each version is given a distinguishing version number. If the Program
+specifies that a certain numbered version of the GNU General Public
+License “or any later version” applies to it, you have the option of
+following the terms and conditions either of that numbered version or
+of any later version published by the Free Software Foundation. If the
+Program does not specify a version number of the GNU General Public
+License, you may choose any version ever published by the Free
+Software Foundation.</p>
+<p>If the Program specifies that a proxy can decide which future versions
+of the GNU General Public License can be used, that proxy’s public
+statement of acceptance of a version permanently authorizes you to
+choose that version for the Program.</p>
+<p>Later license versions may give you additional or different
+permissions. However, no additional obligations are imposed on any
+author or copyright holder as a result of your choosing to follow a
+later version.</p>
+<h4 id="15-disclaimer-of-warranty"><a class="header" href="#15-disclaimer-of-warranty">15. Disclaimer of Warranty.</a></h4>
+<p>THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
+APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
+HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT
+WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND
+PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE
+DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR
+CORRECTION.</p>
+<h4 id="16-limitation-of-liability"><a class="header" href="#16-limitation-of-liability">16. Limitation of Liability.</a></h4>
+<p>IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR
+CONVEYS THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
+INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT
+NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR
+LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM
+TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER
+PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+<h4 id="17-interpretation-of-sections-15-and-16"><a class="header" href="#17-interpretation-of-sections-15-and-16">17. Interpretation of Sections 15 and 16.</a></h4>
+<p>If the disclaimer of warranty and limitation of liability provided
+above cannot be given local legal effect according to their terms,
+reviewing courts shall apply local law that most closely approximates
+an absolute waiver of all civil liability in connection with the
+Program, unless a warranty or assumption of liability accompanies a
+copy of the Program in return for a fee.</p>
+<p>END OF TERMS AND CONDITIONS</p>
+<h3 id="how-to-apply-these-terms-to-your-new-programs"><a class="header" href="#how-to-apply-these-terms-to-your-new-programs">How to Apply These Terms to Your New Programs</a></h3>
+<p>If you develop a new program, and you want it to be of the greatest
+possible use to the public, the best way to achieve this is to make it
+free software which everyone can redistribute and change under these
+terms.</p>
+<p>To do so, attach the following notices to the program. It is safest to
+attach them to the start of each source file to most effectively state
+the exclusion of warranty; and each file should have at least the
+“copyright” line and a pointer to where the full notice is found.</p>
+<pre><code>    &lt;one line to give the program's name and a brief idea of what it does.&gt;
+    Copyright (C) &lt;year&gt;  &lt;name of author&gt;
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+</code></pre>
+<p>Also add information on how to contact you by electronic and paper
+mail.</p>
+<p>If the program does terminal interaction, make it output a short
+notice like this when it starts in an interactive mode:</p>
+<pre><code>    &lt;program&gt;  Copyright (C) &lt;year&gt;  &lt;name of author&gt;
+    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; type `show c' for details.
+</code></pre>
+<p>The hypothetical commands `show w’ and `show c’ should show the
+appropriate parts of the General Public License. Of course, your
+program’s commands might be different; for a GUI interface, you would
+use an “about box”.</p>
+<p>You should also get your employer (if you work as a programmer) or
+school, if any, to sign a “copyright disclaimer” for the program, if
+necessary. For more information on this, and how to apply and follow
+the GNU GPL, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<p>The GNU General Public License does not permit incorporating your
+program into proprietary programs. If your program is a subroutine
+library, you may consider it more useful to permit linking proprietary
+applications with the library. If this is what you want to do, use the
+GNU Lesser General Public License instead of this License. But first,
+please read <a href="https://www.gnu.org/licenses/why-not-lgpl.html">https://www.gnu.org/licenses/why-not-lgpl.html</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
+<h2 id="v008"><a class="header" href="#v008">v0.0.8</a></h2>
+<p>Notable changes:</p>
+<ul>
+<li><strong>build:</strong> run post install scripts by default</li>
+<li><strong>build:</strong> set <code>KUBECONFIG</code> from global Makefile</li>
+<li><strong>feat(external-dns)!:</strong> add cluster name as owner ID</li>
+<li><strong>feat(tools):</strong> install <code>yamllint</code>, <code>ansible-lint</code> and <code>k9s</code></li>
+<li><strong>feat(tools):</strong> set <code>KUBECONFIG</code> by default</li>
+<li><strong>feat:</strong> add pre-commit hooks</li>
+<li><strong>feat:</strong> add script to setup Gitea tokens and OAuth apps</li>
+<li><strong>perf(argocd):</strong> turning on selective sync</li>
+<li><strong>refactor(docs):</strong> migrate to <a href="https://squidfunk.github.io/mkdocs-material">mkdocs</a></li>
+<li><strong>refactor(metal):</strong> migrate to Fedora 36 for newer packages</li>
+<li><strong>refactor(pxe)!:</strong> combine dhcpd and tftpd to dnsmasq</li>
+<li>Many bug fixes</li>
+</ul>
+<p>Please see git log for full change log.</p>
+<h2 id="007-alpha"><a class="header" href="#007-alpha">0.0.7-alpha</a></h2>
+<ul>
+<li>Replace standard Vault with Vault Operator</li>
+<li>Automatically initialize and unseal Vault</li>
+<li>Declarative secret generation and management</li>
+<li>Declarative Gitea configuration with YAML</li>
+<li>Automatic OS rolling upgrade</li>
+<li>Automatic Kubernetes rolling upgrade</li>
+<li>Automatic application updates using Renovate (still require manual token generation)</li>
+<li>Add script to wait for essential services after deployment</li>
+<li>Add icons and bookmarks to the home page</li>
+<li>Deploy Matrix chat</li>
+<li>Replace Authentik with Dex for SSO (still require manual token generation)</li>
+<li>Switch to Mermaid for diagrams in documentation</li>
+<li>Replace Vagrant with k3d for development environment</li>
+<li>Use nip.io domain for development environment</li>
+<li>Remove Backblaze (S3 Glacier and/or Minio will be added in future version)</li>
+<li>Enable monitor for the majority of applications</li>
+<li>Many code refactorings and bug fixes</li>
+</ul>
+<h2 id="006-alpha"><a class="header" href="#006-alpha">0.0.6-alpha</a></h2>
+<ul>
+<li>Upgrade to Kubernetes 1.23</li>
+<li>Support external resources:
+<ul>
+<li>Cloudflare DNS and Tunnel</li>
+<li>Backblaze for backup</li>
+<li>Auto inject secrets to required namespaces</li>
+</ul>
+</li>
+<li>Replace self-signed certificates with Let’s Encrypt production (with API token injected from the <code>external</code> layer)</li>
+<li>Add DNS records automatically using external-dns</li>
+<li>Easy Cloudflare Tunnel configuration with annotations</li>
+<li>Offsite backup to Backblaze B2 bucket using k8up-operator</li>
+<li>Add private container registry</li>
+<li>Remove Knative to save resources (temporarily)</li>
+<li>Enable encryption at rest for Kubernetes Secrets</li>
+<li>Add more Tekton tasks and pipelines</li>
+<li>Initialize GitOps repository on Gitea automatically after install</li>
+<li>Generate MetalLB address pool automatically (default to the last <code>/27</code> subnet)</li>
+<li>Some bug fixes</li>
+</ul>
+<h2 id="005-alpha"><a class="header" href="#005-alpha">0.0.5-alpha</a></h2>
+<ul>
+<li>Add convenience scripts</li>
+<li>Add Loki for logging</li>
+<li>Add custom health check for Application and ApplicationSet</li>
+<li>Use Vault with dev mode on (temporarily until we hit beta)</li>
+<li>Replace Authelia with Authentik</li>
+<li>Upgrade to Kubernetes 1.22</li>
+<li>Upgrade most services to the latest version</li>
+<li>Set ingress class and storage class explicitly</li>
+<li>Initial Linkerd and Knative setup (not working yet)</li>
+<li>Set up Hajimari for home page with automatic ingress discovery</li>
+<li>Add dev VM for local development or evaluation</li>
+<li>Optimize bare metal provisioning performance</li>
+<li>Replace Syncthing with Seafile (may use both in the feature)</li>
+<li>Enable Gitea SSH cloning via Ingress</li>
+<li>Various code clean up</li>
+<li>Add more documents</li>
+</ul>
+<h2 id="004-alpha"><a class="header" href="#004-alpha">0.0.4-alpha</a></h2>
+<ul>
+<li>Switch to Rocky Linux</li>
+<li>Some optimization for bare metal provisioning</li>
+<li>Switch to k3s and combine Kubernetes cluster config in <code>./infra</code> layer to <code>./metal</code> layer (because k3s is also configured using Ansible)</li>
+<li>Split boostrap Helm charts in <code>./infra</code> layer to <code>./bootstrap</code> layer (with new ArgoCD pattern) and <code>./system</code> layer</li>
+<li>Add <code>./platform</code> layer for some applications like Gitea, Tekton…</li>
+<li>User only need to provision <code>./metal</code> and <code>bootstrap</code> layer, the <code>./bootstrap</code> layer will deploy the remaining layers</li>
+<li>Provisioning time from empty disk to running services is significantly reduced (thanks to k3s and new bootstrap pattern)</li>
+<li>Use <a href="https://rust-lang.github.io/mdBook/">mdBook</a> for documents</li>
+<li>Replace Drone CI with Tekton</li>
+<li>Enable TLS on all Ingresses (using <a href="https://cert-manager.io">cert-manager</a>)</li>
+<li>Add some new applications</li>
+</ul>
+<h2 id="003-alpha"><a class="header" href="#003-alpha">0.0.3-alpha</a></h2>
+<ul>
+<li>Generate Terraform backend config automatically</li>
+<li>Switch to CoreOS</li>
+<li>Better PXE boot setup</li>
+<li>Diagrams as code</li>
+</ul>
+<h2 id="002-alpha"><a class="header" href="#002-alpha">0.0.2-alpha</a></h2>
+<ul>
+<li>Ensure idempotency for bare metal provisioning</li>
+<li>Extract instead of mounting the OS ISO file</li>
+<li>Easy initial controller setup (with only Docker)</li>
+<li>Switch to Fedora</li>
+<li>Remove LXD</li>
+<li>Move etcd (Terraform state backend) back to Docker</li>
+</ul>
+<h2 id="001-alpha"><a class="header" href="#001-alpha">0.0.1-alpha</a></h2>
+<ul>
+<li>Bare metal provisioning with PXE</li>
+<li>LXD cluster</li>
+<li>Terraform state backend (etcd)</li>
+<li>RKE cluster</li>
+<li>Core services (Vault, Gitea, ArgoCD,…)</li>
+<li>Public services to the internet (via port forwarding or Cloudflare Tunnel)</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="roadmap-1"><a class="header" href="#roadmap-1">Roadmap</a></h1>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>Current status: <strong>ALPHA</strong></p>
+</blockquote>
+<h2 id="alpha-requirements"><a class="header" href="#alpha-requirements">Alpha requirements</a></h2>
+<p>Literally anything that works.</p>
+<h2 id="beta-requirements"><a class="header" href="#beta-requirements">Beta requirements</a></h2>
+<p>Good enough for tinkering and personal usage, and reasonably secure.</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Automated bare metal provisioning
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Controller set up (Nix development shell)</li>
+<li><input disabled="" type="checkbox" checked=""> OS installation (PXE boot)</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""> Automated cluster creation (k3s)</li>
+<li><input disabled="" type="checkbox" checked=""> Automated application deployment (ArgoCD)</li>
+<li><input disabled="" type="checkbox" checked=""> Automated DNS management</li>
+<li><input disabled="" type="checkbox" checked=""> Initialize GitOps repository on Forgejo automatically</li>
+<li><input disabled="" type="checkbox" checked=""> Observability
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Monitoring</li>
+<li><input disabled="" type="checkbox" checked=""> Logging</li>
+<li><input disabled="" type="checkbox" checked=""> Alerting</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""> SSO</li>
+<li><input disabled="" type="checkbox" checked=""> Reasonably secure
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Automated certificate management</li>
+<li><input disabled="" type="checkbox" checked=""> Declarative secret management</li>
+<li><input disabled="" type="checkbox" checked=""> Replace all default passwords with randomly generated ones</li>
+<li><input disabled="" type="checkbox" checked=""> Expose services to the internet securely with Cloudflare Tunnel</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""> Only use open-source technologies (except external managed services)</li>
+<li><input disabled="" type="checkbox" checked=""> Everything is defined as code</li>
+<li><input disabled="" type="checkbox"> Backup solution (3 copies, 2 separate devices, 1 offsite)</li>
+<li><input disabled="" type="checkbox"> Define <a href="https://en.wikipedia.org/wiki/Service-level_objective">SLOs</a>:
+<ul>
+<li><input disabled="" type="checkbox"> 70% availability (might break in the weekend due to new experimentation)</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""> Core applications
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Forgejo</li>
+<li><input disabled="" type="checkbox" checked=""> Woodpecker</li>
+<li><input disabled="" type="checkbox" checked=""> Private container registry</li>
+<li><input disabled="" type="checkbox" checked=""> Homepage</li>
+</ul>
+</li>
+</ul>
+<h2 id="stable-requirements"><a class="header" href="#stable-requirements">Stable requirements</a></h2>
+<p>Can be used in “production” (for family or even small scale businesses).</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""> A single command to deploy everything</li>
+<li><input disabled="" type="checkbox"> Verify deployment time from empty disks to running services</li>
+<li><input disabled="" type="checkbox"> Fully <em>automatic</em>, not just <em>automated</em>
+<ul>
+<li><input disabled="" type="checkbox"> Automated flake updates and node configuration deployment for OS and Kubernetes upgrades</li>
+<li><input disabled="" type="checkbox" checked=""> Kured reboot coordination after kernel changes</li>
+<li><input disabled="" type="checkbox"> Application version upgrade</li>
+<li><input disabled="" type="checkbox" checked=""> Encrypted backups</li>
+<li><input disabled="" type="checkbox"> Secrets rotation</li>
+<li><input disabled="" type="checkbox" checked=""> Self healing</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> Secure by default
+<ul>
+<li><input disabled="" type="checkbox"> Host security hardening</li>
+<li><input disabled="" type="checkbox"> Default application network policies</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""> Static code analysis</li>
+<li><input disabled="" type="checkbox"> Chaos testing</li>
+<li><input disabled="" type="checkbox" checked=""> Minimal dependency on external services</li>
+<li><input disabled="" type="checkbox"> Complete documentation
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Diagram as code</li>
+<li><input disabled="" type="checkbox" checked=""> Book (this book)</li>
+<li><input disabled="" type="checkbox"> Walkthrough tutorial and feature demo (video)</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""> User onboarding (with <code>just user</code>)</li>
+<li><input disabled="" type="checkbox"> More dashboards and alert rules</li>
+<li><input disabled="" type="checkbox"> SLOs:
+<ul>
+<li><input disabled="" type="checkbox"> 99,9% availability (less than 9 hours of downtime per year)</li>
+<li><input disabled="" type="checkbox"> 99,99% data durability</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> Clear upgrade path</li>
+<li><input disabled="" type="checkbox"> Additional applications
+<ul>
+<li><input disabled="" type="checkbox"> Matrix with bridges</li>
+<li><input disabled="" type="checkbox" checked=""> VPN server</li>
+<li><input disabled="" type="checkbox"> PeerTube</li>
+<li><input disabled="" type="checkbox" checked=""> Blog</li>
+</ul>
+</li>
+</ul>
+<h2 id="unplanned"><a class="header" href="#unplanned">Unplanned</a></h2>
+<p>Nice to have</p>
+<ul>
+<li><input disabled="" type="checkbox"> Air-gap install</li>
+<li><input disabled="" type="checkbox" checked=""> Automated testing</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="contributing-1"><a class="header" href="#contributing-1">Contributing</a></h1>
+<h2 id="how-to-contribute"><a class="header" href="#how-to-contribute">How to contribute</a></h2>
+<h3 id="bug-report"><a class="header" href="#bug-report">Bug report</a></h3>
+<p>You can <a href="https://github.com/khuedoan/homelab/issues/new/choose">create a new GitHub issue</a> with the bug report template.</p>
+<h3 id="submitting-patches"><a class="header" href="#submitting-patches">Submitting patches</a></h3>
+<p>Because you may have a lot of changes in your fork, you can’t create a pull request directly from your <code>master</code> branch.
+Instead, create a branch from the upstream repository and commit your changes there:</p>
+<pre><code class="language-sh">git remote add upstream https://github.com/khuedoan/homelab
+git fetch upstream
+git checkout upstream/master
+git checkout -b contrib-fix-something
+
+# Make your changes here
+#
+# nvim docs/README.md
+# git cherry-pick a1b2c3
+#
+# commit, push, etc. as usual
+</code></pre>
+<p>Then you can send the patch using <a href="https://github.com/khuedoan/homelab/pulls">GitHub pull request</a> or <code>git send-email</code> to <a href="mailto:mail@khuedoan.com">mail@khuedoan.com</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
+<h2 id="is-it-necessary-to-install-linux-on-my-servers-before-setting-up-the-homelab"><a class="header" href="#is-it-necessary-to-install-linux-on-my-servers-before-setting-up-the-homelab">Is it necessary to install Linux on my servers before setting up the homelab?</a></h2>
+<p>No, and that’s the beauty of this setup.
+You start with empty hard drives, type a single command on your laptop/PC,
+and it will install the operating system for you automatically and in parallel over the network.</p>
+<h2 id="is-it-necessary-to-keep-the-pxe-server-running"><a class="header" href="#is-it-necessary-to-keep-the-pxe-server-running">Is it necessary to keep the PXE server running?</a></h2>
+<p>No, the ephemeral PXE server is stateless, once Linux is installed on your servers,
+you can shut it down (or not, ideally, you don’t even need to be aware of its existence).
+The Terragrunt metal module runs Nixie when you apply it.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid-eefea253.min.js"></script>
+        <script src="mermaid-init-53b67c53.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>

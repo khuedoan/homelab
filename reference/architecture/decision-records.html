@@ -1,0 +1,487 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Decision records - Khue&#x27;s Homelab</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-3704e539.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-c961d344.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Khue&#x27;s Homelab</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/khuedoan/homelab" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/khuedoan/homelab/edit/master/docs/./reference/architecture/decision-records.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="decision-records"><a class="header" href="#decision-records">Decision records</a></h1>
+<p>These are the records of design decisions for future reference in order to understand why things are the way they are.
+They are not permanent, we can change them in the future if better alternatives become available.</p>
+<details>
+<summary>Template</summary>
+<h2 id="description-of-the-the-change"><a class="header" href="#description-of-the-the-change">Description of the the change</a></h2>
+<p><strong>Context</strong></p>
+<p>CHANGEME</p>
+<p><strong>Decision</strong></p>
+<p>CHANGEME</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>CHANGEME</li>
+</ul>
+</details>
+<h2 id="use-velero-for-backups"><a class="header" href="#use-velero-for-backups">Use Velero for backups</a></h2>
+<p><strong>Context</strong></p>
+<p>Requirements:</p>
+<ul>
+<li>All apps backed up by default, without additional configuration for new apps.</li>
+<li>The backups need to work even if we lose the entire cluster.</li>
+</ul>
+<p>We used to use <a href="https://volsync.readthedocs.io/en/stable/usage/restic/index.html">VolSync</a>,
+but its Restic workflow requires per-volume replication resources and credentials,
+and the backup &amp; restore flow is not really declarative.
+We would need additional resource generation and orchestration to provide this experience.</p>
+<p><strong>Decision</strong></p>
+<p>Use Velero to back up cluster resources and supported persistent volumes:</p>
+<ul>
+<li>Use <a href="https://velero.io/docs/v1.18/csi-snapshot-data-movement">CSI snapshot data movement</a>
+to copy volume data into object storage,
+so recovery does not depend on the original Ceph cluster.</li>
+<li>Use Velero’s <a href="https://velero.io/docs/v1.18/disaster-case">ReadOnly recovery mode</a>
+to prevent backup creation and deletion while restoring and verifying data.</li>
+</ul>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>The backup schedule includes all apps,
+without backup resources or storage credentials to distribute to app namespaces.</li>
+<li>Backup and restore operations use Velero’s native resources and CLI.</li>
+<li>Velero requires broad cluster permissions.</li>
+<li>Database applications may still need backup hooks or native exports for consistent backups.</li>
+</ul>
+<h2 id="switch-metal-provisioning-from-ansible-to-nixie"><a class="header" href="#switch-metal-provisioning-from-ansible-to-nixie">Switch metal provisioning from Ansible to Nixie</a></h2>
+<p><strong>Context</strong></p>
+<p>The metal nodes used to use Ansible to install Fedora.
+When we switched to NixOS, while technically we can still use Ansible to do the same thing,
+but it’s still hard to test and debug.</p>
+<p><strong>Decision</strong></p>
+<p>Build a custom bare metal orchestration engine for NixOS - <a href="https://github.com/khuedoan/nixie">nixie</a>.</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>Single binary with native OS process instead of complex Ansible &amp; Docker Compose setup (&amp; its host networking baggage)</li>
+<li>It has much better integration to the OS, since it’s built specically for NixOS</li>
+<li>It’s much more reliable and testable (Nixie has a full test suite in QEMU)</li>
+<li>There’s much better visibility into the PXE boot process with tracing</li>
+<li>The PXE installer can be reused with other projects
+(e.g., my <a href="https://github.com/khuedoan/dotfiles">dotfiles</a>),
+not just this homelab.</li>
+</ul>
+<h2 id="using-nixos-as-the-base-os"><a class="header" href="#using-nixos-as-the-base-os">Using NixOS as the base OS</a></h2>
+<p><strong>Context</strong></p>
+<p>With Fedora and Ansible, I sometimes make manual changes and forget to put them back in the playbooks.
+If a playbook fails halfway, it’s also hard to roll back to the previous system.</p>
+<p>Talos is smaller and has better integration for Kubernetes operations,
+but I want a general-purpose OS that can stay even if we move away from Kubernetes.
+I don’t want the OS to depend on a single company that could change its license,
+and I already use NixOS on my other machines.</p>
+<p><strong>Decision</strong></p>
+<p>Use NixOS as the base OS.</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>System changes have to go through the NixOS configuration, so it’s easier to keep the system clean and reproducible.</li>
+<li>NixOS builds the new system before switching to it, and we can roll back to a previous generation.
+Switching to the new system is almost fully atomic, except for service activation and restarts, which are still imperative.</li>
+<li>We can use Nix for both the OS and development shells, without installing project dependencies into the base system.</li>
+<li>We can test the same configurations in QEMU before applying them to real hardware.</li>
+<li>We can keep the OS even if we replace Kubernetes later.</li>
+<li>The system is larger than Talos, with a larger attack surface, and we need to coordinate rolling upgrades ourselves.</li>
+</ul>
+<p>See the <a href="https://github.com/khuedoan/homelab/pull/197#issuecomment-3440096206">original discussion</a>
+and <a href="https://www.khuedoan.com/posts/nixos-cured-my-ocd">NixOS cured my OCD</a> for more background.</p>
+<h2 id="remove-the-docker-wrapper-for-nix-shell"><a class="header" href="#remove-the-docker-wrapper-for-nix-shell">Remove the Docker wrapper for Nix shell</a></h2>
+<p><strong>Context</strong></p>
+<p>The Docker wrapper was originally added because not everyone has Nix installed.
+However, it is not a good abstraction. Depending on how Docker (or Podman) was
+installed, there may be permission issues, and it is slower than running Nix
+directly on the host.</p>
+<p><strong>Decision</strong></p>
+<p>Remove the Docker wrapper and run the Nix development shell directly. While not
+everyone has Nix installed, not everyone has the same Docker setup either.</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>Requires an additional step to install Nix, but this is a one-time setup.</li>
+<li>The <code>make tools</code> command has been removed, you now need to run <code>nix develop</code>
+directly. Although it can be added to the <code>Makefile</code>, this requires <code>make</code> to
+be installed, and not everyone has the same version of <code>make</code>.</li>
+</ul>
+<h2 id="remove-hashicorp-vault"><a class="header" href="#remove-hashicorp-vault">Remove HashiCorp Vault</a></h2>
+<p><strong>Status</strong>: we added back OpenBao, the community fork of Vault.
+It has more management overhead than our previous global secret store,
+but its security features, API for dynamic configuration, and removal of External Secrets are worth the additional complexity.
+See <a href="../../concepts/secrets-management.html">Secrets management</a>.</p>
+<p><strong>Context</strong></p>
+<ul>
+<li>HashiCorp changed their license, and it’s no longer free/libre software.
+One of the highest priorities of this project is to minimize
+the usage of non-free software as much as possible, so I don’t really
+want to keep Vault, especially considering the next point.</li>
+<li>Vault is fairly complex to maintain properly. This project only uses
+Vault for two things: basic key-value secret store and its API to
+create and manage secrets dynamically. With the new Kubernetes secret
+provider in External Secrets, both features can be replaced with
+Kubernetes’s built-in secrets and API server.</li>
+<li>A related goal of using Vault as an identity provider for SSO will be
+discarded, and we’ll use Authelia instead, which has a beta identity
+provider feature (or use another alternative).</li>
+</ul>
+<p><strong>Decision</strong></p>
+<p>Replace Vault with a simpler in-cluster global secret store.</p>
+<p><strong>Consequences</strong></p>
+<p>Unlike secret path in Vault, Kubernetes does not support <code>/</code> in object name.
+We need to change secret convention from <code>path</code> to <code>name</code> and replace <code>/</code> with <code>.</code>.</p>
+<p>Update secret generator config:</p>
+<pre><code class="language-diff">-- path: gitea/admin
++- name: gitea.admin
+   data:
+     - key: password
+       length: 32
+</code></pre>
+<p>Update secret references in <code>kind: ExternalSecret</code>:</p>
+<pre><code class="language-diff"> remoteRef:
+-  key: /gitea/admin
++  key: gitea.admin
+</code></pre>
+<h2 id="manage-package-versions-in-development-shell"><a class="header" href="#manage-package-versions-in-development-shell">Manage package versions in development shell</a></h2>
+<p><strong>Status</strong>: we no longer need this, since we use Nix from the development shell to NixOS on the nodes.</p>
+<p><strong>Context</strong></p>
+<p>While Nix is reproducible, we need a way to control the versions of the tools and keep them up-to-date.
+For example, if we update the nixpkgs hash (in <code>flake.nix</code>) from <code>abcd1234</code> to <code>defa5678</code>:</p>
+<ul>
+<li><code>ansible</code>: 2.12.1 -&gt; 2.12.6</li>
+<li><code>terraform</code>: 1.2.0 -&gt; 1.2.2</li>
+<li><code>foobar</code>: 1.8.0 -&gt; 1.9.0</li>
+</ul>
+<p>That looks good. But when we update it from <code>defa5678</code> to <code>cdef9012</code>:</p>
+<ul>
+<li><code>ansible</code>: 2.12.6 -&gt; 2.13.0</li>
+<li><code>terraform</code>: 1.2.2 -&gt; 1.3.1</li>
+<li><code>foobar</code>: 1.9.0 -&gt; 2.0.0</li>
+</ul>
+<p>This time it breaks <code>foobar</code> because the new major version contains a breaking change.</p>
+<p>We can pin the specific version of each dependency in <code>flake.nix</code>,
+however, the maintenance burden is too high (even with Renovate) because we need to update the version of each package regularly rather than just the nixpkgs hash.
+Instead, we can just bump the nixpkgs hash and run some tests to ensure there is no breaking change.</p>
+<p><strong>Decision</strong></p>
+<p>Update the tests to ensure that the versions remain within the desired range (i.e. no breaking change).</p>
+<p><strong>Consequences</strong></p>
+<p>We have the rail guard from the tests to ensure that we don’t upgrade to a new major version with breaking changes,
+and we can make a conscious decision to take the necessary steps prior to upgrading to the new major version.</p>
+<h2 id="refactor-the-tools-container-from-plain-dockerfile-to-nix"><a class="header" href="#refactor-the-tools-container-from-plain-dockerfile-to-nix">Refactor the tools container from plain Dockerfile to <a href="https://nixos.org">Nix</a></a></h2>
+<p><strong>Status</strong>: the Docker wrapper was later removed in <a href="#remove-the-docker-wrapper-for-nix-shell">Remove the Docker wrapper for Nix shell</a>.</p>
+<p><strong>Context</strong></p>
+<p>The previous implementation of the tools container is not reproducible, if someone builds it a few weeks after me, they will receive different versions of the tools.
+Also, if you change something in the tool list, everything will be downloaded again, with no caching.</p>
+<p><strong>Decision</strong></p>
+<p>Move to Nix shell with a Docker wrapper, in case Nix is not available (see commit <code>adbaf32</code>).</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>All versions are pinned</li>
+<li>When you change the list of tools, rebuilding is much faster</li>
+</ul>
+<h2 id="combine-dhcpd-and-tftpd-to-dnsmasq-in-pxe-server"><a class="header" href="#combine-dhcpd-and-tftpd-to-dnsmasq-in-pxe-server">Combine dhcpd and tftpd to dnsmasq in PXE server</a></h2>
+<p><strong>Status</strong>: replaced by <a href="#switch-metal-provisioning-from-ansible-to-nixie">Nixie</a>.</p>
+<p><strong>Context</strong></p>
+<p><a href="https://github.com/khuedoan/homelab/issues/70">Original proposal from @Bourne-ID</a>:</p>
+<blockquote>
+<p><strong>Issue statement</strong></p>
+<p>The use of dhcpd is great for air-gap solutions where a new DHCP is required. However for some home networks which does not have the VLAN capability or for users who would like to use common router DHCP services, the use of DHCPD will cause duplicate DHCP servers and will result in potential network disruption, or will limit the ability to auto-provision the Metal stage of this project.</p>
+<p><strong>Proposed Solution: DHCP Proxy</strong></p>
+<p>Use DHCP Proxy services to add PXE features such as Next Server into this project. This allows for users to use the existing DHCP servers which may be locked down or incapable of using Next Server/PXE settings on their network to be able to auto-provision hardware through PXE (with certain common configurations, like static IP allocation or reduction in DHCP request ranges on the DHCP server)</p>
+<p><strong>Proposed Application: DNSMasq</strong></p>
+<p>DNSMasq in Proxy mode interoperates with existing DHCP servers over IPv4 to add features such as next-server, TFTP, etc. where such hardware is either locked or unconfigurable for such services. This would be an opt-in change, configurable through the pxe_server defaults file.</p>
+<p><strong>Proposed Target Audience</strong></p>
+<p>Users who either do not want to create their own VLAN or lack the hardware to configure such services. Users who want to use common router services for DHCP and have router access to configure static IP and/or DHCP allocation ranges.</p>
+<p><strong>Additional Risks with Proposed Change</strong></p>
+<ul>
+<li>Additional Surface Area for Break-Out Attacks: Originally this project is locked to its own DHCP/VLAN, so any break-outs should be contained accordingly. Using common home networks increases the surface area of break-out attacks if the deployment is compromised.</li>
+<li>Mitigation: Enrolment into this change is opt in only.</li>
+</ul>
+<p><strong>Proposed Next Steps</strong></p>
+<ol>
+<li>Trial/Adopt/Halt - A discussion with all or a decision by the project maintainers to identify if this change should exist in this project or live on a fork.</li>
+<li>Documentation (This is in flight in any situation).</li>
+</ol>
+</blockquote>
+<p><strong>Decision</strong></p>
+<p>Migrate to dnsmasq (see commit <code>f650c89</code>, thanks to <a href="https://github.com/Bourne-ID">@Bourne-ID</a>)</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>DHCP proxy is enabled by default because most people have a standard home network with existing DHCP server, but it can still be disabled to restore the previous behavior</li>
+</ul>
+<h2 id="migrate-documentation-from-mdbook-to-mkdocs"><a class="header" href="#migrate-documentation-from-mdbook-to-mkdocs">Migrate documentation from <a href="https://rust-lang.github.io/mdBook">mdBook</a> to <a href="https://squidfunk.github.io/mkdocs-material">MkDocs</a></a></h2>
+<p><strong>Status</strong>: I no longer plan to use Backstage for this homelab (I may build something else),
+so it’s back to mdBook, which has fewer dependencies and is faster.</p>
+<p><strong>Context</strong></p>
+<p>mdBook is very minimal and light weight, which I personally prefer.
+However, <a href="https://backstage.io/docs/features/techdocs/techdocs-overview">Backstage TechDocs</a> which I plan to use currently only supports mkDocs.</p>
+<p><strong>Decision</strong></p>
+<p>Migrate documentation from mdBook to MkDocs (see commit <code>cd41343</code>).</p>
+<p><strong>Consequences</strong></p>
+<ul>
+<li>We can no longer include only a portion of a file, see <a href="https://github.com/facelessuser/pymdown-extensions/issues/1462">facelessuser/pymdown-extensions#1462</a>.</li>
+</ul>
+<h2 id="using-fedora-as-the-base-os"><a class="header" href="#using-fedora-as-the-base-os">Using Fedora as the base OS</a></h2>
+<p><strong>Status</strong>: superseded by <a href="#using-nixos-as-the-base-os">Using NixOS as the base OS</a></p>
+<p><strong>Context</strong></p>
+<p>I’ve tried several distributions, and each has advantages and disadvantages.
+Fedora has a good (enough) balance between stability and new features.</p>
+<p>Alternatives considered:</p>
+<ul>
+<li>Fedora CoreOS (moved to Rocky in <code>7667254</code>):
+<ul>
+<li>Pros: automatic and atomic upgrade, immutable, quick installation</li>
+<li>Cons: hard to run Ansible on (Python is not included)</li>
+</ul>
+</li>
+<li>CentOS/Rocky Linux (moved to Fedora in <code>022b816</code>):
+<ul>
+<li>Pros: relatively stable (however we did encounter a breaking change <a href="https://github.com/khuedoan/homelab/issues/63">#63</a>, still not sure why)</li>
+<li>Cons: kernel and packages are too old</li>
+</ul>
+</li>
+<li>Debian: couldn’t get it to work with PXE boot and Rocky Linux was sufficient so I didn’t push any further</li>
+<li>Cluster API (previous attempt in <code> a8e4a85</code>, I hope to get this to work someday):
+<ul>
+<li>Pros: control bare metal machines via Kubernetes API, open the possibility for autoscaling and autohealing</li>
+<li>Cons: doesn’t support simple WoL and shutdown via SSH (or similar)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Decision</strong></p>
+<p>Use Fedora as the base OS.</p>
+<p><strong>Consequences</strong></p>
+<p><code>¯\_(ツ)_/¯</code></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../reference/architecture/networking.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../reference/cli.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../reference/architecture/networking.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../reference/cli.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../mermaid-eefea253.min.js"></script>
+        <script src="../../mermaid-init-53b67c53.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
