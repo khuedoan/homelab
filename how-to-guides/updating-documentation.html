@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light sidebar-visible" dir="ltr">
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -33,9 +33,9 @@
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "../";
-            const default_light_theme = "light";
+            const default_light_theme = "ayu";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ef8961d1.js";
+            window.path_to_searchindex_js = "../searchindex-970b5262.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c961d344.js"></script>
@@ -76,7 +76,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
-            html.classList.remove('light')
+            html.classList.remove('ayu')
             html.classList.add(theme);
             html.classList.add("js");
         </script>
@@ -199,7 +199,7 @@ The website is generated using <a href="https://rust-lang.github.io/mdBook">mdBo
 <p>It’s running on GitHub Pages under the <code>pages</code> branch
 (so even if my homelab goes down everyone can still read the documentation).</p>
 <p>To publish:</p>
-<pre><code class="language-sh">just docs publish
+<pre><code class="language-sh">just publish
 </code></pre>
 
                     </main>
