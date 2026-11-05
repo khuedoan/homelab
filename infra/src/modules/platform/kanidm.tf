@@ -28,7 +28,7 @@ trust_x_forward_for = true
 db_path = "/data/kanidm.db"
 tls_chain = "/tls/tls.crt"
 tls_key = "/tls/tls.key"
-domain = "auth.${var.domain}"
+domain = "${var.domain}"
 origin = "https://auth.${var.domain}"
 EOT
 

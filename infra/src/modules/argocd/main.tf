@@ -32,7 +32,7 @@ resource "helm_release" "release" {
     configs = {
       rbac = {
         "policy.default" = "role:readonly"
-        "policy.csv"     = "g, admins@auth.${var.domain}, role:admin"
+        "policy.csv"     = "g, admins@${var.domain}, role:admin"
       }
       params = {
         "server.insecure"              = true

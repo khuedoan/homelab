@@ -30,9 +30,9 @@ resource "kubectl_manifest" "forgejo" {
                 autoDiscoverUrl = "https://auth.${var.domain}/oauth2/openid/forgejo/.well-known/openid-configuration"
                 scopes          = "openid,profile,email,groups"
                 groupClaimName  = "groups"
-                adminGroup      = "admins@auth.${var.domain}"
+                adminGroup      = "admins@${var.domain}"
                 groupTeamMap = jsonencode({
-                  "developers@auth.${var.domain}" = { ops = ["developers"] }
+                  "developers@${var.domain}" = { ops = ["developers"] }
                 })
                 groupTeamMapRemoval = true
               }]
