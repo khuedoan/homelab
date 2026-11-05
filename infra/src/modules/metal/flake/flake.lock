@@ -68,15 +68,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791899080,
-        "narHash": "sha256-FImPBnMN5eV0QqNaxusify8y/NQUuw/cdxfQ9lC5hJY=",
+        "lastModified": 1793809751,
+        "narHash": "sha256-1/d8vOHyj/YD/4ZSVSvsW8tzsQkFq543dRB1nWiE/k0=",
         "owner": "khuedoan",
         "repo": "nixie",
-        "rev": "a650d8495ca7cc0cebe84339e2b6d506d5ce2e2e",
+        "rev": "a9083dc12ed5090741b21708f9aa06a271815f08",
         "type": "github"
       },
       "original": {
         "owner": "khuedoan",
+        "ref": "pull-based-install",
         "repo": "nixie",
         "type": "github"
       }

@@ -46,15 +46,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1793173037,
-        "narHash": "sha256-VedTvpl9/DulVK6kdtT+3IRegap9J01LIXq6gv4+6YU=",
+        "lastModified": 1793809751,
+        "narHash": "sha256-1/d8vOHyj/YD/4ZSVSvsW8tzsQkFq543dRB1nWiE/k0=",
         "owner": "khuedoan",
         "repo": "nixie",
-        "rev": "68b69f1247c09ae1a7aecff0a2132b39953044e3",
+        "rev": "a9083dc12ed5090741b21708f9aa06a271815f08",
         "type": "github"
       },
       "original": {
         "owner": "khuedoan",
+        "ref": "pull-based-install",
         "repo": "nixie",
         "type": "github"
       }
