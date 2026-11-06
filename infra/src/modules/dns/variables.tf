@@ -6,10 +6,6 @@ variable "resource_prefix" {
   type = string
 }
 
-variable "domain" {
-  type = string
-}
-
 variable "zone_name" {
   type = string
 }

@@ -3,6 +3,5 @@ include "root" {
 }
 
 inputs = {
-  domain    = "khuedoan.com"
   zone_name = "khuedoan.com"
 }

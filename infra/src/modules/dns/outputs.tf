@@ -1,3 +1,7 @@
+output "zone_id" {
+  value = data.cloudflare_zone.zone.id
+}
+
 output "secrets" {
   sensitive = true
   value = {
@@ -10,14 +14,6 @@ output "secrets" {
     }
     "cloudflare-ddns/cloudflare" = {
       api_token = cloudflare_account_token.ddns.value
-    }
-    "cloudflared/cloudflare" = {
-      "credentials.json" = jsonencode({
-        AccountTag   = var.cloudflare_account_id
-        TunnelName   = cloudflare_zero_trust_tunnel_cloudflared.homelab.name
-        TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.homelab.id
-        TunnelSecret = base64encode(random_password.tunnel_secret.result)
-      })
     }
   }
 }

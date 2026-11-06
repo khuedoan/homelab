@@ -35,8 +35,8 @@ Set `init_host` to a host in the inventory:
 
 Update the following settings in `infra/production/`:
 
-- `domain` in the `cloudflare`, `argocd`, and `platform` Terragrunt units
-- `zone_name` in the Cloudflare unit
+- `domain` in the `dns`, `tunnel`, `argocd`, and `platform` Terragrunt units
+- `zone_name` in the `dns` unit
 
 Review the settings in `apps/*.yaml`, including image registries and homepage links.
 

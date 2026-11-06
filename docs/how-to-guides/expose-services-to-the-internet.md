@@ -4,7 +4,7 @@
 >
 > This tutorial is for Cloudflare Tunnel users, please skip if you use port forwarding.
 
-Apply the environment's Cloudflare unit to create a tunnel if you haven't already,
+Apply the environment's `tunnel` unit to create a tunnel if you haven't already,
 then attach your `HTTPRoute` to the `public` Gateway (replace `example.com` with your domain):
 
 ```yaml
