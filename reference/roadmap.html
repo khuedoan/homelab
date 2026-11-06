@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d72117d8.js";
+            window.path_to_searchindex_js = "../searchindex-4c08ef9b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c961d344.js"></script>
@@ -183,23 +183,23 @@
                         <h1 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h1>
 <blockquote class="blockquote-tag blockquote-tag-note">
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
-<p>Current status: <strong>ALPHA</strong></p>
+<p>Current status: <strong>BETA</strong></p>
 </blockquote>
 <h2 id="alpha-requirements"><a class="header" href="#alpha-requirements">Alpha requirements</a></h2>
 <p>Literally anything that works.</p>
 <h2 id="beta-requirements"><a class="header" href="#beta-requirements">Beta requirements</a></h2>
-<p>Good enough for tinkering and personal usage, and reasonably secure.</p>
+<p>Good enough for tinkering and personal use, and reasonably secure.</p>
 <ul>
 <li><input disabled="" type="checkbox" checked=""> Automated bare metal provisioning
 <ul>
-<li><input disabled="" type="checkbox" checked=""> Controller set up (Nix development shell)</li>
+<li><input disabled="" type="checkbox" checked=""> Controller setup (Nix development shell)</li>
 <li><input disabled="" type="checkbox" checked=""> OS installation (PXE boot)</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> Automated cluster creation (k3s)</li>
 <li><input disabled="" type="checkbox" checked=""> Automated application deployment (ArgoCD)</li>
 <li><input disabled="" type="checkbox" checked=""> Automated DNS management</li>
-<li><input disabled="" type="checkbox" checked=""> Initialize GitOps repository on Forgejo automatically</li>
+<li><input disabled="" type="checkbox" checked=""> Initialize the GitOps repository on Forgejo automatically</li>
 <li><input disabled="" type="checkbox" checked=""> Observability
 <ul>
 <li><input disabled="" type="checkbox" checked=""> Monitoring</li>
@@ -218,10 +218,15 @@
 </li>
 <li><input disabled="" type="checkbox" checked=""> Only use open-source technologies (except external managed services)</li>
 <li><input disabled="" type="checkbox" checked=""> Everything is defined as code</li>
-<li><input disabled="" type="checkbox"> Backup solution (3 copies, 2 separate devices, 1 offsite)</li>
+<li><input disabled="" type="checkbox"> Backup solution (3 copies, 2 separate devices, 1 offsite)
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Scheduled, encrypted offsite backups</li>
+<li><input disabled="" type="checkbox"> Verify the full 3-2-1 backup strategy</li>
+</ul>
+</li>
 <li><input disabled="" type="checkbox"> Define <a href="https://en.wikipedia.org/wiki/Service-level_objective">SLOs</a>:
 <ul>
-<li><input disabled="" type="checkbox"> 70% availability (might break in the weekend due to new experimentation)</li>
+<li><input disabled="" type="checkbox"> 99% availability per application (up to 7h of downtime per month, including weekend experimentation)</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> Core applications
@@ -234,18 +239,22 @@
 </li>
 </ul>
 <h2 id="stable-requirements"><a class="header" href="#stable-requirements">Stable requirements</a></h2>
-<p>Can be used in “production” (for family or even small scale businesses).</p>
+<p>Can be used in “production” (for families or even small businesses).</p>
 <ul>
 <li><input disabled="" type="checkbox" checked=""> A single command to deploy everything</li>
 <li><input disabled="" type="checkbox"> Verify deployment time from empty disks to running services</li>
 <li><input disabled="" type="checkbox"> Fully <em>automatic</em>, not just <em>automated</em>
 <ul>
-<li><input disabled="" type="checkbox"> Automated flake updates and node configuration deployment for OS and Kubernetes upgrades</li>
+<li><input disabled="" type="checkbox"> Automated flake updates and node configuration deployment for OS and Kubernetes upgrades
+<ul>
+<li><input disabled="" type="checkbox"> Rolling upgrades with cordon/drain, control-plane/worker coordination, and health checks</li>
+</ul>
+</li>
 <li><input disabled="" type="checkbox" checked=""> Kured reboot coordination after kernel changes</li>
-<li><input disabled="" type="checkbox"> Application version upgrade</li>
+<li><input disabled="" type="checkbox"> Application version upgrades</li>
 <li><input disabled="" type="checkbox" checked=""> Encrypted backups</li>
-<li><input disabled="" type="checkbox"> Secrets rotation</li>
-<li><input disabled="" type="checkbox" checked=""> Self healing</li>
+<li><input disabled="" type="checkbox"> Secret rotation and consumer reloads</li>
+<li><input disabled="" type="checkbox" checked=""> Self-healing</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox"> Secure by default
@@ -255,21 +264,25 @@
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> Static code analysis</li>
-<li><input disabled="" type="checkbox"> Chaos testing</li>
+<li><input disabled="" type="checkbox" checked=""> Automated integration tests (networking, storage, backup/restore, secrets, GitOps, etc.)</li>
+<li><input disabled="" type="checkbox"> Regular disaster recovery tests</li>
 <li><input disabled="" type="checkbox" checked=""> Minimal dependency on external services</li>
 <li><input disabled="" type="checkbox"> Complete documentation
 <ul>
-<li><input disabled="" type="checkbox" checked=""> Diagram as code</li>
+<li><input disabled="" type="checkbox" checked=""> Diagrams as code</li>
 <li><input disabled="" type="checkbox" checked=""> Book (this book)</li>
-<li><input disabled="" type="checkbox"> Walkthrough tutorial and feature demo (video)</li>
+<li><input disabled="" type="checkbox"> More tutorials and video feature demos</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> User onboarding (with <code>just user</code>)</li>
 <li><input disabled="" type="checkbox"> More dashboards and alert rules</li>
+<li><input disabled="" type="checkbox"> Monitoring and alert delivery outside the cluster</li>
+<li><input disabled="" type="checkbox"> Verify mobile/desktop app clients and off-LAN VPN access</li>
+<li><input disabled="" type="checkbox"> Capacity planning and control-plane stability under load</li>
 <li><input disabled="" type="checkbox"> SLOs:
 <ul>
-<li><input disabled="" type="checkbox"> 99,9% availability (less than 9 hours of downtime per year)</li>
-<li><input disabled="" type="checkbox"> 99,99% data durability</li>
+<li><input disabled="" type="checkbox"> 99.9% availability (up to 43 mins of downtime per month). Ideally 99.95% but would be hard to do with home power and internet (I might move to colo)</li>
+<li><input disabled="" type="checkbox"> Recovery from complete cluster loss (at most one hour of data loss)</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox"> Clear upgrade path</li>
@@ -283,10 +296,10 @@
 </li>
 </ul>
 <h2 id="unplanned"><a class="header" href="#unplanned">Unplanned</a></h2>
-<p>Nice to have</p>
+<p>Nice to have.</p>
 <ul>
-<li><input disabled="" type="checkbox"> Air-gap install</li>
-<li><input disabled="" type="checkbox" checked=""> Automated testing</li>
+<li><input disabled="" type="checkbox"> Air-gapped installation</li>
+<li><input disabled="" type="checkbox"> Chaos testing</li>
 </ul>
 
                     </main>

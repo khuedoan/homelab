@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d72117d8.js";
+            window.path_to_searchindex_js = "../searchindex-4c08ef9b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c961d344.js"></script>
@@ -187,8 +187,8 @@
     participant Machines
 
     Nixie-&gt;&gt;Nixie: Load hosts.json
-    Nixie-&gt;&gt;Machines: Check recorded machine IDs over SSH
-    Note over Nixie: Skip recorded hosts, even if unreachable&lt;br/&gt;or their identity differs. Stop if all are recorded.
+    Nixie-&gt;&gt;Machines: Check SSH availability
+    Note over Nixie: Skip hosts with reachable SSH.&lt;br/&gt;Stop if all hosts are reachable.
 
     Nixie-&gt;&gt;Nixie: Build NixOS installer with Nix
     Nixie-&gt;&gt;Nixie: Start ProxyDHCP, TFTP, HTTP, and API services
@@ -215,16 +215,16 @@
         Nixie--&gt;&gt;Machines: Boot script, kernel, and initrd
         Note over Machines: Boot NixOS installer&lt;br/&gt;systemd starts nixie-agent
 
-        Machines-&gt;&gt;Nixie: POST /install with MAC address
-        Nixie-&gt;&gt;Nixie: Select host flake by MAC&lt;br/&gt;Use request's source IP for SSH
-        Nixie-&gt;&gt;Machines: Run nixos-anywhere to install NixOS over SSH
-        Note over Machines: Reboot into installed system
-        Nixie-&gt;&gt;Machines: Read installed /etc/machine-id over SSH
-        Machines--&gt;&gt;Nixie: Machine ID
-        Nixie-&gt;&gt;Nixie: Save IP and machine ID hash to hosts.json&lt;br/&gt;Mark host installed
+        Machines-&gt;&gt;Nixie: GET /source.tar.gz
+        Nixie--&gt;&gt;Machines: Flake source and host configuration
+        Machines-&gt;&gt;Nixie: POST /status (installation started)
+        Note over Machines: Agent builds disko, partitions disks,&lt;br/&gt;and runs nixos-install locally
+        Machines-&gt;&gt;Nixie: POST /status (installation progress)
+        Note over Machines: Schedule reboot into installed system
+        Machines-&gt;&gt;Nixie: POST /status (installation complete, reboot scheduled)
     end
 
-    Note over Nixie: Shut down after all hosts are installed
+    Note over Nixie: Shut down after all hosts report completion.&lt;br/&gt;Cluster readiness is checked separately.
 </pre>
 
 <p>Here’s how it looks like in action (this is an old clip so the logs look different now):</p>

@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-d72117d8.js";
+            window.path_to_searchindex_js = "../../searchindex-4c08ef9b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-c961d344.js"></script>
@@ -208,43 +208,15 @@
 <li>(4) Push the GitOps repo to Forgejo</li>
 <li>(5) Deploy applications in <code>./apps</code> with ArgoCD</li>
 </ul>
-<pre class="mermaid">flowchart TD
-  subgraph metal[metal]
-    pxe[PXE Server] -.-&gt; linux[NixOS Server] --&gt; k3s --&gt; kubeconfig[Verified kubeconfig]
-  end
+<pre class="mermaid">flowchart BT
+  cluster@{ shape: processes, label: "Servers&lt;br/&gt;NixOS + Kubernetes" } --&gt;|Bootstrap| argocd[Argo CD]
+  argocd --&gt;|Deploy| platform@{ shape: processes, label: "Platform services&lt;br/&gt;Networking, storage, identity and secrets" }
+  argocd --&gt;|Deploy| apps@{ shape: processes, label: "Applications" }
+  platform --&gt;|Support| apps
 
-  metal --&gt; argocd[ArgoCD] --&gt; platform
-  cloudflare[Cloudflare resources]
-
-  subgraph platform[platform]
-    istio[Istio gateways]
-    rook-ceph[Rook Ceph]
-    cert-manager
-    external-dns[External DNS]
-    cloudflared
-    OpenBao
-    Kanidm
-    Forgejo
-    Woodpecker
-    Grafana
-  end
-
-  letsencrypt[Let's Encrypt] -.-&gt; cert-manager
-  cloudflare -.-&gt; cert-manager
-  cloudflare -.-&gt; external-dns
-  cloudflare -.-&gt; cloudflared
-
-  subgraph apps[./apps]
-    homepage[Homepage]
-    budget[Actual Budget]
-    drive[OpenCloud]
-    matrix[Matrix]
-  end
-
-  platform --&gt; sync[Lab setup and GitOps push] --&gt; apps
-  cloudflare --&gt; sync
-  backup[Backup storage] --&gt; sync
-  backup --&gt; velero[Velero]
+  repository@{ shape: docs, label: "GitOps repository&lt;br/&gt;Application configuration" } --&gt; argocd
+  cloudflare@{ shape: cloud, label: "DNS" } -.-&gt;|DNS and connectivity| platform
+  backup[(Backup bucket)] -.-&gt;|Backup and restore| platform
 </pre>
 
 

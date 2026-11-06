@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d72117d8.js";
+            window.path_to_searchindex_js = "searchindex-4c08ef9b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-c961d344.js"></script>
@@ -188,17 +188,16 @@
 It can be used as a highly customizable framework to build your own homelab.</p>
 <blockquote>
 <p><strong>What is a homelab?</strong></p>
-<p>Homelab is a laboratory at home where you can self-host, experiment with new technologies, practice for certifications, and so on.
+<p>A homelab is a laboratory at home where you can self-host, experiment with new technologies, practice for certifications, and so on.
 For more information, please see the <a href="https://www.reddit.com/r/homelab/wiki/introduction">r/homelab introduction</a> and the
 <a href="https://discord.gg/home-operations">Home Operations Discord community</a> (formerly known as <a href="https://k8s-at-home.com">k8s-at-home</a>).</p>
 </blockquote>
 <p>If you encounter an issue, please create <a href="https://github.com/khuedoan/homelab/issues/new?template=bug_report.md">a bug report</a>
 (avoid asking for support about issues specific to this project in other communication channels).</p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>Project status: <strong>ALPHA</strong></p>
-<p>This project is still in the experimental stage, and I don’t use anything critical on it.
-Expect breaking changes that may require a complete redeployment.
-A proper upgrade path is planned for the stable release.
+<p>Project status: <strong>BETA</strong></p>
+<p>I’ve been using it to self-host personal apps for a few years now,
+but it’s not stable yet. Expect breaking changes during upgrades.
 More information can be found in <a href="#roadmap">the roadmap</a> below.</p>
 <h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
 <p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG" alt="Hardware"><span class="img-wrapper"><img src="https://user-images.githubusercontent.com/27996771/98970963-25137200-2543-11eb-8f2d-f9a2d45756ef.JPG" alt="Hardware"></span></label></p>
@@ -217,6 +216,9 @@ More information can be found in <a href="#roadmap">the roadmap</a> below.</p>
 </ul>
 </li>
 </ul>
+<p>And yes, I’m still using these 10-year-old mini PCs in 2026.
+You don’t need much to self-host :)</p>
+<!-- also fuck RAM prices in 2026, man T_T -->
 <h3 id="features"><a class="header" href="#features">Features</a></h3>
 <ul>
 <li><input disabled="" type="checkbox" checked=""> Common applications: Forgejo, Immich, OpenCloud, Matrix…</li>
@@ -326,7 +328,7 @@ They can’t capture all the project’s features, but they are sufficient to ge
 <tr>
         <td><img width="32" src="https://go.dev/images/go-logo-blue.svg"></td>
         <td><a href="https://go.dev">Go</a></td>
-        <td>Custom CLI and infrastructure tests with Terratest</td>
+        <td>Infrastructure tests with Go</td>
     </tr>
 
     
@@ -466,13 +468,13 @@ They can’t capture all the project’s features, but they are sufficient to ge
 
 <h2 id="get-started"><a class="header" href="#get-started">Get Started</a></h2>
 <ul>
-<li><a href="https://homelab.khuedoan.com/installation/production/prerequisites">Deploy on real hardware</a> for production workload</li>
+<li><a href="https://homelab.khuedoan.com/installation/production/prerequisites">Deploy on real hardware</a> for production workloads</li>
 </ul>
 <h2 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h2>
-<p>See <a href="https://homelab.khuedoan.com/reference/roadmap">roadmap</a> and <a href="https://github.com/khuedoan/homelab/issues">open issues</a> for a list of proposed features and known issues.</p>
+<p>See the <a href="https://homelab.khuedoan.com/reference/roadmap">roadmap</a> and <a href="https://github.com/khuedoan/homelab/issues">open issues</a> for a list of proposed features and known issues.</p>
 <h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
 <p>Any contributions you make are greatly appreciated.</p>
-<p>Please see <a href="https://homelab.khuedoan.com/reference/contributing">contributing guide</a> for more information.</p>
+<p>Please see the <a href="https://homelab.khuedoan.com/reference/contributing">contributing guide</a> for more information.</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p>Copyright © 2020 - 2026 Khue Doan</p>
 <p>Distributed under the GPLv3 License.</p>
@@ -534,16 +536,6 @@ Big shout-out to them!</p>
 it’s the source of truth for <em>my</em> homelab, so you’ll need to fork it to make it yours:</p>
 <p><a href="https://github.com/khuedoan/homelab/fork">Fork khuedoan/homelab</a></p>
 <p>By using this project you agree to <a href="#license-1">the license</a>.</p>
-<blockquote class="blockquote-tag blockquote-tag-important">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
-<p><strong>License TL;DR</strong></p>
-<ul>
-<li>This project is free to use for any purpose, but it comes with no warranty</li>
-<li>You must use the same <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3 license</a>  in <code>docs/reference/license.md</code></li>
-<li>You must keep the copy right notice and/or include an acknowledgement</li>
-<li>Your project must remain open-source</li>
-</ul>
-</blockquote>
 <h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware requirements</a></h2>
 <h3 id="initial-controller"><a class="header" href="#initial-controller">Initial controller</a></h3>
 <blockquote class="blockquote-tag blockquote-tag-note">
@@ -709,8 +701,8 @@ Set <code>init_host</code> to a host in the inventory:</p>
 <h2 id="configure-services"><a class="header" href="#configure-services">Configure services</a></h2>
 <p>Update the following settings in <code>infra/production/</code>:</p>
 <ul>
-<li><code>domain</code> in the <code>cloudflare</code>, <code>argocd</code>, and <code>platform</code> Terragrunt units</li>
-<li><code>zone_name</code> in the Cloudflare unit</li>
+<li><code>domain</code> in the <code>dns</code>, <code>tunnel</code>, <code>argocd</code>, and <code>platform</code> Terragrunt units</li>
+<li><code>zone_name</code> in the <code>dns</code> unit</li>
 </ul>
 <p>Review the settings in <code>apps/*.yaml</code>, including image registries and homepage links.</p>
 <p>After examining the diff, commit and push the changes.
@@ -872,8 +864,8 @@ up, take a look at the changes proposed by <a href="https://github.com/khuedoan/
     participant Machines
 
     Nixie-&gt;&gt;Nixie: Load hosts.json
-    Nixie-&gt;&gt;Machines: Check recorded machine IDs over SSH
-    Note over Nixie: Skip recorded hosts, even if unreachable&lt;br/&gt;or their identity differs. Stop if all are recorded.
+    Nixie-&gt;&gt;Machines: Check SSH availability
+    Note over Nixie: Skip hosts with reachable SSH.&lt;br/&gt;Stop if all hosts are reachable.
 
     Nixie-&gt;&gt;Nixie: Build NixOS installer with Nix
     Nixie-&gt;&gt;Nixie: Start ProxyDHCP, TFTP, HTTP, and API services
@@ -900,16 +892,16 @@ up, take a look at the changes proposed by <a href="https://github.com/khuedoan/
         Nixie--&gt;&gt;Machines: Boot script, kernel, and initrd
         Note over Machines: Boot NixOS installer&lt;br/&gt;systemd starts nixie-agent
 
-        Machines-&gt;&gt;Nixie: POST /install with MAC address
-        Nixie-&gt;&gt;Nixie: Select host flake by MAC&lt;br/&gt;Use request's source IP for SSH
-        Nixie-&gt;&gt;Machines: Run nixos-anywhere to install NixOS over SSH
-        Note over Machines: Reboot into installed system
-        Nixie-&gt;&gt;Machines: Read installed /etc/machine-id over SSH
-        Machines--&gt;&gt;Nixie: Machine ID
-        Nixie-&gt;&gt;Nixie: Save IP and machine ID hash to hosts.json&lt;br/&gt;Mark host installed
+        Machines-&gt;&gt;Nixie: GET /source.tar.gz
+        Nixie--&gt;&gt;Machines: Flake source and host configuration
+        Machines-&gt;&gt;Nixie: POST /status (installation started)
+        Note over Machines: Agent builds disko, partitions disks,&lt;br/&gt;and runs nixos-install locally
+        Machines-&gt;&gt;Nixie: POST /status (installation progress)
+        Note over Machines: Schedule reboot into installed system
+        Machines-&gt;&gt;Nixie: POST /status (installation complete, reboot scheduled)
     end
 
-    Note over Nixie: Shut down after all hosts are installed
+    Note over Nixie: Shut down after all hosts report completion.&lt;br/&gt;Cluster readiness is checked separately.
 </pre>
 
 <p>Here’s how it looks like in action (this is an old clip so the logs look different now):</p>
@@ -1077,7 +1069,7 @@ just test e2e staging
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>This tutorial is for Cloudflare Tunnel users, please skip if you use port forwarding.</p>
 </blockquote>
-<p>Apply the environment’s Cloudflare unit to create a tunnel if you haven’t already,
+<p>Apply the environment’s <code>tunnel</code> unit to create a tunnel if you haven’t already,
 then attach your <code>HTTPRoute</code> to the <code>public</code> Gateway (replace <code>example.com</code> with your domain):</p>
 <pre><code class="language-yaml">apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -1297,43 +1289,15 @@ To retry metal provisioning:</p>
 <li>(4) Push the GitOps repo to Forgejo</li>
 <li>(5) Deploy applications in <code>./apps</code> with ArgoCD</li>
 </ul>
-<pre class="mermaid">flowchart TD
-  subgraph metal[metal]
-    pxe[PXE Server] -.-&gt; linux[NixOS Server] --&gt; k3s --&gt; kubeconfig[Verified kubeconfig]
-  end
+<pre class="mermaid">flowchart BT
+  cluster@{ shape: processes, label: "Servers&lt;br/&gt;NixOS + Kubernetes" } --&gt;|Bootstrap| argocd[Argo CD]
+  argocd --&gt;|Deploy| platform@{ shape: processes, label: "Platform services&lt;br/&gt;Networking, storage, identity and secrets" }
+  argocd --&gt;|Deploy| apps@{ shape: processes, label: "Applications" }
+  platform --&gt;|Support| apps
 
-  metal --&gt; argocd[ArgoCD] --&gt; platform
-  cloudflare[Cloudflare resources]
-
-  subgraph platform[platform]
-    istio[Istio gateways]
-    rook-ceph[Rook Ceph]
-    cert-manager
-    external-dns[External DNS]
-    cloudflared
-    OpenBao
-    Kanidm
-    Forgejo
-    Woodpecker
-    Grafana
-  end
-
-  letsencrypt[Let's Encrypt] -.-&gt; cert-manager
-  cloudflare -.-&gt; cert-manager
-  cloudflare -.-&gt; external-dns
-  cloudflare -.-&gt; cloudflared
-
-  subgraph apps[./apps]
-    homepage[Homepage]
-    budget[Actual Budget]
-    drive[OpenCloud]
-    matrix[Matrix]
-  end
-
-  platform --&gt; sync[Lab setup and GitOps push] --&gt; apps
-  cloudflare --&gt; sync
-  backup[Backup storage] --&gt; sync
-  backup --&gt; velero[Velero]
+  repository@{ shape: docs, label: "GitOps repository&lt;br/&gt;Application configuration" } --&gt; argocd
+  cloudflare@{ shape: cloud, label: "DNS" } -.-&gt;|DNS and connectivity| platform
+  backup[(Backup bucket)] -.-&gt;|Backup and restore| platform
 </pre>
 
 <div style="break-before: page; page-break-before: always;"></div>
@@ -2392,23 +2356,23 @@ please read <a href="https://www.gnu.org/licenses/why-not-lgpl.html">https://www
 <h1 id="roadmap-1"><a class="header" href="#roadmap-1">Roadmap</a></h1>
 <blockquote class="blockquote-tag blockquote-tag-note">
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
-<p>Current status: <strong>ALPHA</strong></p>
+<p>Current status: <strong>BETA</strong></p>
 </blockquote>
 <h2 id="alpha-requirements"><a class="header" href="#alpha-requirements">Alpha requirements</a></h2>
 <p>Literally anything that works.</p>
 <h2 id="beta-requirements"><a class="header" href="#beta-requirements">Beta requirements</a></h2>
-<p>Good enough for tinkering and personal usage, and reasonably secure.</p>
+<p>Good enough for tinkering and personal use, and reasonably secure.</p>
 <ul>
 <li><input disabled="" type="checkbox" checked=""> Automated bare metal provisioning
 <ul>
-<li><input disabled="" type="checkbox" checked=""> Controller set up (Nix development shell)</li>
+<li><input disabled="" type="checkbox" checked=""> Controller setup (Nix development shell)</li>
 <li><input disabled="" type="checkbox" checked=""> OS installation (PXE boot)</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> Automated cluster creation (k3s)</li>
 <li><input disabled="" type="checkbox" checked=""> Automated application deployment (ArgoCD)</li>
 <li><input disabled="" type="checkbox" checked=""> Automated DNS management</li>
-<li><input disabled="" type="checkbox" checked=""> Initialize GitOps repository on Forgejo automatically</li>
+<li><input disabled="" type="checkbox" checked=""> Initialize the GitOps repository on Forgejo automatically</li>
 <li><input disabled="" type="checkbox" checked=""> Observability
 <ul>
 <li><input disabled="" type="checkbox" checked=""> Monitoring</li>
@@ -2427,10 +2391,15 @@ please read <a href="https://www.gnu.org/licenses/why-not-lgpl.html">https://www
 </li>
 <li><input disabled="" type="checkbox" checked=""> Only use open-source technologies (except external managed services)</li>
 <li><input disabled="" type="checkbox" checked=""> Everything is defined as code</li>
-<li><input disabled="" type="checkbox"> Backup solution (3 copies, 2 separate devices, 1 offsite)</li>
+<li><input disabled="" type="checkbox"> Backup solution (3 copies, 2 separate devices, 1 offsite)
+<ul>
+<li><input disabled="" type="checkbox" checked=""> Scheduled, encrypted offsite backups</li>
+<li><input disabled="" type="checkbox"> Verify the full 3-2-1 backup strategy</li>
+</ul>
+</li>
 <li><input disabled="" type="checkbox"> Define <a href="https://en.wikipedia.org/wiki/Service-level_objective">SLOs</a>:
 <ul>
-<li><input disabled="" type="checkbox"> 70% availability (might break in the weekend due to new experimentation)</li>
+<li><input disabled="" type="checkbox"> 99% availability per application (up to 7h of downtime per month, including weekend experimentation)</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> Core applications
@@ -2443,18 +2412,22 @@ please read <a href="https://www.gnu.org/licenses/why-not-lgpl.html">https://www
 </li>
 </ul>
 <h2 id="stable-requirements"><a class="header" href="#stable-requirements">Stable requirements</a></h2>
-<p>Can be used in “production” (for family or even small scale businesses).</p>
+<p>Can be used in “production” (for families or even small businesses).</p>
 <ul>
 <li><input disabled="" type="checkbox" checked=""> A single command to deploy everything</li>
 <li><input disabled="" type="checkbox"> Verify deployment time from empty disks to running services</li>
 <li><input disabled="" type="checkbox"> Fully <em>automatic</em>, not just <em>automated</em>
 <ul>
-<li><input disabled="" type="checkbox"> Automated flake updates and node configuration deployment for OS and Kubernetes upgrades</li>
+<li><input disabled="" type="checkbox"> Automated flake updates and node configuration deployment for OS and Kubernetes upgrades
+<ul>
+<li><input disabled="" type="checkbox"> Rolling upgrades with cordon/drain, control-plane/worker coordination, and health checks</li>
+</ul>
+</li>
 <li><input disabled="" type="checkbox" checked=""> Kured reboot coordination after kernel changes</li>
-<li><input disabled="" type="checkbox"> Application version upgrade</li>
+<li><input disabled="" type="checkbox"> Application version upgrades</li>
 <li><input disabled="" type="checkbox" checked=""> Encrypted backups</li>
-<li><input disabled="" type="checkbox"> Secrets rotation</li>
-<li><input disabled="" type="checkbox" checked=""> Self healing</li>
+<li><input disabled="" type="checkbox"> Secret rotation and consumer reloads</li>
+<li><input disabled="" type="checkbox" checked=""> Self-healing</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox"> Secure by default
@@ -2464,21 +2437,25 @@ please read <a href="https://www.gnu.org/licenses/why-not-lgpl.html">https://www
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> Static code analysis</li>
-<li><input disabled="" type="checkbox"> Chaos testing</li>
+<li><input disabled="" type="checkbox" checked=""> Automated integration tests (networking, storage, backup/restore, secrets, GitOps, etc.)</li>
+<li><input disabled="" type="checkbox"> Regular disaster recovery tests</li>
 <li><input disabled="" type="checkbox" checked=""> Minimal dependency on external services</li>
 <li><input disabled="" type="checkbox"> Complete documentation
 <ul>
-<li><input disabled="" type="checkbox" checked=""> Diagram as code</li>
+<li><input disabled="" type="checkbox" checked=""> Diagrams as code</li>
 <li><input disabled="" type="checkbox" checked=""> Book (this book)</li>
-<li><input disabled="" type="checkbox"> Walkthrough tutorial and feature demo (video)</li>
+<li><input disabled="" type="checkbox"> More tutorials and video feature demos</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""> User onboarding (with <code>just user</code>)</li>
 <li><input disabled="" type="checkbox"> More dashboards and alert rules</li>
+<li><input disabled="" type="checkbox"> Monitoring and alert delivery outside the cluster</li>
+<li><input disabled="" type="checkbox"> Verify mobile/desktop app clients and off-LAN VPN access</li>
+<li><input disabled="" type="checkbox"> Capacity planning and control-plane stability under load</li>
 <li><input disabled="" type="checkbox"> SLOs:
 <ul>
-<li><input disabled="" type="checkbox"> 99,9% availability (less than 9 hours of downtime per year)</li>
-<li><input disabled="" type="checkbox"> 99,99% data durability</li>
+<li><input disabled="" type="checkbox"> 99.9% availability (up to 43 mins of downtime per month). Ideally 99.95% but would be hard to do with home power and internet (I might move to colo)</li>
+<li><input disabled="" type="checkbox"> Recovery from complete cluster loss (at most one hour of data loss)</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox"> Clear upgrade path</li>
@@ -2492,10 +2469,10 @@ please read <a href="https://www.gnu.org/licenses/why-not-lgpl.html">https://www
 </li>
 </ul>
 <h2 id="unplanned"><a class="header" href="#unplanned">Unplanned</a></h2>
-<p>Nice to have</p>
+<p>Nice to have.</p>
 <ul>
-<li><input disabled="" type="checkbox"> Air-gap install</li>
-<li><input disabled="" type="checkbox" checked=""> Automated testing</li>
+<li><input disabled="" type="checkbox"> Air-gapped installation</li>
+<li><input disabled="" type="checkbox"> Chaos testing</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="contributing-1"><a class="header" href="#contributing-1">Contributing</a></h1>
