@@ -264,6 +264,13 @@ def oauth_clients(domain):
 
     return [
         {
+            "name": "hister",
+            "title": "Hister",
+            "landing": url("hister", "/"),
+            "icon_url": "https://raw.githubusercontent.com/asciimoo/hister/v0.21.0/assets/logo.svg",
+            "redirects": [url("hister", "/api/oauth/callback?provider=oidc")],
+        },
+        {
             "name": "grafana",
             "title": "Grafana",
             "landing": url("grafana", "/"),

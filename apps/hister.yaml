@@ -11,6 +11,14 @@ controllers:
           tag: v0.21.0
         env:
           HISTER__SERVER__BASE_URL: 'https://hister.{{ .Values.global.domain }}'
+          HISTER__APP__USER_HANDLING: 'true'
+          HISTER__SERVER__OAUTH_ONLY: 'true'
+          HISTER__SERVER__OAUTH__OIDC__CLIENT_ID: hister
+          HISTER__SERVER__OAUTH__OIDC__CONFIGURATION_URL: 'https://auth.{{ .Values.global.domain }}/oauth2/openid/hister/.well-known/openid-configuration'
+          HISTER__SERVER__OAUTH__OIDC__IDENTITY_CLAIM: sub
+        envFrom:
+          - secretRef:
+              identifier: sso
 service:
   main:
     controller: main
@@ -35,3 +43,9 @@ persistence:
     size: 5Gi
     globalMounts:
       - path: /hister/data
+secrets:
+  sso:
+    labels:
+      homelab.khuedoan.com/bao-secret: 'true'
+    stringData:
+      HISTER__SERVER__OAUTH__OIDC__CLIENT_SECRET: bao:secret/data/hister/sso#client_secret
