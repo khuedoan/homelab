@@ -12,7 +12,7 @@ It can be used as a highly customizable framework to build your own homelab.
 
 > **What is a homelab?**
 >
-> Homelab is a laboratory at home where you can self-host, experiment with new technologies, practice for certifications, and so on.
+> A homelab is a laboratory at home where you can self-host, experiment with new technologies, practice for certifications, and so on.
 > For more information, please see the [r/homelab introduction](https://www.reddit.com/r/homelab/wiki/introduction) and the
 > [Home Operations Discord community](https://discord.gg/home-operations) (formerly known as [k8s-at-home](https://k8s-at-home.com)).
 
@@ -21,11 +21,10 @@ If you encounter an issue, please create [a bug report](https://github.com/khued
 
 ## Overview
 
-Project status: **ALPHA**
+Project status: **BETA**
 
-This project is still in the experimental stage, and I don't use anything critical on it.
-Expect breaking changes that may require a complete redeployment.
-A proper upgrade path is planned for the stable release.
+I've been using it to self-host personal apps for a few years now,
+but it's not stable yet. Expect breaking changes during upgrades.
 More information can be found in [the roadmap](#roadmap) below.
 
 ### Hardware
@@ -248,17 +247,17 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 ## Get Started
 
-- [Deploy on real hardware](https://homelab.khuedoan.com/installation/production/prerequisites) for production workload
+- [Deploy on real hardware](https://homelab.khuedoan.com/installation/production/prerequisites) for production workloads
 
 ## Roadmap
 
-See [roadmap](https://homelab.khuedoan.com/reference/roadmap) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
+See the [roadmap](https://homelab.khuedoan.com/reference/roadmap) and [open issues](https://github.com/khuedoan/homelab/issues) for a list of proposed features and known issues.
 
 ## Contributing
 
 Any contributions you make are greatly appreciated.
 
-Please see [contributing guide](https://homelab.khuedoan.com/reference/contributing) for more information.
+Please see the [contributing guide](https://homelab.khuedoan.com/reference/contributing) for more information.
 
 ## License
 

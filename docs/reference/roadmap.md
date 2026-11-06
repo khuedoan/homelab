@@ -2,7 +2,7 @@
 
 > [!NOTE]
 >
-> Current status: **ALPHA**
+> Current status: **BETA**
 
 ## Alpha requirements
 
