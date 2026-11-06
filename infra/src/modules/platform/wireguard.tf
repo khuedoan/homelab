@@ -7,7 +7,6 @@ resource "kubectl_manifest" "wireguard" {
     metadata = {
       name      = "wireguard"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

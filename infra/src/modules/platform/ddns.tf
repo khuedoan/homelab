@@ -7,7 +7,6 @@ resource "kubectl_manifest" "cloudflare_ddns" {
     metadata = {
       name      = "cloudflare-ddns"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

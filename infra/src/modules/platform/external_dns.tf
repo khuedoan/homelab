@@ -6,7 +6,6 @@ resource "kubectl_manifest" "external_dns" {
     metadata = {
       name      = "external-dns"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -59,7 +58,6 @@ resource "kubectl_manifest" "external_dns_resources" {
     metadata = {
       name      = "external-dns-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

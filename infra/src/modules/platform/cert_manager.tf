@@ -6,7 +6,6 @@ resource "kubectl_manifest" "cert_manager" {
     metadata = {
       name      = "cert-manager"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -70,7 +69,6 @@ resource "kubectl_manifest" "cert_manager_resources" {
     metadata = {
       name      = "cert-manager-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

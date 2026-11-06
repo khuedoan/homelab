@@ -6,7 +6,6 @@ resource "kubectl_manifest" "forgejo" {
     metadata = {
       name      = "forgejo"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -95,7 +94,6 @@ resource "kubectl_manifest" "forgejo_resources" {
     metadata = {
       name      = "forgejo-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

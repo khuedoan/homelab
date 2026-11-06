@@ -28,7 +28,6 @@ resource "kubectl_manifest" "monitoring_system" {
     metadata = {
       name      = "monitoring-system"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

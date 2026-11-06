@@ -6,7 +6,6 @@ resource "kubectl_manifest" "kanidm" {
     metadata = {
       name      = "kanidm"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -144,7 +143,6 @@ resource "kubectl_manifest" "kanidm_resources" {
     metadata = {
       name      = "kanidm-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

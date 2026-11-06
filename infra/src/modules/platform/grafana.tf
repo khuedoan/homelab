@@ -6,7 +6,6 @@ resource "kubectl_manifest" "grafana" {
     metadata = {
       name      = "grafana"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -91,7 +90,6 @@ resource "kubectl_manifest" "grafana_resources" {
     metadata = {
       name      = "grafana-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

@@ -6,7 +6,6 @@ resource "kubectl_manifest" "tailscale" {
     metadata = {
       name      = "tailscale"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

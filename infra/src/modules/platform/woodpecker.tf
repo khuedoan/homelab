@@ -6,7 +6,6 @@ resource "kubectl_manifest" "woodpecker" {
     metadata = {
       name      = "woodpecker"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -69,7 +68,6 @@ resource "kubectl_manifest" "woodpecker_resources" {
     metadata = {
       name      = "woodpecker-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

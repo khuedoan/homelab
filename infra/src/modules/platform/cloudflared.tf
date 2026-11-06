@@ -6,7 +6,6 @@ resource "kubectl_manifest" "cloudflared" {
     metadata = {
       name      = "cloudflared"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -107,7 +106,6 @@ resource "kubectl_manifest" "cloudflared_resources" {
     metadata = {
       name      = "cloudflared-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

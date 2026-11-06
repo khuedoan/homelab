@@ -6,7 +6,6 @@ resource "kubectl_manifest" "rook_ceph" {
     metadata = {
       name      = "rook-ceph"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

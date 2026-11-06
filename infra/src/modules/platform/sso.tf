@@ -7,7 +7,6 @@ resource "kubectl_manifest" "argocd_resources" {
     metadata = {
       name      = "argocd-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

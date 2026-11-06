@@ -7,7 +7,6 @@ resource "kubectl_manifest" "openbao" {
     metadata = {
       name      = "openbao"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -77,7 +76,6 @@ resource "kubectl_manifest" "openbao_resources" {
     metadata = {
       name      = "openbao-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

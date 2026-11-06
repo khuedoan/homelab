@@ -10,7 +10,6 @@ resource "kubectl_manifest" "istio" {
     metadata = {
       name      = "istio"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -80,7 +79,6 @@ resource "kubectl_manifest" "istio_resources" {
     metadata = {
       name      = "istio-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

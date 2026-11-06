@@ -7,7 +7,6 @@ resource "kubectl_manifest" "apps" {
     metadata = {
       name      = "apps"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       goTemplate        = true
@@ -21,8 +20,7 @@ resource "kubectl_manifest" "apps" {
       }]
       template = {
         metadata = {
-          name   = "{{ .path.filename | trimSuffix \".yaml\" }}"
-          labels = { "app.kubernetes.io/part-of" = "homelab" }
+          name = "{{ .path.filename | trimSuffix \".yaml\" }}"
         }
         spec = {
           project = "default"

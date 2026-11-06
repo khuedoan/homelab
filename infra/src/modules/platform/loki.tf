@@ -6,7 +6,6 @@ resource "kubectl_manifest" "loki" {
     metadata = {
       name      = "loki"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

@@ -7,7 +7,6 @@ resource "kubectl_manifest" "velero" {
     metadata = {
       name      = "velero"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

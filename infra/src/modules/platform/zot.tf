@@ -6,7 +6,6 @@ resource "kubectl_manifest" "zot" {
     metadata = {
       name      = "zot"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -89,7 +88,6 @@ resource "kubectl_manifest" "zot_resources" {
     metadata = {
       name      = "zot-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"

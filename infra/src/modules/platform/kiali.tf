@@ -6,7 +6,6 @@ resource "kubectl_manifest" "kiali" {
     metadata = {
       name      = "kiali"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
@@ -61,7 +60,6 @@ resource "kubectl_manifest" "kiali_resources" {
     metadata = {
       name      = "kiali-resources"
       namespace = "argocd"
-      labels    = { "app.kubernetes.io/part-of" = "homelab" }
     }
     spec = {
       project = "default"
