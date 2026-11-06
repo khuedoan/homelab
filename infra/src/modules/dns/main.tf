@@ -40,3 +40,14 @@ resource "cloudflare_account_token" "ddns" {
   name       = "${var.resource_prefix}-ddns"
   policies   = local.dns_policies
 }
+
+resource "cloudflare_dns_record" "extra" {
+  for_each = var.extra_records
+
+  zone_id = data.cloudflare_zone.zone.id
+  name    = "${each.key}.${var.domain}"
+  type    = each.value.type
+  content = each.value.content
+  ttl     = 1 # Auto
+  proxied = each.value.proxied
+}
