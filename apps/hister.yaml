@@ -1,0 +1,37 @@
+controllers:
+  main:
+    strategy: Recreate
+    pod:
+      securityContext:
+        fsGroup: 65532
+    containers:
+      main:
+        image:
+          repository: ghcr.io/asciimoo/hister
+          tag: v0.21.0
+        env:
+          HISTER__SERVER__BASE_URL: 'https://hister.{{ .Values.global.domain }}'
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 4433
+route:
+  main:
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - 'hister.{{ .Values.global.domain }}'
+    rules:
+      - backendRefs:
+          - identifier: main
+            port: 4433
+persistence:
+  data:
+    accessMode: ReadWriteOnce
+    size: 5Gi
+    globalMounts:
+      - path: /hister/data
