@@ -56,8 +56,9 @@ resource "kubectl_manifest" "external_dns_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "external-dns-resources"
-      namespace = "argocd"
+      name        = "external-dns-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -72,7 +73,6 @@ resource "kubectl_manifest" "external_dns_resources" {
             secrets = {
               cloudflare = {
                 forceRename = "cloudflare-api-token"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   "api-token" = "bao:secret/data/external-dns/cloudflare#api_token"
                   "zone-id"   = "bao:secret/data/external-dns/cloudflare#zone_id"

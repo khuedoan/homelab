@@ -45,7 +45,5 @@ persistence:
       - path: /hister/data
 secrets:
   sso:
-    labels:
-      homelab.khuedoan.com/bao-secret: 'true'
     stringData:
       HISTER__SERVER__OAUTH__OIDC__CLIENT_SECRET: bao:secret/data/hister/sso#client_secret

@@ -55,7 +55,5 @@ persistence:
 secrets:
   sso:
     forceRename: actualbudget-sso
-    labels:
-      homelab.khuedoan.com/bao-secret: 'true'
     stringData:
       ACTUAL_OPENID_CLIENT_SECRET: bao:secret/data/actualbudget/sso#client_secret

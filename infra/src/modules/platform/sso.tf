@@ -5,8 +5,9 @@ resource "kubectl_manifest" "argocd_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "argocd-resources"
-      namespace = "argocd"
+      name        = "argocd-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -22,8 +23,7 @@ resource "kubectl_manifest" "argocd_resources" {
               sso = {
                 forceRename = "argocd-sso"
                 labels = {
-                  "homelab.khuedoan.com/bao-secret" = "true"
-                  "app.kubernetes.io/part-of"       = "argocd"
+                  "app.kubernetes.io/part-of" = "argocd"
                 }
                 stringData = { client_secret = "bao:secret/data/argocd/sso#client_secret" }
               }

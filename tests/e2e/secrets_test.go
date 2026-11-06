@@ -66,6 +66,16 @@ var _ = Describe("Secrets", Label("secrets"), func() {
 		Expect(string(injected.Data["value"])).To(Equal("homelab-secret-injection"))
 	}, SpecTimeout(5*time.Minute))
 
+	It("preserves ordinary Kubernetes Secrets", func(ctx SpecContext) {
+		secret, err := lab.Client.CoreV1().Secrets(owner).Create(ctx, &corev1.Secret{
+			ObjectMeta: metav1.ObjectMeta{GenerateName: "homelab-test-ordinary-"},
+			StringData: map[string]string{"value": "ordinary-secret"},
+		}, metav1.CreateOptions{})
+		Expect(err).NotTo(HaveOccurred())
+		DeferCleanup(deleteInjectedSecret, owner, secret, NodeTimeout(time.Minute))
+		Expect(string(secret.Data["value"])).To(Equal("ordinary-secret"))
+	}, SpecTimeout(5*time.Minute))
+
 	Context("from another namespace", func() {
 		const other = otherNamespace
 
@@ -118,7 +128,6 @@ func secretReference(path string) *corev1.Secret {
 	return &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			GenerateName: "homelab-test-injection-",
-			Labels:       map[string]string{"homelab.khuedoan.com/bao-secret": "true"},
 		},
 		StringData: map[string]string{"value": "bao:secret/data/" + path + "#value"},
 	}

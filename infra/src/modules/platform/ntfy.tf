@@ -5,8 +5,9 @@ resource "kubectl_manifest" "ntfy" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "ntfy"
-      namespace = "argocd"
+      name        = "ntfy"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -65,7 +66,6 @@ resource "kubectl_manifest" "ntfy" {
               auth = {
                 suffix      = "auth"
                 annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   NTFY_AUTH_USERS  = "alerts:$${bao:secret/data/monitoring-system/ntfy#password_hash}:user"
                   NTFY_AUTH_TOKENS = "alerts:$${bao:secret/data/monitoring-system/ntfy#token}"

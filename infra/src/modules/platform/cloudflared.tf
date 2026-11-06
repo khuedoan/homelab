@@ -104,8 +104,9 @@ resource "kubectl_manifest" "cloudflared_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "cloudflared-resources"
-      namespace = "argocd"
+      name        = "cloudflared-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -120,7 +121,6 @@ resource "kubectl_manifest" "cloudflared_resources" {
             secrets = {
               cloudflare = {
                 forceRename = "cloudflared-credentials"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData  = { "credentials.json" = "bao:secret/data/cloudflared/cloudflare#credentials.json" }
               }
             }

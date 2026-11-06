@@ -5,8 +5,9 @@ resource "kubectl_manifest" "wireguard" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "wireguard"
-      namespace = "argocd"
+      name        = "wireguard"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -46,7 +47,6 @@ resource "kubectl_manifest" "wireguard" {
               kind       = "Secret"
               metadata = {
                 name        = "wireguard-env"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
               }
               stringData = {

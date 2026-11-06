@@ -92,8 +92,9 @@ resource "kubectl_manifest" "forgejo_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "forgejo-resources"
-      namespace = "argocd"
+      name        = "forgejo-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -108,7 +109,7 @@ resource "kubectl_manifest" "forgejo_resources" {
             secrets = {
               admin = {
                 forceRename = "forgejo-admin"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
+
                 annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
                 stringData = {
                   username = "forgejo_admin"
@@ -117,7 +118,6 @@ resource "kubectl_manifest" "forgejo_resources" {
               }
               sso = {
                 forceRename = "forgejo-sso"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   key    = "forgejo"
                   secret = "bao:secret/data/forgejo/sso#client_secret"

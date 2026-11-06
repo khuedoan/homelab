@@ -46,7 +46,7 @@ output "secrets" {
 Secrets use `<namespace>/<name>` paths, for example `forgejo/admin`.
 Applications can only read secrets for their own namespace.
 
-When you apply a labeled Secret, for example:
+When you apply a Secret containing a reference, for example:
 
 ```yaml
 apiVersion: v1
@@ -54,15 +54,12 @@ kind: Secret
 metadata:
   name: forgejo-admin
   namespace: forgejo
-  labels:
-    homelab.khuedoan.com/bao-secret: "true"
 stringData:
   username: forgejo_admin
   password: bao:secret/data/forgejo/admin#password
 ```
 
 The webhook reads the password from OpenBao and stores it in the Kubernetes Secret.
-The OpenBao record must already exist. Argo CD ignores the injected values.
 
 References are resolved when the Secret is created or updated.
 After rotation, reapply the references and restart the applications using the Secret.

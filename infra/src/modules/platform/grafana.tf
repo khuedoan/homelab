@@ -88,8 +88,9 @@ resource "kubectl_manifest" "grafana_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "grafana-resources"
-      namespace = "argocd"
+      name        = "grafana-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -104,7 +105,6 @@ resource "kubectl_manifest" "grafana_resources" {
             secrets = {
               grafana-secrets = {
                 forceRename = "grafana-secrets"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   GRAFANA_SSO_CLIENT_SECRET = "bao:secret/data/grafana/sso#client_secret"
                 }

@@ -5,8 +5,9 @@ resource "kubectl_manifest" "cloudflare_ddns" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "cloudflare-ddns"
-      namespace = "argocd"
+      name        = "cloudflare-ddns"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -37,7 +38,6 @@ resource "kubectl_manifest" "cloudflare_ddns" {
               cloudflare = {
                 suffix      = "cloudflare"
                 annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   CLOUDFLARE_API_TOKEN = "bao:secret/data/cloudflare-ddns/cloudflare#api_token"
                 }

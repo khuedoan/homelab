@@ -5,8 +5,9 @@ resource "kubectl_manifest" "velero" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "velero"
-      namespace = "argocd"
+      name        = "velero"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -48,7 +49,6 @@ resource "kubectl_manifest" "velero" {
               kind       = "Secret"
               metadata = {
                 name        = name
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
               }
               stringData = data

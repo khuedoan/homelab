@@ -144,14 +144,10 @@ persistence:
           - path: /config
 secrets:
   credentials:
-    labels:
-      homelab.khuedoan.com/bao-secret: "true"
     stringData:
       DB_PASSWORD: bao:secret/data/immich/database#password
       POSTGRES_PASSWORD: bao:secret/data/immich/database#password
   config:
-    labels:
-      homelab.khuedoan.com/bao-secret: "true"
     stringData:
       immich-config.yaml: |
         machineLearning:

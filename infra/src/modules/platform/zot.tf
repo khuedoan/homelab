@@ -86,8 +86,9 @@ resource "kubectl_manifest" "zot_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "zot-resources"
-      namespace = "argocd"
+      name        = "zot-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -102,7 +103,6 @@ resource "kubectl_manifest" "zot_resources" {
             secrets = {
               admin-secret = {
                 forceRename = "registry-admin-secret"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   username = "admin"
                   password = "bao:secret/data/zot/admin#password"

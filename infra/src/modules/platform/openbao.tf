@@ -38,8 +38,6 @@ resource "kubectl_manifest" "openbao" {
               BAO_ALLOW_OBJECT_SKIP_VERIFY = "false"
             }
             secretsFailurePolicy = "Fail"
-            secrets              = { objectSelector = { matchLabels = { "homelab.khuedoan.com/bao-secret" = "true" } } }
-            pods                 = { objectSelector = { matchLabels = { "homelab.khuedoan.com/bao-pod" = "true" } } }
           })
         }
       }]

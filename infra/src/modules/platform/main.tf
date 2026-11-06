@@ -20,12 +20,6 @@ locals {
       ".spec.volumeClaimTemplates[]?.apiVersion",
       ".spec.volumeClaimTemplates[]?.kind",
     ]
-    }, {
-    kind = "Secret"
-    jqPathExpressions = [
-      "select(.metadata.labels[\"homelab.khuedoan.com/bao-secret\"] == \"true\") | .data",
-      "select(.metadata.labels[\"homelab.khuedoan.com/bao-secret\"] == \"true\") | .stringData",
-    ]
   }]
   sync_policy = {
     automated = {

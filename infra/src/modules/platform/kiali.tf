@@ -58,8 +58,9 @@ resource "kubectl_manifest" "kiali_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "kiali-resources"
-      namespace = "argocd"
+      name        = "kiali-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -73,7 +74,6 @@ resource "kubectl_manifest" "kiali_resources" {
             global = { createDefaultServiceAccount = false }
             secrets = {
               main = {
-                labels = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   oidc-secret = "bao:secret/data/kiali/sso#client_secret"
                   signing-key = "bao:secret/data/kiali/session#signing_key"

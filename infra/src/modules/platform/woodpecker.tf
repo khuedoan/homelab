@@ -66,8 +66,9 @@ resource "kubectl_manifest" "woodpecker_resources" {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name      = "woodpecker-resources"
-      namespace = "argocd"
+      name        = "woodpecker-resources"
+      namespace   = "argocd"
+      annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
       project = "default"
@@ -82,7 +83,6 @@ resource "kubectl_manifest" "woodpecker_resources" {
             secrets = {
               secret = {
                 forceRename = "woodpecker-secret"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   WOODPECKER_GITEA_CLIENT = "bao:secret/data/woodpecker/forgejo#client_id"
                   WOODPECKER_GITEA_SECRET = "bao:secret/data/woodpecker/forgejo#client_secret"
@@ -90,7 +90,6 @@ resource "kubectl_manifest" "woodpecker_resources" {
               }
               agent = {
                 forceRename = "woodpecker-agent-secret"
-                labels      = { "homelab.khuedoan.com/bao-secret" = "true" }
                 stringData = {
                   WOODPECKER_AGENT_SECRET = "bao:secret/data/woodpecker/agent#secret"
                 }

@@ -140,7 +140,5 @@ configMaps:
         }
 secrets:
   sso:
-    labels:
-      homelab.khuedoan.com/bao-secret: 'true'
     stringData:
       client_secret: bao:secret/data/matrix/sso#client_secret

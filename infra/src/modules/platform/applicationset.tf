@@ -20,7 +20,8 @@ resource "kubectl_manifest" "apps" {
       }]
       template = {
         metadata = {
-          name = "{{ .path.filename | trimSuffix \".yaml\" }}"
+          name        = "{{ .path.filename | trimSuffix \".yaml\" }}"
+          annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
         }
         spec = {
           project = "default"
