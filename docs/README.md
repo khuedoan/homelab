@@ -39,6 +39,11 @@ More information can be found in [the roadmap](#roadmap) below.
     - Ports: `8`
     - Speed: `1000Mbps`
 
+And yes, I'm still using these 10-year-old mini PCs in 2026.
+You don't need much to self-host :)
+
+<!-- also fuck RAM prices in 2026, man T_T -->
+
 ### Features
 
 - [x] Common applications: Forgejo, Immich, OpenCloud, Matrix...
@@ -146,7 +151,7 @@ They can't capture all the project's features, but they are sufficient to get a 
     <tr>
         <td><img width="32" src="https://go.dev/images/go-logo-blue.svg"></td>
         <td><a href="https://go.dev">Go</a></td>
-        <td>Custom CLI and infrastructure tests with Terratest</td>
+        <td>Infrastructure tests with Go</td>
     </tr>
     <tr>
         <td><img width="32" src="https://grafana.com/static/img/menu/grafana2.svg"></td>

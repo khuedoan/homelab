@@ -27,41 +27,13 @@ After editing the configuration files, run a single `just` command to:
 - (5) Deploy applications in `./apps` with ArgoCD
 
 ```mermaid
-flowchart TD
-  subgraph metal[metal]
-    pxe[PXE Server] -.-> linux[NixOS Server] --> k3s --> kubeconfig[Verified kubeconfig]
-  end
+flowchart BT
+  cluster@{ shape: processes, label: "Servers<br/>NixOS + Kubernetes" } -->|Bootstrap| argocd[Argo CD]
+  argocd -->|Deploy| platform@{ shape: processes, label: "Platform services<br/>Networking, storage, identity and secrets" }
+  argocd -->|Deploy| apps@{ shape: processes, label: "Applications" }
+  platform -->|Support| apps
 
-  metal --> argocd[ArgoCD] --> platform
-  cloudflare[Cloudflare resources]
-
-  subgraph platform[platform]
-    istio[Istio gateways]
-    rook-ceph[Rook Ceph]
-    cert-manager
-    external-dns[External DNS]
-    cloudflared
-    OpenBao
-    Kanidm
-    Forgejo
-    Woodpecker
-    Grafana
-  end
-
-  letsencrypt[Let's Encrypt] -.-> cert-manager
-  cloudflare -.-> cert-manager
-  cloudflare -.-> external-dns
-  cloudflare -.-> cloudflared
-
-  subgraph apps[./apps]
-    homepage[Homepage]
-    budget[Actual Budget]
-    drive[OpenCloud]
-    matrix[Matrix]
-  end
-
-  platform --> sync[Lab setup and GitOps push] --> apps
-  cloudflare --> sync
-  backup[Backup storage] --> sync
-  backup --> velero[Velero]
+  repository@{ shape: docs, label: "GitOps repository<br/>Application configuration" } --> argocd
+  cloudflare[DNS and Tunnel] -.->|DNS and connectivity| platform
+  backup[(Backup bucket)] -.->|Backup and restore| platform
 ```

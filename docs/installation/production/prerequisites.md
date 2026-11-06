@@ -9,15 +9,6 @@ it's the source of truth for _my_ homelab, so you'll need to fork it to make it 
 
 By using this project you agree to [the license](../../reference/license.md).
 
-
-> [!IMPORTANT]
-> **License TL;DR**
->
->  - This project is free to use for any purpose, but it comes with no warranty
->  - You must use the same [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html)  in `docs/reference/license.md`
->  - You must keep the copy right notice and/or include an acknowledgement
->  - Your project must remain open-source
-
 ## Hardware requirements
 
 ### Initial controller

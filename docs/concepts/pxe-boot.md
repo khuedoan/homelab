@@ -7,8 +7,8 @@ sequenceDiagram
     participant Machines
 
     Nixie->>Nixie: Load hosts.json
-    Nixie->>Machines: Check recorded machine IDs over SSH
-    Note over Nixie: Skip recorded hosts, even if unreachable<br/>or their identity differs. Stop if all are recorded.
+    Nixie->>Machines: Check SSH availability
+    Note over Nixie: Skip hosts with reachable SSH.<br/>Stop if all hosts are reachable.
 
     Nixie->>Nixie: Build NixOS installer with Nix
     Nixie->>Nixie: Start ProxyDHCP, TFTP, HTTP, and API services
@@ -35,16 +35,16 @@ sequenceDiagram
         Nixie-->>Machines: Boot script, kernel, and initrd
         Note over Machines: Boot NixOS installer<br/>systemd starts nixie-agent
 
-        Machines->>Nixie: POST /install with MAC address
-        Nixie->>Nixie: Select host flake by MAC<br/>Use request's source IP for SSH
-        Nixie->>Machines: Run nixos-anywhere to install NixOS over SSH
-        Note over Machines: Reboot into installed system
-        Nixie->>Machines: Read installed /etc/machine-id over SSH
-        Machines-->>Nixie: Machine ID
-        Nixie->>Nixie: Save IP and machine ID hash to hosts.json<br/>Mark host installed
+        Machines->>Nixie: GET /source.tar.gz
+        Nixie-->>Machines: Flake source and host configuration
+        Machines->>Nixie: POST /status (installation started)
+        Note over Machines: Agent builds disko, partitions disks,<br/>and runs nixos-install locally
+        Machines->>Nixie: POST /status (installation progress)
+        Note over Machines: Schedule reboot into installed system
+        Machines->>Nixie: POST /status (installation complete, reboot scheduled)
     end
 
-    Note over Nixie: Shut down after all hosts are installed
+    Note over Nixie: Shut down after all hosts report completion.<br/>Cluster readiness is checked separately.
 ```
 
 Here's how it looks like in action (this is an old clip so the logs look different now):
