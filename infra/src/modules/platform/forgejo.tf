@@ -37,8 +37,12 @@ resource "kubectl_manifest" "forgejo" {
                 groupTeamMapRemoval = true
               }]
               config = {
-                database      = { DB_TYPE = "sqlite3" }
-                actions       = { ENABLED = false }
+                database = { DB_TYPE = "sqlite3" }
+                actions  = { ENABLED = false }
+                service = {
+                  ENABLE_INTERNAL_SIGNIN           = false
+                  ALLOW_ONLY_EXTERNAL_REGISTRATION = true
+                }
                 oauth2_client = { ENABLE_AUTO_REGISTRATION = true, USERNAME = "preferred_username" }
                 repository = {
                   ENABLE_PUSH_CREATE_ORG = true
