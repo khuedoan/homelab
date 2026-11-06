@@ -225,6 +225,8 @@ def configure_openbao(domain, bao):
     if "oidc/" not in bao.sys.list_auth_methods()["data"]:
         bao.sys.enable_auth_method("oidc", path="oidc", description="SSO")
 
+    bao.sys.tune_auth_method("oidc", listing_visibility="unauth")
+
     bao.auth.oidc.configure(
         oidc_discovery_url=f"https://auth.{domain}/oauth2/openid/openbao",
         oidc_client_id=secret["client_id"],
