@@ -141,39 +141,49 @@ def configure_woodpecker(session, domain, bao):
     )
 
 
-def push(session, domain, repository):
+def push(session, domain, repository, target):
+    url = f"https://git.{domain}/ops/homelab.git"
     authorization = base64.b64encode(":".join(session.auth).encode()).decode()
+    for key, value in {
+        f"remote.{target}.url": url,
+        f"remote.{target}.push": "HEAD:refs/heads/master",
+        f"http.{url}.extraHeader": f"Authorization: Basic {authorization}",
+    }.items():
+        subprocess.run(
+            [
+                "git",
+                "config",
+                "--local",
+                "--replace-all",
+                key,
+                value,
+            ],
+            cwd=repository,
+            check=True,
+        )
+
     subprocess.run(
         [
             "git",
             "-c",
-            "credential.helper=",
-            "-c",
             "http.followRedirects=false",
-            "--config-env=http.extraHeader=FORGEJO_AUTHORIZATION",
             "push",
             "-o",
             "repo.private=false",
-            f"https://git.{domain}/ops/homelab.git",
-            "HEAD:refs/heads/master",
+            target,
         ],
         cwd=repository,
-        env=os.environ
-        | {
-            "GIT_TERMINAL_PROMPT": "0",
-            "GIT_ASKPASS": "",
-            "FORGEJO_AUTHORIZATION": f"Authorization: Basic {authorization}",
-        },
+        env=os.environ | {"GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": ""},
         check=True,
     )
 
 
-def setup(domain, bao, repository):
+def setup(domain, bao, repository, target):
     with forgejo(bao) as session:
         configure_organization(session, domain)
         team = configure_team(session, domain)
         configure_woodpecker(session, domain, bao)
-        push(session, domain, repository)
+        push(session, domain, repository, target)
 
         request(
             session,

@@ -193,4 +193,4 @@ fmt:
     domain = json.loads(output)["inputs"]["domain"]
 
     with openbao(target / "kubeconfig.yaml") as bao:
-        setup(domain, bao, Path.cwd().parent)
+        setup(domain, bao, Path.cwd().parent, target.name)
