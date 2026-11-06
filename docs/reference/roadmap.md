@@ -10,15 +10,15 @@ Literally anything that works.
 
 ## Beta requirements
 
-Good enough for tinkering and personal usage, and reasonably secure.
+Good enough for tinkering and personal use, and reasonably secure.
 
 - [x] Automated bare metal provisioning
-    - [x] Controller set up (Nix development shell)
+    - [x] Controller setup (Nix development shell)
     - [x] OS installation (PXE boot)
 - [x] Automated cluster creation (k3s)
 - [x] Automated application deployment (ArgoCD)
 - [x] Automated DNS management
-- [x] Initialize GitOps repository on Forgejo automatically
+- [x] Initialize the GitOps repository on Forgejo automatically
 - [x] Observability
     - [x] Monitoring
     - [x] Logging
@@ -32,8 +32,10 @@ Good enough for tinkering and personal usage, and reasonably secure.
 - [x] Only use open-source technologies (except external managed services)
 - [x] Everything is defined as code
 - [ ] Backup solution (3 copies, 2 separate devices, 1 offsite)
+    - [x] Scheduled, encrypted offsite backups
+    - [ ] Verify the full 3-2-1 backup strategy
 - [ ] Define [SLOs](https://en.wikipedia.org/wiki/Service-level_objective):
-    - [ ] 70% availability (might break in the weekend due to new experimentation)
+    - [ ] 99% availability per application (up to 7h of downtime per month, including weekend experimentation)
 - [x] Core applications
     - [x] Forgejo
     - [x] Woodpecker
@@ -42,32 +44,37 @@ Good enough for tinkering and personal usage, and reasonably secure.
 
 ## Stable requirements
 
-Can be used in "production" (for family or even small scale businesses).
+Can be used in "production" (for families or even small businesses).
 
 - [x] A single command to deploy everything
 - [ ] Verify deployment time from empty disks to running services
 - [ ] Fully _automatic_, not just _automated_
     - [ ] Automated flake updates and node configuration deployment for OS and Kubernetes upgrades
+        - [ ] Rolling upgrades with cordon/drain, control-plane/worker coordination, and health checks
     - [x] Kured reboot coordination after kernel changes
-    - [ ] Application version upgrade
+    - [ ] Application version upgrades
     - [x] Encrypted backups
-    - [ ] Secrets rotation
-    - [x] Self healing
+    - [ ] Secret rotation and consumer reloads
+    - [x] Self-healing
 - [ ] Secure by default
     - [ ] Host security hardening
     - [ ] Default application network policies
 - [x] Static code analysis
-- [ ] Chaos testing
+- [x] Automated integration tests (networking, storage, backup/restore, secrets, GitOps, etc.)
+- [ ] Regular disaster recovery tests
 - [x] Minimal dependency on external services
 - [ ] Complete documentation
-    - [x] Diagram as code
+    - [x] Diagrams as code
     - [x] Book (this book)
-    - [ ] Walkthrough tutorial and feature demo (video)
+    - [ ] More tutorials and video feature demos
 - [x] User onboarding (with `just user`)
 - [ ] More dashboards and alert rules
+- [ ] Monitoring and alert delivery outside the cluster
+- [ ] Verify mobile/desktop app clients and off-LAN VPN access
+- [ ] Capacity planning and control-plane stability under load
 - [ ] SLOs:
-    - [ ] 99,9% availability (less than 9 hours of downtime per year)
-    - [ ] 99,99% data durability
+    - [ ] 99.9% availability (up to 43 mins of downtime per month). Ideally 99.95% but would be hard to do with home power and internet (I might move to colo)
+    - [ ] Recovery from complete cluster loss (at most one hour of data loss)
 - [ ] Clear upgrade path
 - [ ] Additional applications
     - [ ] Matrix with bridges
@@ -77,7 +84,7 @@ Can be used in "production" (for family or even small scale businesses).
 
 ## Unplanned
 
-Nice to have
+Nice to have.
 
-- [ ] Air-gap install
-- [x] Automated testing
+- [ ] Air-gapped installation
+- [ ] Chaos testing
