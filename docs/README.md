@@ -70,7 +70,7 @@ Some demo videos and screenshots are shown here.
 They can't capture all the project's features, but they are sufficient to get a concept of it.
 
 | Demo |
-| :--: |
+| :---: |
 | [![][deploy-demo]](https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7) |
 | Deploy with a single command (after updating the configuration files) |
 | [![][pxe-demo]](https://www.youtube.com/watch?v=y-d7btNNAT8) |

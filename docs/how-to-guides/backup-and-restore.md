@@ -2,8 +2,6 @@
 
 ## Prerequisites
 
-Keep access to your Cloudflare account and existing OpenTofu state in R2. The state contains the backup credentials and Kopia repository password.
-
 From the development shell, select the environment and its kubeconfig:
 
 ```sh
