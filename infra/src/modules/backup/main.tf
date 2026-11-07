@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "= 5.27.0"
+    b2 = {
+      source  = "Backblaze/b2"
+      version = "= 0.14.1"
     }
 
     random = {
@@ -12,12 +12,9 @@ terraform {
   }
 }
 
-# TODO migrate backups to Backblaze B2
-provider "cloudflare" {}
+provider "b2" {}
 
-data "cloudflare_account_api_token_permission_groups_list" "backup" {
-  account_id = var.cloudflare_account_id
-}
+data "b2_account_info" "backup" {}
 
 resource "random_password" "backup_repository" {
   length = 32
@@ -27,26 +24,25 @@ resource "random_password" "backup_repository" {
   }
 }
 
-resource "cloudflare_r2_bucket" "backup" {
-  account_id = var.cloudflare_account_id
-  name       = "${var.resource_prefix}-backup"
+resource "b2_bucket" "backup" {
+  bucket_name = "${var.resource_prefix}-backup-${data.b2_account_info.backup.account_id}"
+  bucket_type = "allPrivate"
+
+  lifecycle_rules {
+    file_name_prefix                                       = ""
+    days_from_hiding_to_deleting                           = 1
+    days_from_starting_to_canceling_unfinished_large_files = 1
+  }
 
   lifecycle {
     prevent_destroy = true
   }
 }
 
-resource "cloudflare_account_token" "backup" {
-  account_id = var.cloudflare_account_id
-  name       = cloudflare_r2_bucket.backup.name
-  policies = [{
-    effect = "allow"
-    permission_groups = [
-      for group in data.cloudflare_account_api_token_permission_groups_list.backup.result : { id = group.id }
-      if group.name == "Workers R2 Storage Bucket Item Write"
-    ]
-    resources = jsonencode({
-      "com.cloudflare.edge.r2.bucket.${var.cloudflare_account_id}_default_${cloudflare_r2_bucket.backup.name}" = "*"
-    })
-  }]
+resource "b2_application_key" "backup" {
+  key_name   = "${var.resource_prefix}-backup"
+  bucket_ids = [b2_bucket.backup.bucket_id]
+  capabilities = [
+    "listBuckets", "listAllBucketNames", "listFiles", "readFiles", "writeFiles", "deleteFiles",
+  ]
 }

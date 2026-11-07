@@ -1,7 +1,8 @@
 output "location" {
   value = {
-    bucket   = cloudflare_r2_bucket.backup.name
-    endpoint = "https://${var.cloudflare_account_id}.r2.cloudflarestorage.com"
+    bucket   = b2_bucket.backup.bucket_name
+    endpoint = data.b2_account_info.backup.s3_api_url
+    region   = split(".", data.b2_account_info.backup.s3_api_url)[1]
   }
 }
 
@@ -14,8 +15,8 @@ output "secrets" {
     "velero/repository" = {
       credentials = <<-EOF
         [default]
-        aws_access_key_id = ${cloudflare_account_token.backup.id}
-        aws_secret_access_key = ${sha256(cloudflare_account_token.backup.value)}
+        aws_access_key_id = ${b2_application_key.backup.application_key_id}
+        aws_secret_access_key = ${b2_application_key.backup.application_key}
       EOF
     }
   }

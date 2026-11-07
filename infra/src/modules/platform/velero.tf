@@ -32,7 +32,7 @@ resource "kubectl_manifest" "velero" {
                 bucket     = var.backup_location.bucket
                 accessMode = var.backup_read_only ? "ReadOnly" : "ReadWrite"
                 config = {
-                  region            = "auto"
+                  region            = var.backup_location.region
                   s3Url             = var.backup_location.endpoint
                   checksumAlgorithm = ""
                 }

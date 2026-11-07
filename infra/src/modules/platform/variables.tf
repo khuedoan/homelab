@@ -21,6 +21,7 @@ variable "backup_location" {
   type = object({
     bucket   = string
     endpoint = string
+    region   = string
   })
 }
 
