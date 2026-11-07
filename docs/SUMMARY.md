@@ -43,7 +43,6 @@
   - [Decision records](reference/architecture/decision-records.md)
 - [CLI](reference/cli.md)
 - [Testing](reference/testing.md)
-- [License](reference/license.md)
 - [Changelog](reference/changelog.md)
 - [Roadmap](reference/roadmap.md)
 - [Contributing](reference/contributing.md)

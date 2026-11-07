@@ -7,8 +7,6 @@ it's the source of truth for _my_ homelab, so you'll need to fork it to make it 
 
 [Fork khuedoan/homelab](https://github.com/khuedoan/homelab/fork)
 
-By using this project you agree to [the license](../../reference/license.md).
-
 ## Hardware requirements
 
 ### Initial controller
