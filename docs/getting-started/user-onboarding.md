@@ -28,7 +28,7 @@ For technical users:
 Create the account:
 
 ```sh
-just user production johndoe "John Doe" johndoe@example.com
+just user create production johndoe "John Doe" johndoe@example.com
 ```
 
 Share the one-time link privately for the user to set up passkeys or password + TOTP.
@@ -36,7 +36,13 @@ Share the one-time link privately for the user to set up passkeys or password + 
 To include additional access groups when creating the account, pass a comma-separated list:
 
 ```sh
-just user production johndoe "John Doe" johndoe@example.com admins,developers
+just user create production johndoe "John Doe" johndoe@example.com admins,developers
+```
+
+To generate a credential reset link:
+
+```sh
+just user reset production johndoe
 ```
 
 | Group | Access |

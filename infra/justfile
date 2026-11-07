@@ -148,34 +148,6 @@ fmt:
         asyncio.run(setup(domain, kubeconfig, bao))
 
 [script("python3")]
-@user target username display_name email groups="":
-    import asyncio
-    import json
-    import subprocess
-    import sys
-    import tomllib
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path("src/scripts").resolve()))
-    from openbao import openbao
-    from sso import create_user
-
-    target, username, display_name, email, groups = sys.argv[1:]
-    groups = [group.strip() for group in groups.split(",") if group.strip()]
-    kubeconfig = Path(target).resolve() / "kubeconfig.yaml"
-    output = subprocess.check_output([
-        "kubectl", "--kubeconfig", str(kubeconfig), "--namespace", "kanidm",
-        "get", "configmap", "kanidm-config", "-o", "json",
-    ])
-    config = tomllib.loads(json.loads(output)["data"]["server.toml"])
-    domain = config["domain"].removeprefix("auth.")
-
-    with openbao(kubeconfig) as bao:
-        print(asyncio.run(create_user(
-            domain, kubeconfig, bao, username, display_name, email, groups,
-        )))
-
-[script("python3")]
 @forgejo target:
     import json
     import subprocess

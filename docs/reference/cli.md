@@ -9,7 +9,8 @@ just --list
 | Command | Purpose |
 | --- | --- |
 | `just deploy ENV` | Deploy the lab and configure services |
-| `just user ENV NAME "FULL NAME" EMAIL [GROUPS]` | Create a user and print an enrollment link; optional groups are comma-separated |
+| `just user create ENV NAME "FULL NAME" EMAIL [GROUPS]` | Create a user and print an enrollment link; optional groups are comma-separated |
+| `just user reset ENV NAME` | Print a credential reset link for an existing user |
 | `just infra tfstate ENV` | Create the state bucket and credentials |
 | `just infra apply ENV` | Apply infrastructure |
 | `just infra secrets ENV` | Copy OpenTofu secret outputs to OpenBao |

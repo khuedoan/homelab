@@ -67,7 +67,7 @@ Can be used in "production" (for families or even small businesses).
     - [x] Diagrams as code
     - [x] Book (this book)
     - [ ] More tutorials and video feature demos
-- [x] User onboarding (with `just user`)
+- [x] User onboarding (with `just user create`)
 - [ ] More dashboards and alert rules
 - [ ] Monitoring and alert delivery outside the cluster
 - [ ] Verify mobile/desktop app clients and off-LAN VPN access

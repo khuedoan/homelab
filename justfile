@@ -6,7 +6,9 @@ mod infra "infra/justfile"
 
 deploy target: (infra::deploy target)
 
-user target username display_name email groups="": (infra::user target username display_name email groups)
+[positional-arguments]
+@user action target username *arguments:
+    cd infra && python3 src/scripts/user.py "$@"
 
 docs:
     mdbook-mermaid install docs
