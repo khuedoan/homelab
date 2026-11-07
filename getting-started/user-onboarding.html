@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-cd698e07.js";
+            window.path_to_searchindex_js = "../searchindex-2e1d7ef0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c961d344.js"></script>
@@ -203,11 +203,17 @@
 </ul>
 <h2 id="for-admin"><a class="header" href="#for-admin">For admin</a></h2>
 <p>Create the account:</p>
-<pre><code class="language-sh">just user production johndoe "John Doe" johndoe@example.com
+<pre><code class="language-sh">just user create production johndoe "John Doe" johndoe@example.com
 </code></pre>
 <p>Share the one-time link privately for the user to set up passkeys or password + TOTP.</p>
 <p>To include additional access groups when creating the account, pass a comma-separated list:</p>
-<pre><code class="language-sh">just user production johndoe "John Doe" johndoe@example.com admins,developers
+<pre><code class="language-sh">just user create production johndoe "John Doe" johndoe@example.com admins,developers
+</code></pre>
+<p>To generate a credential reset link:</p>
+<pre><code class="language-sh">just user reset production johndoe
+</code></pre>
+<p>Set access groups:</p>
+<pre><code class="language-sh">just user groups production johndoe admins,developers
 </code></pre>
 <div class="table-wrapper">
 <table>

@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-cd698e07.js";
+            window.path_to_searchindex_js = "../../searchindex-2e1d7ef0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-c961d344.js"></script>
@@ -184,7 +184,7 @@
 <h2 id="pxe-server-logs"><a class="header" href="#pxe-server-logs">PXE server logs</a></h2>
 <p>View the Nixie output in the terminal running <code>just deploy production</code> (or staging).
 To retry metal provisioning:</p>
-<pre><code class="language-sh">just --dotenv-path infra/production/.env infra apply production --filter metal
+<pre><code class="language-sh">just infra apply production --filter metal
 </code></pre>
 <h2 id="nodes-not-booting-from-the-network"><a class="header" href="#nodes-not-booting-from-the-network">Nodes not booting from the network</a></h2>
 <ul>

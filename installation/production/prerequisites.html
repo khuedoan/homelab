@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-cd698e07.js";
+            window.path_to_searchindex_js = "../../searchindex-2e1d7ef0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-c961d344.js"></script>
@@ -206,13 +206,13 @@ it’s the source of truth for <em>my</em> homelab, so you’ll need to fork it 
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th style="text-align: left">Component</th><th style="text-align: left">Minimum</th><th style="text-align: left">Recommended</th></tr>
+<tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
 </thead>
 <tbody>
-<tr><td style="text-align: left">CPU</td><td style="text-align: left">2 cores</td><td style="text-align: left">4 cores</td></tr>
-<tr><td style="text-align: left">RAM</td><td style="text-align: left">8 GB</td><td style="text-align: left">16 GB</td></tr>
-<tr><td style="text-align: left">Hard drive</td><td style="text-align: left">128 GB</td><td style="text-align: left">512 GB (depending on your storage usage, the base installation will not use more than 128GB)</td></tr>
-<tr><td style="text-align: left">Node count</td><td style="text-align: left">1 (checkout the <a href="../../how-to-guides/single-node-cluster-adjustments.html">single node cluster adjustments</a> tutorial)</td><td style="text-align: left">3 or more for high availability</td></tr>
+<tr><td>CPU</td><td>2 cores</td><td>4 cores</td></tr>
+<tr><td>RAM</td><td>8 GB</td><td>16 GB</td></tr>
+<tr><td>Hard drive</td><td>128 GB</td><td>512 GB (depending on your storage usage, the base installation will not use more than 128GB)</td></tr>
+<tr><td>Node count</td><td>1 (check out the <a href="../../how-to-guides/single-node-cluster-adjustments.html">single node cluster adjustments</a> tutorial)</td><td>3 or more for high availability</td></tr>
 </tbody>
 </table>
 </div>
@@ -236,46 +236,69 @@ Below is a list of external resources and why we need them (also see some <a hre
 <tr><th>Provider</th><th>Resource</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td>Cloudflare</td><td>R2 bucket</td><td>OpenTofu state and encrypted volume backups</td></tr>
+<tr><td>Cloudflare</td><td>R2 bucket</td><td>OpenTofu state</td></tr>
 <tr><td>Cloudflare</td><td>DNS</td><td>DNS and <a href="https://letsencrypt.org/docs/challenge-types/#dns-01-challenge">DNS-01 challenge</a> for certificates</td></tr>
 <tr><td>Cloudflare</td><td>Tunnel</td><td>Public services to the internet without port forwarding</td></tr>
+<tr><td>Backblaze</td><td>B2 bucket</td><td>Encrypted volume backups</td></tr>
 <tr><td>ntfy.sh</td><td>Upstream</td><td>Push relay for self-hosted ntfy notifications</td></tr>
 </tbody>
 </table>
 </div>
-<h3 id="create-credentials"><a class="header" href="#create-credentials">Create credentials</a></h3>
-<h4 id="cloudflare"><a class="header" href="#cloudflare">Cloudflare</a></h4>
-<ul>
-<li>Add your domain to Cloudflare if you haven’t already</li>
-<li>Log in from the development shell:</li>
-</ul>
-<pre><code class="language-sh">cf auth login
-</code></pre>
-<p>Grant the following permissions:</p>
-<ul>
-<li>Account API Tokens Write</li>
-<li>R2 bucket and object access</li>
-<li>DNS</li>
-<li>Tunnel</li>
-</ul>
-<p>If your existing login lacks these permissions, run <code>cf auth login --force</code> and approve them.</p>
-<h3 id="alternatives"><a class="header" href="#alternatives">Alternatives</a></h3>
 <p>To avoid vendor lock-in, each external provider must have an equivalent alternative that is easy to replace:</p>
 <ul>
-<li>Cloudflare R2:
-<ul>
-<li>Update the backend and bootstrap hook in <code>infra/root.hcl</code> for another state backend</li>
+<li>Cloudflare R2 and Backblaze B2: any other S3-compatible object storage.</li>
+<li>Cloudflare Tunnel: access everything via VPN, or use port forwarding,
+or a small VPS with WireGuard to route traffic (see also <a href="https://github.com/anderspitman/awesome-tunneling">awesome tunneling</a>).</li>
 </ul>
-</li>
-<li>Cloudflare Tunnel:
-<ul>
-<li>Use port forwarding if it’s available</li>
-<li>Create a small VPS in the cloud and use WireGuard to route traffic via it</li>
-<li>Access everything via VPN</li>
-<li>See also <a href="https://github.com/anderspitman/awesome-tunneling">awesome tunneling</a></li>
-</ul>
-</li>
-</ul>
+<h3 id="create-credentials"><a class="header" href="#create-credentials">Create credentials</a></h3>
+<p>You’ll need a password manager to store credentials.
+I’m using <a href="https://www.passwordstore.org"><code>pass</code></a>,
+but you can use any password manager with a CLI.</p>
+<p>Example <code>infra/${ENV}/.env</code> change for another password manager
+(in this case Bitwarden):</p>
+<pre><code class="language-diff">-CLOUDFLARE_API_TOKEN="$(pass "homelab/production/cloudflare/token")"
++CLOUDFLARE_API_TOKEN="$(bw get password "homelab/production/cloudflare/token")"
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>Prefer offline-first password managers such as <code>pass</code> or <a href="https://keepassxc.org">KeePassXC</a> so
+infrastructure bootstrap doesn’t depend on an external online service.</p>
+</blockquote>
+<h4 id="cloudflare"><a class="header" href="#cloudflare">Cloudflare</a></h4>
+<ol>
+<li>Add your domain to Cloudflare and enable R2.</li>
+<li>Create a token under <strong>Manage Account</strong> -&gt; <strong>Account API Tokens</strong> -&gt; <strong>Create Token</strong> -&gt; <strong>Start from scratch</strong>:</li>
+</ol>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Scope</th><th>Permission</th><th>Access</th></tr>
+</thead>
+<tbody>
+<tr><td>Entire Account</td><td>Account API Tokens</td><td>Edit</td></tr>
+<tr><td>Entire Account</td><td>Workers R2 Storage</td><td>Edit</td></tr>
+<tr><td>Specified Domains</td><td>DNS</td><td>Edit</td></tr>
+<tr><td>Specified Domains</td><td>Zone</td><td>Read</td></tr>
+<tr><td>Entire Account</td><td>Cloudflare One Connector: cloudflared</td><td>Edit</td></tr>
+</tbody>
+</table>
+</div>
+<p>Then store the credentials in your password manager, e.g.:</p>
+<pre><code class="language-sh">pass insert homelab/production/cloudflare/account-id
+pass insert homelab/production/cloudflare/token-id
+pass insert homelab/production/cloudflare/token
+</code></pre>
+<h4 id="backblaze"><a class="header" href="#backblaze">Backblaze</a></h4>
+<p>Generate a new <a href="https://secure.backblaze.com/app_keys.htm">B2 master application key</a>
+and store the credentials in your password manager, e.g.:</p>
+<pre><code class="language-sh">pass insert homelab/production/backblaze/key-id
+pass insert homelab/production/backblaze/key
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>Each B2 account has one master application key,
+so you likely need to use the same key for both staging and production.</p>
+</blockquote>
 <h2 id="bios-setup"><a class="header" href="#bios-setup">BIOS setup</a></h2>
 <blockquote class="blockquote-tag blockquote-tag-note">
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>

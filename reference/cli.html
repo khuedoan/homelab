@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-cd698e07.js";
+            window.path_to_searchindex_js = "../searchindex-2e1d7ef0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c961d344.js"></script>
@@ -191,8 +191,10 @@
 </thead>
 <tbody>
 <tr><td><code>just deploy ENV</code></td><td>Deploy the lab and configure services</td></tr>
-<tr><td><code>just user ENV NAME "FULL NAME" EMAIL [GROUPS]</code></td><td>Create a user and print an enrollment link; optional groups are comma-separated</td></tr>
-<tr><td><code>just infra tfstate ENV</code></td><td>Create the state bucket and credentials</td></tr>
+<tr><td><code>just user create ENV NAME "FULL NAME" EMAIL [GROUPS]</code></td><td>Create a user and print an enrollment link; optional groups are comma-separated</td></tr>
+<tr><td><code>just user reset ENV NAME</code></td><td>Print a credential reset link for an existing user</td></tr>
+<tr><td><code>just user groups ENV NAME GROUPS</code></td><td>Set access groups (<code>users</code> is implicit)</td></tr>
+<tr><td><code>just infra tfstate ENV</code></td><td>Create the state bucket</td></tr>
 <tr><td><code>just infra apply ENV</code></td><td>Apply infrastructure</td></tr>
 <tr><td><code>just infra secrets ENV</code></td><td>Copy OpenTofu secret outputs to OpenBao</td></tr>
 <tr><td><code>just infra sso ENV</code></td><td>Configure SSO and sync OAuth credentials</td></tr>
@@ -204,9 +206,6 @@
 </tbody>
 </table>
 </div>
-<p><code>just deploy</code> loads the environment’s credentials. For individual apply or setup commands, load them explicitly:</p>
-<pre><code class="language-sh">just --dotenv-path infra/production/.env infra secrets production
-</code></pre>
 <p>See the <a href="testing.html">testing reference</a> for integration tests and benchmarks.</p>
 
                     </main>
