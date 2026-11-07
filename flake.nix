@@ -26,16 +26,15 @@
         packages = with pkgs; [
           nixie.packages.${system}.default
           just
-          (python3.withPackages (ps: [
-            ps.cloudflare
-            ps.hvac
-            ps.kanidm
-            ps.pyyaml
-            ps.requests
+          (python3.withPackages (ps: with ps; [
+            cloudflare
+            hvac
+            kanidm
+            pyyaml
+            requests
           ]))
           go
           golangci-lint
-          gotestsum
           jq
           kanidm_1_11
           kubectl
@@ -44,8 +43,6 @@
           mdbook-mermaid
           nixfmt-tree
           ruff
-          nixos-anywhere
-          nixos-rebuild
           openssh
           opentofu
           pass
