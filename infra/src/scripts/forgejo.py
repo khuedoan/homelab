@@ -1,14 +1,17 @@
+import json
 import base64
 import os
 import subprocess
+import sys
 from contextlib import contextmanager
+from pathlib import Path
 
 import hvac
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from openbao import write_secret
+from openbao import openbao, write_secret
 
 
 @contextmanager
@@ -190,3 +193,14 @@ def setup(domain, bao, repository, target):
             "PUT",
             f"https://git.{domain}/api/v1/teams/{team['id']}/repos/ops/homelab",
         )
+
+
+if __name__ == "__main__":
+    target = Path(sys.argv[1]).resolve()
+    output = subprocess.check_output(
+        ["terragrunt", "render", "--json"], cwd=target / "platform",
+    )
+    domain = json.loads(output)["inputs"]["domain"]
+
+    with openbao(target / "kubeconfig.yaml") as bao:
+        setup(domain, bao, Path.cwd().parent, target.name)

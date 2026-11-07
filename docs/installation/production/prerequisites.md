@@ -62,30 +62,49 @@ Below is a list of external resources and why we need them (also see some [alter
 
 ### Create credentials
 
-#### Cloudflare
+You'll need a password manager to store credentials.
+I'm using [`pass`](https://www.passwordstore.org),
+but you can use any password manager with a CLI.
 
-- Add your domain to Cloudflare if you haven't already
-- Log in from the development shell:
+Example `infra/${ENV}/.env` change for another password manager
+(in this case Bitwarden):
 
-```sh
-cf auth login
+```diff
+-CLOUDFLARE_API_TOKEN="$(pass "homelab/production/cloudflare/token")"
++CLOUDFLARE_API_TOKEN="$(bw get password "homelab/production/cloudflare/token")"
 ```
 
-Grant the following permissions:
+> [!TIP]
+> Prefer offline-first password managers such as `pass` or [KeePassXC](https://keepassxc.org) so
+> infrastructure bootstrap doesn't depend on an external online service.
 
-- Account API Tokens Write
-- R2 bucket and object access
-- DNS
-- Tunnel
+#### Cloudflare
 
-If your existing login lacks these permissions, run `cf auth login --force` and approve them.
+1. Add your domain to Cloudflare and enable R2.
+2. Create a token under **Manage Account** -> **Account API Tokens** -> **Create Token** -> **Start from scratch**:
+
+| Scope | Permission | Access |
+| --- | --- | --- |
+| Entire Account | Account API Tokens | Edit |
+| Entire Account | Workers R2 Storage | Edit |
+| Specified Domains | DNS | Edit |
+| Specified Domains | Zone | Read |
+| Entire Account | Cloudflare One Connector: cloudflared | Edit |
+
+Then store the credentials in your password manager, e.g.:
+
+```sh
+pass insert homelab/production/cloudflare/account-id
+pass insert homelab/production/cloudflare/token-id
+pass insert homelab/production/cloudflare/token
+```
 
 ### Alternatives
 
 To avoid vendor lock-in, each external provider must have an equivalent alternative that is easy to replace:
 
 - Cloudflare R2:
-    - Update the backend and bootstrap hook in `infra/root.hcl` for another state backend
+    - Update the backend in `infra/root.hcl` and the bootstrap script in `infra/src/scripts/tfstate.py` for another state backend
 - Cloudflare Tunnel:
     - Use port forwarding if it's available
     - Create a small VPS in the cloud and use WireGuard to route traffic via it

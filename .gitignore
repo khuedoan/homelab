@@ -7,4 +7,3 @@
 .terragrunt-cache/
 Chart.lock
 result
-infra/*/.env

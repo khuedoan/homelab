@@ -6,7 +6,7 @@ View the Nixie output in the terminal running `just deploy production` (or stagi
 To retry metal provisioning:
 
 ```sh
-just --dotenv-path infra/production/.env infra apply production --filter metal
+just infra apply production --filter metal
 ```
 
 ## Nodes not booting from the network

@@ -12,7 +12,7 @@ just --list
 | `just user create ENV NAME "FULL NAME" EMAIL [GROUPS]` | Create a user and print an enrollment link; optional groups are comma-separated |
 | `just user reset ENV NAME` | Print a credential reset link for an existing user |
 | `just user groups ENV NAME GROUPS` | Set access groups (`users` is implicit) |
-| `just infra tfstate ENV` | Create the state bucket and credentials |
+| `just infra tfstate ENV` | Create the state bucket |
 | `just infra apply ENV` | Apply infrastructure |
 | `just infra secrets ENV` | Copy OpenTofu secret outputs to OpenBao |
 | `just infra sso ENV` | Configure SSO and sync OAuth credentials |
@@ -21,11 +21,5 @@ just --list
 | `just lint` | Check Go and infrastructure code |
 | `just fmt` | Format code |
 | `just docs` | Preview the documentation |
-
-`just deploy` loads the environment's credentials. For individual apply or setup commands, load them explicitly:
-
-```sh
-just --dotenv-path infra/production/.env infra secrets production
-```
 
 See the [testing reference](testing.md) for integration tests and benchmarks.

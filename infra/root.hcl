@@ -27,14 +27,6 @@ remote_state {
   }
 }
 
-errors {
-  retry "r2_token_propagation" {
-    retryable_errors   = [".*S3: ListObjectsV2.*StatusCode: 401.*"]
-    max_attempts       = 6
-    sleep_interval_sec = 10
-  }
-}
-
 terraform {
   source = "${find_in_parent_folders("src")}//modules/${local.unit}"
 }

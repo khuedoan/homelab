@@ -1,13 +1,13 @@
 set positional-arguments
+set shell := ["sh", "-eua", "-c"]
 
-[script("sh", "-ea")]
-@deploy target: (tfstate target)
-    . "$1/.env"
-
-    just apply "$1"
-    just secrets "$1"
-    just sso "$1"
-    just forgejo "$1"
+@deploy target:
+    . "./$1/.env"; \
+        python3 src/scripts/tfstate.py "$1"; \
+        just apply "$1"; \
+        just secrets "$1"; \
+        just sso "$1"; \
+        just forgejo "$1"
 
 lint:
     terragrunt hcl fmt --check
@@ -18,151 +18,24 @@ fmt:
     tofu fmt -recursive .
     just --fmt
 
-[script("python3")]
 @tfstate target:
-    import hashlib
-    import json
-    import os
-    import subprocess
-    import sys
-    from datetime import datetime, timedelta, timezone
-    from pathlib import Path
+    . "./$1/.env"; \
+        python3 src/scripts/tfstate.py "$1"
 
-    def bucket_policy(account: str, bucket: str, groups: list[dict]) -> dict:
-        permission = next(
-            group["id"]
-            for group in groups
-            if group["name"] == "Workers R2 Storage Bucket Item Write"
-        )
-
-        return {
-            "effect": "allow",
-            "permission_groups": [{"id": permission}],
-            "resources": {
-                f"com.cloudflare.edge.r2.bucket.{account}_default_{bucket}": "*",
-            },
-        }
-
-    def cf(*arguments):
-        output = subprocess.check_output(
-            ["cf", "--quiet", *arguments],
-        )
-        return json.loads(output)
-
-    target = sys.argv[1]
-    credentials_file = Path(target) / ".env"
-
-    identity = cf("auth", "whoami")
-    account = identity["accounts"][0]["id"]
-    bucket = f"homelab-{target}-tfstate"
-
-    exists = subprocess.run(
-        ["cf", "--quiet", "r2", "buckets", "get", bucket],
-        capture_output=True,
-    )
-
-    if exists.returncode:
-        cf("r2", "buckets", "create", "--name", bucket)
-
-    groups = cf("accounts", "tokens", "permission-groups", "list")
-    policy = bucket_policy(account, bucket, groups)
-    expires = datetime.now(timezone.utc) + timedelta(hours=4)
-    token = cf(
-        "accounts", "tokens", "create",
-        "--name", bucket,
-        "--expires-on", expires.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "--policies", json.dumps([policy]),
-    )
-    login_file = Path(identity["authSource"].removeprefix("OAuth token from "))
-    login = json.loads(login_file.read_text())
-    credentials = {
-        "AWS_ACCESS_KEY_ID": token["id"],
-        "AWS_SECRET_ACCESS_KEY": hashlib.sha256(token["value"].encode()).hexdigest(),
-        "AWS_SESSION_TOKEN": "",
-        "CLOUDFLARE_ACCOUNT_ID": account,
-        "CLOUDFLARE_API_TOKEN": login["oauth_token"],
-    }
-
-    with open(credentials_file, "w", opener=lambda path, flags: os.open(path, flags, 0o600)) as output:
-        output.write("".join(
-            f"{key}={value}\n" for key, value in credentials.items()
-        ))
-
-[script("sh", "-e")]
 @apply target *arguments:
-    cd "$1" && shift \
-        && exec terragrunt run --all --non-interactive "$@" -- apply
+    . "./$1/.env"; \
+        cd "$1"; \
+        shift; \
+        exec terragrunt run --all --non-interactive "$@" -- apply
 
-[script("python3")]
 @secrets target:
-    import json
-    import subprocess
-    import sys
-    from pathlib import Path
+    . "./$1/.env"; \
+        python3 src/scripts/sync_secrets.py "$1"
 
-    sys.path.insert(0, str(Path("src/scripts").resolve()))
-    from openbao import openbao, write_secret
-
-    def outputs(unit):
-        output = subprocess.check_output(
-            [
-                "terragrunt", "run", "--non-interactive", "--no-color",
-                "--tf-forward-stdout", "--", "output", "-json",
-            ],
-            cwd=unit,
-        )
-        return json.loads(output).get("secrets", {}).get("value", {})
-
-    target = Path(sys.argv[1]).resolve()
-    # TODO revisit if we can get the entire stack output at once
-    records = {
-        path: values
-        for config in sorted(target.glob("*/terragrunt.hcl"))
-        for path, values in outputs(config.parent).items()
-    }
-
-    with openbao(target / "kubeconfig.yaml") as client:
-        for path, values in records.items():
-            write_secret(client, path, values)
-
-[script("python3")]
 @sso target:
-    import asyncio
-    import json
-    import subprocess
-    import sys
-    from pathlib import Path
+    . "./$1/.env"; \
+        python3 src/scripts/sso.py "$1"
 
-    sys.path.insert(0, str(Path("src/scripts").resolve()))
-    from openbao import openbao
-    from sso import setup
-
-    target = Path(sys.argv[1]).resolve()
-    output = subprocess.check_output(
-        ["terragrunt", "render", "--json"], cwd=target / "platform",
-    )
-    domain = json.loads(output)["inputs"]["domain"]
-    kubeconfig = target / "kubeconfig.yaml"
-
-    with openbao(kubeconfig) as bao:
-        asyncio.run(setup(domain, kubeconfig, bao))
-
-[script("python3")]
 @forgejo target:
-    import json
-    import subprocess
-    import sys
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path("src/scripts").resolve()))
-    from openbao import openbao
-    from forgejo import setup
-
-    target = Path(sys.argv[1]).resolve()
-    output = subprocess.check_output(
-        ["terragrunt", "render", "--json"], cwd=target / "platform",
-    )
-    domain = json.loads(output)["inputs"]["domain"]
-
-    with openbao(target / "kubeconfig.yaml") as bao:
-        setup(domain, bao, Path.cwd().parent, target.name)
+    . "./$1/.env"; \
+        python3 src/scripts/forgejo.py "$1"

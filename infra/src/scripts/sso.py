@@ -1,7 +1,9 @@
 import asyncio
 import json
 import subprocess
+import sys
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import hvac
 from aiohttp import ClientConnectionError, ClientSession, ClientTimeout, FormData
@@ -11,7 +13,7 @@ from kanidm_openapi_client.api.oauth2_api import Oauth2Api
 from kanidm_openapi_client.models.entry import Entry
 from kanidm_openapi_client.exceptions import ServiceException
 
-from openbao import write_secret
+from openbao import openbao, write_secret
 
 USER_GROUPS = {
     "users",
@@ -351,3 +353,15 @@ def oauth_clients(domain):
             "redirects": [url("openbao", "/ui/vault/auth/oidc/oidc/callback")],
         },
     ]
+
+
+if __name__ == "__main__":
+    target = Path(sys.argv[1]).resolve()
+    output = subprocess.check_output(
+        ["terragrunt", "render", "--json"], cwd=target / "platform",
+    )
+    domain = json.loads(output)["inputs"]["domain"]
+    kubeconfig = target / "kubeconfig.yaml"
+
+    with openbao(kubeconfig) as bao:
+        asyncio.run(setup(domain, kubeconfig, bao))
