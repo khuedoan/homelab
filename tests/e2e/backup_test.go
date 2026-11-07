@@ -58,17 +58,26 @@ var _ = Describe("Backups", Label("backups"), func() {
 		waitForRestore(ctx, client, restore.Name)
 
 		var downloads velerov2.DataDownloadList
-		err = client.List(
-			ctx,
-			&downloads,
-			crclient.InNamespace("velero"),
-			crclient.MatchingLabels{"velero.io/restore-name": restore.Name},
-		)
-		Expect(err).NotTo(HaveOccurred())
-		Expect(downloads.Items).To(HaveLen(2), "both volumes must return from object storage")
+		Eventually(func(g Gomega) {
+			err := client.List(
+				ctx,
+				&downloads,
+				crclient.InNamespace("velero"),
+				crclient.MatchingLabels{"velero.io/restore-name": restore.Name},
+			)
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(downloads.Items).To(HaveLen(2), "both volumes must return from object storage")
+			for _, download := range downloads.Items {
+				g.Expect(download.Status.Phase).To(Equal(velerov2.DataDownloadPhaseCompleted))
+			}
+		}).
+			WithContext(ctx).
+			WithTimeout(5 * time.Minute).
+			WithPolling(2 * time.Second).
+			Should(Succeed())
+
 		var downloadedClaims []string
 		for _, download := range downloads.Items {
-			Expect(download.Status.Phase).To(Equal(velerov2.DataDownloadPhaseCompleted))
 			Expect(download.Spec.TargetVolume.Namespace).To(Equal(restoreNamespace))
 			downloadedClaims = append(downloadedClaims, download.Spec.TargetVolume.PVC)
 			AddReportEntry("download/"+download.Spec.TargetVolume.PVC, download.Name)
