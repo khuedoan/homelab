@@ -252,7 +252,7 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 ## Get Started
 
-- [Deploy on real hardware](https://homelab.khuedoan.com/installation/production/prerequisites) for production workloads
+- [Deploy on real hardware](https://homelab.khuedoan.com/installation/prerequisites)
 
 ## Roadmap
 

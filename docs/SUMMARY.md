@@ -4,10 +4,9 @@
 
 # Installation
 
-- [Production]()
-  - [Prerequisites](installation/production/prerequisites.md)
-  - [Configuration](installation/production/configuration.md)
-  - [Deployment](installation/production/deployment.md)
+- [Prerequisites](installation/prerequisites.md)
+- [Configuration](installation/configuration.md)
+- [Deployment](installation/deployment.md)
 - [Post-installation](installation/post-installation.md)
 
 # Getting started
