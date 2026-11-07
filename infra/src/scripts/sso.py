@@ -13,6 +13,12 @@ from kanidm_openapi_client.exceptions import ServiceException
 
 from openbao import write_secret
 
+USER_GROUPS = {
+    "users",
+    "developers",
+    "admins",
+}
+
 
 def admin_password(kubeconfig, bao):
     path = "kanidm/idm-admin"
@@ -79,7 +85,7 @@ async def kanidm(domain, password):
 
 async def configure_groups(client):
     existing = {group.name for group in await client.group_list()}
-    missing = {"users", "developers", "admins"} - existing
+    missing = USER_GROUPS - existing
     groups = GroupApi(client.openapi_client)
 
     for name in sorted(missing):

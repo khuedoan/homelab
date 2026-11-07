@@ -45,6 +45,12 @@ To generate a credential reset link:
 just user reset production johndoe
 ```
 
+Set access groups:
+
+```sh
+just user groups production johndoe admins,developers
+```
+
 | Group | Access |
 | --- | --- |
 | `users` | Use applications and view dashboards (added by default) |
