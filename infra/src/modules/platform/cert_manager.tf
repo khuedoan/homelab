@@ -60,14 +60,75 @@ resource "kubectl_manifest" "cert_manager" {
   }
 }
 
-resource "kubectl_manifest" "cert_manager_resources" {
+resource "kubectl_manifest" "cert_manager_self_signed" {
+  depends_on        = [kubectl_manifest.cert_manager]
+  server_side_apply = true
+
+  yaml_body = yamlencode({
+    apiVersion = "argoproj.io/v1alpha1"
+    kind       = "Application"
+    metadata = {
+      name      = "cert-manager-self-signed"
+      namespace = "argocd"
+    }
+    spec = {
+      project = kubectl_manifest.system_project.name
+      sources = [{
+        repoURL        = "https://bjw-s-labs.github.io/helm-charts"
+        targetRevision = "5.2.1"
+        chart          = "app-template"
+        helm = {
+          releaseName = "cert-manager-self-signed"
+          values = yamlencode({
+            global = { createDefaultServiceAccount = false }
+            rawResources = {
+              self-signed = {
+                forceRename = "self-signed"
+                manifest = {
+                  apiVersion = "cert-manager.io/v1"
+                  kind       = "ClusterIssuer"
+                  spec       = { selfSigned = {} }
+                }
+              }
+            }
+          })
+        }
+      }]
+      destination       = { name = "in-cluster", namespace = "cert-manager" }
+      ignoreDifferences = local.ignore_differences
+      syncPolicy        = local.sync_policy
+    }
+  })
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  wait_for {
+    field {
+      key   = "status.sync.status"
+      value = "Synced"
+    }
+    field {
+      key   = "status.health.status"
+      value = "Healthy"
+    }
+  }
+
+  timeouts {
+    create = "15m"
+    update = "15m"
+  }
+}
+
+resource "kubectl_manifest" "cert_manager_acme" {
   depends_on        = [kubectl_manifest.openbao]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name        = "cert-manager-resources"
+      name        = "cert-manager-acme"
       namespace   = "argocd"
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
@@ -78,7 +139,7 @@ resource "kubectl_manifest" "cert_manager_resources" {
         targetRevision = "5.2.1"
         chart          = "app-template"
         helm = {
-          releaseName = "cert-manager-resources"
+          releaseName = "cert-manager-acme"
           values = yamlencode({
             global = { createDefaultServiceAccount = false }
             secrets = {
@@ -88,14 +149,6 @@ resource "kubectl_manifest" "cert_manager_resources" {
               }
             }
             rawResources = {
-              selfsigned = {
-                forceRename = "selfsigned"
-                manifest = {
-                  apiVersion = "cert-manager.io/v1"
-                  kind       = "ClusterIssuer"
-                  spec       = { selfSigned = {} }
-                }
-              }
               acme = {
                 forceRename = "acme"
                 manifest = {

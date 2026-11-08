@@ -1,4 +1,5 @@
 resource "kubectl_manifest" "rook_ceph" {
+  depends_on        = [kubectl_manifest.cert_manager_self_signed]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
@@ -209,7 +210,7 @@ resource "kubectl_manifest" "rook_ceph" {
               resources = { requests = { cpu = "10m", memory = "64Mi" } }
             }
             webhook = {
-              tls = { certManagerIssuerRef = { kind = "ClusterIssuer", name = "selfsigned" } }
+              tls = { certManagerIssuerRef = { kind = "ClusterIssuer", name = "self-signed" } }
             }
           })
         }
