@@ -1,5 +1,30 @@
+resource "kubernetes_namespace_v1" "velero" {
+  metadata {
+    name = "velero"
+  }
+}
+
+# Keep backup credentials independent of OpenBao so Velero can restore it
+resource "kubernetes_secret_v1" "velero_credentials" {
+  for_each = toset(["velero-credentials", "velero-repo-credentials"])
+
+  metadata {
+    name      = each.key
+    namespace = kubernetes_namespace_v1.velero.metadata[0].name
+  }
+
+  data = {
+    velero-credentials = {
+      cloud = var.backup.credentials.repository_credentials
+    }
+    velero-repo-credentials = {
+      repository-password = var.backup.credentials.repository_password
+    }
+  }[each.key]
+}
+
 resource "kubectl_manifest" "velero" {
-  depends_on        = [kubectl_manifest.openbao]
+  depends_on        = [kubernetes_secret_v1.velero_credentials]
   server_side_apply = true
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
@@ -29,30 +54,16 @@ resource "kubectl_manifest" "velero" {
               features = "EnableCSI"
               backupStorageLocation = [{
                 provider   = "aws"
-                bucket     = var.backup_location.bucket
+                bucket     = var.backup.location.bucket
                 accessMode = var.backup_read_only ? "ReadOnly" : "ReadWrite"
                 config = {
-                  region            = var.backup_location.region
-                  s3Url             = var.backup_location.endpoint
+                  region            = var.backup.location.region
+                  s3Url             = var.backup.location.endpoint
                   checksumAlgorithm = ""
                 }
               }]
             }
             credentials = { existingSecret = "velero-credentials" }
-            extraObjects = [for name, data in {
-              velero-credentials = { cloud = "bao:secret/data/velero/repository#credentials" }
-              velero-repo-credentials = {
-                repository-password = "bao:secret/data/velero/encryption#password"
-              }
-              } : {
-              apiVersion = "v1"
-              kind       = "Secret"
-              metadata = {
-                name        = name
-                annotations = { "argocd.argoproj.io/sync-wave" = "-1" }
-              }
-              stringData = data
-            }]
             schedules = {
               cluster = {
                 disabled = var.backup_read_only

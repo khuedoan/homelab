@@ -17,7 +17,7 @@ dependency "backup" {
 inputs = {
   kubeconfig         = dependency.cluster.outputs.kubeconfig_path
   load_balancer_cidr = jsondecode(file("${get_terragrunt_dir()}/../cluster/config.json")).load_balancer_cidr
-  backup_location    = dependency.backup.outputs.location
   control_plane_ips  = [for host in jsondecode(file("${get_terragrunt_dir()}/../metal/hosts.json")) : host.ip]
   domain             = "khuedoan.com"
+  backup             = dependency.backup.outputs.backup
 }

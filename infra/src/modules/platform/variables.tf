@@ -17,14 +17,6 @@ variable "repository" {
   }
 }
 
-variable "backup_location" {
-  type = object({
-    bucket   = string
-    endpoint = string
-    region   = string
-  })
-}
-
 variable "backup_read_only" {
   type        = bool
   default     = false
@@ -51,4 +43,19 @@ variable "ceph_replica_count" {
 variable "load_balancer_cidr" {
   type        = string
   description = "Application LoadBalancer subnet advertised by kube-vip and Tailscale."
+}
+
+variable "backup" {
+  sensitive = true
+  type = object({
+    location = object({
+      bucket   = string
+      endpoint = string
+      region   = string
+    })
+    credentials = object({
+      repository_credentials = string
+      repository_password    = string
+    })
+  })
 }
