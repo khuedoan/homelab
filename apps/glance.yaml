@@ -1,0 +1,159 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: docker.io/glanceapp/glance
+          tag: v0.8.7
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+service:
+  main:
+    ports:
+      http:
+        port: 8080
+route:
+  main:
+    parentRefs:
+      - name: gateway
+        namespace: istio-system
+        sectionName: https
+    hostnames:
+      - home.{{ .Values.global.domain }}
+    rules:
+      - backendRefs:
+          - identifier: main
+            port: 8080
+persistence:
+  config:
+    type: configMap
+    identifier: config
+    globalMounts:
+      - path: /app/config
+        readOnly: true
+configMaps:
+  config:
+    data:
+      glance.yml: |
+        pages:
+          - name: Home
+            columns:
+              - size: full
+                widgets:
+                  - type: search
+                    search-engine: google
+                    new-tab: true
+                  - type: bookmarks
+                    title: Services
+                    groups:
+                      - title: Apps
+                        links:
+                          - title: Actual Budget
+                            url: https://budget.{{ .Values.global.domain }}
+                            icon: di:actual-budget.svg
+                          - title: PairDrop
+                            url: https://drop.{{ .Values.global.domain }}
+                            icon: di:pairdrop.png
+                          - title: Chat
+                            url: https://chat.{{ .Values.global.domain }}
+                            icon: di:matrix.svg
+                          - title: OpenCloud
+                            url: https://drive.{{ .Values.global.domain }}
+                            icon: mdi:cloud-outline
+                          - title: Photos
+                            url: https://photos.{{ .Values.global.domain }}
+                            icon: di:immich.svg
+                          - title: Hister
+                            url: https://hister.{{ .Values.global.domain }}
+                            icon: mdi:magnify
+                          - title: Excalidraw
+                            url: https://draw.{{ .Values.global.domain }}
+                            icon: di:excalidraw.svg
+                      - title: Development
+                        links:
+                          - title: Forgejo
+                            url: https://git.{{ .Values.global.domain }}
+                            icon: di:forgejo.svg
+                          - title: Woodpecker
+                            url: https://ci.{{ .Values.global.domain }}
+                            icon: di:woodpecker-ci.svg
+                          - title: ArgoCD
+                            url: https://argocd.{{ .Values.global.domain }}
+                            icon: di:argo-cd.svg
+                          - title: Registry
+                            url: https://registry.{{ .Values.global.domain }}
+                            icon: di:docker.svg
+                      - title: Infrastructure
+                        links:
+                          - title: Grafana
+                            url: https://grafana.{{ .Values.global.domain }}
+                            icon: di:grafana.svg
+                          - title: SSO
+                            url: https://auth.{{ .Values.global.domain }}
+                            icon: di:kanidm.svg
+                          - title: OpenBao
+                            url: https://openbao.{{ .Values.global.domain }}
+                            icon: di:openbao.svg
+                          - title: Speedtest
+                            url: https://speedtest.{{ .Values.global.domain }}
+                            icon: di:openspeedtest.png
+                          - title: ntfy
+                            url: https://ntfy.{{ .Values.global.domain }}
+                            icon: di:ntfy.svg
+                          - title: Kiali
+                            url: https://kiali.{{ .Values.global.domain }}
+                            icon: mdi:graph-outline
+                          - title: WireGuard
+                            url: https://vpn.{{ .Values.global.domain }}
+                            icon: di:wireguard.svg
+                  - type: bookmarks
+                    groups:
+                      - links:
+                          - title: Documentation
+                            url: https://homelab.khuedoan.com
+                            icon: di:google-docs.svg
+                          - title: Public homelab repository
+                            url: https://github.com/khuedoan/homelab
+                            icon: di:github.svg
+                          - title: Cloudflare
+                            url: https://dash.cloudflare.com
+                            icon: di:cloudflare.svg
+                          - title: Router
+                            url: https://192.168.1.1
+                            icon: di:router.svg
+          - name: News
+            columns:
+              - size: full
+                widgets:
+                  - type: group
+                    widgets:
+                      - type: hacker-news
+                        sort-by: best
+                      - type: lobsters
+                        tags:
+                          - linux
+                          - nix
+                          - rust
+                          - distributed
+                          - databases
+                          - networking
+                          - security
+                          - devops
+                  - type: releases
+                    title: Homelab releases
+                    repositories:
+                      - glanceapp/glance
+                      - actualbudget/actual
+                      - immich-app/immich
+                      - schlagmichdoch/PairDrop
+                      - opencloud-eu/opencloud
+                      - asciimoo/hister
+        branding:
+          custom-footer: "<p>Enjoy this homelab? <a href=\"https://github.com/khuedoan/homelab\"\
+            \ target=\"_blank\" rel=\"noopener noreferrer\">Star it on GitHub \u2197</a></p>\n"
+        server:
+          proxied: true

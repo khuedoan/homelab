@@ -77,8 +77,8 @@ They can't capture all the project's features, but they are sufficient to get a 
 | PXE boot |
 | [![][kiali-demo]][kiali-demo] |
 | Observe network traffic with [Kiali](https://kiali.io) |
-| [![][homepage-demo]][homepage-demo] |
-| Homepage powered by... [Homepage](https://gethomepage.dev) |
+| [![][glance-demo]][glance-demo] |
+| Home dashboard powered by [Glance](https://github.com/glanceapp/glance) |
 | [![][grafana-demo]][grafana-demo] |
 | Monitoring dashboard powered by [Grafana](https://grafana.com) |
 | [![][forgejo-demo]][forgejo-demo] |
@@ -107,7 +107,7 @@ They can't capture all the project's features, but they are sufficient to get a 
 [immich-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/immich-photos.jpg
 [opencloud-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/opencloud-files.jpg
 [zot-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg
-[homepage-demo]: https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b
+[glance-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/glance-home.png
 [grafana-demo]: https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f
 [matrix-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg
 [woodpecker-demo]: https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4
