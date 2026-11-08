@@ -10,7 +10,7 @@ resource "kubectl_manifest" "wireguard" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "ghcr.io/h44z/charts"
         targetRevision = "0.7.3"

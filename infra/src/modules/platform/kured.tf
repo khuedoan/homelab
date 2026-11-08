@@ -8,7 +8,7 @@ resource "kubectl_manifest" "kured" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://kubereboot.github.io/charts"
         chart          = "kured"

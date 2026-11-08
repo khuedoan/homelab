@@ -12,7 +12,7 @@ resource "kubectl_manifest" "istio" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
         targetRevision = local.istio_version
@@ -81,7 +81,7 @@ resource "kubectl_manifest" "istio_resources" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"

@@ -8,7 +8,7 @@ resource "kubectl_manifest" "tailscale" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         chart          = "app-template"

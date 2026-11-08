@@ -24,7 +24,7 @@ resource "kubectl_manifest" "apps" {
           annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
         }
         spec = {
-          project = "default"
+          project = kubectl_manifest.apps_project.name
           sources = [{
             repoURL        = "https://bjw-s-labs.github.io/helm-charts"
             chart          = "app-template"

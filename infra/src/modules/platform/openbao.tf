@@ -9,7 +9,7 @@ resource "kubectl_manifest" "openbao" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "ghcr.io/bank-vaults/helm-charts"
         targetRevision = "1.24.1"
@@ -76,7 +76,7 @@ resource "kubectl_manifest" "openbao_resources" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"

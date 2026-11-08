@@ -8,7 +8,7 @@ resource "kubectl_manifest" "grafana" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://grafana-community.github.io/helm-charts"
         targetRevision = "13.5.0"
@@ -93,7 +93,7 @@ resource "kubectl_manifest" "grafana_resources" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"

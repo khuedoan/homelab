@@ -8,7 +8,7 @@ resource "kubectl_manifest" "external_dns" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://kubernetes-sigs.github.io/external-dns"
         chart          = "external-dns"
@@ -61,7 +61,7 @@ resource "kubectl_manifest" "external_dns_resources" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"

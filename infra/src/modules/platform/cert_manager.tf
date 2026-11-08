@@ -8,7 +8,7 @@ resource "kubectl_manifest" "cert_manager" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://charts.jetstack.io"
         targetRevision = "v1.21.2"
@@ -72,7 +72,7 @@ resource "kubectl_manifest" "cert_manager_resources" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"

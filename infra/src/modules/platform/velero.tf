@@ -10,7 +10,7 @@ resource "kubectl_manifest" "velero" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://vmware-tanzu.github.io/helm-charts"
         chart          = "velero"

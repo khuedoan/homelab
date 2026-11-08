@@ -8,7 +8,7 @@ resource "kubectl_manifest" "loki" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://grafana.github.io/helm-charts"
         chart          = "loki-stack"

@@ -30,7 +30,7 @@ resource "kubectl_manifest" "monitoring_system" {
       namespace = "argocd"
     }
     spec = {
-      project = "default"
+      project = kubectl_manifest.system_project.name
       sources = [{
         repoURL        = "https://prometheus-community.github.io/helm-charts"
         targetRevision = "92.3.0"
