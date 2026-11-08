@@ -68,7 +68,17 @@ resource "kubectl_manifest" "velero" {
               cluster = {
                 disabled = var.backup_read_only
                 schedule = "0 * * * *"
-                template = { snapshotMoveData = true }
+                template = {
+                  snapshotMoveData = true
+                  excludedNamespaces = [
+                    "argocd",
+                    "grafana",
+                    "istio-system",
+                    "loki",
+                    "monitoring-system",
+                    "velero",
+                  ]
+                }
               }
             }
             metrics = { serviceMonitor = { enabled = true } }
