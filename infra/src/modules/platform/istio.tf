@@ -69,10 +69,29 @@ resource "kubectl_manifest" "istio" {
   lifecycle {
     prevent_destroy = true
   }
+
+  wait_for {
+    field {
+      key   = "status.sync.status"
+      value = "Synced"
+    }
+
+    field {
+      key   = "status.health.status"
+      value = "Healthy"
+    }
+  }
+
+  timeouts {
+    create = "15m"
+    update = "15m"
+  }
 }
 
 resource "kubectl_manifest" "istio_resources" {
+  depends_on        = [kubectl_manifest.istio]
   server_side_apply = true
+
   yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
@@ -97,6 +116,21 @@ resource "kubectl_manifest" "istio_resources" {
               }
             }
             rawResources = {
+              strict-mtls = {
+                forceRename = "strict-mtls"
+                manifest = {
+                  apiVersion = "security.istio.io/v1"
+                  kind       = "PeerAuthentication"
+
+                  # Mesh-wide default.
+                  spec = {
+                    mtls = {
+                      mode = "STRICT"
+                    }
+                  }
+                }
+              }
+
               gateway = {
                 forceRename = "gateway"
                 manifest = {
