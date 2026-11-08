@@ -71,7 +71,13 @@ resource "kubectl_manifest" "zot" {
       }]
       destination       = { name = "in-cluster", namespace = "zot" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {
@@ -114,7 +120,13 @@ resource "kubectl_manifest" "zot_resources" {
       }]
       destination       = { name = "in-cluster", namespace = "zot" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

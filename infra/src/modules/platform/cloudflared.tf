@@ -89,7 +89,13 @@ resource "kubectl_manifest" "cloudflared" {
       }]
       destination       = { name = "in-cluster", namespace = "cloudflared" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {
@@ -129,7 +135,13 @@ resource "kubectl_manifest" "cloudflared_resources" {
       }]
       destination       = { name = "in-cluster", namespace = "cloudflared" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

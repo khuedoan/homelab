@@ -41,7 +41,13 @@ resource "kubectl_manifest" "external_dns" {
       }]
       destination       = { name = "in-cluster", namespace = "external-dns" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {
@@ -84,7 +90,13 @@ resource "kubectl_manifest" "external_dns_resources" {
       }]
       destination       = { name = "in-cluster", namespace = "external-dns" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

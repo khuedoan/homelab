@@ -170,7 +170,13 @@ resource "kubectl_manifest" "monitoring_system" {
       }]
       destination       = { name = "in-cluster", namespace = "monitoring-system" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

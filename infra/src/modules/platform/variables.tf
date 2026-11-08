@@ -17,10 +17,10 @@ variable "repository" {
   }
 }
 
-variable "backup_read_only" {
+variable "recovery_mode" {
   type        = bool
   default     = false
-  description = "Prevent backup creation and deletion during recovery and disable the backup schedule."
+  description = "Pause workload auto-sync and keep backups read-only while restoring data."
 }
 
 variable "domain" {

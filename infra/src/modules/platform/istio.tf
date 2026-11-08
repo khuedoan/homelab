@@ -62,6 +62,11 @@ resource "kubectl_manifest" "istio" {
         }
       ])
       syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
         syncOptions = concat(local.sync_policy.syncOptions, ["RespectIgnoreDifferences=true"])
       })
     }
@@ -187,7 +192,13 @@ resource "kubectl_manifest" "istio_resources" {
       }]
       destination       = { name = "in-cluster", namespace = "istio-system" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

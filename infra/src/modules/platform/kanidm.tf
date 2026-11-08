@@ -127,7 +127,13 @@ EOT
       }]
       destination       = { name = "in-cluster", namespace = "kanidm" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {
@@ -195,7 +201,13 @@ resource "kubectl_manifest" "kanidm_resources" {
       }]
       destination       = { name = "in-cluster", namespace = "kanidm" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

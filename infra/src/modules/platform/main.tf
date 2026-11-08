@@ -30,10 +30,6 @@ locals {
     ]
   }]
   sync_policy = {
-    automated = {
-      prune    = true
-      selfHeal = true
-    }
     retry = {
       limit = -1
       backoff = {

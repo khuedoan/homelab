@@ -38,7 +38,13 @@ resource "kubectl_manifest" "cert_manager" {
       }]
       destination       = { name = "in-cluster", namespace = "cert-manager" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {
@@ -96,7 +102,13 @@ resource "kubectl_manifest" "cert_manager_self_signed" {
       }]
       destination       = { name = "in-cluster", namespace = "cert-manager" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
 
@@ -176,7 +188,13 @@ resource "kubectl_manifest" "cert_manager_acme" {
       }]
       destination       = { name = "in-cluster", namespace = "cert-manager" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

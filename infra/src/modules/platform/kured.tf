@@ -45,7 +45,13 @@ resource "kubectl_manifest" "kured" {
       }]
       destination       = { name = "in-cluster", namespace = "kured" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

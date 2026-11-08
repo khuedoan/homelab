@@ -55,7 +55,7 @@ resource "kubectl_manifest" "velero" {
               backupStorageLocation = [{
                 provider   = "aws"
                 bucket     = var.backup.location.bucket
-                accessMode = var.backup_read_only ? "ReadOnly" : "ReadWrite"
+                accessMode = var.recovery_mode ? "ReadOnly" : "ReadWrite"
                 config = {
                   region            = var.backup.location.region
                   s3Url             = var.backup.location.endpoint
@@ -66,7 +66,7 @@ resource "kubectl_manifest" "velero" {
             credentials = { existingSecret = "velero-credentials" }
             schedules = {
               cluster = {
-                disabled = var.backup_read_only
+                disabled = var.recovery_mode
                 schedule = "0 * * * *"
                 template = {
                   snapshotMoveData = true
@@ -87,7 +87,13 @@ resource "kubectl_manifest" "velero" {
       }]
       destination       = { name = "in-cluster", namespace = "velero" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

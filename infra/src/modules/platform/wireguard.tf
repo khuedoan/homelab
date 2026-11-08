@@ -95,7 +95,13 @@ resource "kubectl_manifest" "wireguard" {
       }]
       destination       = { name = "in-cluster", namespace = "wireguard" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

@@ -35,7 +35,13 @@ resource "kubectl_manifest" "loki" {
       }]
       destination       = { name = "in-cluster", namespace = "loki" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

@@ -48,7 +48,13 @@ resource "kubectl_manifest" "cloudflare_ddns" {
       }]
       destination       = { name = "in-cluster", namespace = "cloudflare-ddns" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

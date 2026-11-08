@@ -48,6 +48,11 @@ resource "kubectl_manifest" "apps" {
           }
           ignoreDifferences = local.ignore_differences
           syncPolicy = merge(local.sync_policy, {
+            automated = {
+              enabled  = !var.recovery_mode
+              prune    = true
+              selfHeal = true
+            }
             managedNamespaceMetadata = {
               labels = { "istio.io/dataplane-mode" = "ambient" }
             }

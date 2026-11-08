@@ -217,7 +217,13 @@ resource "kubectl_manifest" "rook_ceph" {
       }]
       destination       = { name = "in-cluster", namespace = "rook-ceph" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = true
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {

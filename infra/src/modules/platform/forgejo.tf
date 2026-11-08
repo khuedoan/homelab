@@ -77,7 +77,13 @@ resource "kubectl_manifest" "forgejo" {
       }]
       destination       = { name = "in-cluster", namespace = "forgejo" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {
@@ -129,7 +135,13 @@ resource "kubectl_manifest" "forgejo_resources" {
       }]
       destination       = { name = "in-cluster", namespace = "forgejo" }
       ignoreDifferences = local.ignore_differences
-      syncPolicy        = local.sync_policy
+      syncPolicy = merge(local.sync_policy, {
+        automated = {
+          enabled  = !var.recovery_mode
+          prune    = true
+          selfHeal = true
+        }
+      })
     }
   })
   lifecycle {
