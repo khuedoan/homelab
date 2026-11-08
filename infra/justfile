@@ -1,13 +1,7 @@
 set positional-arguments
 set shell := ["sh", "-eua", "-c"]
 
-@deploy target:
-    . "./$1/.env"; \
-        python3 src/scripts/tfstate.py "$1"; \
-        just apply "$1"; \
-        just secrets "$1"; \
-        just sso "$1"; \
-        just forgejo "$1"
+deploy target: (tfstate target) (apply target) (secrets target) (sso target) (forgejo target)
 
 lint:
     terragrunt hcl fmt --check
@@ -19,23 +13,18 @@ fmt:
     just --fmt
 
 @tfstate target:
-    . "./$1/.env"; \
-        python3 src/scripts/tfstate.py "$1"
+    direnv exec "$1" python3 src/scripts/tfstate.py "$1"
 
 @apply target *arguments:
-    . "./$1/.env"; \
-        cd "$1"; \
+    cd "$1"; \
         shift; \
-        exec terragrunt run --all --non-interactive "$@" -- apply
+        exec direnv exec . terragrunt run --all --non-interactive "$@" -- apply
 
 @secrets target:
-    . "./$1/.env"; \
-        python3 src/scripts/sync_secrets.py "$1"
+    direnv exec "$1" python3 src/scripts/sync_secrets.py "$1"
 
 @sso target:
-    . "./$1/.env"; \
-        python3 src/scripts/sso.py "$1"
+    direnv exec "$1" python3 src/scripts/sso.py "$1"
 
 @forgejo target:
-    . "./$1/.env"; \
-        python3 src/scripts/forgejo.py "$1"
+    direnv exec "$1" python3 src/scripts/forgejo.py "$1"

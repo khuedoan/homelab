@@ -71,7 +71,7 @@ You'll need a password manager to store credentials.
 I'm using [`pass`](https://www.passwordstore.org),
 but you can use any password manager with a CLI.
 
-Example `infra/${ENV}/.env` change for another password manager
+Example `infra/${ENV}/.envrc` change for another password manager
 (in this case Bitwarden):
 
 ```diff

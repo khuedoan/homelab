@@ -1,42 +1,45 @@
 # Development shell
 
-The development shell makes it easy to get all of the dependencies needed to interact with the homelab.
+The development shell makes it easy to get all of the tools and credentials.
 
 ## Prerequisites
 
-> [!NOTE]
->
-> NixOS users can skip this step.
+### NixOS
 
-Install Nix using one of the following methods:
+Add the following to your NixOS configuration:
 
-- [Official Nix installer](https://nixos.org/download)
-- [Determinate Nix Installer](https://docs.determinate.systems/getting-started/#installer)
-
-If you're using the official installer, add the following to your
-`~/.config/nix/nix.conf` to enable [Flakes](https://nixos.wiki/wiki/Flakes):
-
-```conf
-experimental-features = nix-command flakes
+```nix
+{
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+  programs.direnv = {
+    enable = true;
+    silent = true;
+  };
+}
 ```
 
-## How to open it
+### Other distros
 
-Run the following command:
+1. Install Nix using the [official installer](https://nixos.org/download).
+2. Enable [Flakes](https://nixos.wiki/wiki/Flakes) in `~/.config/nix/nix.conf`:
+
+   ```conf
+   experimental-features = nix-command flakes
+   ```
+
+3. Install [direnv](https://direnv.net) and [enable its shell hook](https://direnv.net/man/direnv.1.html#setup).
+
+## Load the environment
+
+From the repo root:
 
 ```sh
-nix develop
+direnv allow .
+direnv allow infra/production
+direnv allow infra/staging
 ```
 
-It will open a shell with all the dependencies defined in `./flake.nix`:
-
-```
-[khuedoan@ryzentower:~/Documents/homelab]$ which kubectl
-/nix/store/0558zzzqynzw7rx9dp2i7jymvznd1cqx-kubectl-1.30.1/bin/kubectl
-```
-
-> [!TIP]
->
-> If you have [`direnv`](https://direnv.net) installed, you can run `direnv
-> allow` once and it will automatically enter the Nix shell every time you
-> `cd` into the project.
+From now on, `cd` to the project automatically loads the required tools and credentials.

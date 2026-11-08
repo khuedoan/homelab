@@ -1,12 +1,8 @@
 # Deployment
 
-Open the development shell if you haven't already:
+First set up the [development shell](../concepts/development-shell.md#load-the-environment) if you haven't already.
 
-```sh
-nix develop
-```
-
-Build the lab:
+Deploy the lab:
 
 ```sh
 just deploy production
