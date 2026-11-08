@@ -34,6 +34,10 @@ locals {
         maxDuration = "3m"
       }
     }
-    syncOptions = ["CreateNamespace=true", "ServerSideApply=true"]
+    syncOptions = [
+      "CreateNamespace=true",
+      "ServerSideApply=true",
+      "ApplyOutOfSyncOnly=true",
+    ]
   }
 }

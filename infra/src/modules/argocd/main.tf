@@ -72,8 +72,8 @@ resource "helm_release" "release" {
     controller = {
       replicas = 1
       resources = {
-        requests = { cpu = "100m", memory = "256Mi" }
-        limits   = { memory = "1Gi" }
+        requests = { cpu = "100m", memory = "1Gi" }
+        limits   = { memory = "2Gi" }
       }
       metrics = { enabled = true, serviceMonitor = { enabled = false } }
     }
