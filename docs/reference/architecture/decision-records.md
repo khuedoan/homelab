@@ -1,12 +1,12 @@
 # Decision records
 
 These are the records of design decisions for future reference in order to understand why things are the way they are.
-They are not permanent, we can change them in the future if better alternatives become available.
+They are not permanent, I can change them in the future if better alternatives become available.
 
 <details>
 <summary>Template</summary>
 
-## Description of the the change
+## Description of the change
 
 **Context**
 
@@ -22,19 +22,102 @@ CHANGEME
 
 </details>
 
-## Use Velero for backups
+## Current decisions
+
+### Using NixOS as the base OS
+
+**Context**
+
+With Fedora and Ansible, I sometimes make manual changes and forget to put them back in the playbooks.
+If a playbook fails halfway, it's also hard to roll back to the previous system.
+
+I've also considered other atomic distros, for example Talos is smaller and has better integration for Kubernetes operations,
+but I want a general-purpose OS that can stay even if I move away from Kubernetes.
+I don't want the OS to depend on a single company that could change its license,
+and I already use NixOS on my other machines.
+
+**Decision**
+
+Use NixOS as the base OS.
+
+**Consequences**
+
+- System changes have to go through the NixOS configuration, so it's easier to keep the system clean and reproducible.
+- NixOS builds the new system before switching to it, and I can roll back to a previous generation.
+  Switching to the new system is almost fully atomic, except for service activation and restarts, which are still imperative.
+- I can use Nix for both the OS and development shells, without installing project dependencies into the base system.
+- I can test the same configurations in QEMU before applying them to real hardware.
+- I can keep the OS even if I replace Kubernetes later.
+- The system is larger than Talos, with a larger attack surface, and I need to coordinate rolling upgrades myself.
+
+See the [original discussion](https://github.com/khuedoan/homelab/pull/197#issuecomment-3440096206)
+and [NixOS cured my OCD](https://www.khuedoan.com/posts/nixos-cured-my-ocd) for more background.
+
+### Switch metal provisioning from Ansible to Nixie
+
+**Context**
+
+The metal nodes used to use Ansible to install Fedora.
+When I switched to NixOS, I could still use Ansible to install it,
+but it was hard to test and debug.
+
+**Decision**
+
+Build a custom bare metal orchestration engine for NixOS - [nixie](https://github.com/khuedoan/nixie).
+
+Nixie installs from the NixOS configuration, replacing Kickstart without needing cloud-init.
+It works with VMs too. My staging cluster runs on Incus VMs that I regularly destroy and recreate,
+while production runs on bare metal.
+See [PXE boot](../../concepts/pxe-boot.md) for the installation flow.
+
+**Consequences**
+
+- Single binary with native OS process instead of complex Ansible & Docker Compose setup (& its host networking baggage)
+- It has much better integration to the OS, since it's built specically for NixOS
+- It's much more reliable and testable (Nixie has a full test suite in QEMU)
+- There's much better visibility into the PXE boot process with tracing
+- The PXE installer can be reused with other projects
+  (e.g., my [dotfiles](https://github.com/khuedoan/dotfiles)),
+  not just this homelab.
+
+### K3s
+
+K3s is reliable, well supported, and available in `nixpkgs` with a NixOS module.
+I've been using it for years without issues that would make me want to replace it.
+I replace the bundled Traefik, ServiceLB, and local storage with Istio, kube-vip, and Rook Ceph.
+
+### Replace ingress-nginx with Istio
+
+I want a service mesh for observability, security, and traffic routing, and I need Gateway API support anyway.
+Istio provides both, and I'm already running it in production.
+Ambient mesh has the features I need without sidecar overhead.
+
+I keep Flannel for pod networking and kube-vip for the control-plane VIP and Service load balancing.
+Keeping the existing CNI makes it easy to port the platform to cloud-managed Kubernetes without bringing my own CNI.
+
+Application routes use Gateway API, and ambient mesh encrypts traffic between application Pods with strict mTLS.
+See [Networking](networking.md) for the current setup.
+
+### Use Rook Ceph for storage
+
+Ceph is reliable, battle-tested distributed storage, and Rook manages it in Kubernetes.
+I've tried Longhorn but still ran into volume detachment issues.
+A single NFS server would be a single point of failure, which I don't want for cluster storage.
+Ceph is more complex to operate, but its reliability is worth it to me.
+
+### Use Velero for backups
 
 **Context**
 
 Requirements:
 
 - All apps backed up by default, without additional configuration for new apps.
-- The backups need to work even if we lose the entire cluster.
+- The backups need to work even if I lose the entire cluster.
 
-We used to use [VolSync](https://volsync.readthedocs.io/en/stable/usage/restic/index.html),
+I used to use [VolSync](https://volsync.readthedocs.io/en/stable/usage/restic/index.html),
 but its Restic workflow requires per-volume replication resources and credentials,
 and the backup & restore flow is not really declarative.
-We would need additional resource generation and orchestration to provide this experience.
+I would need additional resource generation and orchestration to provide this experience.
 
 **Decision**
 
@@ -54,58 +137,71 @@ Use Velero to back up cluster resources and supported persistent volumes:
 - Velero requires broad cluster permissions.
 - Database applications may still need backup hooks or native exports for consistent backups.
 
-## Switch metal provisioning from Ansible to Nixie
+### Use Kanidm for identity
 
-**Context**
+I want a reliable, secure identity provider.
+I trust Kanidm's maintainer and track record, and its use of Rust gives me more peace of mind.
 
-The metal nodes used to use Ansible to install Fedora.
-When we switched to NixOS, while technically we can still use Ansible to do the same thing,
-but it's still hard to test and debug.
+I only use Kanidm and don't plan to switch identity providers.
+Dex helped with client IDs and secrets, but added another layer and limited which Kanidm features I could use.
+I now integrate with Kanidm directly and automate client provisioning myself.
+If I switch providers later, rewriting the automation scripts is a small enough cost.
 
-**Decision**
+### Use OpenBao for secrets
 
-Build a custom bare metal orchestration engine for NixOS - [nixie](https://github.com/khuedoan/nixie).
+I need an API to provision application credentials automatically.
+For example, SSO setup can create a Kanidm client secret and write it to OpenBao for the application to use.
 
-**Consequences**
+I could do this with the Kubernetes Secret API, but I also want secret injection and namespace-scoped access policies.
+Applications should only be able to read secrets under their own namespace's path.
+OpenBao provides those guardrails, with Bank-Vaults handling secret injection.
+It's more to maintain than the previous global secret store, but worth it for these features.
 
-- Single binary with native OS process instead of complex Ansible & Docker Compose setup (& its host networking baggage)
-- It has much better integration to the OS, since it's built specically for NixOS
-- It's much more reliable and testable (Nixie has a full test suite in QEMU)
-- There's much better visibility into the PXE boot process with tracing
-- The PXE installer can be reused with other projects
-  (e.g., my [dotfiles](https://github.com/khuedoan/dotfiles)),
-  not just this homelab.
+See [Secrets management](../../concepts/secrets-management.md) for the implementation.
 
-## Using NixOS as the base OS
+### Manage platform components through OpenTofu and ArgoCD
 
-**Context**
+I already need OpenTofu for infrastructure and a way to bootstrap the platform.
+It gives me templating and dependency ordering, while ArgoCD deploys and reconciles the workloads.
+I prefer HCL to Helm templates or string replacement.
+User applications stay in GitOps, managed by ArgoCD.
 
-With Fedora and Ansible, I sometimes make manual changes and forget to put them back in the playbooks.
-If a playbook fails halfway, it's also hard to roll back to the previous system.
+Terragrunt gives each provisioning unit its own state and provider configuration.
+It handles dependencies between units without custom orchestration.
+The cluster must exist before I can initialize the Kubernetes and Helm providers for platform components.
 
-Talos is smaller and has better integration for Kubernetes operations,
-but I want a general-purpose OS that can stay even if we move away from Kubernetes.
-I don't want the OS to depend on a single company that could change its license,
-and I already use NixOS on my other machines.
+OpenTofu can also provision secrets before OpenBao is available.
+Velero needs this because it must be able to restore OpenBao, so its credentials can't depend on OpenBao being up first.
 
-**Decision**
+### Use app-template for all applications
 
-Use NixOS as the base OS.
+I want consistent application configuration so I can apply platform requirements like ambient mesh and future security settings in one place.
+All applications use [app-template](https://bjw-s-labs.github.io/helm-charts/docs/app-template), with a shared ApplicationSet handling platform integration.
+I lose some flexibility and can't reuse upstream Helm charts directly, but so far I've been able to convert every application.
 
-**Consequences**
+App-template supports arbitrary resources through `rawResources`, so the chart alone isn't a guardrail.
+I use separate ArgoCD projects: platform components need cluster-wide privileges, while applications have a resource allowlist.
+This gives me more confidence that application changes have a contained blast radius.
 
-- System changes have to go through the NixOS configuration, so it's easier to keep the system clean and reproducible.
-- NixOS builds the new system before switching to it, and we can roll back to a previous generation.
-  Switching to the new system is almost fully atomic, except for service activation and restarts, which are still imperative.
-- We can use Nix for both the OS and development shells, without installing project dependencies into the base system.
-- We can test the same configurations in QEMU before applying them to real hardware.
-- We can keep the OS even if we replace Kubernetes later.
-- The system is larger than Talos, with a larger attack surface, and we need to coordinate rolling upgrades ourselves.
+### Use Forgejo as the GitOps source
 
-See the [original discussion](https://github.com/khuedoan/homelab/pull/197#issuecomment-3440096206)
-and [NixOS cured my OCD](https://www.khuedoan.com/posts/nixos-cured-my-ocd) for more background.
+The point of this project is to self-host, so that includes Git.
+I don't want a critical platform feature to depend on a closed-source third-party service like GitHub.
+Forgejo lets me control the GitOps source end-to-end.
+If it's down, I can still update things manually or fix it myself.
 
-## Remove the Docker wrapper for Nix shell
+Self-hosting everything has to be practical. If it's too complex, people won't do it.
+I'm fine with managed services that provide enough value without much lock-in.
+DNS and S3-compatible storage are good examples: they're commodity services, and I still own my data.
+Tunneling is another place where a managed service can be worth it, as long as I can replace it.
+
+### Keep Tailscale as a fallback for WireGuard
+
+I primarily use WireGuard, but my ISP has broken access through my public IP several times.
+Tailscale gives me another way in when that happens.
+I don't want to depend on its managed control plane as my primary access method, so I keep it as a fallback.
+
+### Remove the Docker wrapper for Nix shell
 
 **Context**
 
@@ -126,12 +222,20 @@ everyone has Nix installed, not everyone has the same Docker setup either.
   directly. Although it can be added to the `Makefile`, this requires `make` to
   be installed, and not everyone has the same version of `make`.
 
-## Remove HashiCorp Vault
+### Replace Make with Just
 
-**Status**: we added back OpenBao, the community fork of Vault.
-It has more management overhead than our previous global secret store,
-but its security features, API for dynamic configuration, and removal of External Secrets are worth the additional complexity.
-See [Secrets management](../../concepts/secrets-management.md).
+Most of my commands are things I need to run, rather than things I need to build.
+Just fits this better, with positional arguments and support for Python recipes.
+Modules let me keep recipes alongside the infrastructure and tests, exposed through the root `justfile`.
+It needs an extra installation, but I already have a Nix shell that provides it.
+
+## Historical decisions
+
+These records describe earlier choices and are kept for context.
+
+### Remove HashiCorp Vault
+
+**Status**: superseded by [Use OpenBao for secrets](#use-openbao-for-secrets), the community fork of Vault.
 
 **Context**
 
@@ -145,7 +249,7 @@ See [Secrets management](../../concepts/secrets-management.md).
   provider in External Secrets, both features can be replaced with
   Kubernetes's built-in secrets and API server.
 - A related goal of using Vault as an identity provider for SSO will be
-  discarded, and we'll use Authelia instead, which has a beta identity
+  discarded, and I'll use Authelia instead, which has a beta identity
   provider feature (or use another alternative).
 
 **Decision**
@@ -155,7 +259,7 @@ Replace Vault with a simpler in-cluster global secret store.
 **Consequences**
 
 Unlike secret path in Vault, Kubernetes does not support `/` in object name.
-We need to change secret convention from `path` to `name` and replace `/` with `.`.
+I need to change secret convention from `path` to `name` and replace `/` with `.`.
 
 Update secret generator config:
 
@@ -175,20 +279,20 @@ Update secret references in `kind: ExternalSecret`:
 +  key: gitea.admin
 ```
 
-## Manage package versions in development shell
+### Manage package versions in development shell
 
-**Status**: we no longer need this, since we use Nix from the development shell to NixOS on the nodes.
+**Status**: I no longer need this, since I use Nix from the development shell to NixOS on the nodes.
 
 **Context**
 
-While Nix is reproducible, we need a way to control the versions of the tools and keep them up-to-date.
-For example, if we update the nixpkgs hash (in `flake.nix`) from `abcd1234` to `defa5678`:
+While Nix is reproducible, I need a way to control the versions of the tools and keep them up-to-date.
+For example, if I update the nixpkgs hash (in `flake.nix`) from `abcd1234` to `defa5678`:
 
 - `ansible`: 2.12.1 -> 2.12.6
 - `terraform`: 1.2.0 -> 1.2.2
 - `foobar`: 1.8.0 -> 1.9.0
 
-That looks good. But when we update it from `defa5678` to `cdef9012`:
+That looks good. But when I update it from `defa5678` to `cdef9012`:
 
 - `ansible`: 2.12.6 -> 2.13.0
 - `terraform`: 1.2.2 -> 1.3.1
@@ -196,9 +300,9 @@ That looks good. But when we update it from `defa5678` to `cdef9012`:
 
 This time it breaks `foobar` because the new major version contains a breaking change.
 
-We can pin the specific version of each dependency in `flake.nix`,
-however, the maintenance burden is too high (even with Renovate) because we need to update the version of each package regularly rather than just the nixpkgs hash.
-Instead, we can just bump the nixpkgs hash and run some tests to ensure there is no breaking change.
+I can pin the specific version of each dependency in `flake.nix`,
+however, the maintenance burden is too high (even with Renovate) because I need to update the version of each package regularly rather than just the nixpkgs hash.
+Instead, I can just bump the nixpkgs hash and run some tests to ensure there is no breaking change.
 
 **Decision**
 
@@ -206,10 +310,10 @@ Update the tests to ensure that the versions remain within the desired range (i.
 
 **Consequences**
 
-We have the rail guard from the tests to ensure that we don't upgrade to a new major version with breaking changes,
-and we can make a conscious decision to take the necessary steps prior to upgrading to the new major version.
+I have the rail guard from the tests to ensure that I don't upgrade to a new major version with breaking changes,
+and I can make a conscious decision to take the necessary steps prior to upgrading to the new major version.
 
-## Refactor the tools container from plain Dockerfile to [Nix](https://nixos.org)
+### Refactor the tools container from plain Dockerfile to [Nix](https://nixos.org)
 
 **Status**: the Docker wrapper was later removed in [Remove the Docker wrapper for Nix shell](#remove-the-docker-wrapper-for-nix-shell).
 
@@ -227,7 +331,7 @@ Move to Nix shell with a Docker wrapper, in case Nix is not available (see commi
 - All versions are pinned
 - When you change the list of tools, rebuilding is much faster
 
-## Combine dhcpd and tftpd to dnsmasq in PXE server
+### Combine dhcpd and tftpd to dnsmasq in PXE server
 
 **Status**: replaced by [Nixie](#switch-metal-provisioning-from-ansible-to-nixie).
 
@@ -269,7 +373,7 @@ Migrate to dnsmasq (see commit `f650c89`, thanks to [@Bourne-ID](https://github.
 
 - DHCP proxy is enabled by default because most people have a standard home network with existing DHCP server, but it can still be disabled to restore the previous behavior
 
-## Migrate documentation from [mdBook](https://rust-lang.github.io/mdBook) to [MkDocs](https://squidfunk.github.io/mkdocs-material)
+### Migrate documentation from [mdBook](https://rust-lang.github.io/mdBook) to [MkDocs](https://squidfunk.github.io/mkdocs-material)
 
 **Status**: I no longer plan to use Backstage for this homelab (I may build something else),
 so it's back to mdBook, which has fewer dependencies and is faster.
@@ -285,9 +389,9 @@ Migrate documentation from mdBook to MkDocs (see commit `cd41343`).
 
 **Consequences**
 
-- We can no longer include only a portion of a file, see [facelessuser/pymdown-extensions#1462](https://github.com/facelessuser/pymdown-extensions/issues/1462).
+- I can no longer include only a portion of a file, see [facelessuser/pymdown-extensions#1462](https://github.com/facelessuser/pymdown-extensions/issues/1462).
 
-## Using Fedora as the base OS
+### Using Fedora as the base OS
 
 **Status**: superseded by [Using NixOS as the base OS](#using-nixos-as-the-base-os)
 
@@ -302,7 +406,7 @@ Alternatives considered:
     - Pros: automatic and atomic upgrade, immutable, quick installation
     - Cons: hard to run Ansible on (Python is not included)
 - CentOS/Rocky Linux (moved to Fedora in `022b816`):
-    - Pros: relatively stable (however we did encounter a breaking change [#63](https://github.com/khuedoan/homelab/issues/63), still not sure why)
+    - Pros: relatively stable (however I did encounter a breaking change [#63](https://github.com/khuedoan/homelab/issues/63), still not sure why)
     - Cons: kernel and packages are too old
 - Debian: couldn't get it to work with PXE boot and Rocky Linux was sufficient so I didn't push any further
 - Cluster API (previous attempt in ` a8e4a85`, I hope to get this to work someday):
