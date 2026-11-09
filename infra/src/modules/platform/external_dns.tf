@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "external_dns" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "external_dns" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "external_dns" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://kubernetes-sigs.github.io/external-dns"
         chart          = "external-dns"
@@ -49,16 +48,15 @@ resource "kubectl_manifest" "external_dns" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
 }
 
-resource "kubectl_manifest" "external_dns_resources" {
-  depends_on        = [kubectl_manifest.openbao]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "external_dns_resources" {
+  depends_on = [kubernetes_manifest.openbao]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -67,7 +65,7 @@ resource "kubectl_manifest" "external_dns_resources" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -98,7 +96,7 @@ resource "kubectl_manifest" "external_dns_resources" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

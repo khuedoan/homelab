@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "kanidm" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "kanidm" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "kanidm" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -135,15 +134,14 @@ EOT
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
 }
 
-resource "kubectl_manifest" "kanidm_resources" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "kanidm_resources" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -151,7 +149,7 @@ resource "kubectl_manifest" "kanidm_resources" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -209,7 +207,7 @@ resource "kubectl_manifest" "kanidm_resources" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

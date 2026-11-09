@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "kured" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "kured" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "kured" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://kubereboot.github.io/charts"
         chart          = "kured"
@@ -53,7 +52,7 @@ resource "kubectl_manifest" "kured" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

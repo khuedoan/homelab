@@ -23,10 +23,9 @@ resource "kubernetes_secret_v1" "velero_credentials" {
   }[each.key]
 }
 
-resource "kubectl_manifest" "velero" {
-  depends_on        = [kubernetes_secret_v1.velero_credentials]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "velero" {
+  depends_on = [kubernetes_secret_v1.velero_credentials]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -35,7 +34,7 @@ resource "kubectl_manifest" "velero" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://vmware-tanzu.github.io/helm-charts"
         chart          = "velero"
@@ -95,7 +94,7 @@ resource "kubectl_manifest" "velero" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

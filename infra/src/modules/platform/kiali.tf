@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "kiali" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "kiali" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "kiali" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://kiali.org/helm-charts"
         targetRevision = "2.33.0"
@@ -51,16 +50,15 @@ resource "kubectl_manifest" "kiali" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
 }
 
-resource "kubectl_manifest" "kiali_resources" {
-  depends_on        = [kubectl_manifest.openbao]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "kiali_resources" {
+  depends_on = [kubernetes_manifest.openbao]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -69,7 +67,7 @@ resource "kubectl_manifest" "kiali_resources" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -112,7 +110,7 @@ resource "kubectl_manifest" "kiali_resources" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

@@ -2,9 +2,8 @@ locals {
   istio_version = "1.30.5"
 }
 
-resource "kubectl_manifest" "istio" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "istio" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -12,7 +11,7 @@ resource "kubectl_manifest" "istio" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
         targetRevision = local.istio_version
@@ -70,20 +69,15 @@ resource "kubectl_manifest" "istio" {
         syncOptions = concat(local.sync_policy.syncOptions, ["RespectIgnoreDifferences=true"])
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
 
-  wait_for {
-    field {
-      key   = "status.sync.status"
-      value = "Synced"
-    }
-
-    field {
-      key   = "status.health.status"
-      value = "Healthy"
+  wait {
+    fields = {
+      "status.sync.status"   = "Synced"
+      "status.health.status" = "Healthy"
     }
   }
 
@@ -93,11 +87,9 @@ resource "kubectl_manifest" "istio" {
   }
 }
 
-resource "kubectl_manifest" "istio_resources" {
-  depends_on        = [kubectl_manifest.istio]
-  server_side_apply = true
-
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "istio_resources" {
+  depends_on = [kubernetes_manifest.istio]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -105,7 +97,7 @@ resource "kubectl_manifest" "istio_resources" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -200,7 +192,7 @@ resource "kubectl_manifest" "istio_resources" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

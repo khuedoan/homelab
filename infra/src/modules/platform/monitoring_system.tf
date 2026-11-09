@@ -20,9 +20,8 @@ locals {
   }
 }
 
-resource "kubectl_manifest" "monitoring_system" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "monitoring_system" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -30,7 +29,7 @@ resource "kubectl_manifest" "monitoring_system" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://prometheus-community.github.io/helm-charts"
         targetRevision = "92.3.0"
@@ -178,7 +177,7 @@ resource "kubectl_manifest" "monitoring_system" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

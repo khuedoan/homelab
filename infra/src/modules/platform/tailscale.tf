@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "tailscale" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "tailscale" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "tailscale" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         chart          = "app-template"
@@ -95,7 +94,7 @@ resource "kubectl_manifest" "tailscale" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

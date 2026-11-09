@@ -1,7 +1,6 @@
-resource "kubectl_manifest" "ntfy" {
-  depends_on        = [kubectl_manifest.openbao_resources]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "ntfy" {
+  depends_on = [kubernetes_manifest.openbao_resources]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -10,7 +9,7 @@ resource "kubectl_manifest" "ntfy" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.3.0"
@@ -86,7 +85,7 @@ resource "kubectl_manifest" "ntfy" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

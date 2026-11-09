@@ -1,7 +1,5 @@
-resource "kubectl_manifest" "apps" {
-  server_side_apply = true
-
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "apps" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "ApplicationSet"
     metadata = {
@@ -24,7 +22,7 @@ resource "kubectl_manifest" "apps" {
           annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
         }
         spec = {
-          project = kubectl_manifest.apps_project.name
+          project = kubernetes_manifest.apps_project.manifest.metadata.name
           sources = [{
             repoURL        = "https://bjw-s-labs.github.io/helm-charts"
             chart          = "app-template"
@@ -60,7 +58,7 @@ resource "kubectl_manifest" "apps" {
         }
       }
     }
-  })
+  }
 
   lifecycle {
     prevent_destroy = true

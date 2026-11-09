@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "loki" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "loki" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "loki" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://grafana.github.io/helm-charts"
         chart          = "loki-stack"
@@ -43,7 +42,7 @@ resource "kubectl_manifest" "loki" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

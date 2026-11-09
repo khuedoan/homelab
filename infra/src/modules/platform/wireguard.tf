@@ -1,7 +1,6 @@
-resource "kubectl_manifest" "wireguard" {
-  depends_on        = [kubectl_manifest.openbao]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "wireguard" {
+  depends_on = [kubernetes_manifest.openbao]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -10,7 +9,7 @@ resource "kubectl_manifest" "wireguard" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "ghcr.io/h44z/charts"
         targetRevision = "0.7.3"
@@ -103,7 +102,7 @@ resource "kubectl_manifest" "wireguard" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

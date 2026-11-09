@@ -1,7 +1,6 @@
-resource "kubectl_manifest" "openbao" {
-  depends_on        = [kubectl_manifest.cert_manager]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "openbao" {
+  depends_on = [kubernetes_manifest.cert_manager]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -9,7 +8,7 @@ resource "kubectl_manifest" "openbao" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "ghcr.io/bank-vaults/helm-charts"
         targetRevision = "1.24.1"
@@ -51,18 +50,14 @@ resource "kubectl_manifest" "openbao" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
-  wait_for {
-    field {
-      key   = "status.sync.status"
-      value = "Synced"
-    }
-    field {
-      key   = "status.health.status"
-      value = "Healthy"
+  wait {
+    fields = {
+      "status.sync.status"   = "Synced"
+      "status.health.status" = "Healthy"
     }
   }
   timeouts {
@@ -71,10 +66,9 @@ resource "kubectl_manifest" "openbao" {
   }
 }
 
-resource "kubectl_manifest" "openbao_resources" {
-  depends_on        = [kubectl_manifest.openbao]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "openbao_resources" {
+  depends_on = [kubernetes_manifest.openbao]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -82,7 +76,7 @@ resource "kubectl_manifest" "openbao_resources" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -244,7 +238,7 @@ resource "kubectl_manifest" "openbao_resources" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

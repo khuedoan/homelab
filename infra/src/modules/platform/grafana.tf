@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "grafana" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "grafana" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "grafana" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://grafana-community.github.io/helm-charts"
         targetRevision = "13.5.0"
@@ -81,16 +80,15 @@ resource "kubectl_manifest" "grafana" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
 }
 
-resource "kubectl_manifest" "grafana_resources" {
-  depends_on        = [kubectl_manifest.openbao]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "grafana_resources" {
+  depends_on = [kubernetes_manifest.openbao]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -99,7 +97,7 @@ resource "kubectl_manifest" "grafana_resources" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -129,7 +127,7 @@ resource "kubectl_manifest" "grafana_resources" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

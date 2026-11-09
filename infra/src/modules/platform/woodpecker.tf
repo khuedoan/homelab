@@ -1,6 +1,5 @@
-resource "kubectl_manifest" "woodpecker" {
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "woodpecker" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -8,7 +7,7 @@ resource "kubectl_manifest" "woodpecker" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://woodpecker-ci.org"
         targetRevision = "3.7.5"
@@ -59,16 +58,15 @@ resource "kubectl_manifest" "woodpecker" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
 }
 
-resource "kubectl_manifest" "woodpecker_resources" {
-  depends_on        = [kubectl_manifest.openbao]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "woodpecker_resources" {
+  depends_on = [kubernetes_manifest.openbao]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -77,7 +75,7 @@ resource "kubectl_manifest" "woodpecker_resources" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         targetRevision = "5.2.1"
@@ -133,7 +131,7 @@ resource "kubectl_manifest" "woodpecker_resources" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

@@ -1,7 +1,5 @@
-resource "kubectl_manifest" "system_project" {
-  server_side_apply = true
-
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "system_project" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "AppProject"
     metadata = {
@@ -14,17 +12,15 @@ resource "kubectl_manifest" "system_project" {
       clusterResourceWhitelist   = [{ group = "*", kind = "*" }]
       namespaceResourceWhitelist = [{ group = "*", kind = "*" }]
     }
-  })
+  }
 
   lifecycle {
     prevent_destroy = true
   }
 }
 
-resource "kubectl_manifest" "apps_project" {
-  server_side_apply = true
-
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "apps_project" {
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "AppProject"
     metadata = {
@@ -47,7 +43,7 @@ resource "kubectl_manifest" "apps_project" {
         { group = "networking.k8s.io", kind = "NetworkPolicy" },
       ]
     }
-  })
+  }
 
   lifecycle {
     prevent_destroy = true

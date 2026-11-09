@@ -1,7 +1,6 @@
-resource "kubectl_manifest" "cloudflare_ddns" {
-  depends_on        = [kubectl_manifest.openbao]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "cloudflare_ddns" {
+  depends_on = [kubernetes_manifest.openbao]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -10,7 +9,7 @@ resource "kubectl_manifest" "cloudflare_ddns" {
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
         chart          = "app-template"
@@ -56,7 +55,7 @@ resource "kubectl_manifest" "cloudflare_ddns" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }

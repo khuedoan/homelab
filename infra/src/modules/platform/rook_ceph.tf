@@ -1,7 +1,6 @@
-resource "kubectl_manifest" "rook_ceph" {
-  depends_on        = [kubectl_manifest.cert_manager_self_signed]
-  server_side_apply = true
-  yaml_body = yamlencode({
+resource "kubernetes_manifest" "rook_ceph" {
+  depends_on = [kubernetes_manifest.cert_manager_self_signed]
+  manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -9,7 +8,7 @@ resource "kubectl_manifest" "rook_ceph" {
       namespace = "argocd"
     }
     spec = {
-      project = kubectl_manifest.system_project.name
+      project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://charts.rook.io/release"
         chart          = "rook-ceph"
@@ -225,7 +224,7 @@ resource "kubectl_manifest" "rook_ceph" {
         }
       })
     }
-  })
+  }
   lifecycle {
     prevent_destroy = true
   }
