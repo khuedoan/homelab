@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-735cc182.js";
+            window.path_to_searchindex_js = "searchindex-08d0284c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-a3482a40.js"></script>
@@ -255,8 +255,8 @@ They can’t capture all the project’s features, but they are sufficient to ge
 <tr><td style="text-align: center">PXE boot</td></tr>
 <tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg" alt=""></a></td></tr>
 <tr><td style="text-align: center">Observe network traffic with <a href="https://kiali.io">Kiali</a></td></tr>
-<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b"><img src="https://github.com/khuedoan/homelab/assets/27996771/d0eaf620-be08-48d8-8420-40bcaa86093b" alt=""></a></td></tr>
-<tr><td style="text-align: center">Homepage powered by… <a href="https://gethomepage.dev">Homepage</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/glance-home.png"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/glance-home.png" alt=""></a></td></tr>
+<tr><td style="text-align: center">Home dashboard powered by <a href="https://github.com/glanceapp/glance">Glance</a></td></tr>
 <tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f"><img src="https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f" alt=""></a></td></tr>
 <tr><td style="text-align: center">Monitoring dashboard powered by <a href="https://grafana.com">Grafana</a></td></tr>
 <tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg" alt=""></a></td></tr>
@@ -603,7 +603,7 @@ or a small VPS with WireGuard to route traffic (see also <a href="https://github
 <p>You’ll need a password manager to store credentials.
 I’m using <a href="https://www.passwordstore.org"><code>pass</code></a>,
 but you can use any password manager with a CLI.</p>
-<p>Example <code>infra/${ENV}/.env</code> change for another password manager
+<p>Example <code>infra/${ENV}/.envrc</code> change for another password manager
 (in this case Bitwarden):</p>
 <pre><code class="language-diff">-CLOUDFLARE_API_TOKEN="$(pass "homelab/production/cloudflare/token")"
 +CLOUDFLARE_API_TOKEN="$(bw get password "homelab/production/cloudflare/token")"
@@ -731,10 +731,8 @@ Set <code>init_host</code> to a host in the inventory:</p>
 Continue with <a href="#deployment">deployment</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="deployment"><a class="header" href="#deployment">Deployment</a></h1>
-<p>Open the development shell if you haven’t already:</p>
-<pre><code class="language-sh">nix develop
-</code></pre>
-<p>Build the lab:</p>
+<p>First set up the <a href="#load-the-environment">development shell</a> if you haven’t already.</p>
+<p>Deploy the lab:</p>
 <pre><code class="language-sh">just deploy production
 </code></pre>
 <p>Yes it’s that simple!</p>
@@ -1053,34 +1051,42 @@ spec:
 <p>A much more detailed diagram can be found in the official documentation under <a href="https://cert-manager.io/docs/concepts/certificate/#certificate-lifecycle">certificate lifecycle</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="development-shell"><a class="header" href="#development-shell">Development shell</a></h1>
-<p>The development shell makes it easy to get all of the dependencies needed to interact with the homelab.</p>
+<p>The development shell makes it easy to get all of the tools and credentials.</p>
 <h2 id="prerequisites-2"><a class="header" href="#prerequisites-2">Prerequisites</a></h2>
-<blockquote class="blockquote-tag blockquote-tag-note">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
-<p>NixOS users can skip this step.</p>
-</blockquote>
-<p>Install Nix using one of the following methods:</p>
-<ul>
-<li><a href="https://nixos.org/download">Official Nix installer</a></li>
-<li><a href="https://docs.determinate.systems/getting-started/#installer">Determinate Nix Installer</a></li>
-</ul>
-<p>If you’re using the official installer, add the following to your
-<code>~/.config/nix/nix.conf</code> to enable <a href="https://nixos.wiki/wiki/Flakes">Flakes</a>:</p>
+<h3 id="nixos"><a class="header" href="#nixos">NixOS</a></h3>
+<p>Add the following to your NixOS configuration:</p>
+<pre><code class="language-nix">{
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+  programs.direnv = {
+    enable = true;
+    silent = true;
+  };
+}
+</code></pre>
+<h3 id="other-distros"><a class="header" href="#other-distros">Other distros</a></h3>
+<ol>
+<li>
+<p>Install Nix using the <a href="https://nixos.org/download">official installer</a>.</p>
+</li>
+<li>
+<p>Enable <a href="https://nixos.wiki/wiki/Flakes">Flakes</a> in <code>~/.config/nix/nix.conf</code>:</p>
 <pre><code class="language-conf">experimental-features = nix-command flakes
 </code></pre>
-<h2 id="how-to-open-it"><a class="header" href="#how-to-open-it">How to open it</a></h2>
-<p>Run the following command:</p>
-<pre><code class="language-sh">nix develop
+</li>
+<li>
+<p>Install <a href="https://direnv.net">direnv</a> and <a href="https://direnv.net/man/direnv.1.html#setup">enable its shell hook</a>.</p>
+</li>
+</ol>
+<h2 id="load-the-environment"><a class="header" href="#load-the-environment">Load the environment</a></h2>
+<p>From the repo root:</p>
+<pre><code class="language-sh">direnv allow .
+direnv allow infra/production
+direnv allow infra/staging
 </code></pre>
-<p>It will open a shell with all the dependencies defined in <code>./flake.nix</code>:</p>
-<pre><code>[khuedoan@ryzentower:~/Documents/homelab]$ which kubectl
-/nix/store/0558zzzqynzw7rx9dp2i7jymvznd1cqx-kubectl-1.30.1/bin/kubectl
-</code></pre>
-<blockquote class="blockquote-tag blockquote-tag-tip">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
-<p>If you have <a href="https://direnv.net"><code>direnv</code></a> installed, you can run <code>direnv allow</code> once and it will automatically enter the Nix shell every time you
-<code>cd</code> into the project.</p>
-</blockquote>
+<p>From now on, <code>cd</code> to the project automatically loads the required tools and credentials.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="testing-the-system"><a class="header" href="#testing-the-system">Testing the system</a></h1>
 <p><code>tests/</code> cover cluster access, networking, storage, backups, GitOps, secrets, etc.</p>
@@ -1352,7 +1358,7 @@ To retry metal provisioning:</p>
 <li>Tailscale and WireGuard provide remote access when you’re not at home.</li>
 <li>Istio gateways route HTTP traffic to applications.</li>
 <li>Cloudflare Tunnel exposes services to the internet through an outbound connection.</li>
-<li>Istio ambient mesh encrypts traffic between application Pods without sidecars, with traffic visualization using Kiali.</li>
+<li>Istio ambient mesh encrypts traffic between application Pods with strict mTLS without sidecars, with traffic visualization using Kiali.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="decision-records"><a class="header" href="#decision-records">Decision records</a></h1>

@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-735cc182.js";
+            window.path_to_searchindex_js = "../searchindex-08d0284c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-a3482a40.js"></script>
@@ -253,7 +253,7 @@ or a small VPS with WireGuard to route traffic (see also <a href="https://github
 <p>You’ll need a password manager to store credentials.
 I’m using <a href="https://www.passwordstore.org"><code>pass</code></a>,
 but you can use any password manager with a CLI.</p>
-<p>Example <code>infra/${ENV}/.env</code> change for another password manager
+<p>Example <code>infra/${ENV}/.envrc</code> change for another password manager
 (in this case Bitwarden):</p>
 <pre><code class="language-diff">-CLOUDFLARE_API_TOKEN="$(pass "homelab/production/cloudflare/token")"
 +CLOUDFLARE_API_TOKEN="$(bw get password "homelab/production/cloudflare/token")"
