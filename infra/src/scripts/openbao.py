@@ -44,14 +44,26 @@ def openbao(kubeconfig):
 
         for _ in range(150):
             try:
-                if "secret/" in client.sys.list_mounted_secrets_engines()["data"]:
+                mounts = client.sys.list_mounted_secrets_engines()["data"]
+                options = mounts.get("secret/", {}).get("options") or {}
+
+                if options.get("version") == "2":
+                    try:
+                        client.secrets.kv.v2.list_secrets(path="")
+                    except hvac.exceptions.InvalidPath:
+                        pass  # An empty KV v2 mount is ready.
                     break
             except hvac.exceptions.VaultDown:
                 pass
+            except hvac.exceptions.InvalidRequest as error:
+                if not str(error).startswith(
+                    "Upgrading from non-versioned to versioned data"
+                ):
+                    raise
 
             time.sleep(2)
         else:
-            raise TimeoutError("OpenBao KV mount did not become ready")
+            raise TimeoutError("OpenBao KV v2 mount did not become ready")
 
         yield client
     finally:
