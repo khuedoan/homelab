@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-3510ea2b.js";
+            window.path_to_searchindex_js = "../searchindex-2692ddf2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-a3482a40.js"></script>
+        <script src="../toc-6532597d.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -182,37 +182,23 @@
                     <main>
                         <h1 id="user-onboarding"><a class="header" href="#user-onboarding">User onboarding</a></h1>
 <h2 id="for-user"><a class="header" href="#for-user">For user</a></h2>
-<h3 id="create-user"><a class="header" href="#create-user">Create user</a></h3>
 <p>Ask an admin to create your account, provide the following information:</p>
 <ul>
 <li><input disabled="" type="checkbox"> Full name (John Doe)</li>
 <li><input disabled="" type="checkbox"> Select a username (<code>johndoe</code>)</li>
 <li><input disabled="" type="checkbox"> Email address (<code>johndoe@example.com</code>)</li>
 </ul>
-<h3 id="install-companion-apps"><a class="header" href="#install-companion-apps">Install companion apps</a></h3>
-<p>For all users:</p>
-<ul>
-<li><input disabled="" type="checkbox"> A password manager (I personally recommend <a href="https://bitwarden.com/download">Bitwarden</a>)</li>
-<li><input disabled="" type="checkbox"> A <a href="https://matrix.org/clients">Matrix chat client</a> (optional, you can use the web version)</li>
-</ul>
-<p>For technical users:</p>
-<ul>
-<li><input disabled="" type="checkbox"> <a href="https://docs.docker.com/engine/install">Docker</a></li>
-<li><input disabled="" type="checkbox"> <a href="https://nixos.org/download">Nix</a> and <a href="https://direnv.net">direnv</a> (optional, but highly recommended)</li>
-<li><input disabled="" type="checkbox"> <a href="https://k8slens.dev">Lens</a> (optional, you can use <code>kubectl</code> in the development shell)</li>
-</ul>
 <h2 id="for-admin"><a class="header" href="#for-admin">For admin</a></h2>
-<p>Create the account:</p>
+<p>Create the account and share the one-time link privately for the user to set up passkeys:</p>
 <pre><code class="language-sh">just user create production johndoe "John Doe" johndoe@example.com
 </code></pre>
-<p>Share the one-time link privately for the user to set up passkeys or password + TOTP.</p>
-<p>To include additional access groups when creating the account, pass a comma-separated list:</p>
+<p>To include additional access groups when creating the account:</p>
 <pre><code class="language-sh">just user create production johndoe "John Doe" johndoe@example.com admins,developers
 </code></pre>
 <p>To generate a credential reset link:</p>
 <pre><code class="language-sh">just user reset production johndoe
 </code></pre>
-<p>Set access groups:</p>
+<p>To update access groups:</p>
 <pre><code class="language-sh">just user groups production johndoe admins,developers
 </code></pre>
 <div class="table-wrapper">
