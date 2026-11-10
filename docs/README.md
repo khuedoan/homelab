@@ -71,7 +71,7 @@ They can't capture all the project's features, but they are sufficient to get a 
 
 | Demo |
 | :---: |
-| [![][deploy-demo]](https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7) |
+| [![][deploy-demo]](https://asciinema.org/a/WrdDw8KMutQUgqvD?speed=2&idleTimeLimit=1) |
 | Deploy with a single command (after updating the configuration files) |
 | [![][pxe-demo]](https://www.youtube.com/watch?v=y-d7btNNAT8) |
 | PXE boot |
@@ -100,7 +100,7 @@ They can't capture all the project's features, but they are sufficient to get a 
 | [![][alert-demo]][alert-demo] |
 | [ntfy](https://ntfy.sh) displaying received alerts |
 
-[deploy-demo]: https://asciinema.org/a/xkBRkwC6e9RAzVuMDXH3nGHp7.svg
+[deploy-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/deployment-demo.jpg
 [pxe-demo]: https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png
 [kiali-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg
 [forgejo-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg
