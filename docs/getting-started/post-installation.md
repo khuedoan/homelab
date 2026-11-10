@@ -10,7 +10,7 @@ export KUBECONFIG="$PWD/infra/production/kubeconfig.yaml"
 
 ## Create users
 
-Follow the [user onboarding guide](../getting-started/user-onboarding.md) to create accounts and assign access.
+Follow the [user onboarding guide](user-onboarding.md) to create accounts and assign access.
 Use SSO to sign in to applications.
 
 ## Verify backups

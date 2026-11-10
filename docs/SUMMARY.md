@@ -2,15 +2,12 @@
 
 - [Home](README.md)
 
-# Installation
-
-- [Prerequisites](installation/prerequisites.md)
-- [Configuration](installation/configuration.md)
-- [Deployment](installation/deployment.md)
-- [Post-installation](installation/post-installation.md)
-
 # Getting started
 
+- [Prerequisites](getting-started/prerequisites.md)
+- [Configuration](getting-started/configuration.md)
+- [Deployment](getting-started/deployment.md)
+- [Post-installation](getting-started/post-installation.md)
 - [VPN setup](getting-started/vpn-setup.md)
 - [User onboarding](getting-started/user-onboarding.md)
 
