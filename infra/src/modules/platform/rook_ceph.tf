@@ -34,9 +34,49 @@ resource "kubernetes_manifest" "rook_ceph" {
               driverSpecDefaults = {
                 nodePlugin = {
                   priorityClassName = "system-node-critical"
+                  resources = {
+                    plugin = {
+                      requests = { cpu = "50m", memory = "128Mi" }
+                      limits   = { memory = "512Mi" }
+                    }
+                    registrar = {
+                      requests = { cpu = "10m", memory = "32Mi" }
+                      limits   = { memory = "128Mi" }
+                    }
+                    logRotator = {
+                      requests = { cpu = "5m", memory = "8Mi" }
+                      limits   = { memory = "64Mi" }
+                    }
+                  }
                 }
                 controllerPlugin = {
                   priorityClassName = "system-cluster-critical"
+                  resources = {
+                    plugin = {
+                      requests = { cpu = "50m", memory = "64Mi" }
+                      limits   = { memory = "256Mi" }
+                    }
+                    provisioner = {
+                      requests = { cpu = "10m", memory = "128Mi" }
+                      limits   = { memory = "256Mi" }
+                    }
+                    attacher = {
+                      requests = { cpu = "10m", memory = "64Mi" }
+                      limits   = { memory = "256Mi" }
+                    }
+                    resizer = {
+                      requests = { cpu = "10m", memory = "64Mi" }
+                      limits   = { memory = "256Mi" }
+                    }
+                    snapshotter = {
+                      requests = { cpu = "10m", memory = "64Mi" }
+                      limits   = { memory = "256Mi" }
+                    }
+                    logRotator = {
+                      requests = { cpu = "5m", memory = "8Mi" }
+                      limits   = { memory = "64Mi" }
+                    }
+                  }
                 }
               }
             }
