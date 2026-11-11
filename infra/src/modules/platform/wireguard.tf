@@ -12,8 +12,8 @@ resource "kubernetes_manifest" "wireguard" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "ghcr.io/h44z/charts"
-        targetRevision = "0.7.3"
         chart          = "wg-portal"
+        targetRevision = "0.7.3"
         helm = {
           releaseName = "wireguard"
           values = yamlencode({

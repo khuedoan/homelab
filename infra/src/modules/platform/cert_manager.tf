@@ -10,8 +10,8 @@ resource "kubernetes_manifest" "cert_manager" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://charts.jetstack.io"
-        targetRevision = "v1.21.2"
         chart          = "cert-manager"
+        targetRevision = "v1.21.2"
         helm = {
           releaseName = "cert-manager"
           values = yamlencode({
@@ -74,8 +74,8 @@ resource "kubernetes_manifest" "cert_manager_self_signed" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "cert-manager-self-signed"
           values = yamlencode({
@@ -136,8 +136,8 @@ resource "kubernetes_manifest" "cert_manager_acme" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "cert-manager-acme"
           values = yamlencode({

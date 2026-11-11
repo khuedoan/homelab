@@ -10,8 +10,8 @@ resource "kubernetes_manifest" "kiali" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://kiali.org/helm-charts"
-        targetRevision = "2.33.0"
         chart          = "kiali-server"
+        targetRevision = "2.33.0"
         helm = {
           releaseName = "kiali"
           values = yamlencode({
@@ -70,8 +70,8 @@ resource "kubernetes_manifest" "kiali_resources" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "kiali"
           values = yamlencode({

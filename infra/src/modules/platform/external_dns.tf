@@ -68,8 +68,8 @@ resource "kubernetes_manifest" "external_dns_resources" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "external-dns-resources"
           values = yamlencode({

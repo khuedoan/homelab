@@ -1,7 +1,3 @@
-locals {
-  istio_version = "1.30.5"
-}
-
 resource "kubernetes_manifest" "istio" {
   manifest = {
     apiVersion = "argoproj.io/v1alpha1"
@@ -14,13 +10,13 @@ resource "kubernetes_manifest" "istio" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
-        targetRevision = local.istio_version
         chart          = "base"
+        targetRevision = "1.30.5"
         helm           = { releaseName = "istio" }
         }, {
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
-        targetRevision = local.istio_version
         chart          = "istiod"
+        targetRevision = "1.30.5"
         helm = {
           releaseName = "istio"
           values = yamlencode({
@@ -31,8 +27,8 @@ resource "kubernetes_manifest" "istio" {
         }
         }, {
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
-        targetRevision = local.istio_version
         chart          = "cni"
+        targetRevision = "1.30.5"
         helm = {
           releaseName = "istio-cni"
           values = yamlencode({
@@ -42,8 +38,8 @@ resource "kubernetes_manifest" "istio" {
         }
         }, {
         repoURL        = "https://istio-release.storage.googleapis.com/charts"
-        targetRevision = local.istio_version
         chart          = "ztunnel"
+        targetRevision = "1.30.5"
         helm = {
           releaseName = "ztunnel"
           values = yamlencode({
@@ -100,8 +96,8 @@ resource "kubernetes_manifest" "istio_resources" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "istio-resources"
           values = yamlencode({

@@ -10,8 +10,8 @@ resource "kubernetes_manifest" "forgejo" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "code.forgejo.org/forgejo-helm"
-        targetRevision = "17.2.0"
         chart          = "forgejo"
+        targetRevision = "17.2.0"
         helm = {
           releaseName = "forgejo"
           values = yamlencode({
@@ -104,8 +104,8 @@ resource "kubernetes_manifest" "forgejo_resources" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "forgejo-resources"
           values = yamlencode({

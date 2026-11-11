@@ -10,8 +10,8 @@ resource "kubernetes_manifest" "woodpecker" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://woodpecker-ci.org"
-        targetRevision = "3.7.5"
         chart          = "woodpecker"
+        targetRevision = "3.7.5"
         helm = {
           releaseName = "woodpecker"
           values = yamlencode({
@@ -78,8 +78,8 @@ resource "kubernetes_manifest" "woodpecker_resources" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "woodpecker-resources"
           values = yamlencode({

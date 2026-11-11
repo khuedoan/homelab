@@ -11,16 +11,16 @@ resource "kubernetes_manifest" "openbao" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "ghcr.io/bank-vaults/helm-charts"
-        targetRevision = "1.24.1"
         chart          = "vault-operator"
+        targetRevision = "1.24.1"
         helm = {
           releaseName = "openbao"
           values      = yamlencode({ watchNamespace = "openbao" })
         }
         }, {
         repoURL        = "ghcr.io/bank-vaults/helm-charts"
-        targetRevision = "0.4.1"
         chart          = "secrets-webhook"
+        targetRevision = "0.4.1"
         helm = {
           releaseName = "openbao"
           values = yamlencode({
@@ -79,8 +79,8 @@ resource "kubernetes_manifest" "openbao_resources" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "openbao-resources"
           values = yamlencode({

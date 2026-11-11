@@ -10,8 +10,8 @@ resource "kubernetes_manifest" "grafana" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://grafana-community.github.io/helm-charts"
-        targetRevision = "13.5.0"
         chart          = "grafana"
+        targetRevision = "13.5.0"
         helm = {
           releaseName = "grafana"
           values = yamlencode({
@@ -100,8 +100,8 @@ resource "kubernetes_manifest" "grafana_resources" {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
         repoURL        = "https://bjw-s-labs.github.io/helm-charts"
-        targetRevision = "5.2.1"
         chart          = "app-template"
+        targetRevision = "5.2.1"
         helm = {
           releaseName = "grafana-resources"
           values = yamlencode({
