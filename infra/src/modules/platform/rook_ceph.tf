@@ -10,52 +10,59 @@ resource "kubernetes_manifest" "rook_ceph" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://charts.rook.io/release"
+        repoURL        = "ghcr.io/rook"
         chart          = "rook-ceph"
-        targetRevision = "1.19.12"
+        targetRevision = "1.21.2"
         helm = {
           releaseName = "rook-ceph"
           values = yamlencode({
             # TODO: Revisit resource sizing after measuring usage.
             resources = { requests = { cpu = "10m", memory = "64Mi" } }
-            csi = {
-              for setting, containers in {
-                csiRBDPluginResource = {
-                  driver-registrar = "32Mi", csi-rbdplugin = "128Mi"
-                }
-                csiCephFSPluginResource = {
-                  driver-registrar = "32Mi", csi-cephfsplugin = "64Mi"
-                }
-                csiRBDProvisionerResource = {
-                  csi-provisioner = "64Mi", csi-resizer = "64Mi", csi-attacher = "64Mi",
-                  csi-snapshotter = "64Mi", csi-rbdplugin = "128Mi"
-                }
-                csiCephFSProvisionerResource = {
-                  csi-provisioner = "64Mi", csi-resizer = "64Mi", csi-attacher = "64Mi",
-                  csi-snapshotter = "64Mi", csi-cephfsplugin = "64Mi"
-                }
-                } : setting => yamlencode([
-                  for name, memory in containers : {
-                    name = name
-                    resource = {
-                      requests = {
-                        cpu    = endswith(name, "plugin") ? "50m" : "10m"
-                        memory = memory
-                      }
-                      limits = { memory = endswith(name, "plugin") ? "1Gi" : "256Mi" }
-                    }
-                  }
-              ])
-            }
             monitoring = {
               enabled = true
             }
           })
         }
         }, {
-        repoURL        = "https://charts.rook.io/release"
+        repoURL        = "https://ceph.github.io/ceph-csi-operator"
+        chart          = "ceph-csi-drivers"
+        targetRevision = "1.1.0"
+        helm = {
+          releaseName = "ceph-csi-drivers"
+          values = yamlencode({
+            operatorConfig = {
+              driverSpecDefaults = {
+                nodePlugin = {
+                  priorityClassName = "system-node-critical"
+                }
+                controllerPlugin = {
+                  priorityClassName = "system-cluster-critical"
+                }
+              }
+            }
+            drivers = {
+              rbd = {
+                name           = "rook-ceph.rbd.csi.ceph.com"
+                snapshotPolicy = "volumeSnapshot"
+                controllerPlugin = {
+                  replicas = 2
+                }
+              }
+              cephfs = {
+                name = "rook-ceph.cephfs.csi.ceph.com"
+                controllerPlugin = {
+                  replicas = 2
+                }
+              }
+              nfs    = { enabled = false }
+              nvmeof = { enabled = false }
+            }
+          })
+        }
+        }, {
+        repoURL        = "ghcr.io/rook"
         chart          = "rook-ceph-cluster"
-        targetRevision = "1.19.12"
+        targetRevision = "1.21.2"
         helm = {
           releaseName = "rook-ceph"
           values = yamlencode({
@@ -199,9 +206,9 @@ resource "kubernetes_manifest" "rook_ceph" {
           })
         }
         }, {
-        repoURL        = "https://piraeus.io/helm-charts"
+        repoURL        = "ghcr.io/piraeusdatastore/helm-charts"
         chart          = "snapshot-controller"
-        targetRevision = "5.0.4"
+        targetRevision = "5.4.0"
         helm = {
           releaseName = "rook-ceph"
           values = yamlencode({
