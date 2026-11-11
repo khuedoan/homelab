@@ -1,19 +1,71 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
+  "semanticCommits": "enabled",
+  "helm-values": {
+    "managerFilePatterns": [
+      "/^apps/.*\\.yaml$/"
+    ]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "infra/src/modules/**/*.tf"
+      ],
+      "matchStrings": [
+        // TODO move to OCI only
+        "repoURL += \"(?<registryUrl>https://[^\"]+)\"\\s+chart += \"(?<depName>[^\"]+)\"\\s+targetRevision += \"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "infra/src/modules/**/*.tf"
+      ],
+      "matchStrings": [
+        // TODO move to OCI only
+        "repoURL += \"(?<registry>[^\":]+)\"\\s+chart += \"(?<depName>[^\"]+)\"\\s+targetRevision += \"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "docker",
+      "packageNameTemplate": "{{registry}}/{{depName}}",
+      "versioningTemplate": "helm"
+    }
+  ],
+  "nix": {
+    "enabled": true,
+    "lockFileMaintenance": {
+      "enabled": true,
+      "schedule": [
+        "at any time"
+      ],
+      "additionalBranchPrefix": "{{packageFile}}-"
+    }
+  },
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "*"
+      "matchFileNames": [
+        "apps/*.yaml",
+        "infra/src/modules/**/*.tf"
+      ],
+      "groupName": "{{packageFile}}",
+      "separateMajorMinor": false
+    },
+    {
+      "matchManagers": [
+        "nix"
       ],
       "matchUpdateTypes": [
+        "major",
         "minor",
-        "patch"
+        "patch",
+        "pin",
+        "digest"
       ],
-      "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch"
+      "enabled": false
     }
   ]
 }
