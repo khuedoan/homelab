@@ -31,9 +31,9 @@ resource "kubernetes_manifest" "monitoring_system" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://prometheus-community.github.io/helm-charts"
+        repoURL        = "ghcr.io/prometheus-community/charts"
         chart          = "kube-prometheus-stack"
-        targetRevision = "92.3.0"
+        targetRevision = "93.1.1"
         helm = {
           releaseName = "monitoring-system"
           values = yamlencode({

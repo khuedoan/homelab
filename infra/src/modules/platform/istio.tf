@@ -9,14 +9,14 @@ resource "kubernetes_manifest" "istio" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://istio-release.storage.googleapis.com/charts"
+        repoURL        = "ghcr.io/istio/release/charts"
         chart          = "base"
-        targetRevision = "1.30.5"
+        targetRevision = "1.32.0"
         helm           = { releaseName = "istio" }
         }, {
-        repoURL        = "https://istio-release.storage.googleapis.com/charts"
+        repoURL        = "ghcr.io/istio/release/charts"
         chart          = "istiod"
-        targetRevision = "1.30.5"
+        targetRevision = "1.32.0"
         helm = {
           releaseName = "istio"
           values = yamlencode({
@@ -26,9 +26,9 @@ resource "kubernetes_manifest" "istio" {
           })
         }
         }, {
-        repoURL        = "https://istio-release.storage.googleapis.com/charts"
+        repoURL        = "ghcr.io/istio/release/charts"
         chart          = "cni"
-        targetRevision = "1.30.5"
+        targetRevision = "1.32.0"
         helm = {
           releaseName = "istio-cni"
           values = yamlencode({
@@ -37,9 +37,9 @@ resource "kubernetes_manifest" "istio" {
           })
         }
         }, {
-        repoURL        = "https://istio-release.storage.googleapis.com/charts"
+        repoURL        = "ghcr.io/istio/release/charts"
         chart          = "ztunnel"
-        targetRevision = "1.30.5"
+        targetRevision = "1.32.0"
         helm = {
           releaseName = "ztunnel"
           values = yamlencode({
@@ -95,9 +95,9 @@ resource "kubernetes_manifest" "istio_resources" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://bjw-s-labs.github.io/helm-charts"
+        repoURL        = "ghcr.io/bjw-s-labs/helm"
         chart          = "app-template"
-        targetRevision = "5.2.1"
+        targetRevision = "5.3.0"
         helm = {
           releaseName = "istio-resources"
           values = yamlencode({

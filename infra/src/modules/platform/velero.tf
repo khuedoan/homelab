@@ -36,9 +36,9 @@ resource "kubernetes_manifest" "velero" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://vmware-tanzu.github.io/helm-charts"
+        repoURL        = "ghcr.io/vmware-tanzu/charts"
         chart          = "velero"
-        targetRevision = "12.2.1"
+        targetRevision = "12.2.4"
         helm = {
           values = yamlencode({
             initContainers = [{

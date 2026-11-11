@@ -9,9 +9,9 @@ resource "kubernetes_manifest" "zot" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://zotregistry.dev/helm-charts"
+        repoURL        = "ghcr.io/project-zot/helm-charts"
         chart          = "zot"
-        targetRevision = "0.1.128"
+        targetRevision = "0.1.132"
         helm = {
           releaseName = "zot"
           values = yamlencode({
@@ -97,9 +97,9 @@ resource "kubernetes_manifest" "zot_resources" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://bjw-s-labs.github.io/helm-charts"
+        repoURL        = "ghcr.io/bjw-s-labs/helm"
         chart          = "app-template"
-        targetRevision = "5.2.1"
+        targetRevision = "5.3.0"
         helm = {
           releaseName = "zot-resources"
           values = yamlencode({

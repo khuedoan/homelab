@@ -9,7 +9,7 @@ resource "kubernetes_manifest" "kured" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://kubereboot.github.io/charts"
+        repoURL        = "ghcr.io/kubereboot/charts"
         chart          = "kured"
         targetRevision = "6.1.0"
         helm = {

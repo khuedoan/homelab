@@ -9,9 +9,9 @@ resource "kubernetes_manifest" "loki" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://grafana.github.io/helm-charts"
+        repoURL        = "ghcr.io/grafana/helm-charts"
         chart          = "loki-stack"
-        targetRevision = "2.10.1"
+        targetRevision = "2.10.3"
         helm = {
           releaseName = "loki"
           values = yamlencode({

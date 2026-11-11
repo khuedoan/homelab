@@ -24,9 +24,9 @@ provider "helm" {
 resource "helm_release" "release" {
   name       = "argocd"
   namespace  = "argocd"
-  repository = "https://argoproj.github.io/argo-helm"
+  repository = "oci://ghcr.io/argoproj/argo-helm"
   chart      = "argo-cd"
-  version    = "10.10.2"
+  version    = "10.17.1"
   values = [yamlencode({
     global = { domain = "argocd.${var.domain}" }
     configs = {
