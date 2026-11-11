@@ -9,9 +9,9 @@ resource "kubernetes_manifest" "cloudflared" {
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
-        repoURL        = "https://bjw-s-labs.github.io/helm-charts"
+        repoURL        = "ghcr.io/bjw-s-labs/helm"
         chart          = "app-template"
-        targetRevision = "3.1.0"
+        targetRevision = "5.3.0"
         helm = {
           releaseName = "cloudflared"
           values = yamlencode({
@@ -70,8 +70,8 @@ resource "kubernetes_manifest" "cloudflared" {
                   path    = "/etc/cloudflared/config.yaml"
                   subPath = "config.yaml"
                 }]
-                name = "cloudflared-config"
-                type = "configMap"
+                identifier = "config"
+                type       = "configMap"
               }
               credentials = {
                 enabled = true
