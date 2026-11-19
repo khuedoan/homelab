@@ -1,8 +1,7 @@
 # Dependency updates
 
-We use Renovate to update dependencies automatically.
-In Woodpecker, under the `homelab` project:
+Renovate runs weekly. To trigger it manually:
 
-1. Start a manual pipeline on the default branch.
-2. Select the `renovate` workflow.
-3. Review its PRs and merge them.
+1. Open **Actions** in the homelab repository in Forgejo.
+2. Select **Renovate**.
+3. Select the default branch and click **Run workflow**.

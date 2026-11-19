@@ -83,6 +83,8 @@ They can't capture all the project's features, but they are sufficient to get a 
 | Monitoring dashboard powered by [Grafana](https://grafana.com) |
 | [![][forgejo-demo]][forgejo-demo] |
 | Git server powered by [Forgejo](https://forgejo.org) |
+| [![][forgejo-actions-demo]][forgejo-actions-demo] |
+| Continuous integration with [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/) |
 | [![][matrix-demo]][matrix-demo] |
 | [Matrix](https://matrix.org/) chat (FluffyChat UI) |
 | [![][immich-demo]][immich-demo] |
@@ -91,8 +93,6 @@ They can't capture all the project's features, but they are sufficient to get a 
 | File storage powered by [OpenCloud](https://opencloud.eu) |
 | [![][zot-demo]][zot-demo] |
 | Container registry powered by [Zot](https://zotregistry.dev) |
-| [![][woodpecker-demo]][woodpecker-demo] |
-| Continuous integration with [Woodpecker CI](https://woodpecker-ci.org) |
 | [![][argocd-demo]][argocd-demo] |
 | Continuous deployment with [ArgoCD](https://argoproj.github.io/cd) |
 | [![][kanidm-demo]][kanidm-demo] |
@@ -104,13 +104,13 @@ They can't capture all the project's features, but they are sufficient to get a 
 [pxe-demo]: https://user-images.githubusercontent.com/27996771/157303477-df2e7410-8f02-4648-a86c-71e6b7e89e35.png
 [kiali-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/kiali-traffic.jpg
 [forgejo-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-repository.jpg
+[forgejo-actions-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-actions.png
 [immich-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/immich-photos.jpg
 [opencloud-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/opencloud-files.jpg
 [zot-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg
 [glance-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/glance-home.png
 [grafana-demo]: https://github.com/khuedoan/homelab/assets/27996771/ad937b26-e9bc-4761-83ae-1c7f512ea97f
 [matrix-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/fluffychat-messages.jpg
-[woodpecker-demo]: https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4
 [argocd-demo]: https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20
 [kanidm-demo]: https://raw.githubusercontent.com/khuedoan/public/master/homelab/kanidm-applications.jpg
 [alert-demo]: https://github.com/khuedoan/homelab/assets/27996771/c922f755-e911-4ca0-9d4a-6e552d387f18
@@ -146,7 +146,7 @@ They can't capture all the project's features, but they are sufficient to get a 
     <tr>
         <td><img width="32" src="https://forgejo.org/favicon.svg"></td>
         <td><a href="https://forgejo.org">Forgejo</a></td>
-        <td>Self-hosted Git service</td>
+        <td>Self-hosted Git service and CI</td>
     </tr>
     <tr>
         <td><img width="32" src="https://go.dev/images/go-logo-blue.svg"></td>
@@ -237,11 +237,6 @@ They can't capture all the project's features, but they are sufficient to get a 
         <td><img width="32" src="https://github.com/velero-io.png"></td>
         <td><a href="https://velero.io">Velero</a></td>
         <td>Backs up and restores Kubernetes</td>
-    </tr>
-    <tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/84780935?s=200&v=4"></td>
-        <td><a href="https://woodpecker-ci.org">Woodpecker CI</a></td>
-        <td>Simple yet powerful CI/CD engine with great extensibility</td>
     </tr>
     <tr>
         <td><img width="32" src="https://zotregistry.dev/v2.0.2/assets/images/logo.svg"></td>

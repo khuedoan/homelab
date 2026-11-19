@@ -38,7 +38,7 @@ Good enough for tinkering and personal use, and reasonably secure.
     - [ ] 99% availability per application (up to 7h of downtime per month, including weekend experimentation)
 - [x] Core applications
     - [x] Forgejo
-    - [x] Woodpecker
+    - [x] Forgejo Actions
     - [x] Private container registry
     - [x] Homepage
 
