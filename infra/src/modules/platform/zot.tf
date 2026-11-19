@@ -23,14 +23,23 @@ resource "kubernetes_manifest" "zot" {
               create  = true
               storage = "2Gi"
             }
-            mountConfig = true
-            configFiles = { "config.json" = jsonencode({
+            configFiles = { "config.json" = null }
+            config = {
               storage = { rootDirectory = "/var/lib/registry" }
               http = {
                 address     = "0.0.0.0"
                 port        = "5000"
                 externalUrl = "https://registry.${var.domain}"
                 auth = {
+                  bearer = {
+                    realm   = "https://registry.${var.domain}/zot/auth/token"
+                    service = "registry.${var.domain}"
+                    oidc = [{
+                      issuer       = "https://git.${var.domain}/api/actions"
+                      audiences    = ["https://registry.${var.domain}"]
+                      claimMapping = { username = "'forgejo-actions'" }
+                    }]
+                  }
                   openid = {
                     providers = {
                       oidc = {
@@ -43,17 +52,48 @@ resource "kubernetes_manifest" "zot" {
                   }
                 }
                 accessControl = {
+                  adminPolicy = {
+                    groups  = ["admins@${var.domain}"]
+                    actions = ["read", "create", "update", "delete"]
+                  }
                   repositories = {
                     "**" = {
                       anonymousPolicy = ["read"]
-                      defaultPolicy   = ["read", "create", "update", "delete"]
+                      defaultPolicy   = ["read"]
+                      policies = [
+                        {
+                          users   = ["forgejo-actions"]
+                          actions = ["create"]
+                          conditions = [{
+                            message    = "This workflow cannot publish to the requested path."
+                            expression = <<-CEL
+                              req.repository == req.claims.repository &&
+                              req.claims.event_name == 'push' &&
+                              req.claims.ref_type in ['branch', 'tag']
+                            CEL
+                          }]
+                        },
+                        {
+                          users   = ["forgejo-actions"]
+                          actions = ["create"]
+                          conditions = [{
+                            message    = "This workflow cannot publish to the requested path."
+                            expression = <<-CEL
+                              req.repository.startsWith('apps/') &&
+                              req.claims.repository == 'ops/homelab' &&
+                              req.claims.event_name == 'workflow_dispatch' &&
+                              req.claims.ref == 'refs/heads/master'
+                            CEL
+                          }]
+                        }
+                      ]
                     }
                   }
                 }
               }
               extensions = { search = { enable = true }, ui = { enable = true } }
               log        = { level = "info" }
-            }) }
+            }
             httproute = {
               enabled = true
               parentRefs = [{
