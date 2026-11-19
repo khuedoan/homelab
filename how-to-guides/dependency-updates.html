@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-2692ddf2.js";
+            window.path_to_searchindex_js = "../searchindex-12331d30.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-6532597d.js"></script>
@@ -181,12 +181,11 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="dependency-updates"><a class="header" href="#dependency-updates">Dependency updates</a></h1>
-<p>We use Renovate to update dependencies automatically.
-In Woodpecker, under the <code>homelab</code> project:</p>
+<p>Renovate runs weekly. To trigger it manually:</p>
 <ol>
-<li>Start a manual pipeline on the default branch.</li>
-<li>Select the <code>renovate</code> workflow.</li>
-<li>Review its PRs and merge them.</li>
+<li>Open <strong>Actions</strong> in the homelab repository in Forgejo.</li>
+<li>Select <strong>Renovate</strong>.</li>
+<li>Select the default branch and click <strong>Run workflow</strong>.</li>
 </ol>
 
                     </main>

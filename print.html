@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-2692ddf2.js";
+            window.path_to_searchindex_js = "searchindex-12331d30.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-6532597d.js"></script>
@@ -269,8 +269,8 @@ They can’t capture all the project’s features, but they are sufficient to ge
 <tr><td style="text-align: center">File storage powered by <a href="https://opencloud.eu">OpenCloud</a></td></tr>
 <tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/zot-artifact.jpg" alt=""></a></td></tr>
 <tr><td style="text-align: center">Container registry powered by <a href="https://zotregistry.dev">Zot</a></td></tr>
-<tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4"><img src="https://github.com/khuedoan/homelab/assets/27996771/5d887688-d20a-44c8-8f77-0c625527dfe4" alt=""></a></td></tr>
-<tr><td style="text-align: center">Continuous integration with <a href="https://woodpecker-ci.org">Woodpecker CI</a></td></tr>
+<tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-actions.png"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/forgejo-actions.png" alt=""></a></td></tr>
+<tr><td style="text-align: center">Continuous integration with <a href="https://forgejo.org/docs/latest/user/actions/">Forgejo Actions</a></td></tr>
 <tr><td style="text-align: center"><a href="https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20"><img src="https://github.com/khuedoan/homelab/assets/27996771/527e2529-4fe1-4664-ab8a-b9eb3c492d20" alt=""></a></td></tr>
 <tr><td style="text-align: center">Continuous deployment with <a href="https://argoproj.github.io/cd">ArgoCD</a></td></tr>
 <tr><td style="text-align: center"><a href="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kanidm-applications.jpg"><img src="https://raw.githubusercontent.com/khuedoan/public/master/homelab/kanidm-applications.jpg" alt=""></a></td></tr>
@@ -321,7 +321,7 @@ They can’t capture all the project’s features, but they are sufficient to ge
 <tr>
         <td><img width="32" src="https://forgejo.org/favicon.svg"></td>
         <td><a href="https://forgejo.org">Forgejo</a></td>
-        <td>Self-hosted Git service</td>
+        <td>Self-hosted Git service and CI</td>
     </tr>
 
     
@@ -448,13 +448,6 @@ They can’t capture all the project’s features, but they are sufficient to ge
         <td><img width="32" src="https://github.com/velero-io.png"></td>
         <td><a href="https://velero.io">Velero</a></td>
         <td>Backs up and restores Kubernetes</td>
-    </tr>
-
-    
-<tr>
-        <td><img width="32" src="https://avatars.githubusercontent.com/u/84780935?s=200&amp;v=4"></td>
-        <td><a href="https://woodpecker-ci.org">Woodpecker CI</a></td>
-        <td>Simple yet powerful CI/CD engine with great extensibility</td>
     </tr>
 
     
@@ -1146,12 +1139,11 @@ Then resume scheduled backups:</p>
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="dependency-updates"><a class="header" href="#dependency-updates">Dependency updates</a></h1>
-<p>We use Renovate to update dependencies automatically.
-In Woodpecker, under the <code>homelab</code> project:</p>
+<p>Renovate runs weekly. To trigger it manually:</p>
 <ol>
-<li>Start a manual pipeline on the default branch.</li>
-<li>Select the <code>renovate</code> workflow.</li>
-<li>Review its PRs and merge them.</li>
+<li>Open <strong>Actions</strong> in the homelab repository in Forgejo.</li>
+<li>Select <strong>Renovate</strong>.</li>
+<li>Select the default branch and click <strong>Run workflow</strong>.</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="use-both-github-and-forgejo"><a class="header" href="#use-both-github-and-forgejo">Use both GitHub and Forgejo</a></h1>
@@ -1917,7 +1909,7 @@ Fedora has a good (enough) balance between stability and new features.</p>
 <li><input disabled="" type="checkbox" checked=""> Core applications
 <ul>
 <li><input disabled="" type="checkbox" checked=""> Forgejo</li>
-<li><input disabled="" type="checkbox" checked=""> Woodpecker</li>
+<li><input disabled="" type="checkbox" checked=""> Forgejo Actions</li>
 <li><input disabled="" type="checkbox" checked=""> Private container registry</li>
 <li><input disabled="" type="checkbox" checked=""> Homepage</li>
 </ul>
