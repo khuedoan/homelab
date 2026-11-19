@@ -36,7 +36,6 @@ resource "kubernetes_manifest" "forgejo" {
               }]
               config = {
                 database = { DB_TYPE = "sqlite3" }
-                actions  = { ENABLED = false }
                 service = {
                   ENABLE_INTERNAL_SIGNIN           = false
                   ALLOW_ONLY_EXTERNAL_REGISTRATION = true

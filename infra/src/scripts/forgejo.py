@@ -1,10 +1,12 @@
-import json
 import base64
+import json
 import os
+import secrets
 import subprocess
 import sys
 from contextlib import contextmanager
 from pathlib import Path
+from uuid import UUID
 
 import hvac
 import requests
@@ -181,12 +183,136 @@ def push(session, domain, repository, target):
     )
 
 
-def setup(domain, bao, repository, target):
+def forgejo_command(kubeconfig):
+    return [
+        "kubectl",
+        "--kubeconfig", kubeconfig,
+        "--namespace", "forgejo",
+        "exec",
+        "-i",
+        "deployment/forgejo",
+        "--",
+        "forgejo",
+        "--config", "/data/gitea/conf/app.ini",
+    ]
+
+
+def configure_actions(session, domain, bao, kubeconfig):
+    endpoint = f"https://git.{domain}/api/v1/repos/ops/homelab"
+    request(session, "PATCH", endpoint, json={"has_actions": True})
+
+    path = "forgejo/runner"
+    try:
+        saved = bao.secrets.kv.v2.read_secret_version(
+            path,
+            raise_on_deleted_version=True,
+        )["data"]["data"]
+    except hvac.exceptions.InvalidPath:
+        saved = {"secret": secrets.token_hex(20)}
+        write_secret(bao, path, saved)
+
+    registration = subprocess.check_output(
+        forgejo_command(kubeconfig) + [
+            "forgejo-cli",
+            "actions",
+            "register",
+            "--scope", "ops/homelab",
+            "--name", "platform",
+            "--labels", "platform",
+            "--secret-stdin=1",
+        ],
+        input=saved["secret"],
+        text=True,
+        timeout=120,
+    )
+    uuid = str(UUID(registration.strip()))
+
+    write_secret(bao, path, {"secret": saved["secret"], "uuid": uuid})
+
+
+def configure_bot(session, domain):
+    api = f"https://git.{domain}/api/v1"
+    return request(session, "GET", f"{api}/users/bot") or request(
+        session,
+        "POST",
+        f"{api}/admin/users",
+        json={
+            "username": "bot",
+            "full_name": "Bot",
+            "email": f"bot@{domain}",
+            "password": secrets.token_urlsafe(32),
+            "must_change_password": False,
+            "restricted": True,
+            "max_repo_creation": 0,
+        },
+    )
+
+
+def configure_bot_integration(
+    session,
+    domain,
+    kubeconfig,
+    repository,
+    owner,
+    *,
+    name,
+    workflow_ref,
+    events,
+    scopes,
+):
+    api = f"https://git.{domain}/api/v1"
+    prefix = f"u:{owner['id']}:"
+    variable = f"{api}/repos/{repository}/actions/variables/{name.upper()}_AUDIENCE"
+    current = request(session, "GET", variable)
+    if current and current["data"].startswith(prefix):
+        return
+
+    command = forgejo_command(kubeconfig) + [
+        "admin",
+        "user",
+        "create-authorized-integration",
+        "--username", owner["login"],
+        "--name", name,
+        "--issuer", "urn:forgejo:authorized-integrations:actions",
+        "--claim-eq", f"repository={repository}",
+        "--claim-eq", f"workflow_ref={repository}/{workflow_ref}",
+        "--claim-in", f"event_name={','.join(events)}",
+    ]
+    output = subprocess.check_output(
+        command + [arg for scope in scopes for arg in ("--scope", scope)],
+        input="",
+        text=True,
+        timeout=120,
+    )
+    audience = json.loads(output)["audience"]
+    request(session, "PUT" if current else "POST", variable, json={"value": audience})
+
+
+def setup(domain, bao, repository, target, kubeconfig):
     with forgejo(bao) as session:
         configure_organization(session, domain)
         team = configure_team(session, domain)
         configure_woodpecker(session, domain, bao)
         push(session, domain, repository, target)
+        configure_actions(session, domain, bao, kubeconfig)
+        bot = configure_bot(session, domain)
+        request(
+            session,
+            "PUT",
+            f"https://git.{domain}/api/v1/repos/ops/homelab/collaborators/{bot['login']}",
+            json={"permission": "write"},
+        )
+        configure_bot_integration(
+            session,
+            domain,
+            kubeconfig,
+            "ops/homelab",
+            bot,
+            name="Renovate",
+            workflow_ref=".forgejo/workflows/renovate.yaml@refs/heads/master",
+            events=("schedule", "workflow_dispatch"),
+            scopes=("write:repository", "write:issue", "read:user", "read:organization"),
+        )
 
         request(
             session,
@@ -198,9 +324,10 @@ def setup(domain, bao, repository, target):
 if __name__ == "__main__":
     target = Path(sys.argv[1]).resolve()
     output = subprocess.check_output(
-        ["terragrunt", "render", "--json"], cwd=target / "platform",
+        ["terragrunt", "render", "--json"],
+        cwd=target / "platform",
     )
     domain = json.loads(output)["inputs"]["domain"]
 
     with openbao(target / "kubeconfig.yaml") as bao:
-        setup(domain, bao, Path.cwd().parent, target.name)
+        setup(domain, bao, Path.cwd().parent, target.name, target / "kubeconfig.yaml")
