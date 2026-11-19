@@ -78,9 +78,6 @@ configMaps:
                           - title: Forgejo
                             url: https://git.{{ .Values.global.domain }}
                             icon: di:forgejo.svg
-                          - title: Woodpecker
-                            url: https://ci.{{ .Values.global.domain }}
-                            icon: di:woodpecker-ci.svg
                           - title: ArgoCD
                             url: https://argocd.{{ .Values.global.domain }}
                             icon: di:argo-cd.svg

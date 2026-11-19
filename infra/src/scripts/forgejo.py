@@ -95,57 +95,6 @@ def configure_team(session, domain):
     return team
 
 
-def configure_woodpecker(session, domain, bao):
-    endpoint = f"https://git.{domain}/api/v1/user/applications/oauth2"
-    app = next(
-        (app for app in pages(session, endpoint) if app["name"] == "woodpecker"), None
-    )
-    callback = f"https://ci.{domain}/authorize"
-
-    try:
-        saved = bao.secrets.kv.v2.read_secret_version(
-            "woodpecker/forgejo",
-            raise_on_deleted_version=True,
-        )["data"]["data"]
-    except hvac.exceptions.InvalidPath:
-        saved = {}
-
-    if (
-        app is not None
-        and app["confidential_client"]
-        and app["redirect_uris"] == [callback]
-        and app["client_id"] == saved.get("client_id")
-        and saved.get("client_secret")
-        and saved.get("redirect_uri") == callback
-    ):
-        return
-
-    desired = {
-        "name": "woodpecker",
-        "confidential_client": True,
-        "redirect_uris": [callback],
-    }
-    app = (
-        request(session, "POST", endpoint, json=desired)
-        if app is None
-        else request(
-            session,
-            "PATCH",
-            f"{endpoint}/{app['id']}",
-            json=desired,
-        )
-    )
-    write_secret(
-        bao,
-        "woodpecker/forgejo",
-        {
-            "client_id": app["client_id"],
-            "client_secret": app["client_secret"],
-            "redirect_uri": callback,
-        },
-    )
-
-
 def push(session, domain, repository, target):
     url = f"https://git.{domain}/ops/homelab.git"
     authorization = base64.b64encode(":".join(session.auth).encode()).decode()
@@ -292,7 +241,6 @@ def setup(domain, bao, repository, target, kubeconfig):
     with forgejo(bao) as session:
         configure_organization(session, domain)
         team = configure_team(session, domain)
-        configure_woodpecker(session, domain, bao)
         push(session, domain, repository, target)
         configure_actions(session, domain, bao, kubeconfig)
         bot = configure_bot(session, domain)

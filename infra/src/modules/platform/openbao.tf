@@ -194,8 +194,7 @@ resource "kubernetes_manifest" "openbao_resources" {
                               password_hash = "$${bcrypt (randAlphaNum 32)}"
                               token         = "tk_$${randAlphaNum 29}"
                             }
-                            "zot/admin"        = { password = "$${randAlphaNum 32}" }
-                            "woodpecker/agent" = { secret = "$${randAlphaNum 32}" }
+                            "zot/admin" = { password = "$${randAlphaNum 32}" }
                             } : {
                             name        = record
                             create_only = true
