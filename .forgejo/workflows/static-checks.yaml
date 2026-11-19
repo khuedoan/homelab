@@ -1,0 +1,21 @@
+name: Static checks
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - justfile
+      - tests/**
+      - infra/**
+      - .forgejo/workflows/static-checks.yaml
+
+jobs:
+  tests:
+    runs-on: platform
+    steps:
+      - uses: https://data.forgejo.org/actions/checkout@v4
+        with:
+          github-server-url: http://forgejo-http.forgejo:3000
+          persist-credentials: false
+      - run: just test

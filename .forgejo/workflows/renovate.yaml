@@ -1,0 +1,35 @@
+name: Renovate
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 6'
+
+jobs:
+  renovate:
+    enable-openid-connect: true
+    if: >-
+      forgejo.event_name == 'schedule' ||
+      forgejo.ref_name == forgejo.event.repository.default_branch
+    runs-on: platform
+    steps:
+      - run: |
+          RENOVATE_TOKEN="$(node --input-type=module -e '
+            const url = new URL(process.env.ACTIONS_ID_TOKEN_REQUEST_URL);
+            url.searchParams.set("audience", process.env.RENOVATE_AUDIENCE);
+            const response = await fetch(url, {
+              headers: {
+                authorization: "Bearer " + process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN,
+              },
+            });
+            if (!response.ok) throw new Error("OIDC request returned HTTP " + response.status);
+            process.stdout.write((await response.json()).value);
+          ')" || exit 1
+          echo "::add-mask::$RENOVATE_TOKEN"
+          RENOVATE_TOKEN="$RENOVATE_TOKEN" npx --yes renovate@44.211.0
+        env:
+          RENOVATE_PLATFORM: forgejo
+          RENOVATE_ENDPOINT: ${{ forgejo.api_url }}
+          RENOVATE_REPOSITORIES: ${{ forgejo.repository }}
+          RENOVATE_AUDIENCE: ${{ vars.RENOVATE_AUDIENCE }}
+          NIX_CONFIG: experimental-features = nix-command flakes
