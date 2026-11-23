@@ -20,4 +20,7 @@ inputs = {
   control_plane_ips  = [for host in jsondecode(file("${get_terragrunt_dir()}/../metal/hosts.json")) : host.ip]
   domain             = "staging.khuedoan.com"
   backup             = dependency.backup.outputs.backup
+
+  # Staging is single node
+  ceph_replica_count = 1
 }
