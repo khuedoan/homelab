@@ -1,5 +1,99 @@
 # Changelog
 
+## v0.1.0
+
+Finally, a beta tag!
+
+I haven't cut a tag in years. Compared to last time,
+this is basically a rewrite and will require a
+complete cluster rebuild.
+
+Notable changes:
+
+- Replace Fedora with NixOS. We're now all-in on Nix for the entire stack.
+- Replace Ansible, Docker, Kickstart with
+  [Nixie](https://github.com/khuedoan/nixie), a
+  purpose-built tool for provisioning NixOS on bare
+  metal
+- Replace Make with Just
+- Replace Terraform and glue scripts with OpenTofu and
+  Terragrunt
+- Bare metal and cloud infrastructure are now unified
+  under the same `infra/`, with similar
+  tooling (the trade-off is that external resources
+  are no longer optional).
+- Use a trunk-based structure for multiple
+  environments (production and staging)
+- Replace Terraform Cloud with Cloudflare R2 for state
+  storage (you can use any S3-compatible storage)
+- Use an external password manager to bootstrap
+  provider secrets (`pass` by default)
+- Remove the local dev cluster
+- Nix is now required on the initial controller for
+  better integration
+- Expand monitoring and alerting, add ntfy for
+  notifications
+- Coordinate NixOS reboots with Kured
+- Add Istio ambient mesh and enforce mTLS for
+  applications
+- Replace NGINX Ingress with Istio and Gateway API
+- Add Kiali for network visualization
+- Replace MetalLB with kube-vip
+- Add Tailscale and WireGuard Portal, with SSO and
+  self-service device setup in the portal
+- Replace Dex with Kanidm for SSO
+- Automate provisioning for Kanidm users, groups, and
+  OAuth clients
+- Replace Longhorn with Rook Ceph for distributed
+  storage
+- Add Velero for scheduled offsite backups to
+  S3-compatible storage (Backblaze B2 by default)
+- Add cluster recovery mode for use during restores
+- Replace Vault with OpenBao
+- Add namespace-scoped access to secrets
+- Replace Gitea with Forgejo
+- Replace Tekton with Forgejo Actions
+- Add shared `linux` Forgejo runners with Nix support
+- Replace Trow with Zot
+- Move Renovate from a standalone Kubernetes CronJob
+  to Forgejo Actions
+- Federate Forgejo Actions with Zot so workflows can
+  publish to their scoped paths
+- Enforce the `app-template` chart in `apps/`, with
+  platform guardrails for applications
+- Add Actual Budget, Immich, PairDrop, Excalidraw,
+  Hister, OpenSpeedTest
+- Replace Hajimari with Glance. I don't really need
+  automated ingress discovery
+- Replace Seafile with OpenCloud
+- Remove Paperless, Jellyfin, and other media tools
+  (at least for now)
+- A more complete test suite for networking, storage,
+  backup and restore, secret access, GitOps, and CI
+  workflows that build, push, and run container images
+- Add benchmarks for storage and K3s security
+- More docs!
+
+Experiments I decided to remove:
+
+- Homepage: I prefer Glance's minimalism
+- Ollama: my laptops are way more powerful than my
+  homelab nodes and can run local models better
+- Woodpecker: no workflow OIDC
+- Harbor and Docker Registry: Zot is lightweight and
+  has the features that I need (OIDC, UI, pull-through
+  cache, etc.)
+- Cilium + Hubble: Istio + Kiali is more portable, and
+  I already run Istio in production
+- ZeroTier: WireGuard Portal + Tailscale strike a
+  better balance by offering good UX without lock-in
+- Shared Kubernetes "global" Secret: I still need an
+  API for dynamic secrets and access control. OpenBao
+  is basically an open-source drop-in replacement for
+  Vault
+- VolSync: Velero makes it easier to build a "back
+  everything up" experience
+
 ## v0.0.8
 
 Notable changes:
