@@ -6,7 +6,7 @@ jobs:
     enable-openid-connect: true
     timeout-minutes: 8
     env:
-      REGISTRY: https://registry.staging.khuedoan.com
+      REPOSITORY_URL: ${{ forgejo.event.repository.html_url }}
       REPOSITORY: ${{ forgejo.repository }}
       REVISION: ${{ forgejo.sha }}
 
@@ -22,6 +22,13 @@ jobs:
       - name: Publish to Zot with Forgejo OIDC
         run: |
           set -eu
+
+          domain=${REPOSITORY_URL#https://git.}
+          if [ "$domain" = "$REPOSITORY_URL" ]; then
+            echo "Expected the repository URL to use the git HTTPS endpoint" >&2
+            exit 1
+          fi
+          export REGISTRY="https://registry.${domain%%/*}"
 
           token=$(node --input-type=module -e '
             const endpoint = new URL(process.env.ACTIONS_ID_TOKEN_REQUEST_URL);

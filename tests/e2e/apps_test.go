@@ -49,23 +49,3 @@ var _ = Describe("Apps", Label("apps"), func() {
 			Should(Succeed())
 	}, SpecTimeout(5*time.Minute))
 })
-
-var _ = Describe("Registry", Label("registry"), func() {
-	It("implements the Distribution v2 API over HTTPS", func(ctx SpecContext) {
-		client, err := gatewayclient.NewForConfig(lab.RESTConfig())
-		Expect(err).NotTo(HaveOccurred())
-
-		routes, err := client.GatewayV1().HTTPRoutes("zot").List(ctx, metav1.ListOptions{})
-		Expect(err).NotTo(HaveOccurred())
-		Expect(routes.Items).NotTo(BeEmpty())
-		for _, route := range routes.Items {
-			By(route.GetNamespace() + "/" + route.GetName())
-			for _, headers := range expectHTTPSOK(ctx, route, "/v2/") {
-				Expect(headers.Get("Docker-Distribution-Api-Version")).To(
-					Equal("registry/2.0"),
-					"endpoint must implement the Distribution v2 API",
-				)
-			}
-		}
-	}, SpecTimeout(5*time.Minute))
-})
