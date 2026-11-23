@@ -12,7 +12,7 @@ on:
 
 jobs:
   tests:
-    runs-on: platform
+    runs-on: linux
     steps:
       - uses: https://data.forgejo.org/actions/checkout@v4
         with:

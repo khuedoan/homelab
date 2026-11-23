@@ -11,7 +11,7 @@ jobs:
     if: >-
       forgejo.event_name == 'schedule' ||
       forgejo.ref_name == forgejo.event.repository.default_branch
-    runs-on: platform
+    runs-on: linux
     steps:
       - run: |
           RENOVATE_TOKEN="$(node --input-type=module -e '

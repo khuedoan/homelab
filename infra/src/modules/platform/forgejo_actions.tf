@@ -1,13 +1,16 @@
-resource "kubernetes_manifest" "forgejo_runner" {
+resource "kubernetes_manifest" "forgejo_runners" {
   depends_on = [kubernetes_manifest.openbao_resources]
+
   manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
+
     metadata = {
-      name        = "forgejo-runner"
+      name        = "forgejo-runners"
       namespace   = "argocd"
       annotations = { "argocd.argoproj.io/compare-options" = "IncludeMutationWebhook=true" }
     }
+
     spec = {
       project = kubernetes_manifest.system_project.manifest.metadata.name
       sources = [{
@@ -17,9 +20,11 @@ resource "kubernetes_manifest" "forgejo_runner" {
         helm = {
           values = yamlencode({
             global = { createDefaultServiceAccount = false }
+
             controllers = {
               main = {
                 strategy = "Recreate"
+
                 containers = {
                   main = {
                     image = {
@@ -33,13 +38,14 @@ resource "kubernetes_manifest" "forgejo_runner" {
                       "--url=http://forgejo-http.forgejo:3000",
                       "--uuid=$(RUNNER_UUID)",
                       "--token-url=file:/credentials/token",
-                      "--label=platform:host",
+                      "--label=linux:host",
                     ]
                     env = {
-                      HOME = "/workspace"
+                      HOME       = "/workspace"
+                      NIX_CONFIG = "experimental-features = nix-command flakes"
                       RUNNER_UUID = {
                         valueFrom = {
-                          secretKeyRef = { name = "forgejo-runner", key = "uuid" }
+                          secretKeyRef = { name = "forgejo-runners", key = "uuid" }
                         }
                       }
                     }
@@ -64,18 +70,20 @@ resource "kubernetes_manifest" "forgejo_runner" {
                 }
               }
             }
+
             secrets = {
               runner = {
                 stringData = {
-                  uuid  = "bao:secret/data/forgejo/runner#uuid"
-                  token = "bao:secret/data/forgejo/runner#secret"
+                  uuid  = "bao:secret/data/forgejo/linux-runner#uuid"
+                  token = "bao:secret/data/forgejo/linux-runner#secret"
                 }
               }
             }
+
             persistence = {
               credentials = {
                 type = "secret"
-                name = "forgejo-runner"
+                name = "forgejo-runners"
               }
               workspace = {
                 type      = "emptyDir"
@@ -88,6 +96,7 @@ resource "kubernetes_manifest" "forgejo_runner" {
           })
         }
       }]
+
       destination = { name = "in-cluster", namespace = "forgejo" }
       syncPolicy = merge(local.sync_policy, {
         automated = {
@@ -98,6 +107,7 @@ resource "kubernetes_manifest" "forgejo_runner" {
       })
     }
   }
+
   lifecycle {
     prevent_destroy = true
   }

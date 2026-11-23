@@ -146,11 +146,8 @@ def forgejo_command(kubeconfig):
     ]
 
 
-def configure_actions(session, domain, bao, kubeconfig):
-    endpoint = f"https://git.{domain}/api/v1/repos/ops/homelab"
-    request(session, "PATCH", endpoint, json={"has_actions": True})
-
-    path = "forgejo/runner"
+def configure_runner(bao, kubeconfig):
+    path = "forgejo/linux-runner"
     try:
         saved = bao.secrets.kv.v2.read_secret_version(
             path,
@@ -165,9 +162,8 @@ def configure_actions(session, domain, bao, kubeconfig):
             "forgejo-cli",
             "actions",
             "register",
-            "--scope", "ops/homelab",
-            "--name", "platform",
-            "--labels", "platform",
+            "--name", "linux",
+            "--labels", "linux",
             "--secret-stdin=1",
         ],
         input=saved["secret"],
@@ -242,7 +238,7 @@ def setup(domain, bao, repository, target, kubeconfig):
         configure_organization(session, domain)
         team = configure_team(session, domain)
         push(session, domain, repository, target)
-        configure_actions(session, domain, bao, kubeconfig)
+        configure_runner(bao, kubeconfig)
         bot = configure_bot(session, domain)
         request(
             session,
