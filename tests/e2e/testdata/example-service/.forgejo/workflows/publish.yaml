@@ -1,0 +1,63 @@
+name: Build and publish fixture
+on: [push]
+jobs:
+  publish:
+    runs-on: linux
+    enable-openid-connect: true
+    timeout-minutes: 8
+    env:
+      REGISTRY: https://registry.staging.khuedoan.com
+      REPOSITORY: ${{ forgejo.repository }}
+      REVISION: ${{ forgejo.sha }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Build image with Nix
+        run: nix build .#image --out-link image
+
+      # TODO clean up this slop with reusable Action or something
+      - name: Publish to Zot with Forgejo OIDC
+        run: |
+          set -eu
+
+          token=$(node --input-type=module -e '
+            const endpoint = new URL(process.env.ACTIONS_ID_TOKEN_REQUEST_URL);
+            endpoint.searchParams.set("audience", process.env.REGISTRY);
+
+            const identity = await fetch(endpoint, {
+              headers: { Authorization: "Bearer " + process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN },
+            });
+            if (!identity.ok) throw new Error("Forgejo OIDC returned HTTP " + identity.status);
+
+            const { value: token } = await identity.json();
+            if (!token) throw new Error("Forgejo OIDC response has no token");
+
+            const path = "/v2/" + process.env.REPOSITORY + "-other/blobs/uploads/";
+            const denied = await fetch(new URL(path, process.env.REGISTRY), {
+              method: "POST",
+              headers: { Authorization: "Bearer " + token },
+              redirect: "error",
+            });
+            if (denied.status !== 403) {
+              throw new Error("Cross-repository upload returned HTTP " + denied.status);
+            }
+
+            process.stdout.write(token);
+          ')
+          echo "::add-mask::$token"
+          echo "Cross-repository upload denied (HTTP 403)"
+
+          registry="${REGISTRY#https://}"
+          nix run .#skopeo -- --policy /dev/stdin --tmpdir /tmp copy --format oci --digestfile digest \
+            --dest-registry-token "$token" \
+            docker-archive:image "docker://$registry/$REPOSITORY:$REVISION" <<'JSON'
+          {
+            "default": [{"type": "reject"}],
+            "transports": {"docker-archive": {"": [{"type": "insecureAcceptAnything"}]}}
+          }
+          JSON
+
+          printf 'Published %s/%s@%s\n' "$registry" "$REPOSITORY" "$(cat digest)"
