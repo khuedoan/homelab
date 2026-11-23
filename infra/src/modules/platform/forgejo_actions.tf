@@ -41,8 +41,7 @@ resource "kubernetes_manifest" "forgejo_runners" {
                       "--label=linux:host",
                     ]
                     env = {
-                      HOME       = "/workspace"
-                      NIX_CONFIG = "experimental-features = nix-command flakes"
+                      HOME = "/workspace"
                       RUNNER_UUID = {
                         valueFrom = {
                           secretKeyRef = { name = "forgejo-runners", key = "uuid" }
@@ -71,6 +70,19 @@ resource "kubernetes_manifest" "forgejo_runners" {
               }
             }
 
+            configMaps = {
+              nix = {
+                # TODO re-enable sandbox?
+                data = {
+                  "nix.conf" = <<-EOF
+                    experimental-features = nix-command flakes
+                    sandbox = false
+                    build-users-group =
+                  EOF
+                }
+              }
+            }
+
             secrets = {
               runner = {
                 stringData = {
@@ -81,6 +93,11 @@ resource "kubernetes_manifest" "forgejo_runners" {
             }
 
             persistence = {
+              nix = {
+                type         = "configMap"
+                identifier   = "nix"
+                globalMounts = [{ path = "/etc/nix" }]
+              }
               credentials = {
                 type = "secret"
                 name = "forgejo-runners"
