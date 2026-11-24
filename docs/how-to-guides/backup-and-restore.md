@@ -28,7 +28,7 @@ Pause the affected Argo CD Applications and their ApplicationSet, then stop the 
 Start in read-only mode:
 
 ```sh
-export TF_VAR_backup_read_only=true
+export TF_VAR_recovery_mode=true
 (cd "infra/$env/platform" && terragrunt run apply)
 ```
 
@@ -47,6 +47,6 @@ Verify the restored data before resuming workloads and GitOps reconciliation.
 Then resume scheduled backups:
 
 ```sh
-unset TF_VAR_backup_read_only
+unset TF_VAR_recovery_mode
 (cd "infra/$env/platform" && terragrunt run apply)
 ```
