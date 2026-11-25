@@ -7,23 +7,16 @@
     packages = builtins.mapAttrs (
       _system: pkgs:
       let
-        version = self.rev or "development";
+        revision = self.rev or "development";
 
         service = pkgs.buildGoModule {
           pname = "example-service";
           version = "0.1.0";
 
-          src = nixpkgs.lib.fileset.toSource {
-            root = ./.;
-            fileset = nixpkgs.lib.fileset.unions [
-              ./go.mod
-              ./main.go
-            ];
-          };
-
+          src = ./.;
           vendorHash = null;
           env.CGO_ENABLED = "0";
-          ldflags = [ "-X=main.version=${version}" ];
+          ldflags = [ "-X=main.version=${revision}" ];
 
           preConfigure = ''
             export XDG_CONFIG_HOME="$TMPDIR"
@@ -34,9 +27,9 @@
         inherit (pkgs) skopeo;
 
         image = pkgs.dockerTools.buildLayeredImage {
-          name = "example-service";
-          tag = version;
-          config.Entrypoint = [ "${service}/bin/example-service" ];
+          name = service.pname;
+          tag = revision;
+          config.Entrypoint = [ "${service}/bin/${service.pname}" ];
         };
       }
     ) nixpkgs.legacyPackages;
