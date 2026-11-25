@@ -73,7 +73,7 @@ See [PXE boot](../../concepts/pxe-boot.md) for the installation flow.
 **Consequences**
 
 - Single binary with native OS process instead of complex Ansible & Docker Compose setup (& its host networking baggage)
-- It has much better integration to the OS, since it's built specically for NixOS
+- It has much better integration to the OS, since it's built specifically for NixOS
 - It's much more reliable and testable (Nixie has a full test suite in QEMU)
 - There's much better visibility into the PXE boot process with tracing
 - The PXE installer can be reused with other projects
