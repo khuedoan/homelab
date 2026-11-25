@@ -16,6 +16,7 @@ fmt:
     direnv exec "$1" python3 src/scripts/tfstate.py "$1"
 
 @apply target *arguments:
+    sudo -v -p '[sudo] Password for Nixie to bind privileged PXE boot ports: '
     cd "$1"; \
         shift; \
         exec direnv exec . terragrunt run --all --non-interactive "$@" -- apply
