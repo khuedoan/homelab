@@ -135,6 +135,9 @@ resource "kubernetes_manifest" "rook_ceph" {
               isDefault = true
             }
             cephClusterSpec = {
+              cleanupPolicy = {
+                wipeDevicesFromOtherClusters = true
+              }
               dashboard = {
                 ssl = false
               }
